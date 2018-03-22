@@ -1,5 +1,8 @@
 ﻿package  {
 	
+	//------------------------------------------------------------------
+	// Imports
+	//------------------------------------------------------------------
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -7,78 +10,135 @@
 	
 	public class Main extends MovieClip {
 		
-			
+		//----------------------------------------------------------------------
+		// Properties
+		//----------------------------------------------------------------------
+		private var plane:MovieClip;
+		private var speed:Number = 8;
+		private var angle:Number = 0;
+		private const gravity:Number = 0.5;
+		private var gravityFlag:Boolean = true;
+		
+		//----------------------------------------------------------------------
+		// Constructor
+		//----------------------------------------------------------------------
+		
 		public function Main() {
-			var ball:MovieClip = new NewArrow();
-			ball.scaleX = 0.5;
-			ball.scaleY = 0.5;
-			ball.x = ball.y = 50;
-			addChild(ball);
+			this.plane = new NewArrow();
+			this.plane.scaleX = 0.17
+			this.plane.scaleY = 0.17;
+			this.plane.x = 50;
+			this.plane.y = 50;
+			addChild(this.plane);
 			
-			var speed:Number = 2;
-			var angle:Number = 0;
-			var radians:Number;
-			var xVel:Number;
-			var yVel:Number;
-			var gravity:Number = 2;
-			var gravityFlag = true;
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, this.keyDownHandler);
+			stage.addEventListener(KeyboardEvent.KEY_UP, this.keyUpHandler);
+			addEventListener(Event.ENTER_FRAME, this.onLoop, false, 0, true);
+		}
+		
+		//----------------------------------------------------------------------
+		// Methods
+		//----------------------------------------------------------------------
+		
+		/**
+		 * onLoop
+		 */
+		
+		private function onLoop(event:Event):void{
+			var radians:Number = deg2rad(this.angle);
+		
+			var xVel:Number = Math.cos(radians) * this.speed;
+			var yVel:Number = Math.sin(radians) * this.speed;
+			this.plane.x += xVel;
+			this.plane.y += yVel;
+			this.plane.rotation = this.angle;
+			this.gravityOn();
 			
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPress_handler);
-			stage.addEventListener(KeyboardEvent.KEY_UP, keyUp_handler);
-			addEventListener(Event.ENTER_FRAME, onloop, false, 0, true);
+			// if - Go out left side
+			// else if - Goes out right side
+			if(this.plane.x < 0 - (this.plane.width/2)) {
+				this.plane.x = stage.stageWidth;
+			} else if (this.plane.x > stage.stageWidth) {
+				this.plane.x = 0;
+			}
+		}
+		
+		
+		/**
+		 * gravityOn
+		 */
+		
+		private function gravityOn():void {
+			if(this.gravityFlag == true) {
+				this.plane.y += this.gravity;
+			}
+		}
+		
+		
+		/**
+		 * gravityOff
+		 */
+		
+		private function gravityOff():void {
+			this.gravityFlag = false;
+		}
+		
+		
+		/**
+		 * deg2rad
+		 */
+		
+		private function deg2rad(deg:Number):Number{
+			return deg * (Math.PI / 180);
+		}
+		
+		
+		/**
+		 * keyDownHandler
+		 */
+		
+		private function keyDownHandler(event:KeyboardEvent):void{
+			// W = 87
+			// A = 65
+			// S = 83
+			// D = 68
+			// Arrow up = 38
+			// Arrow down = 40
+			// Arrow left = 37
+			// Arrow right = 39
 			
-			function onloop(e:Event):void{
-				radians = deg2rad(angle);
-			
-				xVel = Math.cos(radians) * speed;
-				yVel = Math.sin(radians) * speed;
-				ball.x += xVel;
-				ball.y += yVel;
-				ball.rotation = angle;
-				gravityOn();
-				
-				if(ball.x < 0 - ball.width) {
-					ball.x = stage.width;
-				}
+			// W
+			if(event.keyCode == 87) {
+				angle += 1 * (speed/1.5);
+				trace("W angle:", angle);
 			}
 			
-			function gravityOn():void {
-				if(gravityFlag == true) {
-					ball.y += gravity;
-				}
+			// S
+			if(event.keyCode == 83) {
+				angle -= 1 * (speed/1.5);
+				trace("S angle:", angle);
 			}
 			
-			function gravityOff():void {
-				gravityFlag = false;
+			// A
+			if(event.keyCode == 65) {
+				trace("A:", 'bombdrop');
 			}
 			
-			function deg2rad(deg:Number):Number{
-				return deg * (Math.PI / 180);
+			// D
+			if(event.keyCode == 68 && speed < 13) {
+				speed += 1;
+				trace("D speed:", speed);
 			}
 			
-			function keyPress_handler(event:KeyboardEvent):void{
-				
-				if(event.keyCode == 87) {
-					angle += 1 * speed;
-					trace(angle);
-				}
-				if(event.keyCode == 83) {
-					angle -= 1 * speed;
-					trace(angle);
-				}
-				if(event.keyCode == 65) {
-					trace('bombdrop');
-				}
-				if(event.keyCode == 68 && speed < 5) {
-					speed += 1;
-					trace(speed);
-				}
-				
-			}
-			
-			function keyUp_handler(event:KeyboardEvent):void {
-				gravityFlag = true;
-			}
+		}
+		
+		
+		/**
+		 * keyUpHandler
+		 */
+		
+		private function keyUpHandler(event:KeyboardEvent):void {
+			gravityFlag = true;
 		}
 	}
 }
