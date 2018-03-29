@@ -35,7 +35,19 @@
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, this.keyDownHandler);
 			stage.addEventListener(KeyboardEvent.KEY_UP, this.keyUpHandler);
 			addEventListener(Event.ENTER_FRAME, this.onLoop, false, 0, true);*/
-			this.addChild(new Plane());
+			
+/*			this.addChild(new Plane(0, 250));
+			this.addChild(new Plane(150, 250));
+			this.addChild(new Plane(300, 250));
+			this.addChild(new Plane(450, 250));
+			this.addChild(new Plane(0, 250));
+			this.addChild(new Plane(150, 250));
+			this.addChild(new Plane(300, 250));
+			this.addChild(new Plane(450, 250));*/
+			
+			for (var i:int = 0; i < 500; i++) {
+				this.addChild(new Plane((Math.random() * stage.stageWidth), (Math.random() * stage.stageHeight)))
+			}
 		}
 		
 		//------------------------------------------------------------------

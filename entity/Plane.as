@@ -25,14 +25,14 @@
 		//------------------------------------------------------------------
 		// Constructor
 		//------------------------------------------------------------------
-		public function Plane() {
+		public function Plane(x:Number, y:Number) {
 			
 			this.plane = new TestPlane();
 			
 			this.plane.scaleX = 0.2;
 			this.plane.scaleY = 0.2;
-			this.plane.x = 10;
-			this.plane.y = 250;
+			this.plane.x = x;
+			this.plane.y = y;
 			
 			this.addChild(this.plane);
 			
