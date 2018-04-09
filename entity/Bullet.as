@@ -11,7 +11,7 @@
 			this.angle = angle;
 			var rect:Shape = new Shape();
 			rect.graphics.beginFill(0xFF0000);
-			rect.graphics.drawRect(x, y, 10, 10);
+			rect.graphics.drawRect(x, y, 5, 5);
 			rect.graphics.endFill();
 			this.addChild(rect);
 			this.addEventListener(Event.ENTER_FRAME, move);

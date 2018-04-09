@@ -27,7 +27,7 @@
 		//------------------------------------------------------------------
 		public function Plane(x:Number, y:Number) {
 			
-			this.plane = new TestPlane();
+			this.plane = new RedPlane();
 			
 			this.plane.scaleX = 0.2;
 			this.plane.scaleY = 0.2;
