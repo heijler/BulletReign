@@ -40,7 +40,7 @@ package scene
 		 */
 		override public function init():void {
 			this.m_initLayers();
-			var p:Plane = new Plane();
+			var p:Plane = new Plane(1);
 			p.x = 400;
 			p.y = 200;
 			this.m_gameLayer.addChild(p);

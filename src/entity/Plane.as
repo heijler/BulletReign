@@ -6,6 +6,7 @@ package entity
 	
 	import flash.display.MovieClip;
 	import asset.Plane1GFX;
+	import asset.Plane2GFX;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
 	
@@ -22,13 +23,15 @@ package entity
 		
 		private var m_skin:MovieClip;
 		private var m_controls:EvertronControls = new EvertronControls(0);
+		private var m_activePlayer:int;
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane()
+		public function Plane(player:int)
 		{
+			this.m_activePlayer = player;
 			super();
 		}
 		
@@ -51,7 +54,11 @@ package entity
 		 */
 		private function m_initSkin():void 
 		{
-			this.m_skin = new Plane1GFX;
+			if (m_activePlayer == 0) {
+				this.m_skin = new Plane1GFX;
+			} else if (m_activePlayer == 1) {
+				this.m_skin = new Plane2GFX;
+			}
 			this.m_skin.scaleX = 2;
 			this.m_skin.scaleY = 2;
 			this.addChild(this.m_skin);
@@ -74,8 +81,17 @@ package entity
 		{
 			if (this.m_controls != null) {
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_RIGHT)) {
-					this.x += 5;
+					this.m_forward();
 				}
+			}
+		}
+		
+		private function m_forward():void 
+		{
+			if (this.m_activePlayer == 0) {
+				this.x += 5;
+			} else if (this.m_activePlayer == 1) {
+				this.x -= 5;
 			}
 		}
 	}
