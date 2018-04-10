@@ -1,20 +1,40 @@
 package entity
 {
+	//-----------------------------------------------------------
+	// Import
+	//-----------------------------------------------------------
+	
 	import flash.display.MovieClip;
 	import asset.Plane1GFX;
-	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
 	
-	public class Plane extends DisplayStateLayerSprite
+	//-----------------------------------------------------------
+	// Plane
+	//-----------------------------------------------------------
+	
+	public class Plane extends Projectile
 	{
+		
+		//-----------------------------------------------------------
+		// Private properties
+		//-----------------------------------------------------------
+		
 		private var m_skin:MovieClip;
 		private var m_controls:EvertronControls = new EvertronControls(0);
 
+		//-----------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------
+		
 		public function Plane()
 		{
 			super();
 		}
+		
+		//-----------------------------------------------------------
+		// Methods
+		//-----------------------------------------------------------
 		
 		/**	
 		 * init
