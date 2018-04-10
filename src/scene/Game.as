@@ -1,5 +1,4 @@
-package scene
-{
+package scene {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
@@ -7,13 +6,13 @@ package scene
 	import entity.Plane;
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
+	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
 	// Game
 	//-----------------------------------------------------------
 	
-	public class Game extends DisplayState
-	{
+	public class Game extends DisplayState {
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
@@ -24,8 +23,7 @@ package scene
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Game()
-		{
+		public function Game() {
 			super();
 			trace("gamestate");
 		}
@@ -40,10 +38,15 @@ package scene
 		 */
 		override public function init():void {
 			this.m_initLayers();
-			var p:Plane = new Plane(1);
-			p.x = 400;
-			p.y = 200;
-			this.m_gameLayer.addChild(p);
+			var p1:Plane = new Plane(0);
+			p1.x = 0;
+			p1.y = 250;
+			this.m_gameLayer.addChild(p1);
+			
+			var p2:Plane = new Plane(1);
+			p2.x = Session.application.width;
+			p2.y = 250;
+			this.m_gameLayer.addChild(p2);
 		}
 		
 		/**	

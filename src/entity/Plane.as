@@ -1,5 +1,4 @@
-package entity
-{
+package entity {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
@@ -14,24 +13,23 @@ package entity
 	// Plane
 	//-----------------------------------------------------------
 	
-	public class Plane extends Projectile
-	{
+	public class Plane extends Projectile {
 		
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
 		private var m_skin:MovieClip;
-		private var m_controls:EvertronControls = new EvertronControls(0);
-		private var m_activePlayer:int;
+		private var m_controls:EvertronControls;
+		private var m_activePlayer:int = 0;
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(player:int)
-		{
+		public function Plane(player:int) {
 			this.m_activePlayer = player;
+			this.m_controls = new EvertronControls(this.m_activePlayer);
 			super();
 		}
 		
@@ -43,8 +41,7 @@ package entity
 		 * init
 		 * override
 		 */
-		override public function init():void 
-		{
+		override public function init():void {
 			this.m_initSkin();
 		}
 		
@@ -52,8 +49,7 @@ package entity
 		 * m_initSkin
 		 * Initialize skin
 		 */
-		private function m_initSkin():void 
-		{
+		private function m_initSkin():void {
 			if (m_activePlayer == 0) {
 				this.m_skin = new Plane1GFX;
 			} else if (m_activePlayer == 1) {
@@ -68,17 +64,16 @@ package entity
 		 * update
 		 * override, gameloop
 		 */
-		override public function update():void 
-		{
+		override public function update():void {
 			this.m_updateControls();
+			this.m_updatePosition();
 		}
 		
 		/**	
 		 * m_updateControls
 		 * Update the planes position.
 		 */
-		private function m_updateControls():void 
-		{
+		private function m_updateControls():void {
 			if (this.m_controls != null) {
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_RIGHT)) {
 					this.m_forward();
@@ -86,8 +81,23 @@ package entity
 			}
 		}
 		
-		private function m_forward():void 
-		{
+		/**	
+		 * m_updateControls
+		 * Update the planes position.
+		 */
+		private function m_forward():void {
+			if (this.m_activePlayer == 0) {
+				this.x += 5;
+			} else if (this.m_activePlayer == 1) {
+				this.x -= 5;
+			}
+		}
+		
+		/**	
+		 * m_updatePosition
+		 * Update the planes position.
+		 */
+		private function m_updatePosition():void {
 			if (this.m_activePlayer == 0) {
 				this.x += 5;
 			} else if (this.m_activePlayer == 1) {

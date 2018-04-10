@@ -1,5 +1,4 @@
-package scene
-{
+package scene {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
@@ -12,14 +11,12 @@ package scene
 	// Menu
 	//-----------------------------------------------------------
 	
-	public class Menu extends DisplayState
-	{
+	public class Menu extends DisplayState {
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Menu()
-		{
+		public function Menu() {
 			super();
 			trace("scene.Menu");
 			
