@@ -3,8 +3,12 @@ package {
 	// Import
 	//-----------------------------------------------------------
 	
-	import scene.Menu;
+	import flash.display.StageQuality;
+	import flash.geom.Point;
+	
 	import se.lnu.stickossdk.system.Engine;
+	
+	import state.menustate.MainMenu;
 	
 	//-----------------------------------------------------------
 	// Evertron settings
@@ -33,8 +37,9 @@ package {
 		override public function setup():void {
 			this.initId = 36;
 			this.initBackgroundColor = 0x000000;
+			this.initSize = new Point(800,600);
 			this.initDebugger = true;
-			this.initDisplayState = Menu;
+			this.initDisplayState = MainMenu;
 		}
 	}
 }
