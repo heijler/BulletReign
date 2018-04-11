@@ -3,11 +3,8 @@ package {
 	// Import
 	//-----------------------------------------------------------
 	
-	import flash.display.StageQuality;
 	import flash.geom.Point;
-	
 	import se.lnu.stickossdk.system.Engine;
-	
 	import state.menustate.MainMenu;
 	
 	//-----------------------------------------------------------
