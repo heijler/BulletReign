@@ -34,7 +34,7 @@ package entity {
 		public function Plane(player:int) {
 			this.m_activePlayer = player;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
-			this.velocity = 8;
+			this.velocity = 5;
 			this.angle = 0;
 			super();
 		}
@@ -107,8 +107,14 @@ package entity {
 		 */
 		private function m_navigate(pressed:String):void {
 			
-			this.m_skin.x += Math.cos(this.angle * (Math.PI / 180)) * this.velocity;
-			this.m_skin.y += Math.sin(this.angle * (Math.PI / 180)) * this.velocity;
+			if (this.m_activePlayer == 0 && pressed == "accelerate") {
+				this.m_skin.x += Math.cos(this.angle * (Math.PI / 180)) * this.velocity;
+				this.m_skin.y += Math.sin(this.angle * (Math.PI / 180)) * this.velocity;
+			} else if (this.m_activePlayer == 1 && pressed == "accelerate") {
+				this.m_skin.x -= Math.cos(this.angle * (Math.PI / 180)) * this.velocity;
+				this.m_skin.y -= Math.sin(this.angle * (Math.PI / 180)) * this.velocity;
+			}
+	
 			this.m_skin.rotation = this.angle;
 			
 			if (this.m_activePlayer == 0 && pressed == "accelerate") {
@@ -120,13 +126,13 @@ package entity {
 			if (this.m_activePlayer == 0 && pressed == "angledown") {
 				this.angle += 1.5 * (this.velocity/1.5);
 			} else if (this.m_activePlayer == 1 && pressed == "angledown") {
-				this.angle += 1.5 * (this.velocity/1.5);
+				this.angle -= 1.5 * (this.velocity/1.5);
 			}
 			
 			if (this.m_activePlayer == 0 && pressed == "angleup") {
 				this.angle -= 1.5 * (this.velocity/1.5);
 			} else if (this.m_activePlayer == 1 && pressed == "angleup") {
-				this.angle -= 1.5 * (this.velocity/1.5);
+				this.angle += 1.5 * (this.velocity/1.5);
 			}
 			
 			if (this.m_activePlayer == 0 && pressed == "fire") {
@@ -143,8 +149,10 @@ package entity {
 		private function m_defaultSpeed():void {
 			if (this.m_activePlayer == 0) {
 				this.m_skin.x += Math.cos(this.angle * (Math.PI / 180)) * this.velocity;
+				this.m_skin.y += Math.sin(this.angle * (Math.PI / 180)) * this.velocity;
 			} else if (this.m_activePlayer == 1) {
 				this.m_skin.x -= Math.cos(this.angle * (Math.PI / 180)) * this.velocity;
+				this.m_skin.y -= Math.sin(this.angle * (Math.PI / 180)) * this.velocity;
 			}
 		}
 	}
