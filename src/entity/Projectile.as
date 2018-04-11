@@ -1,5 +1,4 @@
-package entity
-{
+package entity {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
@@ -10,8 +9,7 @@ package entity
 	// Projectile
 	//-----------------------------------------------------------
 	
-	public class Projectile extends DisplayStateLayerSprite
-	{
+	public class Projectile extends DisplayStateLayerSprite {
 		
 		//-----------------------------------------------------------
 		// Protected properties
@@ -24,8 +22,7 @@ package entity
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Projectile()
-		{
+		public function Projectile() {
 			super();
 		}
 	}

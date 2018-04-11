@@ -1,17 +1,16 @@
-package entity
-{
+package entity {
+	
 	//-----------------------------------------------------------
 	// Bullet
 	//-----------------------------------------------------------
 	
-	public class Bullet extends Projectile
-	{
+	public class Bullet extends Projectile {
+		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Bullet()
-		{
+		public function Bullet() {
 			super();
 		}
 	}
