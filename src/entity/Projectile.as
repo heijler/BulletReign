@@ -17,6 +17,7 @@ package entity {
 		
 		protected var velocity:Number;
 		protected var angle:Number;
+		protected var gravity:Number;
 		
 		//-----------------------------------------------------------
 		// Constructor
