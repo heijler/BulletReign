@@ -21,7 +21,7 @@ package state.gamestate {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private var m_gameLayer:DisplayStateLayer;
+		public var m_gameLayer:DisplayStateLayer;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -44,12 +44,12 @@ package state.gamestate {
 			this.layers.container.scaleX = 2;
 			this.layers.container.scaleY = 2;
 			this.m_initLayers();
-			var p1:Plane = new Plane(0);
+			var p1:Plane = new Plane(0, this.m_gameLayer);
 			p1.x = 0;
 			p1.y = 250;
 			this.m_gameLayer.addChild(p1);
 			
-			var p2:Plane = new Plane(1);
+			var p2:Plane = new Plane(1, this.m_gameLayer);
 			p2.x = 250;
 			p2.y = 250;
 			this.m_gameLayer.addChild(p2);
@@ -65,8 +65,8 @@ package state.gamestate {
 			var ground:Sprite = new Sprite();
 			var gd:Graphics = ground.graphics;
 			gd.lineStyle(2, 0xFFFFFF);
-			gd.moveTo((this.m_gameLayer.width - this.m_gameLayer.width), this.m_gameLayer.height);
-			gd.lineTo(this.m_gameLayer.width * 2, (this.m_gameLayer.height));
+			gd.moveTo((this.m_gameLayer.width - this.m_gameLayer.width), this.m_gameLayer.height * 1.1);
+			gd.lineTo(this.m_gameLayer.width * 2, (this.m_gameLayer.height * 1.1));
 			this.m_gameLayer.addChild(ground);
 			// END Lines Temporary
 		}

@@ -8,8 +8,10 @@ package entity {
 	import asset.Plane1GFX;
 	import asset.Plane2GFX;
 	
+	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -25,14 +27,16 @@ package entity {
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
 		private var m_bullet:Bullet;
+		private var m_gameLayer:DisplayStateLayer;
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(player:int) {
+		public function Plane(player:int, gameLayer:DisplayStateLayer) {
 			super();
 			this.m_activePlayer = player;
+			this.m_gameLayer = gameLayer;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
 			this.m_bullet = new Bullet();
 			this._velocity = 3;
@@ -75,6 +79,7 @@ package entity {
 		override public function update():void {
 			this.m_updateControls();
 			this.m_defaultSpeed();
+			this.m_checkCollision();
 			
 		}
 		
@@ -168,5 +173,18 @@ package entity {
 				this.m_skin.y -= yVel;
 			}
 		}
+		// Temporary Method ***REMOVE***
+		private function m_checkCollision():void {
+			
+			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(2))) {
+				this._velocity = 0;
+			}
+			
+			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(3))) {
+				this._velocity = 0;
+			}
+			
+		}
+		
 	}
 }
