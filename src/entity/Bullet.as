@@ -65,7 +65,7 @@ package entity {
 		
 		/**	
 		 * fire
-		 * Shots bullet
+		 * Shots bullet 
 		 */
 		public function fire():void {
 			this.m_shooting = true;

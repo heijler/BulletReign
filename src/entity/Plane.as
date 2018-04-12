@@ -10,6 +10,7 @@ package entity {
 	
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.tween.easing.Cubic;
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -24,6 +25,7 @@ package entity {
 		private var m_skin:MovieClip;
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
+		private var m_bullet:Bullet;
 
 		//-----------------------------------------------------------
 		// Constructor
@@ -33,7 +35,8 @@ package entity {
 			super();
 			this.m_activePlayer = player;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
-			this._velocity = 5;
+			this.m_bullet = new Bullet();
+			this._velocity = 3;
 			this._angle = 0;
 			
 		}
@@ -61,8 +64,8 @@ package entity {
 				this.m_skin = new Plane2GFX;
 			}
 			// Would be nice to avoid this scaling here
-			this.m_skin.scaleX = 2;
-			this.m_skin.scaleY = 2;
+			//this.m_skin.scaleX = 2;
+			//this.m_skin.scaleY = 2;
 			this.addChild(this.m_skin);
 		}
 		
@@ -106,6 +109,8 @@ package entity {
 		 */
 		private function m_navigate(instruction:String):void {
 			if (instruction == "accelerate") {
+				
+				this._velocity = 2;
 				
 				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
 				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
@@ -151,6 +156,7 @@ package entity {
 		 * Default speed of planes, no acceleration needed to keep in air
 		 */
 		private function m_defaultSpeed():void {
+			this.applyGravity();
 			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
 			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
 			
