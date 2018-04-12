@@ -38,6 +38,8 @@ package state.gamestate {
 		 * override
 		 */
 		override public function init():void {
+			this.layers.container.scaleX = 2;
+			this.layers.container.scaleY = 2;
 			this.m_initLayers();
 			var p1:Plane = new Plane(0);
 			p1.x = 0;
@@ -45,7 +47,7 @@ package state.gamestate {
 			this.m_gameLayer.addChild(p1);
 			
 			var p2:Plane = new Plane(1);
-			p2.x = Session.application.width;
+			p2.x = 250;
 			p2.y = 250;
 			this.m_gameLayer.addChild(p2);
 		}
