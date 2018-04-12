@@ -3,10 +3,11 @@ package state.menustate {
 	// Import
 	//-----------------------------------------------------------
 	
-	import state.gamestate.Gamestate;
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.system.Session;
+	
+	import state.gamestate.Gamestate;
 	
 	//-----------------------------------------------------------
 	// MainMenu
@@ -56,7 +57,7 @@ package state.menustate {
 		 * m_updateControls
 		 */
 		private function m_updateControls():void {
-			if (Input.keyboard.justPressed("SPACE")) {
+			if (Input.keyboard.anyPressed()) {
 				Session.application.displayState = new Gamestate();
 			}
 		}
