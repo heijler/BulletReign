@@ -3,10 +3,13 @@ package state.gamestate {
 	// Import
 	//-----------------------------------------------------------
 	
+	import flash.display.Graphics; // Temporary REMOVE
+	import flash.display.Sprite; // Temporary REMOVE
+	
 	import entity.Plane;
+	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
-	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
 	// Gamestate
@@ -50,6 +53,22 @@ package state.gamestate {
 			p2.x = 250;
 			p2.y = 250;
 			this.m_gameLayer.addChild(p2);
+			
+			// Temporary  Lines REMOVE
+			var skyline:Sprite = new Sprite();
+			var sl:Graphics = skyline.graphics;
+			sl.lineStyle(2, 0xFFFFFF);
+			sl.moveTo((this.m_gameLayer.width - this.m_gameLayer.width), (this.m_gameLayer.height - this.m_gameLayer.height));
+			sl.lineTo(this.m_gameLayer.width * 2, (this.m_gameLayer.height - this.m_gameLayer.height));
+			this.m_gameLayer.addChild(skyline);
+
+			var ground:Sprite = new Sprite();
+			var gd:Graphics = ground.graphics;
+			gd.lineStyle(2, 0xFFFFFF);
+			gd.moveTo((this.m_gameLayer.width - this.m_gameLayer.width), this.m_gameLayer.height);
+			gd.lineTo(this.m_gameLayer.width * 2, (this.m_gameLayer.height));
+			this.m_gameLayer.addChild(ground);
+			// END Lines Temporary
 		}
 		
 		/**	

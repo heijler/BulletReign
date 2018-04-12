@@ -10,7 +10,6 @@ package entity {
 	
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
-	import se.lnu.stickossdk.tween.easing.Cubic;
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -76,6 +75,7 @@ package entity {
 		override public function update():void {
 			this.m_updateControls();
 			this.m_defaultSpeed();
+			
 		}
 		
 		/**	
