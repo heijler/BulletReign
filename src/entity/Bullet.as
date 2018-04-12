@@ -24,10 +24,8 @@ package entity {
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Bullet(x:int, y:int, angle:Number, velocity:Number) {
+		public function Bullet(angle:Number, velocity:Number) {
 			super();
-			this.x = x;
-			this.y = x;
 			this.m_angle = angle;
 			this.m_velocity = velocity;
 		}
@@ -62,6 +60,14 @@ package entity {
 		 */
 		// Frågan är om Bullets rörelse ska hanteras här eller i plane, där lyssning efter spelarens tryck på skjutknappen sker?
 		override public function update():void {
+			updatePosition();
+		}
+		
+		/**
+		 * 
+		 */
+		private function updatePosition():void {
+			trace("updatepos");
 			this.x += Math.cos(this.m_angle * (Math.PI/180)) * this.m_velocity;
 			this.y += Math.sin(this.m_angle * (Math.PI/180)) * this.m_velocity;
 		}

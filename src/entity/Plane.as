@@ -3,6 +3,7 @@ package entity {
 	// Import
 	//-----------------------------------------------------------
 	
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	
 	import asset.Plane1GFX;
@@ -24,13 +25,15 @@ package entity {
 		private var m_skin:MovieClip;
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
+		private var m_parent:DisplayObjectContainer;
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(player:int) {
+		public function Plane(parent:DisplayObjectContainer, player:int) {
 			super();
+			this.m_parent = parent;
 			this.m_activePlayer = player;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
 			this._velocity = 5;
