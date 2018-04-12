@@ -4,9 +4,11 @@ package state.gamestate {
 	//-----------------------------------------------------------
 	
 	import entity.Plane;
+	import entity.BulletManager;
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.system.Session;
+	import flash.geom.Point;
 	
 	//-----------------------------------------------------------
 	// Gamestate
@@ -19,7 +21,6 @@ package state.gamestate {
 		//-----------------------------------------------------------
 		
 		private var m_gameLayer:DisplayStateLayer;
-		private var m_bulletLayer:DisplayStateLayer;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -34,20 +35,22 @@ package state.gamestate {
 		// Methods
 		//-----------------------------------------------------------
 		
-		/**	
+		/**	 w
 		 * init
 		 * override
 		 */
 		override public function init():void {
 			this.m_initLayers();
-			var p1:Plane = new Plane(this.m_gameLayer, 0);
-			p1.x = 0;
-			p1.y = 250;
+			var bm1:BulletManager = new BulletManager(this.m_gameLayer);
+			var p1:Plane = new Plane(bm1, this.m_gameLayer, 0, new Point(0, 250));
+				//p1.x = 0;
+				//p1.y = 250;
 			this.m_gameLayer.addChild(p1);
 			
-			var p2:Plane = new Plane(this.m_gameLayer, 1);
-			p2.x = Session.application.width;
-			p2.y = 250;
+			var bm2:BulletManager = new BulletManager(this.m_gameLayer);
+			var p2:Plane = new Plane(bm2, this.m_gameLayer, 1, new Point(400, 250));
+				//p2.x = Session.application.width;
+				//p2.y = 250;
 			this.m_gameLayer.addChild(p2);
 		}
 		

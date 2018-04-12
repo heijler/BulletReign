@@ -11,7 +11,7 @@ package entity {
 		// Properties
 		//-----------------------------------------------------------
 		private var m_parent:DisplayObjectContainer;
-		public var bullets:Vector.<Bullet>;
+		public  var bullets:Vector.<Bullet>;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -22,8 +22,8 @@ package entity {
 			this.bullets = new Vector.<Bullet>;
 		}
 		
-		public function add(angle:Number, velocity:Number):void {
-			var bullet:Bullet = new Bullet(angle, velocity);
+		public function add(angle:Number, velocity:Number, x:int, y:int):void {
+			var bullet:Bullet = new Bullet(angle, velocity, x, y);
 			this.bullets.push(bullet);
 			this.m_parent.addChild(bullet);
 		}
