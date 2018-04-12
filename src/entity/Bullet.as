@@ -8,7 +8,7 @@ package entity {
 	// Bullet
 	//-----------------------------------------------------------
 	
-	public class Bullet extends Projectile {
+	public class Bullet extends MotionEntity {
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
@@ -58,8 +58,8 @@ package entity {
 		// Frågan är om Bullets rörelse ska hanteras här eller i plane, där lyssning efter spelarens tryck på skjutknappen sker?
 		override public function update():void {
 			if (this.m_shooting) {
-				this.x += Math.cos(this.angle * (Math.PI/180)) * this.velocity;
-				this.y += Math.sin(this.angle * (Math.PI/180)) * this.velocity;
+				this.x += Math.cos(this._angle * (Math.PI/180)) * this._velocity;
+				this.y += Math.sin(this._angle * (Math.PI/180)) * this._velocity;
 			}
 		}
 		

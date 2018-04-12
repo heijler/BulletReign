@@ -15,7 +15,7 @@ package entity {
 	// Plane
 	//-----------------------------------------------------------
 	
-	public class Plane extends Projectile {
+	public class Plane extends MotionEntity {
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -24,19 +24,18 @@ package entity {
 		private var m_skin:MovieClip;
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
-		private var velocity:Number;
-		private var angle:Number;
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
 		public function Plane(player:int) {
+			super();
 			this.m_activePlayer = player;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
-			this.velocity = 5;
-			this.angle = 0;
-			super();
+			this._velocity = 5;
+			this._angle = 0;
+			
 		}
 		
 		//-----------------------------------------------------------
@@ -61,10 +60,9 @@ package entity {
 			} else if (m_activePlayer == 1) {
 				this.m_skin = new Plane2GFX;
 			}
+			// Would be nice to avoid this scaling here
 			this.m_skin.scaleX = 2;
 			this.m_skin.scaleY = 2;
-			this.m_skin.x = x;
-			this.m_skin.y = y;
 			this.addChild(this.m_skin);
 		}
 		
@@ -102,57 +100,66 @@ package entity {
 		}
 		
 		/**	
-		 * m_updateControls
+		 * m_navigate
 		 * Update the planes position.
+		 * @TODO: Divide this method in to several smaller methods
 		 */
-		private function m_navigate(pressed:String):void {
-			
-			if (this.m_activePlayer == 0 && pressed == "accelerate") {
-				this.m_skin.x += Math.cos(this.angle * (Math.PI / 180)) * this.velocity;
-				this.m_skin.y += Math.sin(this.angle * (Math.PI / 180)) * this.velocity;
-			} else if (this.m_activePlayer == 1 && pressed == "accelerate") {
-				this.m_skin.x -= Math.cos(this.angle * (Math.PI / 180)) * this.velocity;
-				this.m_skin.y -= Math.sin(this.angle * (Math.PI / 180)) * this.velocity;
+		private function m_navigate(instruction:String):void {
+			if (instruction == "accelerate") {
+				
+				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
+				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
+				
+				if (this.m_activePlayer == 0) {
+					this.m_skin.x += xVel;
+					this.m_skin.y += yVel;
+				} else if (this.m_activePlayer == 1) {
+					this.m_skin.x -= xVel;
+					this.m_skin.y -= yVel;
+				}
 			}
 	
-			this.m_skin.rotation = this.angle;
+			this.m_skin.rotation = this._angle;
 			
-			if (this.m_activePlayer == 0 && pressed == "accelerate") {
-				
-			} else if (this.m_activePlayer == 1 && pressed == "accelerate") {
-				
+			if (instruction == "angledown") {
+				var newDownAngle:Number = 1.5 * (this._velocity/1.5);
+				if (this.m_activePlayer == 0) {
+					this._angle += newDownAngle;
+				} else if (this.m_activePlayer == 1) {
+					this._angle -= newDownAngle;
+				}
 			}
 			
-			if (this.m_activePlayer == 0 && pressed == "angledown") {
-				this.angle += 1.5 * (this.velocity/1.5);
-			} else if (this.m_activePlayer == 1 && pressed == "angledown") {
-				this.angle -= 1.5 * (this.velocity/1.5);
+			if (instruction == "angleup") {
+				var newUpAngle:Number = 1.5 * (this._velocity/1.5);
+				if (this.m_activePlayer == 0) {
+					this._angle -= newUpAngle;
+				} else if (this.m_activePlayer == 1) {
+					this._angle += newUpAngle;
+				}
 			}
 			
-			if (this.m_activePlayer == 0 && pressed == "angleup") {
-				this.angle -= 1.5 * (this.velocity/1.5);
-			} else if (this.m_activePlayer == 1 && pressed == "angleup") {
-				this.angle += 1.5 * (this.velocity/1.5);
-			}
-			
-			if (this.m_activePlayer == 0 && pressed == "fire") {
+			if (this.m_activePlayer == 0 && instruction == "fire") {
 				
-			} else if (this.m_activePlayer == 1 && pressed == "fire") {
+			} else if (this.m_activePlayer == 1 && instruction == "fire") {
 				
 			}
 		}
 		
 		/**	
-		 * m_updatePosition
-		 * Update the planes position.
+		 * m_defaultSpeed
+		 * Default speed of planes, no acceleration needed to keep in air
 		 */
 		private function m_defaultSpeed():void {
+			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
+			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
+			
 			if (this.m_activePlayer == 0) {
-				this.m_skin.x += Math.cos(this.angle * (Math.PI / 180)) * this.velocity;
-				this.m_skin.y += Math.sin(this.angle * (Math.PI / 180)) * this.velocity;
+				this.m_skin.x += xVel;
+				this.m_skin.y += yVel;
 			} else if (this.m_activePlayer == 1) {
-				this.m_skin.x -= Math.cos(this.angle * (Math.PI / 180)) * this.velocity;
-				this.m_skin.y -= Math.sin(this.angle * (Math.PI / 180)) * this.velocity;
+				this.m_skin.x -= xVel;
+				this.m_skin.y -= yVel;
 			}
 		}
 	}

@@ -35,6 +35,7 @@ package {
 			this.initId = 36;
 			this.initBackgroundColor = 0x000000;
 			this.initSize = new Point(800,600);
+			this.initScale = new Point(1, 1);
 			this.initDebugger = true;
 			this.initDisplayState = MainMenu;
 		}

@@ -6,24 +6,24 @@ package entity {
 	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
 	
 	//-----------------------------------------------------------
-	// Projectile
+	// MotionEntity
 	//-----------------------------------------------------------
 	
-	public class Projectile extends DisplayStateLayerSprite {
+	public class MotionEntity extends DisplayStateLayerSprite {
 		
 		//-----------------------------------------------------------
 		// Protected properties
 		//-----------------------------------------------------------
 		
-		protected var velocity:Number;
-		protected var angle:Number;
-		protected var gravity:Number;
+		protected var _velocity:Number;
+		protected var _angle:Number;
+		protected var _gravity:Number;
 		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Projectile() {
+		public function MotionEntity() {
 			super();
 		}
 	}
