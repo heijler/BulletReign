@@ -26,6 +26,8 @@ package entity {
 		
 		private var m_skin:MovieClip;
 		private var m_bulletManager:BulletManager;
+		private var m_ebulletManager:BulletManager;
+		private var m_durability:Number;
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
 		private var m_pos:Point;
@@ -36,10 +38,12 @@ package entity {
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(player:int, gameLayer:DisplayStateLayer, bulletMngr:BulletManager, pos:Point) {
+		public function Plane(player:int, gameLayer:DisplayStateLayer, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point) {
 			super();
 			this.m_gameLayer = gameLayer;
 			this.m_bulletManager = bulletMngr;
+			this.m_ebulletManager = ebulletMngr;
+			this.m_durability = 100;
 			this.m_activePlayer = player;
 			this.m_gameLayer = gameLayer;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
@@ -85,9 +89,8 @@ package entity {
 		override public function update():void {
 			this.m_updateControls();
 			this.m_defaultSpeed();
-			this.m_checkCollision();
-			this.m_updatePosition();
-			
+			this.m_collisionControl();
+      //this.m_updatePosition();
 		}
 		
 		/**	
@@ -189,9 +192,20 @@ package entity {
 			this.x = this.m_skin.x;
 			this.y = this.m_skin.y;
 		}
-		// Temporary Method ***REMOVE***
-		private function m_checkCollision():void {
-			
+		
+		/**	
+		 * m_checkCollision
+		 * Check whether bullet objects collides with plane skin
+		 */
+		private function m_collisionControl():void {
+			var bullet:Vector.<Bullet> = (this.m_ebulletManager.get());
+			var i:int;
+			for(i = 0; i < bullet.length; i++) {
+				if(this.m_skin.hitTestObject(bullet[i])) {
+					m_damageControl("hit");
+				}
+			}
+			// Temporary LINES***REMOVE***
 			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(0))) {
 				this._velocity = 0;
 			}
@@ -200,6 +214,14 @@ package entity {
 				this._velocity = 0;
 			}
 			
+		}
+		
+		private function m_damageControl(hitValue:String):void {
+			if(hitValue == "hit") {
+				this.m_durability -= 10;
+			}
+			
+			trace(this.m_durability);
 		}
 		
 	}
