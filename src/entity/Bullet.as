@@ -3,6 +3,7 @@ package entity {
 	// Import
 	//-----------------------------------------------------------
 	import flash.display.Sprite;
+	import flash.geom.Point;
 	
 	//-----------------------------------------------------------
 	// Bullet
@@ -23,10 +24,10 @@ package entity {
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Bullet(angle:Number, velocity:Number, x:int, y:int, owner:int) {
+		public function Bullet(angle:Number, velocity:Number, pos:Point, owner:int) {
 			super();
-			this.x = x;
-			this.y = y;
+			this.x = pos.x;
+			this.y = pos.y;
 			this._angle = angle;
 			this._velocity = velocity;
 			this.m_owner = owner;

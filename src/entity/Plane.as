@@ -32,6 +32,7 @@ package entity {
 		private var m_activePlayer:int = 0;
 		private var m_pos:Point;
 		private var m_gameLayer:DisplayStateLayer;
+		private var m_fireRate:Number = 4; //bullets per second
 
 		//-----------------------------------------------------------
 		// Constructor
@@ -89,7 +90,7 @@ package entity {
 			this.m_updateControls();
 			this.m_defaultSpeed();
 			this.m_collisionControl();
-			
+      //this.m_updatePosition();
 		}
 		
 		/**	
@@ -161,8 +162,13 @@ package entity {
 			}
 			
 			if (instruction == "fire") {
-				this.m_bulletManager.add(this._angle, this._velocity, this.x, this.y, this.m_activePlayer);
+				this.m_bulletManager.add(this._angle, this._velocity, this.m_pos, this.m_activePlayer, this.m_fireRate);
 			}
+		}
+		
+		private function m_updatePosition():void {
+			this.m_pos.x = this.x;
+			this.m_pos.y = this.y;
 		}
 		
 		/**	
