@@ -10,6 +10,7 @@ package entity {
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
 	import flash.geom.Point;
+	import se.lnu.stickossdk.display.DisplayStateLayer;
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -25,18 +26,19 @@ package entity {
 		private var m_bulletManager:BulletManager;
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
-		private var m_parent:DisplayObjectContainer;
 		private var m_pos:Point;
+		private var m_gameLayer:DisplayStateLayer;
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(bulletMngr:BulletManager, parent:DisplayObjectContainer, player:int, pos:Point) {
+		public function Plane(player:int, gameLayer:DisplayStateLayer, bulletMngr:BulletManager, pos:Point) {
 			super();
 			this.m_parent = parent;
 			this.m_bulletManager = bulletMngr;
 			this.m_activePlayer = player;
+			this.m_gameLayer = gameLayer;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
 			this.m_pos = pos;
 			this._velocity = 3;
@@ -66,8 +68,8 @@ package entity {
 				this.m_skin = new Plane2GFX;
 			}
 			// Would be nice to avoid this scaling here
-			this.m_skin.scaleX = 2;
-			this.m_skin.scaleY = 2;
+			//this.m_skin.scaleX = 2;
+			//this.m_skin.scaleY = 2;
 			this.addChild(this.m_skin);
 			this.m_skin.x = this.m_pos.x;
 			this.m_skin.y = this.m_pos.y;
@@ -80,6 +82,8 @@ package entity {
 		override public function update():void {
 			this.m_updateControls();
 			this.m_defaultSpeed();
+			this.m_checkCollision();
+			
 		}
 		
 		/**	
@@ -113,6 +117,8 @@ package entity {
 		 */
 		private function m_navigate(instruction:String):void {
 			if (instruction == "accelerate") {
+				
+				this._velocity = 2;
 				
 				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
 				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
@@ -160,6 +166,7 @@ package entity {
 		 * Default speed of planes, no acceleration needed to keep in air
 		 */
 		private function m_defaultSpeed():void {
+			this.applyGravity();
 			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
 			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
 			
@@ -175,5 +182,18 @@ package entity {
 			this.x = this.m_skin.x;
 			this.y = this.m_skin.y;
 		}
+		// Temporary Method ***REMOVE***
+		private function m_checkCollision():void {
+			
+			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(2))) {
+				this._velocity = 0;
+			}
+			
+			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(3))) {
+				this._velocity = 0;
+			}
+			
+		}
+		
 	}
 }

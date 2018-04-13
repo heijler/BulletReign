@@ -17,7 +17,7 @@ package entity {
 		
 		protected var _velocity:Number;
 		protected var _angle:Number;
-		protected var _gravity:Number;
+		protected const GRAVITY:Number = 0.85;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -26,5 +26,10 @@ package entity {
 		public function MotionEntity() {
 			super();
 		}
+		
+		public function applyGravity():void {
+			this.y = this.y + this.GRAVITY;
+ 		}
+	
 	}
 }

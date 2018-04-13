@@ -66,7 +66,8 @@ package entity {
 		}
 		
 		/**
-		 * 
+		 * fire
+		 * Shots bullet 
 		 */
 		 // @TODO: Figure out which plane is shooting, += for p1, -= for p2.
 		private function updatePosition():void {

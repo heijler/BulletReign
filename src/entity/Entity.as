@@ -3,8 +3,9 @@ package entity {
 	// Import
 	//-----------------------------------------------------------
 	
-	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
 	import flash.geom.Point;
+	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
+	
 	
 	//-----------------------------------------------------------
 	// Game
