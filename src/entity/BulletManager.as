@@ -22,8 +22,8 @@ package entity {
 			this.bullets = new Vector.<Bullet>;
 		}
 		
-		public function add(angle:Number, velocity:Number, x:int, y:int):void {
-			var bullet:Bullet = new Bullet(angle, velocity, x, y);
+		public function add(angle:Number, velocity:Number, x:int, y:int, owner:int):void {
+			var bullet:Bullet = new Bullet(angle, velocity, x, y, owner);
 			this.bullets.push(bullet);
 			this.m_parent.addChild(bullet);
 		}

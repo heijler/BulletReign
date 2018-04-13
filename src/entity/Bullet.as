@@ -23,12 +23,13 @@ package entity {
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Bullet(angle:Number, velocity:Number, x:int, y:int) {
+		public function Bullet(angle:Number, velocity:Number, x:int, y:int, owner:int) {
 			super();
 			this.x = x;
 			this.y = y;
 			this._angle = angle;
-			this._velocity = velocity
+			this._velocity = velocity;
+			this.m_owner = owner;
 		}
 		
 		//-----------------------------------------------------------
@@ -71,8 +72,14 @@ package entity {
 		 */
 		 // @TODO: Figure out which plane is shooting, += for p1, -= for p2.
 		private function updatePosition():void {
-			this.x += Math.cos(this._angle * (Math.PI/180)) * (this._velocity << 2);
-			this.y += Math.sin(this._angle * (Math.PI/180)) * (this._velocity << 2);
+			if (this.m_owner == 0) {
+				this.x += Math.cos(this._angle * (Math.PI/180)) * (this._velocity << 2);
+				this.y += Math.sin(this._angle * (Math.PI/180)) * (this._velocity << 2);
+			} else if (this.m_owner == 1) {
+				this.x -= Math.cos(this._angle * (Math.PI/180)) * (this._velocity << 2);
+				this.y -= Math.sin(this._angle * (Math.PI/180)) * (this._velocity << 2);
+			}
+			
 		}
 	}
 }

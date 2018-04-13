@@ -154,10 +154,8 @@ package entity {
 				}
 			}
 			
-			if (this.m_activePlayer == 0 && instruction == "fire") {
-				this.m_bulletManager.add(this._angle, this._velocity, this.x, this.y);
-			} else if (this.m_activePlayer == 1 && instruction == "fire") {
-				this.m_bulletManager.add(this._angle, this._velocity, this.x, this.y);
+			if (instruction == "fire") {
+				this.m_bulletManager.add(this._angle, this._velocity, this.x, this.y, this.m_activePlayer);
 			}
 		}
 		
