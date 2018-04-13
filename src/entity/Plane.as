@@ -68,8 +68,8 @@ package entity {
 				this.m_skin = new Plane2GFX;
 			}
 			// Would be nice to avoid this scaling here
-			//this.m_skin.scaleX = 2;
-			//this.m_skin.scaleY = 2;
+			this.m_skin.scaleX = 2;
+			this.m_skin.scaleY = 2;
 			this.addChild(this.m_skin);
 			this.m_skin.x = this.m_pos.x;
 			this.m_skin.y = this.m_pos.y;
@@ -185,11 +185,11 @@ package entity {
 		// Temporary Method ***REMOVE***
 		private function m_checkCollision():void {
 			
-			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(2))) {
+			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(0))) {
 				this._velocity = 0;
 			}
 			
-			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(3))) {
+			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(1))) {
 				this._velocity = 0;
 			}
 			
