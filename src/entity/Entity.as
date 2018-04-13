@@ -14,10 +14,10 @@ package entity {
 	public class Entity extends DisplayStateLayerSprite {
 		
 		//-----------------------------------------------------------
-		// Private properties
+		// Protected properties
 		//-----------------------------------------------------------
 		
-		private var pos:Point;
+		protected var m_pos:Point;
 		
 		//-----------------------------------------------------------
 		// Constructor

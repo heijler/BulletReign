@@ -26,8 +26,7 @@ package entity {
 		
 		public function Bullet(angle:Number, velocity:Number, pos:Point, owner:int) {
 			super();
-			this.x = pos.x;
-			this.y = pos.y;
+			this.m_pos = pos;
 			this._angle = angle;
 			this._velocity = velocity;
 			this.m_owner = owner;
@@ -42,8 +41,19 @@ package entity {
 		 * Override.
 		 */
 		override public function init():void {
+			this.m_initBullet();
 			this.m_initSkin();
+			this.m_setSpawnPosition();
 		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_initBullet():void {
+			this.color = (this.m_owner ? 0xFF0000 : 0x0000FF);
+		}
+		
 		
 		/**	
 		 * m_initSkin
@@ -58,6 +68,11 @@ package entity {
 			this.updatePosition();
 		}
 		
+		private function m_setSpawnPosition():void {
+			this.x = this.m_pos.x;
+			this.y = this.m_pos.y;
+		}
+		
 		/**	
 		 * update
 		 * Override
@@ -67,19 +82,25 @@ package entity {
 			updatePosition();
 		}
 		
+		
 		/**
 		 * fire
 		 * Shots bullet 
 		 */
 		 // @TODO: Figure out which plane is shooting, += for p1, -= for p2.
 		private function updatePosition():void {
+			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity << 2;
+			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity << 2;
+			
 			if (this.m_owner == 0) {
-				this.x += Math.cos(this._angle * (Math.PI/180)) * (this._velocity << 2);
-				this.y += Math.sin(this._angle * (Math.PI/180)) * (this._velocity << 2);
+				this.x += xVel;
+				this.y += yVel;
 			} else if (this.m_owner == 1) {
-				this.x -= Math.cos(this._angle * (Math.PI/180)) * (this._velocity << 2);
-				this.y -= Math.sin(this._angle * (Math.PI/180)) * (this._velocity << 2);
+				this.x -= xVel;
+				this.y -= yVel;
 			}
+			
+
 			
 		}
 	}

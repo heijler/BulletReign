@@ -3,7 +3,6 @@ package entity {
 	// Import
 	//-----------------------------------------------------------
 	
-	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
@@ -28,7 +27,6 @@ package entity {
 		private var m_bulletManager:BulletManager;
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
-		private var m_pos:Point;
 		private var m_gameLayer:DisplayStateLayer;
 		private var m_fireRate:Number = 4; //bullets per second
 
@@ -44,7 +42,7 @@ package entity {
 			this.m_gameLayer = gameLayer;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
 			this.m_pos = pos;
-			this._velocity = 3;
+			this._velocity = 5;
 			this._angle = 0;
 		}
 		
@@ -58,7 +56,9 @@ package entity {
 		 */
 		override public function init():void {
 			this.m_initSkin();
+			this.m_setSpawnPosition();
 		}
+		
 		
 		/**	
 		 * m_initSkin
@@ -74,9 +74,18 @@ package entity {
 			this.m_skin.scaleX = 2;
 			this.m_skin.scaleY = 2;
 			this.addChild(this.m_skin);
-			this.m_skin.x = this.m_pos.x;
-			this.m_skin.y = this.m_pos.y;
 		}
+		
+		
+		/**
+		 * m_setSpawnPosition
+		 * 
+		 */
+		private function m_setSpawnPosition():void {
+			this.x = this.m_pos.x;
+			this.y = this.m_pos.y;
+		}
+		
 		
 		/**	
 		 * update
@@ -87,8 +96,8 @@ package entity {
 			this.m_defaultSpeed();
 			this.m_checkCollision();
 			this.m_updatePosition();
-			
 		}
+		
 		
 		/**	
 		 * m_updateControls
@@ -114,6 +123,7 @@ package entity {
 			}
 		}
 		
+		
 		/**	
 		 * m_navigate
 		 * Update the planes position.
@@ -128,11 +138,11 @@ package entity {
 				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
 				
 				if (this.m_activePlayer == 0) {
-					this.m_skin.x += xVel;
-					this.m_skin.y += yVel;
+					this.x += xVel;
+					this.y += yVel;
 				} else if (this.m_activePlayer == 1) {
-					this.m_skin.x -= xVel;
-					this.m_skin.y -= yVel;
+					this.x -= xVel;
+					this.y -= yVel;
 				}
 			}
 	
@@ -140,7 +150,7 @@ package entity {
 			
 			if (instruction == "angledown") {
 				// Rename newDownAngle to newAngle when this method is smaller.
-				var newDownAngle:Number = 1.5 * (this._velocity/1.5);
+				var newDownAngle:Number = this._velocity/1.5;
 				if (this.m_activePlayer == 0) {
 					this._angle += newDownAngle;
 				} else if (this.m_activePlayer == 1) {
@@ -150,7 +160,7 @@ package entity {
 			
 			if (instruction == "angleup") {
 				// Rename newUpAngle to newAngle when this method is smaller.
-				var newUpAngle:Number = 1.5 * (this._velocity/1.5);
+				var newUpAngle:Number = this._velocity/1.15;
 				if (this.m_activePlayer == 0) {
 					this._angle -= newUpAngle;
 				} else if (this.m_activePlayer == 1) {
@@ -159,14 +169,34 @@ package entity {
 			}
 			
 			if (instruction == "fire") {
-				this.m_bulletManager.add(this._angle, this._velocity, this.m_pos, this.m_activePlayer, this.m_fireRate);
+				this.m_bulletManager.add(this._angle, this._velocity, this.m_getPos(), this.m_activePlayer, this.m_fireRate);
 			}
 		}
 		
-		private function m_updatePosition():void {
-			this.m_pos.x = this.x;
-			this.m_pos.y = this.y;
+		
+		/**
+		 * m_getPos
+		 * 
+		 */
+		private function m_getPos():Point {
+			return new Point(this.x, this.y);
 		}
+		
+		
+		/**
+		 * m_updatePosition
+		 * 
+		 */
+		private function m_updatePosition():void {
+	
+			if(this.x < -this.width) {
+				this.x = 800;
+			} else if (this.x > 800) {
+				this.x = -this.width;
+			}
+			
+		}
+		
 		
 		/**	
 		 * m_defaultSpeed
@@ -180,16 +210,21 @@ package entity {
 			
 			
 			if (this.m_activePlayer == 0) {
-				this.m_skin.x += xVel;
-				this.m_skin.y += yVel;
+				this.x += xVel;
+				this.y += yVel;
 			} else if (this.m_activePlayer == 1) {
-				this.m_skin.x -= xVel;
-				this.m_skin.y -= yVel;
+				this.x -= xVel;
+				this.y -= yVel;
 			}
-			this.x = this.m_skin.x;
-			this.y = this.m_skin.y;
 		}
+		
+		
 		// Temporary Method ***REMOVE***
+		
+		/**
+		 * m_checkColiision
+		 * 
+		 */
 		private function m_checkCollision():void {
 			
 			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(0))) {

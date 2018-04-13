@@ -9,7 +9,7 @@ package entity {
 	// MotionEntity
 	//-----------------------------------------------------------
 	
-	public class MotionEntity extends DisplayStateLayerSprite {
+	public class MotionEntity extends Entity {
 		
 		//-----------------------------------------------------------
 		// Protected properties
@@ -17,7 +17,7 @@ package entity {
 		
 		protected var _velocity:Number;
 		protected var _angle:Number;
-		protected const GRAVITY:Number = 0.85;
+		protected const GRAVITY:Number = 0.55;
 		
 		//-----------------------------------------------------------
 		// Constructor
