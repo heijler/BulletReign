@@ -98,7 +98,7 @@ package entity {
 		override public function update():void {
 			this.m_updateControls();
 			this.m_defaultSpeed();
-			this.m_checkCollision();
+			this.m_collisionControl()
 			this.m_updatePosition();
 		}
 		
@@ -231,8 +231,9 @@ package entity {
 			var bullet:Vector.<Bullet> = (this.m_ebulletManager.get());
 			var i:int;
 			for(i = 0; i < bullet.length; i++) {
-				if(this.m_skin.hitTestObject(bullet[i])) {
+				if(this.hitTestObject(bullet[i])) {
 					m_damageControl("hit");
+					// Ta bort kula.
 				}
 			}
 			// Temporary LINES***REMOVE***
