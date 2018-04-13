@@ -6,10 +6,8 @@ package state.gamestate {
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.geom.Point;
-	
 	import entity.BulletManager;
 	import entity.Plane;
-	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	
