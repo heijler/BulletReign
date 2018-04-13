@@ -6,10 +6,8 @@ package state.gamestate {
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.geom.Point;
-	
 	import entity.BulletManager;
 	import entity.Plane;
-	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	
@@ -44,8 +42,6 @@ package state.gamestate {
 		 * override
 		 */
 		override public function init():void {
-			//this.layers.container.scaleX = 2;
-			//this.layers.container.scaleY = 2;
 			this.m_initLayers();
             
 			var bm1:BulletManager = new BulletManager(this.m_gameLayer);
@@ -59,16 +55,16 @@ package state.gamestate {
 			// Temporary  Lines REMOVE
 			var skyline:Sprite = new Sprite();
 			var sl:Graphics = skyline.graphics;
-			sl.lineStyle(2, 0xFFFFFF);
-			sl.moveTo(0, 0);
-			sl.lineTo(800, 0);
+				sl.lineStyle(2, 0xFFFFFF);
+				sl.moveTo(0, 0);
+				sl.lineTo(800, 0);
 			this.m_worldLayer.addChild(skyline);
 
 			var ground:Sprite = new Sprite();
 			var gd:Graphics = ground.graphics;
-			gd.lineStyle(2, 0xFFFFFF);
-			gd.moveTo(0, 600);
-			gd.lineTo(800, 600);
+				gd.lineStyle(2, 0xFFFFFF);
+				gd.moveTo(0, 600);
+				gd.lineTo(800, 600);
 			this.m_worldLayer.addChild(ground);
 			// END Lines Temporary
 		}
