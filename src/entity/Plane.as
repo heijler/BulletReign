@@ -5,12 +5,14 @@ package entity {
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
+	import flash.geom.Point;
+	
 	import asset.Plane1GFX;
 	import asset.Plane2GFX;
+	
+	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
-	import flash.geom.Point;
-	import se.lnu.stickossdk.display.DisplayStateLayer;
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -24,6 +26,7 @@ package entity {
 		
 		private var m_skin:MovieClip;
 		private var m_bulletManager:BulletManager;
+		private var m_ebulletManager:BulletManager;
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
 		private var m_pos:Point;
@@ -33,10 +36,11 @@ package entity {
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(player:int, gameLayer:DisplayStateLayer, bulletMngr:BulletManager, pos:Point) {
+		public function Plane(player:int, gameLayer:DisplayStateLayer, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point) {
 			super();
 			this.m_gameLayer = gameLayer;
 			this.m_bulletManager = bulletMngr;
+			this.m_ebulletManager = ebulletMngr;
 			this.m_activePlayer = player;
 			this.m_gameLayer = gameLayer;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
@@ -182,6 +186,15 @@ package entity {
 		}
 		// Temporary Method ***REMOVE***
 		private function m_checkCollision():void {
+			
+			var bullet:Vector.<Bullet> = (this.m_ebulletManager.get());
+			var i:int;
+			for(i = 0; i < bullet.length; i++) {
+				if(this.m_skin.hitTestObject(bullet[i])) {
+					trace("hit");
+					this._velocity = 0;
+				}
+			}
 			
 			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(0))) {
 				this._velocity = 0;
