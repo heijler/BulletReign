@@ -7,9 +7,10 @@ package state.gamestate {
 	import flash.display.Sprite; // Temporary REMOVE
 	
 	import entity.Plane;
-	
+	import entity.BulletManager;
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
+	import flash.geom.Point;
 	
 	//-----------------------------------------------------------
 	// Gamestate
@@ -36,7 +37,7 @@ package state.gamestate {
 		// Methods
 		//-----------------------------------------------------------
 		
-		/**	
+		/**	 w
 		 * init
 		 * override
 		 */
@@ -44,14 +45,13 @@ package state.gamestate {
 			this.layers.container.scaleX = 2;
 			this.layers.container.scaleY = 2;
 			this.m_initLayers();
-			var p1:Plane = new Plane(0, this.m_gameLayer);
-			p1.x = 0;
-			p1.y = 250;
+            
+			var bm1:BulletManager = new BulletManager(this.m_gameLayer);
+			var p1:Plane = new Plane(0, this.m_gameLayer, bm1, new Point(0, 250));
 			this.m_gameLayer.addChild(p1);
 			
-			var p2:Plane = new Plane(1, this.m_gameLayer);
-			p2.x = 250;
-			p2.y = 250;
+			var bm2:BulletManager = new BulletManager(this.m_gameLayer);
+			var p2:Plane = new Plane(1, this.m_gameLayer, bm2, new Point(400, 250));
 			this.m_gameLayer.addChild(p2);
 			
 			// Temporary  Lines REMOVE
@@ -76,7 +76,6 @@ package state.gamestate {
 		 */
 		private function m_initLayers():void {
 			this.m_gameLayer = this.layers.add("game");
-			
 		}
 	}
 }

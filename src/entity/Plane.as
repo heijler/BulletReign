@@ -3,15 +3,14 @@ package entity {
 	// Import
 	//-----------------------------------------------------------
 	
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
-	
 	import asset.Plane1GFX;
 	import asset.Plane2GFX;
-	
-	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
-	import se.lnu.stickossdk.system.Session;
+	import flash.geom.Point;
+	import se.lnu.stickossdk.display.DisplayStateLayer;
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -24,24 +23,26 @@ package entity {
 		//-----------------------------------------------------------
 		
 		private var m_skin:MovieClip;
+		private var m_bulletManager:BulletManager;
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
-		private var m_bullet:Bullet;
+		private var m_pos:Point;
 		private var m_gameLayer:DisplayStateLayer;
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(player:int, gameLayer:DisplayStateLayer) {
+		public function Plane(player:int, gameLayer:DisplayStateLayer, bulletMngr:BulletManager, pos:Point) {
 			super();
+			this.m_parent = parent;
+			this.m_bulletManager = bulletMngr;
 			this.m_activePlayer = player;
 			this.m_gameLayer = gameLayer;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
-			this.m_bullet = new Bullet();
+			this.m_pos = pos;
 			this._velocity = 3;
 			this._angle = 0;
-			
 		}
 		
 		//-----------------------------------------------------------
@@ -70,6 +71,8 @@ package entity {
 			//this.m_skin.scaleX = 2;
 			//this.m_skin.scaleY = 2;
 			this.addChild(this.m_skin);
+			this.m_skin.x = this.m_pos.x;
+			this.m_skin.y = this.m_pos.y;
 		}
 		
 		/**	
@@ -132,6 +135,7 @@ package entity {
 			this.m_skin.rotation = this._angle;
 			
 			if (instruction == "angledown") {
+				// Rename newDownAngle to newAngle when this method is smaller.
 				var newDownAngle:Number = 1.5 * (this._velocity/1.5);
 				if (this.m_activePlayer == 0) {
 					this._angle += newDownAngle;
@@ -141,6 +145,7 @@ package entity {
 			}
 			
 			if (instruction == "angleup") {
+				// Rename newUpAngle to newAngle when this method is smaller.
 				var newUpAngle:Number = 1.5 * (this._velocity/1.5);
 				if (this.m_activePlayer == 0) {
 					this._angle -= newUpAngle;
@@ -150,9 +155,9 @@ package entity {
 			}
 			
 			if (this.m_activePlayer == 0 && instruction == "fire") {
-				
+				this.m_bulletManager.add(this._angle, this._velocity, this.x, this.y);
 			} else if (this.m_activePlayer == 1 && instruction == "fire") {
-				
+				this.m_bulletManager.add(this._angle, this._velocity, this.x, this.y);
 			}
 		}
 		
@@ -165,6 +170,8 @@ package entity {
 			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
 			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
 			
+			
+			
 			if (this.m_activePlayer == 0) {
 				this.m_skin.x += xVel;
 				this.m_skin.y += yVel;
@@ -172,6 +179,8 @@ package entity {
 				this.m_skin.x -= xVel;
 				this.m_skin.y -= yVel;
 			}
+			this.x = this.m_skin.x;
+			this.y = this.m_skin.y;
 		}
 		// Temporary Method ***REMOVE***
 		private function m_checkCollision():void {
