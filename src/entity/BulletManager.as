@@ -16,7 +16,7 @@ package entity {
 		//-----------------------------------------------------------
 		private var m_parent:DisplayObjectContainer;
 		private  var bullets:Vector.<Bullet>;
-		private const AMOUNT_LIMIT:int = 10;
+		private const AMOUNT_LIMIT:int = 20;
 		
 		//-----------------------------------------------------------
 		// Constructor
