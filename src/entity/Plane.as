@@ -35,7 +35,7 @@ package entity {
 		
 		public function Plane(player:int, gameLayer:DisplayStateLayer, bulletMngr:BulletManager, pos:Point) {
 			super();
-			this.m_parent = parent;
+			this.m_gameLayer = gameLayer;
 			this.m_bulletManager = bulletMngr;
 			this.m_activePlayer = player;
 			this.m_gameLayer = gameLayer;
