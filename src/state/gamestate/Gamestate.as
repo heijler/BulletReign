@@ -45,11 +45,10 @@ package state.gamestate {
 			this.m_initLayers();
             
 			var bm1:BulletManager = new BulletManager(this.m_gameLayer);
-			var p1:Plane = new Plane(0, this.m_worldLayer, bm1, new Point(0, 150));
-			this.m_gameLayer.addChild(p1);
-			
 			var bm2:BulletManager = new BulletManager(this.m_gameLayer);
-			var p2:Plane = new Plane(1, this.m_worldLayer, bm2, new Point(400, 150));
+			var p1:Plane = new Plane(0, this.m_worldLayer, bm1, bm2, new Point(0, 150));
+			var p2:Plane = new Plane(1, this.m_worldLayer, bm2, bm1, new Point(400, 150));
+			this.m_gameLayer.addChild(p1);
 			this.m_gameLayer.addChild(p2);
 			
 			// Temporary  Lines REMOVE
