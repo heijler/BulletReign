@@ -5,12 +5,14 @@ package entity {
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
+	import flash.geom.Point;
+	
 	import asset.Plane1GFX;
 	import asset.Plane2GFX;
+	
+	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
-	import flash.geom.Point;
-	import se.lnu.stickossdk.display.DisplayStateLayer;
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -28,6 +30,7 @@ package entity {
 		private var m_activePlayer:int = 0;
 		private var m_pos:Point;
 		private var m_gameLayer:DisplayStateLayer;
+		private var m_fireRate:Number = 4; //bullets per second
 
 		//-----------------------------------------------------------
 		// Constructor
@@ -83,6 +86,7 @@ package entity {
 			this.m_updateControls();
 			this.m_defaultSpeed();
 			this.m_checkCollision();
+			this.m_updatePosition();
 			
 		}
 		
@@ -155,8 +159,13 @@ package entity {
 			}
 			
 			if (instruction == "fire") {
-				this.m_bulletManager.add(this._angle, this._velocity, this.x, this.y, this.m_activePlayer);
+				this.m_bulletManager.add(this._angle, this._velocity, this.m_pos, this.m_activePlayer, this.m_fireRate);
 			}
+		}
+		
+		private function m_updatePosition():void {
+			this.m_pos.x = this.x;
+			this.m_pos.y = this.y;
 		}
 		
 		/**	
