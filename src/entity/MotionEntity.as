@@ -4,6 +4,7 @@ package entity {
 	//-----------------------------------------------------------
 	
 	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
+	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
 	// MotionEntity
@@ -12,12 +13,13 @@ package entity {
 	public class MotionEntity extends Entity {
 		
 		//-----------------------------------------------------------
-		// Protected properties
+		// Properties
 		//-----------------------------------------------------------
 		
 		protected var _velocity:Number;
 		protected var _angle:Number;
 		protected const GRAVITY:Number = 0.55;
+		private var gravityFactor:int = 1;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -27,9 +29,57 @@ package entity {
 			super();
 		}
 		
-		public function applyGravity():void {
-			this.y = this.y + this.GRAVITY;
+		//-----------------------------------------------------------
+		// Methods
+		//-----------------------------------------------------------
+		
+		/**
+		 * update
+		 * Override
+		 */
+		override public function update():void {
+			this.wrapAroundObjects();
+		}
+		
+		
+		/**
+		 * init
+		 * Override
+		 */
+		override public function init():void {
+		}
+		
+		
+		/**
+		 * applyGravity
+		 * 
+		 */
+		protected function applyGravity():void {
+			this.y = this.y + this.GRAVITY * this.gravityFactor;
  		}
+		
+		
+		/**
+		 * removeGravity
+		 * 
+		 */
+		protected function removeGravity():void {
+			this.y = this.y;
+			this.gravityFactor = 0;
+		}
+		
+		
+		/**
+		 * wrapAroundObjects
+		 * Wrap objects from one side of screen to the other.
+		 */
+		protected function wrapAroundObjects():void {
+			if(this.x < -this.width) {
+				this.x = _appWidth;
+			} else if (this.x > _appWidth) {
+				this.x = -this.width;
+			}
+		}
 	
 	}
 }

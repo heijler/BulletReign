@@ -1,34 +1,27 @@
 package entity {
 	//-----------------------------------------------------------
-	// Import
+	// Imports
 	//-----------------------------------------------------------
 	
-	import flash.geom.Point;
-	
-	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
-	import se.lnu.stickossdk.system.Session;
-	
-	
 	//-----------------------------------------------------------
-	// Game
+	// PlaneManager
 	//-----------------------------------------------------------
 	
-	public class Entity extends DisplayStateLayerSprite {
+	public class PlaneManager {
 		
 		//-----------------------------------------------------------
-		// Protected properties
+		// Properties
 		//-----------------------------------------------------------
-		
-		protected var m_pos:Point;
-		protected var _appWidth:int = 0;
 		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
-		
-		public function Entity() {
-			super();
-			this._appWidth = Session.application.width;
+		public function PlaneManager(){
+			
 		}
+		
+		//-----------------------------------------------------------
+		// Methods
+		//-----------------------------------------------------------
 	}
 }

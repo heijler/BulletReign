@@ -96,6 +96,7 @@ package entity {
 		 * override, gameloop
 		 */
 		override public function update():void {
+			this.applyGravity();
 			this.m_updateControls();
 			this.m_defaultSpeed();
 			this.m_collisionControl()
@@ -207,7 +208,6 @@ package entity {
 		 * Default speed of planes, no acceleration needed to keep in air
 		 */
 		private function m_defaultSpeed():void {
-			this.applyGravity();
 			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
 			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
 			
@@ -244,6 +244,7 @@ package entity {
 			
 			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(1))) {
 				this._velocity = 0;
+				this.removeGravity();
 			}
 			
 		}
