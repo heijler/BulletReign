@@ -75,8 +75,7 @@ package entity {
 				this.m_skin = new Plane2GFX;
 			}
 			// Would be nice to avoid this scaling here
-			this.m_skin.scaleX = 2;
-			this.m_skin.scaleY = 2;
+			this._setScale(this.m_skin);
 			this.addChild(this.m_skin);
 		}
 		
@@ -111,71 +110,77 @@ package entity {
 		private function m_updateControls():void {
 			if (this.m_controls != null) {
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_UP)) {
-					this.m_navigate("angledown");
+					this.m_anglePlane(1);
 				}
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_DOWN)) {
-					this.m_navigate("angleup");
+					this.m_anglePlane(0);
 				}
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_7)) {
-					this.m_navigate("accelerate");
+					this.m_accelerate();
 				}
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
-					this.m_navigate("fire");
+					this.m_fireBullets();
 				}
 			}
 		}
 		
 		
-		/**	
-		 * m_navigate
-		 * Update the planes position.
-		 * @TODO: Divide this method in to several smaller methods
+		/**
+		 * m_anglePlane
+		 * owner: 0 or 1
+		 * direction: 0 [up], 1 [down]
 		 */
-		private function m_navigate(instruction:String):void {
-			if (instruction == "accelerate") {
-				
-				this._velocity = 2;
-				
-				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
-				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
-				
-				if (this.m_activePlayer == 0) {
-					this.x += xVel;
-					this.y += yVel;
-				} else if (this.m_activePlayer == 1) {
-					this.x -= xVel;
-					this.y -= yVel;
-				}
+		private function m_anglePlane(direction:int):void {
+			var newAngle:Number = this._velocity / (direction ? 1.5 : 1.15);
+			if (this.m_activePlayer == 0) {
+				if (direction == 0) this._angle -= newAngle;
+				if (direction == 1) this._angle += newAngle;
+			} else if (this.m_activePlayer == 1) {
+				if (direction == 0) this._angle += newAngle;
+				if (direction == 1) this._angle -= newAngle;
 			}
-	
+			this._angle %= 360; // resets angle at 360
+			if (this._angle < 0) this._angle = this._angle + 360; // Prevents minus angles
+			this.m_updateRotation();
+		}
+		
+		
+		/**
+		 * m_updateRotation
+		 * Updates the skins rotation to match the angle.
+		 */
+		private function m_updateRotation():void {
 			this.m_skin.rotation = this._angle;
+		}
+		
+		
+		/**
+		 * m_accelerate
+		 * 
+		 */
+		private function m_accelerate():void {
+			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.15);
+			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.15);
 			
-			if (instruction == "angledown") {
-				// Rename newDownAngle to newAngle when this method is smaller.
-				var newDownAngle:Number = this._velocity/1.5;
-				if (this.m_activePlayer == 0) {
-					this._angle += newDownAngle;
-				} else if (this.m_activePlayer == 1) {
-					this._angle -= newDownAngle;
-				}
+			if (this.m_activePlayer == 0) {
+				this.x += xVel;
+				this.y += yVel;
+			} else if (this.m_activePlayer == 1) {
+				this.x -= xVel;
+				this.y -= yVel;
 			}
-			
-			if (instruction == "angleup") {
-				// Rename newUpAngle to newAngle when this method is smaller.
-				var newUpAngle:Number = this._velocity/1.15;
-				if (this.m_activePlayer == 0) {
-					this._angle -= newUpAngle;
-				} else if (this.m_activePlayer == 1) {
-					this._angle += newUpAngle;
-				}
-			}
-			
-			if (instruction == "fire") {
-				this.m_bulletManager.add(this._angle, this._velocity, this.m_getPos(), this.m_activePlayer, this.m_fireRate);
-			}
+		}
+		
+		
+		/**
+		 * m_fireBullets
+		 * 
+		 */
+		private function m_fireBullets():void {
+			this.m_bulletManager.add(this._angle, this._velocity, m_getPos(), this.m_activePlayer, this.m_fireRate);
 		}
 		
 		
@@ -193,10 +198,9 @@ package entity {
 		 * 
 		 */
 		private function m_updatePosition():void {
-	
 			if(this.x < -this.width) {
-				this.x = 800;
-			} else if (this.x > 800) {
+				this.x = this._appWidth;
+			} else if (this.x > this._appWidth) {
 				this.x = -this.width;
 			}
 			
@@ -210,8 +214,6 @@ package entity {
 		private function m_defaultSpeed():void {
 			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
 			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
-			
-			
 			
 			if (this.m_activePlayer == 0) {
 				this.x += xVel;
@@ -237,11 +239,13 @@ package entity {
 				}
 			}
 			// Temporary LINES***REMOVE***
-      
+      		// OM skyline-träff
 			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(0))) {
-				this._velocity = 0;
+				//this.m_freeFall();
+				this._angle = 360 - this._angle; // Reflects plane angle back down.
+				this.m_updateRotation();
 			}
-			
+			// OM ground-träff
 			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(1))) {
 				this._velocity = 0;
 				this.removeGravity();
@@ -249,12 +253,29 @@ package entity {
 			
 		}
 		
+		
+		/**
+		 * m_damageControl
+		 * 
+		 */
 		private function m_damageControl(hitValue:String):void {
 			if(hitValue == "hit") {
 				this.m_durability -= 10;
 			}
 			
-			trace(this.m_durability);
+			if (this.m_durability <= 0) {
+				this.m_freeFall();
+			}
+		}
+		
+		
+		/**
+		 * m_freeFall
+		 * 
+		 */
+		private function m_freeFall():void {
+			this._velocity = 0;
+			this.setGravityFactor(7);
 		}
 		
 	}

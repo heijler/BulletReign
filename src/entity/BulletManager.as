@@ -50,6 +50,7 @@ package entity {
 		/**
 		 * get
 		 * Get bullets vector
+		 * @TODO: Rename, dumt namn
 		 */
 		public function get():Vector.<Bullet> {
 			return this.m_bullets;

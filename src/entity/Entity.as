@@ -7,6 +7,7 @@ package entity {
 	
 	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
 	import se.lnu.stickossdk.system.Session;
+	import flash.display.MovieClip;
 	
 	
 	//-----------------------------------------------------------
@@ -21,6 +22,7 @@ package entity {
 		
 		protected var m_pos:Point;
 		protected var _appWidth:int = 0;
+		private const DEFAULT_SCALE:int = 2;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -29,6 +31,18 @@ package entity {
 		public function Entity() {
 			super();
 			this._appWidth = Session.application.width;
+		}
+		
+		//-----------------------------------------------------------
+		// Methods
+		//-----------------------------------------------------------
+		
+		/**
+		 * 
+		 */
+		protected function _setScale(obj:MovieClip, scale:int = this.DEFAULT_SCALE):void {
+			obj.scaleX = scale;
+			obj.scaleY = scale;
 		}
 	}
 }

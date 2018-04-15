@@ -19,7 +19,7 @@ package entity {
 		protected var _velocity:Number;
 		protected var _angle:Number;
 		protected const GRAVITY:Number = 0.55;
-		private var gravityFactor:int = 1;
+		private var m_gravityFactor:int = 1;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -55,7 +55,7 @@ package entity {
 		 * 
 		 */
 		protected function applyGravity():void {
-			this.y = this.y + this.GRAVITY * this.gravityFactor;
+			this.y = this.y + this.GRAVITY * this.m_gravityFactor;
  		}
 		
 		
@@ -65,9 +65,16 @@ package entity {
 		 */
 		protected function removeGravity():void {
 			this.y = this.y;
-			this.gravityFactor = 0;
+			this.m_gravityFactor = 0;
 		}
 		
+		
+		/**
+		 * setGravityFactor
+		 */
+		protected function setGravityFactor(factor:int):void {
+			this.m_gravityFactor = factor;
+		}
 		
 		/**
 		 * wrapAroundObjects
