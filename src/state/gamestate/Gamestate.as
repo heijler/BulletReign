@@ -6,10 +6,14 @@ package state.gamestate {
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	
 	import entity.BulletManager;
 	import entity.Plane;
+	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
+	
+	import ui.HUD;
 	
 	//-----------------------------------------------------------
 	// Gamestate
@@ -23,6 +27,7 @@ package state.gamestate {
 		
 		public var m_gameLayer:DisplayStateLayer;
 		public var m_worldLayer:DisplayStateLayer;
+		public var m_hudLayer:DisplayStateLayer;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -54,6 +59,7 @@ package state.gamestate {
 		private function m_initLayers():void {
 			this.m_gameLayer = this.layers.add("game");
 			this.m_worldLayer = this.layers.add("world");
+			this.m_hudLayer = this.layers.add("HUD");
 		}
 		
 		
@@ -66,8 +72,10 @@ package state.gamestate {
 			var bm2:BulletManager = new BulletManager(this.m_gameLayer);
 			var p1:Plane = new Plane(0, this.m_worldLayer, bm1, bm2, new Point(0, 150));
 			var p2:Plane = new Plane(1, this.m_worldLayer, bm2, bm1, new Point(800, 150));
+			var hud:HUD = new HUD(this.m_hudLayer);
 			this.m_gameLayer.addChild(p1);
 			this.m_gameLayer.addChild(p2);
+			this.m_hudLayer.addChild(hud);
 		}
 		
 		
@@ -97,5 +105,6 @@ package state.gamestate {
 				gd.lineTo(800, 600);
 			this.m_worldLayer.addChild(ground);
 		}
+		
 	}
 }

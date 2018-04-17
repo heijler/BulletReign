@@ -234,7 +234,7 @@ package entity {
 			var i:int;
 			for(i = 0; i < bullet.length; i++) {
 				if(this.hitTestObject(bullet[i])) {
-					m_damageControl("hit");
+					m_damageControl("hit", bullet[i].BULLETDAMAGE);
 					this.m_bulletManager.removeBullet(bullet[i]);
 					// Ta bort kula.
 				}
@@ -259,10 +259,9 @@ package entity {
 		 * m_damageControl
 		 * 
 		 */
-		private function m_damageControl(hitValue:String):void {
+		private function m_damageControl(hitValue:String, hitDamage:Number):void {
 			if(hitValue == "hit" && this.m_durability != 0) {
-				this.m_durability -= 10;
-				//this.m_durabilityMeter ???????
+				this.m_durability -= hitDamage;
 			}
 			
 			if (this.m_durability <= 0) {

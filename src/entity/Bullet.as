@@ -14,7 +14,7 @@ package entity {
 		// Private properties
 		//-----------------------------------------------------------
 		private var m_skin:Sprite;
-		private var m_damage:Number;
+		public const BULLETDAMAGE:Number = 1;
 		private var m_size:int = 3;
 		private var m_owner:int;
 		public  var color:uint = 0xFFFFFF;
