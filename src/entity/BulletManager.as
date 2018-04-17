@@ -52,7 +52,7 @@ package entity {
 		 * Get bullets vector
 		 * @TODO: Rename, dumt namn
 		 */
-		public function get():Vector.<Bullet> {
+		public function getBullets():Vector.<Bullet> {
 			return this.m_bullets;
 		}
 		
@@ -71,9 +71,12 @@ package entity {
 		 * removeBullet
 		 * 
 		 */
-		private function removeBullet(bullet:Bullet):void {
-			this.m_parent.removeChild(bullet);
-			bullet = null;
+		public function removeBullet(bullet:Bullet):void {
+			if (this.m_parent.contains(bullet)) {
+				this.m_parent.removeChild(bullet);
+				bullet = null;
+			}
+			
 		}
 		
 		/**

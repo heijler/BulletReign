@@ -230,23 +230,24 @@ package entity {
 		 * Check whether bullet objects collides with plane skin
 		 */
 		private function m_collisionControl():void {
-			var bullet:Vector.<Bullet> = (this.m_ebulletManager.get());
+			var bullet:Vector.<Bullet> = (this.m_ebulletManager.getBullets());
 			var i:int;
 			for(i = 0; i < bullet.length; i++) {
 				if(this.hitTestObject(bullet[i])) {
 					m_damageControl("hit");
+					this.m_bulletManager.removeBullet(bullet[i]);
 					// Ta bort kula.
 				}
 			}
 			// Temporary LINES***REMOVE***
       		// OM skyline-träff
-			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(0))) {
+			if(this.hitTestObject(this.m_gameLayer.getChildAt(0))) {
 				//this.m_freeFall();
 				this._angle = 360 - this._angle; // Reflects plane angle back down.
 				this.m_updateRotation();
 			}
 			// OM ground-träff
-			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(1))) {
+			if(this.hitTestObject(this.m_gameLayer.getChildAt(1))) {
 				this._velocity = 0;
 				this.removeGravity();
 			}
@@ -259,8 +260,9 @@ package entity {
 		 * 
 		 */
 		private function m_damageControl(hitValue:String):void {
-			if(hitValue == "hit") {
+			if(hitValue == "hit" && this.m_durability != 0) {
 				this.m_durability -= 10;
+				//this.m_durabilityMeter ???????
 			}
 			
 			if (this.m_durability <= 0) {
@@ -276,6 +278,10 @@ package entity {
 		private function m_freeFall():void {
 			this._velocity = 0;
 			this.setGravityFactor(7);
+		}
+		
+		private function m_durabilityMeter():void {
+			
 		}
 		
 	}
