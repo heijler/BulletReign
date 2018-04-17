@@ -275,7 +275,7 @@ package entity {
 					this.m_crashed = true;
 					this._velocity = 0;
 					this.removeGravity();
-					this._shake(this.m_worldLayer);
+					this._shake(this.m_worldLayer, 5);
 				}
 				//this._velocity = 0;
 				//this.removeGravity();

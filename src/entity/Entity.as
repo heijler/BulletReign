@@ -3,13 +3,13 @@ package entity {
 	// Import
 	//-----------------------------------------------------------
 	
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
-	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.fx.Shake;
-	import se.lnu.stickossdk.display.DisplayStateLayer;
+	import se.lnu.stickossdk.system.Session;
 	
 	
 	//-----------------------------------------------------------
@@ -52,8 +52,8 @@ package entity {
 		/**
 		 * 
 		 */
-		protected function _shake(obj:DisplayStateLayer):void {
-			var shake:Shake = new Shake(obj, 150, new Point(0,10), new Point(0,0));
+		protected function _shake(obj:DisplayObjectContainer, amountY:int):void {
+			var shake:Shake = new Shake(obj, 150, new Point(0,amountY), new Point(0,0));
 			Session.effects.add(shake);
 		}
 	}
