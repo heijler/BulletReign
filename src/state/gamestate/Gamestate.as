@@ -42,9 +42,9 @@ package state.gamestate {
 		 */
 		override public function init():void {
 			this.m_initLayers();
-			this.m_initPlanes();
 			this.m_initSky();
 			this.m_initGround();
+			this.m_initPlanes();
 		}
 		
 		

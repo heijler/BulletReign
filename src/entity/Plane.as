@@ -7,7 +7,6 @@ package entity {
 	import flash.geom.Point;
 	
 	import asset.Plane1GFX;
-	import asset.Plane2GFX;
 	import asset.Plane3GFX;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
@@ -32,24 +31,24 @@ package entity {
 		private var m_durability:Number;
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
-		private var m_gameLayer:DisplayStateLayer;
+		private var m_worldLayer:DisplayStateLayer;
 		private var m_fireDelay:Number = 100; //ms delay between bullets
 		private var m_burstSize:int = 5;
 		private var m_scaleFactor:int = 1;
+		private var m_crashed:Boolean = false;
 		
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(player:int, gameLayer:DisplayStateLayer, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor) {
+		public function Plane(player:int, worldLayer:DisplayStateLayer, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor) {
 			super();
-			this.m_gameLayer = gameLayer;
+			this.m_worldLayer = worldLayer;
 			this.m_bulletManager = bulletMngr;
 			this.m_ebulletManager = ebulletMngr;
 			this.m_durability = 100;
 			this.m_activePlayer = player;
-			this.m_gameLayer = gameLayer;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
 			this.m_pos = pos;
 			this._velocity = 5;
@@ -264,19 +263,49 @@ package entity {
 			}
 			// Temporary LINES***REMOVE***
       		// OM skyline-träff
-			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(0))) {
+			if(this.hitTestObject(this.m_worldLayer.getChildAt(0))) {
 				//this.m_freeFall();
 				this._angle = 360 - this._angle; // Reflects plane angle back down.
 				this.m_updateRotation();
 			}
 			// OM ground-träff
-			if(this.m_skin.hitTestObject(this.m_gameLayer.getChildAt(1))) {
-				this._velocity = 0;
-				this.removeGravity();
+			if(this.hitTestObject(this.m_worldLayer.getChildAt(1))) {
+				//trace(this.m_worldLayer.);
+				if (this.m_crashed == false) {
+					this.m_crashed = true;
+					this._velocity = 0;
+					this.removeGravity();
+					this._shake(this.m_worldLayer);
+				}
+				//this._velocity = 0;
+				//this.removeGravity();
+				
+				// Limitera Att hittest sker en gång och inte mer.
+				//this._shake(this.m_worldLayer);
+				//Session.application.displayState.shake(5, new Point(0, 10));
+				//this._shake(this.m_skin);
+				
+				//var shake:Shake = new Shake(this.m_worldLayer, 5, new Point(0,10));
+				//Session.effects.add(shake);
 			}
 			
 		}
 		
+		
+		/**
+		 * 
+		 */
+		private function m_collisionGround():void {
+			
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_collisionSky():void {
+			
+		}
 		
 		/**
 		 * m_damageControl
