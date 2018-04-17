@@ -7,13 +7,11 @@ package entity {
 	import flash.geom.Point;
 	
 	import asset.Plane1GFX;
-	import asset.Plane3GFX;
+	import asset.Plane3GFX; //@TODO: Döpa om Plane3GFX till Plane2GFX
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
-	import se.lnu.stickossdk.system.Session;
-	import se.lnu.stickossdk.timer.Timer;
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -25,26 +23,26 @@ package entity {
 		// Private properties
 		//-----------------------------------------------------------
 		
+		private const FIRE_DELAY:int = 2;
+		
 		private var m_skin:MovieClip;
 		private var m_bulletManager:BulletManager;
 		private var m_ebulletManager:BulletManager;
 		private var m_durability:Number;
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
-		private var m_worldLayer:DisplayStateLayer;
-		private var m_fireDelay:Number = 100; //ms delay between bullets
+		private var m_fireDelay:Number = FIRE_DELAY;
 		private var m_burstSize:int = 5;
 		private var m_scaleFactor:int = 1;
-		private var m_crashed:Boolean = false;
+		public var crashed:Boolean = false;
 		
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(player:int, worldLayer:DisplayStateLayer, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor) {
+		public function Plane(player:int, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor) {
 			super();
-			this.m_worldLayer = worldLayer;
 			this.m_bulletManager = bulletMngr;
 			this.m_ebulletManager = ebulletMngr;
 			this.m_durability = 100;
@@ -80,11 +78,9 @@ package entity {
 				this._setScale(this.m_skin);
 			} else if (m_activePlayer == 1) {
 				this.m_skin = new Plane3GFX;
-				//this.m_skin.scaleX = -1;
 				this._setScale(this.m_skin, -2, 2);
 			}
-			// Would be nice to avoid this scaling here
-			//this._setScale(this.m_skin);
+			this.m_skin.cacheAsBitmap = true;
 			this.addChild(this.m_skin);
 		}
 		
@@ -130,11 +126,7 @@ package entity {
 					this.m_accelerate();
 				}
 				
-				/*if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
-					this.m_fireBullets();
-				}*/
-				
-				if (Input.keyboard.justPressed(this.m_controls.PLAYER_BUTTON_1)) {
+				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
 					this.m_fireBullets();
 				}
 			}
@@ -157,15 +149,24 @@ package entity {
 			
 			this._angle %= 360; // resets angle at 360
 			if (this._angle < 0) this._angle = this._angle + 360; // Prevents minus angles
-			this.m_updateRotation();
+			this.updateRotation();
 		}
 		
 		
 		/**
-		 * m_updateRotation
+		 * reflectAngle
+		 * 
+		 */
+		public function reflectAngle():void {
+			this._angle = 360 - this._angle; 
+		}
+		
+		
+		/**
+		 * updateRotation
 		 * Updates the skins rotation to match the angle.
 		 */
-		private function m_updateRotation():void {
+		public function updateRotation():void {
 			this.m_skin.rotation = this._angle;
 		}
 		
@@ -188,27 +189,11 @@ package entity {
 		 * 
 		 */
 		private function m_fireBullets():void {
-			trace(this.m_bulletManager.get().length);
-			var timer:Timer = Session.timer.create(this.m_fireDelay, this.m_createBullet, 0, true);
-			//this.m_bulletManager.add(this._angle, this._velocity, m_getPos(), this.m_activePlayer, this.m_fireRate);
-		}
-		
-		
-		/**
-		 * m_createBullet
-		 * 
-		 */
-		private function m_createBullet():void {
-			for(var i:int = 0; i < this.m_burstSize; i++) {
-				var timer:Timer = Session.timer.create(5000, m_testTest, 0, true);
+			this.m_fireDelay--;
+			if (this.m_fireDelay == 0) {
+				this.m_bulletManager.add(this._angle, this._velocity, m_getPos(), this.m_activePlayer);
+				this.m_fireDelay = FIRE_DELAY;
 			}
-		}
-		
-		/**
-		 * 
-		 */
-		private function m_testTest():void {
-			this.m_bulletManager.add(this._angle, this._velocity, m_getPos(), this.m_activePlayer);	
 		}
 		
 		
@@ -231,7 +216,6 @@ package entity {
 			} else if (this.x > this._appWidth) {
 				this.x = -this.width;
 			}
-			
 		}
 		
 		
@@ -250,61 +234,39 @@ package entity {
 
 		/**	
 		 * m_checkCollision
-		 * Check whether bullet objects collides with plane skin
+		 * 
 		 */
 		private function m_collisionControl():void {
-			var bullet:Vector.<Bullet> = (this.m_ebulletManager.get());
-			var i:int;
-			for(i = 0; i < bullet.length; i++) {
-				if(this.hitTestObject(bullet[i])) {
-					m_damageControl("hit");
-					// Ta bort kula.
-				}
-			}
-			// Temporary LINES***REMOVE***
-      		// OM skyline-träff
-			if(this.hitTestObject(this.m_worldLayer.getChildAt(0))) {
-				//this.m_freeFall();
-				this._angle = 360 - this._angle; // Reflects plane angle back down.
-				this.m_updateRotation();
-			}
-			// OM ground-träff
-			if(this.hitTestObject(this.m_worldLayer.getChildAt(1))) {
-				//trace(this.m_worldLayer.);
-				if (this.m_crashed == false) {
-					this.m_crashed = true;
-					this._velocity = 0;
-					this.removeGravity();
-					this._shake(this.m_worldLayer, 5);
-				}
-				//this._velocity = 0;
-				//this.removeGravity();
-				
-				// Limitera Att hittest sker en gång och inte mer.
-				//this._shake(this.m_worldLayer);
-				//Session.application.displayState.shake(5, new Point(0, 10));
-				//this._shake(this.m_skin);
-				
-				//var shake:Shake = new Shake(this.m_worldLayer, 5, new Point(0,10));
-				//Session.effects.add(shake);
-			}
-			
+			this.m_bulletCollision();			
 		}
 		
 		
 		/**
+		 * m_bulletCollision
 		 * 
 		 */
-		private function m_collisionGround():void {
+		private function m_bulletCollision():void {
+			if (this.crashed == false) {
+				var bullet:Vector.<Bullet> = (this.m_ebulletManager.get());
+				var i:int;
+				for(i = 0; i < bullet.length; i++) {
+					if(this.hitTestObject(bullet[i])) {
+						m_damageControl("hit");
+					}
+				}
+			}
 			
-		}
+		}		
 		
 		
 		/**
+		 * crash
 		 * 
 		 */
-		private function m_collisionSky():void {
-			
+		public function crash(layer:DisplayStateLayer):void {
+			this._velocity = 0;
+			this.removeGravity();
+			this._shake(layer, 5);
 		}
 		
 		/**
@@ -324,7 +286,7 @@ package entity {
 		
 		/**
 		 * m_freeFall
-		 * 
+		 * @TODO: Move this to MotionEntity
 		 */
 		private function m_freeFall():void {
 			this._velocity = 0;

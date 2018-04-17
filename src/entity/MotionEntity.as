@@ -3,8 +3,8 @@ package entity {
 	// Import
 	//-----------------------------------------------------------
 	
-	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
-	import se.lnu.stickossdk.system.Session;
+	//import se.lnu.stickossdk.display.DisplayStateLayerSprite;
+	//import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
 	// MotionEntity
@@ -32,6 +32,7 @@ package entity {
 		//-----------------------------------------------------------
 		// Methods
 		//-----------------------------------------------------------
+		
 		
 		/**
 		 * update
@@ -76,6 +77,7 @@ package entity {
 			this.m_gravityFactor = factor;
 		}
 		
+		
 		/**
 		 * wrapAroundObjects
 		 * Wrap objects from one side of screen to the other.
@@ -86,6 +88,14 @@ package entity {
 			} else if (this.x > _appWidth) {
 				this.x = -this.width;
 			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		protected function collision(obj1:Entity, obj2:Entity):void {
+			
 		}
 	
 	}

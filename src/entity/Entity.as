@@ -40,9 +40,10 @@ package entity {
 		//-----------------------------------------------------------
 		
 		/**
+		 * _setScale
 		 * 
 		 */
-		protected function _setScale(obj:MovieClip, scaleX:int = this.DEFAULT_SCALE, scaleY:int = this.DEFAULT_SCALE):void {
+		protected function _setScale(obj:DisplayObjectContainer, scaleX:int = this.DEFAULT_SCALE, scaleY:int = this.DEFAULT_SCALE):void {
 			obj.scaleX = scaleX;
 			obj.scaleY = scaleY;
 		}
@@ -50,6 +51,7 @@ package entity {
 		
 		
 		/**
+		 * _shake
 		 * 
 		 */
 		protected function _shake(obj:DisplayObjectContainer, amountY:int):void {
