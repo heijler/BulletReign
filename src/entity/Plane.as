@@ -8,10 +8,13 @@ package entity {
 	
 	import asset.Plane1GFX;
 	import asset.Plane2GFX;
+	import asset.Plane3GFX;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.timer.Timer;
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -30,13 +33,16 @@ package entity {
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
 		private var m_gameLayer:DisplayStateLayer;
-		private var m_fireRate:Number = 4; //bullets per second
+		private var m_fireDelay:Number = 100; //ms delay between bullets
+		private var m_burstSize:int = 5;
+		private var m_scaleFactor:int = 1;
+		
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(player:int, gameLayer:DisplayStateLayer, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point) {
+		public function Plane(player:int, gameLayer:DisplayStateLayer, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor) {
 			super();
 			this.m_gameLayer = gameLayer;
 			this.m_bulletManager = bulletMngr;
@@ -48,6 +54,7 @@ package entity {
 			this.m_pos = pos;
 			this._velocity = 5;
 			this._angle = 0;
+			this.m_scaleFactor = scaleFactor;
 		}
 		
 		//-----------------------------------------------------------
@@ -71,11 +78,14 @@ package entity {
 		private function m_initSkin():void {
 			if (m_activePlayer == 0) {
 				this.m_skin = new Plane1GFX;
+				this._setScale(this.m_skin);
 			} else if (m_activePlayer == 1) {
-				this.m_skin = new Plane2GFX;
+				this.m_skin = new Plane3GFX;
+				//this.m_skin.scaleX = -1;
+				this._setScale(this.m_skin, -2, 2);
 			}
 			// Would be nice to avoid this scaling here
-			this._setScale(this.m_skin);
+			//this._setScale(this.m_skin);
 			this.addChild(this.m_skin);
 		}
 		
@@ -121,7 +131,11 @@ package entity {
 					this.m_accelerate();
 				}
 				
-				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
+				/*if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
+					this.m_fireBullets();
+				}*/
+				
+				if (Input.keyboard.justPressed(this.m_controls.PLAYER_BUTTON_1)) {
 					this.m_fireBullets();
 				}
 			}
@@ -135,13 +149,13 @@ package entity {
 		 */
 		private function m_anglePlane(direction:int):void {
 			var newAngle:Number = this._velocity / (direction ? 1.5 : 1.15);
-			if (this.m_activePlayer == 0) {
-				if (direction == 0) this._angle -= newAngle;
-				if (direction == 1) this._angle += newAngle;
-			} else if (this.m_activePlayer == 1) {
-				if (direction == 0) this._angle += newAngle;
-				if (direction == 1) this._angle -= newAngle;
+			
+			if (direction == 0) {
+				this._angle -= newAngle * this.m_scaleFactor;
+			} else if (direction == 1) {
+				this._angle += newAngle * this.m_scaleFactor;
 			}
+			
 			this._angle %= 360; // resets angle at 360
 			if (this._angle < 0) this._angle = this._angle + 360; // Prevents minus angles
 			this.m_updateRotation();
@@ -165,13 +179,8 @@ package entity {
 			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.15);
 			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.15);
 			
-			if (this.m_activePlayer == 0) {
-				this.x += xVel;
-				this.y += yVel;
-			} else if (this.m_activePlayer == 1) {
-				this.x -= xVel;
-				this.y -= yVel;
-			}
+			this.x += xVel * this.m_scaleFactor;
+			this.y += yVel * this.m_scaleFactor;
 		}
 		
 		
@@ -180,7 +189,27 @@ package entity {
 		 * 
 		 */
 		private function m_fireBullets():void {
-			this.m_bulletManager.add(this._angle, this._velocity, m_getPos(), this.m_activePlayer, this.m_fireRate);
+			trace(this.m_bulletManager.get().length);
+			var timer:Timer = Session.timer.create(this.m_fireDelay, this.m_createBullet, 0, true);
+			//this.m_bulletManager.add(this._angle, this._velocity, m_getPos(), this.m_activePlayer, this.m_fireRate);
+		}
+		
+		
+		/**
+		 * m_createBullet
+		 * 
+		 */
+		private function m_createBullet():void {
+			for(var i:int = 0; i < this.m_burstSize; i++) {
+				var timer:Timer = Session.timer.create(5000, m_testTest, 0, true);
+			}
+		}
+		
+		/**
+		 * 
+		 */
+		private function m_testTest():void {
+			this.m_bulletManager.add(this._angle, this._velocity, m_getPos(), this.m_activePlayer);	
 		}
 		
 		
@@ -215,13 +244,8 @@ package entity {
 			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
 			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
 			
-			if (this.m_activePlayer == 0) {
-				this.x += xVel;
-				this.y += yVel;
-			} else if (this.m_activePlayer == 1) {
-				this.x -= xVel;
-				this.y -= yVel;
-			}
+			this.x += xVel * this.m_scaleFactor;
+			this.y += yVel * this.m_scaleFactor;
 		}
 		
 

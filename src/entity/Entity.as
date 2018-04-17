@@ -40,9 +40,9 @@ package entity {
 		/**
 		 * 
 		 */
-		protected function _setScale(obj:MovieClip, scale:int = this.DEFAULT_SCALE):void {
-			obj.scaleX = scale;
-			obj.scaleY = scale;
+		protected function _setScale(obj:MovieClip, scaleX:int = this.DEFAULT_SCALE, scaleY:int = this.DEFAULT_SCALE):void {
+			obj.scaleX = scaleX;
+			obj.scaleY = scaleY;
 		}
 	}
 }

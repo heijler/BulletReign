@@ -97,8 +97,8 @@ package entity {
 		 * Shots bullet 
 		 */
 		private function updatePosition():void {
-			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity << 2;
-			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity << 2;
+			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity /*<< 2*/;
+			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity /*<< 2*/;
 			
 			if (this.m_owner == 0) {
 				this.x += xVel;
