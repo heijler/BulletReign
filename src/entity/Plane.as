@@ -7,7 +7,7 @@ package entity {
 	import flash.geom.Point;
 	
 	import asset.Plane1GFX;
-	import asset.Plane2GFX;
+	import asset.Plane3GFX; //@TODO: Döpa om Plane3GFX till Plane2GFX
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
@@ -23,31 +23,35 @@ package entity {
 		// Private properties
 		//-----------------------------------------------------------
 		
+		private const FIRE_DELAY:int = 2;
+		
 		private var m_skin:MovieClip;
 		private var m_bulletManager:BulletManager;
 		private var m_ebulletManager:BulletManager;
 		private var m_durability:Number;
 		private var m_controls:EvertronControls;
 		private var m_activePlayer:int = 0;
-		private var m_gameLayer:DisplayStateLayer;
-		private var m_fireRate:Number = 4; //bullets per second
+		private var m_fireDelay:Number = FIRE_DELAY;
+		private var m_burstSize:int = 5;
+		private var m_scaleFactor:int = 1;
+		public var crashed:Boolean = false;
+		
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(player:int, gameLayer:DisplayStateLayer, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point) {
+		public function Plane(player:int, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor) {
 			super();
-			this.m_gameLayer = gameLayer;
 			this.m_bulletManager = bulletMngr;
 			this.m_ebulletManager = ebulletMngr;
 			this.m_durability = 100;
 			this.m_activePlayer = player;
-			this.m_gameLayer = gameLayer;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
 			this.m_pos = pos;
 			this._velocity = 5;
 			this._angle = 0;
+			this.m_scaleFactor = scaleFactor;
 		}
 		
 		//-----------------------------------------------------------
@@ -71,11 +75,12 @@ package entity {
 		private function m_initSkin():void {
 			if (m_activePlayer == 0) {
 				this.m_skin = new Plane1GFX;
+				this._setScale(this.m_skin);
 			} else if (m_activePlayer == 1) {
-				this.m_skin = new Plane2GFX;
+				this.m_skin = new Plane3GFX;
+				this._setScale(this.m_skin, -2, 2);
 			}
-			// Would be nice to avoid this scaling here
-			this._setScale(this.m_skin);
+			this.m_skin.cacheAsBitmap = true;
 			this.addChild(this.m_skin);
 		}
 		
@@ -135,24 +140,33 @@ package entity {
 		 */
 		private function m_anglePlane(direction:int):void {
 			var newAngle:Number = this._velocity / (direction ? 1.5 : 1.15);
-			if (this.m_activePlayer == 0) {
-				if (direction == 0) this._angle -= newAngle;
-				if (direction == 1) this._angle += newAngle;
-			} else if (this.m_activePlayer == 1) {
-				if (direction == 0) this._angle += newAngle;
-				if (direction == 1) this._angle -= newAngle;
+			
+			if (direction == 0) {
+				this._angle -= newAngle * this.m_scaleFactor;
+			} else if (direction == 1) {
+				this._angle += newAngle * this.m_scaleFactor;
 			}
+			
 			this._angle %= 360; // resets angle at 360
 			if (this._angle < 0) this._angle = this._angle + 360; // Prevents minus angles
-			this.m_updateRotation();
+			this.updateRotation();
 		}
 		
 		
 		/**
-		 * m_updateRotation
+		 * reflectAngle
+		 * 
+		 */
+		public function reflectAngle():void {
+			this._angle = 360 - this._angle; 
+		}
+		
+		
+		/**
+		 * updateRotation
 		 * Updates the skins rotation to match the angle.
 		 */
-		private function m_updateRotation():void {
+		public function updateRotation():void {
 			this.m_skin.rotation = this._angle;
 		}
 		
@@ -165,13 +179,8 @@ package entity {
 			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.15);
 			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.15);
 			
-			if (this.m_activePlayer == 0) {
-				this.x += xVel;
-				this.y += yVel;
-			} else if (this.m_activePlayer == 1) {
-				this.x -= xVel;
-				this.y -= yVel;
-			}
+			this.x += xVel * this.m_scaleFactor;
+			this.y += yVel * this.m_scaleFactor;
 		}
 		
 		
@@ -180,7 +189,11 @@ package entity {
 		 * 
 		 */
 		private function m_fireBullets():void {
-			this.m_bulletManager.add(this._angle, this._velocity, m_getPos(), this.m_activePlayer, this.m_fireRate);
+			this.m_fireDelay--;
+			if (this.m_fireDelay == 0) {
+				this.m_bulletManager.add(this._angle, this._velocity, m_getPos(), this.m_activePlayer);
+				this.m_fireDelay = FIRE_DELAY;
+			}
 		}
 		
 		
@@ -203,7 +216,6 @@ package entity {
 			} else if (this.x > this._appWidth) {
 				this.x = -this.width;
 			}
-			
 		}
 		
 		
@@ -215,45 +227,47 @@ package entity {
 			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
 			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
 			
-			if (this.m_activePlayer == 0) {
-				this.x += xVel;
-				this.y += yVel;
-			} else if (this.m_activePlayer == 1) {
-				this.x -= xVel;
-				this.y -= yVel;
-			}
+			this.x += xVel * this.m_scaleFactor;
+			this.y += yVel * this.m_scaleFactor;
 		}
 		
 
 		/**	
 		 * m_checkCollision
-		 * Check whether bullet objects collides with plane skin
+		 * 
 		 */
 		private function m_collisionControl():void {
-			var bullet:Vector.<Bullet> = (this.m_ebulletManager.getBullets());
-			var i:int;
-			for(i = 0; i < bullet.length; i++) {
-				if(this.hitTestObject(bullet[i])) {
-					m_damageControl("hit", bullet[i].BULLETDAMAGE);
-					this.m_bulletManager.removeBullet(bullet[i]);
-					// Ta bort kula.
-				}
-			}
-			// Temporary LINES***REMOVE***
-      		// OM skyline-träff
-			if(this.hitTestObject(this.m_gameLayer.getChildAt(0))) {
-				//this.m_freeFall();
-				this._angle = 360 - this._angle; // Reflects plane angle back down.
-				this.m_updateRotation();
-			}
-			// OM ground-träff
-			if(this.hitTestObject(this.m_gameLayer.getChildAt(1))) {
-				this._velocity = 0;
-				this.removeGravity();
-			}
-			
+			this.m_bulletCollision();			
 		}
 		
+		
+		/**
+		 * m_bulletCollision
+		 * 
+		 */
+		private function m_bulletCollision():void {
+			if (this.crashed == false) {
+				var bullet:Vector.<Bullet> = (this.m_ebulletManager.get());
+				var i:int;
+				for(i = 0; i < bullet.length; i++) {
+					if(this.hitTestObject(bullet[i])) {
+						m_damageControl("hit", bullet[i].BULLETDAMAGE);
+            // Ta bort kula
+					}
+				}
+			}
+		}		
+		
+		
+		/**
+		 * crash
+		 * 
+		 */
+		public function crash(layer:DisplayStateLayer):void {
+			this._velocity = 0;
+			this.removeGravity();
+			this._shake(layer, 5);
+		}
 		
 		/**
 		 * m_damageControl
@@ -272,7 +286,7 @@ package entity {
 		
 		/**
 		 * m_freeFall
-		 * 
+		 * @TODO: Move this to MotionEntity
 		 */
 		private function m_freeFall():void {
 			this._velocity = 0;

@@ -1,7 +1,10 @@
 package entity {
+
 	//-----------------------------------------------------------
 	// Imports
 	//-----------------------------------------------------------
+	
+	import flash.display.DisplayObjectContainer;
 	
 	//-----------------------------------------------------------
 	// PlaneManager
@@ -13,15 +16,40 @@ package entity {
 		// Properties
 		//-----------------------------------------------------------
 		
+		private var m_parent:DisplayObjectContainer;
+		private  var m_planes:Vector.<Plane>;
+		private const AMOUNT_LIMIT:int = 2;
+		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
-		public function PlaneManager(){
-			
+		
+		public function PlaneManager(parent:DisplayObjectContainer) {
+			this.m_parent = parent;
+			this.m_planes = new Vector.<Plane>;
 		}
 		
 		//-----------------------------------------------------------
 		// Methods
 		//-----------------------------------------------------------
+		
+		
+		/**
+		 * 
+		 */
+		public function add(plane:Plane):void {
+			if (this.m_planes.length < AMOUNT_LIMIT) {
+				this.m_planes.push(plane);
+				this.m_parent.addChild(plane);
+			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		public function getPlanes():Vector.<Plane> {
+			return this.m_planes;
+		}
 	}
 }

@@ -35,7 +35,7 @@ package entity {
 		 * add
 		 * Limited to AMOUNT_LIMIT;
 		 */
-		public function add(angle:Number, velocity:Number, pos:Point, owner:int, fireRate:Number):void {
+		public function add(angle:Number, velocity:Number, pos:Point, owner:int):void {
 			if (this.m_bullets.length < AMOUNT_LIMIT) {
 				var bullet:Bullet = new Bullet(angle, velocity, pos, owner);
 				this.m_bullets.push(bullet);

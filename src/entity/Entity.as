@@ -3,11 +3,13 @@ package entity {
 	// Import
 	//-----------------------------------------------------------
 	
+	import flash.display.DisplayObjectContainer;
+	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
+	import se.lnu.stickossdk.fx.Shake;
 	import se.lnu.stickossdk.system.Session;
-	import flash.display.MovieClip;
 	
 	
 	//-----------------------------------------------------------
@@ -38,11 +40,23 @@ package entity {
 		//-----------------------------------------------------------
 		
 		/**
+		 * _setScale
 		 * 
 		 */
-		protected function _setScale(obj:MovieClip, scale:int = this.DEFAULT_SCALE):void {
-			obj.scaleX = scale;
-			obj.scaleY = scale;
+		protected function _setScale(obj:DisplayObjectContainer, scaleX:int = this.DEFAULT_SCALE, scaleY:int = this.DEFAULT_SCALE):void {
+			obj.scaleX = scaleX;
+			obj.scaleY = scaleY;
+		}
+		
+		
+		
+		/**
+		 * _shake
+		 * 
+		 */
+		protected function _shake(obj:DisplayObjectContainer, amountY:int):void {
+			var shake:Shake = new Shake(obj, 150, new Point(0,amountY), new Point(0,0));
+			Session.effects.add(shake);
 		}
 	}
 }
