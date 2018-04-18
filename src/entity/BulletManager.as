@@ -12,6 +12,15 @@ package entity {
 	public class BulletManager {
 		
 		//-----------------------------------------------------------
+		// Getters/Setters
+		//-----------------------------------------------------------
+		
+		public function get damage():Number {
+			return this.m_bullets[0].BULLET_DAMAGE;
+		}
+		
+		
+		//-----------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------
 		private var m_parent:DisplayObjectContainer;
@@ -97,6 +106,21 @@ package entity {
 		 */
 		public function isActive(bullet:Bullet):Boolean {
 			return bullet.active;
+		}
+		
+		
+		/**
+		 * 
+		 */
+		public function checkCollision(plane:Plane):Boolean {
+			var val:Boolean = false;
+			for(var i:int = 0; i < this.m_bullets.length; i++) {
+				if(plane.hitTestObject(this.m_bullets[i])) {
+					val = true;
+					this.removeBullet(this.m_bullets[i]);
+				}
+			}
+			return val;
 		}
 		
 		

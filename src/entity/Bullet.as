@@ -13,7 +13,7 @@ package entity {
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
-		public const BULLETDAMAGE:Number = 10;
+		public const BULLET_DAMAGE:Number = 10;
 		private const BULLET_SIZE:Number = 1.5;
 		
 		private var m_skin:Sprite;

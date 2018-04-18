@@ -246,17 +246,10 @@ package entity {
 		 * 
 		 */
 		private function m_bulletCollision():void {
-			if (this.crashed == false) {
-				var bullet:Vector.<Bullet> = this.m_ebulletManager.getBullets();
-				var i:int;
-				for(i = 0; i < bullet.length; i++) {
-					if(this.hitTestObject(bullet[i])) {
-						m_damageControl("hit", bullet[i].BULLETDAMAGE);
-            			// Ta bort kula
-					}
-				}
+			if (this.crashed == false && this.m_ebulletManager.checkCollision(this)) {
+				this.m_damageControl();
 			}
-		}		
+		}
 		
 		
 		/**
@@ -273,12 +266,10 @@ package entity {
 		 * m_damageControl
 		 * 
 		 */
-		private function m_damageControl(hitValue:String, hitDamage:Number):void {
-			if(hitValue == "hit" && this.m_durability != 0) {
-				this.m_durability -= hitDamage;
-			}
-			
-			if (this.m_durability <= 0) {
+		private function m_damageControl():void {
+			if(this.m_durability != 0) {
+				this.m_durability -= this.m_ebulletManager.damage;
+			} else if (this.m_durability <= 0) {
 				this.m_freeFall();
 			}
 		}
