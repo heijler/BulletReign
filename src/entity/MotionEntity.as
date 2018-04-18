@@ -3,8 +3,6 @@ package entity {
 	// Import
 	//-----------------------------------------------------------
 	
-	//import se.lnu.stickossdk.display.DisplayStateLayerSprite;
-	//import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
 	// MotionEntity
@@ -16,9 +14,10 @@ package entity {
 		// Properties
 		//-----------------------------------------------------------
 		
+		protected const GRAVITY:Number = 0.55;
+		
 		protected var _velocity:Number;
 		protected var _angle:Number;
-		protected const GRAVITY:Number = 0.55;
 		private var m_gravityFactor:int = 1;
 		
 		//-----------------------------------------------------------

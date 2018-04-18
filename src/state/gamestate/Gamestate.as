@@ -27,7 +27,8 @@ package state.gamestate {
 		
 		public var m_planeLayer:DisplayStateLayer;
 		public var m_worldLayer:DisplayStateLayer;
-    public var m_HUDLayer:DisplayStateLayer;
+    	public var m_HUDLayer:DisplayStateLayer;
+		
 		private var m_planes:Vector.<Plane>;
 		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_sky:Sprite;
@@ -112,6 +113,17 @@ package state.gamestate {
 		
 		
 		/**
+		 * m_initHUDLayer
+		 * 
+		 */
+		private function m_initHUD():void {
+			var hud:HUD = new HUD(this.m_HUDLayer, new Point(0, 160));
+			this.m_HUDLayer.addChild(hud);
+			
+		}
+		
+		
+		/**
 		 * update
 		 * Override
 		 */
@@ -150,16 +162,6 @@ package state.gamestate {
 					}
 				}
 			}
-		}
-		
-		/**
-		 * m_initHUDLayer
-		 * 
-		 */
-		private function m_initHUD():void {
-			var hud:HUD = new HUD(this.m_HUDLayer, new Point(0, 160));
-			this.m_HUDLayer.addChild(hud);
-			
 		}
 	}
 }

@@ -7,7 +7,7 @@ package entity {
 	import flash.geom.Point;
 	
 	import asset.Plane1GFX;
-	import asset.Plane3GFX; //@TODO: Döpa om Plane3GFX till Plane2GFX
+	import asset.Plane2GFX;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
@@ -23,7 +23,7 @@ package entity {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private const FIRE_DELAY:int = 2;
+		private const FIRE_DELAY:int = 4;
 		
 		private var m_skin:MovieClip;
 		private var m_bulletManager:BulletManager;
@@ -77,7 +77,7 @@ package entity {
 				this.m_skin = new Plane1GFX;
 				this._setScale(this.m_skin);
 			} else if (m_activePlayer == 1) {
-				this.m_skin = new Plane3GFX;
+				this.m_skin = new Plane2GFX;
 				this._setScale(this.m_skin, -2, 2);
 			}
 			this.m_skin.cacheAsBitmap = true;
@@ -247,12 +247,12 @@ package entity {
 		 */
 		private function m_bulletCollision():void {
 			if (this.crashed == false) {
-				var bullet:Vector.<Bullet> = (this.m_ebulletManager.get());
+				var bullet:Vector.<Bullet> = this.m_ebulletManager.getBullets();
 				var i:int;
 				for(i = 0; i < bullet.length; i++) {
 					if(this.hitTestObject(bullet[i])) {
 						m_damageControl("hit", bullet[i].BULLETDAMAGE);
-            // Ta bort kula
+            			// Ta bort kula
 					}
 				}
 			}

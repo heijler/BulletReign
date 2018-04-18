@@ -13,9 +13,10 @@ package entity {
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
+		public const BULLETDAMAGE:Number = 10;
+		private const BULLET_SIZE:Number = 1.5;
+		
 		private var m_skin:Sprite;
-		public const BULLETDAMAGE:Number = 1;
-		private var m_size:int = 3;
 		private var m_owner:int;
 		public  var color:uint = 0xFFFFFF;
 		public var active:Boolean = true;
@@ -54,7 +55,7 @@ package entity {
 		 */
 		private function m_initBullet():void {
 			// Make the colors not as hard coded.
-			this.color = (this.m_owner ? 0xFFFFFF : 0xFFFFFF);
+			this.color = (this.m_owner ? 0xFF00FF : 0x0000FF);
 		}
 		
 		
@@ -65,7 +66,7 @@ package entity {
 		private function m_initSkin():void {
 			this.m_skin = new Sprite();
 			this.m_skin.graphics.beginFill(this.color);
-			this.m_skin.graphics.drawRect(this.x, this.y, this.m_size, this.m_size);
+			this.m_skin.graphics.drawRect(this.x, this.y, this.BULLET_SIZE, this.BULLET_SIZE);
 			this.m_skin.graphics.endFill();
 			this._setScale(this.m_skin);
 			this.addChild(this.m_skin);
