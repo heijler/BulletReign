@@ -80,8 +80,8 @@ package ui {
 				this.m_durabilityMeter = new DurabilityMeterGFX;
 				this.m_durabilityMeter.scaleY = 15;
 				this.m_durabilityMeter.scaleX = -10; 
-				this.m_durabilityMeter.x = Session.application.width/2 - this.m_durabilityMeter.width/2 - 1;
-				this.m_durabilityMeter.y = Session.application.height / this.m_durabilityMeter.height;
+				this.m_durabilityMeter.x = Session.application.size.x/2 - this.m_durabilityMeter.width/2 - 1;
+				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height;
 				this.m_durabilityMeter.gotoAndStop(1);
 				
 			} else if (m_player == 1){
@@ -91,8 +91,8 @@ package ui {
 				this.m_durabilityMeter = new DurabilityMeterGFX;
 				this.m_durabilityMeter.scaleY = 15;
 				this.m_durabilityMeter.scaleX = 10;
-				this.m_durabilityMeter.x = Session.application.width/2 + this.m_durabilityMeter.width/2 + 1;
-				this.m_durabilityMeter.y = Session.application.height / this.m_durabilityMeter.height;
+				this.m_durabilityMeter.x = Session.application.size.x /2 + this.m_durabilityMeter.width/2 + 1;
+				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height;
 				this.m_durabilityMeter.gotoAndStop(1);
 			}
 			
@@ -117,10 +117,10 @@ package ui {
 			this.m_playerName.y = this.m_pos.y;
 			this.m_playerWins.x = this.m_pos.x;
 			this.m_playerWins.y = this.m_pos.y +20;
-			this.m_playerHealth.x = Session.application.width / 2 - this.m_playerHealth.width / 2.5 ;
+			this.m_playerHealth.x = Session.application.size.x / 2 - this.m_playerHealth.width / 2;
 			this.m_playerHealth.y = 10;
-			trace(Session.application.height);
-			trace(Session.application.width);
+			trace(Session.application.size.y);
+			trace(Session.application.size.x);
 		}
 		
 		public function setPlayerName():void {
