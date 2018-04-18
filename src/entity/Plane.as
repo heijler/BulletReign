@@ -35,6 +35,7 @@ package entity {
 		private var m_burstSize:int = 5;
 		private var m_scaleFactor:int = 1;
 		public var crashed:Boolean = false;
+		private var m_steering:Boolean = true;
 		
 
 		//-----------------------------------------------------------
@@ -75,7 +76,7 @@ package entity {
 		private function m_initSkin():void {
 			if (m_activePlayer == 0) {
 				this.m_skin = new Plane1GFX;
-				this._setScale(this.m_skin);
+				this._setScale(this.m_skin, 2, 2);
 			} else if (m_activePlayer == 1) {
 				this.m_skin = new Plane2GFX;
 				this._setScale(this.m_skin, -2, 2);
@@ -141,9 +142,9 @@ package entity {
 		private function m_anglePlane(direction:int):void {
 			var newAngle:Number = this._velocity / (direction ? 1.5 : 1.15);
 			
-			if (direction == 0) {
+			if (this.m_steering && direction == 0) {
 				this._angle -= newAngle * this.m_scaleFactor;
-			} else if (direction == 1) {
+			} else if (this.m_steering && direction == 1) {
 				this._angle += newAngle * this.m_scaleFactor;
 			}
 			
@@ -270,7 +271,9 @@ package entity {
 			if(this.m_durability != 0) {
 				this.m_durability -= this.m_ebulletManager.damage;
 			} else if (this.m_durability <= 0) {
+				this.m_steering = false;
 				this.m_freeFall();
+				this._flicker(this);
 			}
 		}
 		
@@ -280,8 +283,10 @@ package entity {
 		 * @TODO: Move this to MotionEntity
 		 */
 		private function m_freeFall():void {
-			this._velocity = 0;
+			this._velocity = 5;
+			this._angle = this._angle + 5 * this.m_scaleFactor;
 			this.setGravityFactor(7);
+			this.updateRotation();
 		}
 		
 		private function m_durabilityMeter():void {
