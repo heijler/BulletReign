@@ -87,37 +87,42 @@ package state.menustate {
 				format.kerning = true;
 				format.letterSpacing = 1;
 				format.size = 24;
+				format.font = "adore64";
 			
 			var menu1:TextField = new TextField();
-				menu1.text = "Dogfight";
-				menu1.x = 300;
+				menu1.text = "Dogfight".toUpperCase();
+				menu1.x = Session.application.size.x * 0.5 - 200;
 				menu1.y = 150;
 				menu1.autoSize = TextFieldAutoSize.LEFT;
 				menu1.setTextFormat(format);
+				menu1.embedFonts = true;
 			this.m_menuLayer.addChild(menu1);
 			
 			var menu2:TextField = new TextField();
-				menu2.text = "Conquer the Banner";
+				menu2.text = "Conquer the Banner".toUpperCase();
 				menu2.x = menu1.x;
 				menu2.y = menu1.y + format.size + 10;
 				menu2.autoSize = TextFieldAutoSize.LEFT;
 				menu2.setTextFormat(format);
+				menu2.embedFonts = true;
 			this.m_menuLayer.addChild(menu2);
 			
 			var menu3:TextField = new TextField();
-				menu3.text = "How to play";
+				menu3.text = "How to play".toUpperCase();
 				menu3.x = menu1.x;
 				menu3.y = menu2.y + format.size + 10;
 				menu3.autoSize = TextFieldAutoSize.LEFT;
 				menu3.setTextFormat(format);
+				menu3.embedFonts = true;
 			this.m_menuLayer.addChild(menu3);
 			
 			var menu4:TextField = new TextField();
-				menu4.text = "Credits";
+				menu4.text = "Credits".toUpperCase();
 				menu4.x = menu1.x;
 				menu4.y = menu3.y + format.size + 10;
 				menu4.autoSize = TextFieldAutoSize.LEFT;
 				menu4.setTextFormat(format);
+				menu4.embedFonts = true;
 			this.m_menuLayer.addChild(menu4);
 		}
 		
