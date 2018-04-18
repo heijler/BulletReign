@@ -9,7 +9,8 @@ package ui {
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	
-	import assets.DurabilityMeterGFX;
+	import assets.DurabilityMeterv3GFX;
+	import assets.DurabilityMeterv4GFX;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
 	import se.lnu.stickossdk.system.Session;
@@ -68,31 +69,27 @@ package ui {
 			this.m_playerWins= new TextField();
 			this.m_playerHealth = new TextField();
 			this.m_textFormat = new TextFormat();
-			this.m_playerHealth.text = "HEALTH";
+			this.m_playerHealth.text = "health".toUpperCase();
 			this.m_textFormat.size = 12; 
 			this.m_textFormat.color = 0xFFFFFF;
 			this.m_textFormat.font = "adore64";
 			
 			if (m_player == 0) {
 				this.m_playerName.autoSize = TextFieldAutoSize.LEFT;
-				this.m_playerName.text = "PLAYER" + " " + this.m_player;
-				this.m_playerWins.text = "WINS" + " " + this.m_playerOneWin;
-				this.m_durabilityMeter = new DurabilityMeterGFX;
-				this.m_durabilityMeter.scaleY = 15;
-				this.m_durabilityMeter.scaleX = -10; 
-				this.m_durabilityMeter.x = Session.application.size.x/2 - this.m_durabilityMeter.width/2 - 1;
-				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height;
+				this.m_playerName.text = "player".toUpperCase() + " " + this.m_player;
+				this.m_playerWins.text = "wins".toUpperCase() + " " + this.m_playerOneWin;
+				this.m_durabilityMeter = new DurabilityMeterv3GFX; 
+				this.m_durabilityMeter.x = Session.application.size.x / 2 - this.m_durabilityMeter.width / 2 - 1;
+				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2;
 				this.m_durabilityMeter.gotoAndStop(1);
 				
 			} else if (m_player == 1){
 				this.m_playerName.autoSize = TextFieldAutoSize.RIGHT;
-				this.m_playerName.text = this.m_player + " " + "PLAYER";
-				this.m_playerWins.text = this.m_playerTwoWin + " " + "WINS";
-				this.m_durabilityMeter = new DurabilityMeterGFX;
-				this.m_durabilityMeter.scaleY = 15;
-				this.m_durabilityMeter.scaleX = 10;
-				this.m_durabilityMeter.x = Session.application.size.x /2 + this.m_durabilityMeter.width/2 + 1;
-				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height;
+				this.m_playerName.text = this.m_player + " " + "player".toUpperCase();
+				this.m_playerWins.text = this.m_playerTwoWin + " " + "wins".toUpperCase();
+				this.m_durabilityMeter = new DurabilityMeterv4GFX;
+				this.m_durabilityMeter.x = Session.application.size.x / 2 + this.m_durabilityMeter.width / 2 + 1;
+				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2;
 				this.m_durabilityMeter.gotoAndStop(1);
 			}
 			
@@ -117,7 +114,7 @@ package ui {
 			this.m_playerName.y = this.m_pos.y;
 			this.m_playerWins.x = this.m_pos.x;
 			this.m_playerWins.y = this.m_pos.y +20;
-			this.m_playerHealth.x = Session.application.size.x / 2 - this.m_playerHealth.width / 2;
+			this.m_playerHealth.x = Session.application.size.x / 2 - this.m_playerHealth.width / 2.5;
 			this.m_playerHealth.y = 10;
 			trace(Session.application.size.y);
 			trace(Session.application.size.x);
