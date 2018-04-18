@@ -4,7 +4,9 @@ package {
 	//-----------------------------------------------------------
 	
 	import flash.geom.Point;
+	
 	import se.lnu.stickossdk.system.Engine;
+	
 	import state.menustate.MainMenu;
 	
 	//-----------------------------------------------------------
@@ -19,6 +21,8 @@ package {
 	
 	public class BulletReign extends Engine {
 		
+		[Embed(source = "../asset/ttf/adore64.ttf", fontFamily = "adore64", mimeType = "application/x-font", embedAsCFF="false")]
+		private static const COUNTER_TEXT:Class;
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------

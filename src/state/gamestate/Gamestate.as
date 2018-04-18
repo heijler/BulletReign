@@ -14,6 +14,7 @@ package state.gamestate {
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	
 	import ui.HUD;
+	import ui.HUDManager;
 	
 	//-----------------------------------------------------------
 	// Gamestate
@@ -117,8 +118,9 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initHUD():void {
-			var hud:HUD = new HUD(this.m_HUDLayer, new Point(0, 160));
-			this.m_HUDLayer.addChild(hud);
+			var hudManager:HUDManager = new HUDManager(this.m_HUDLayer);
+				hudManager.add(new HUD(0, new Point(10, 10)));
+				hudManager.add(new HUD(1, new Point(690, 10)));
 			
 		}
 		
