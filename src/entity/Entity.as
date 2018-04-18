@@ -3,11 +3,13 @@ package entity {
 	// Import
 	//-----------------------------------------------------------
 	
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
+	import se.lnu.stickossdk.fx.Flicker;
 	import se.lnu.stickossdk.fx.Shake;
 	import se.lnu.stickossdk.system.Session;
 	
@@ -32,7 +34,7 @@ package entity {
 		
 		public function Entity() {
 			super();
-			this._appWidth = Session.application.width;
+			this._appWidth = Session.application.width; // application.size.x/y
 		}
 		
 		//-----------------------------------------------------------
@@ -57,6 +59,15 @@ package entity {
 		protected function _shake(obj:DisplayObjectContainer, amountY:int):void {
 			var shake:Shake = new Shake(obj, 150, new Point(0,amountY), new Point(0,0));
 			Session.effects.add(shake);
+		}
+		
+		
+		/**
+		 * 
+		 */
+		protected function _flicker(obj:DisplayObjectContainer):void {
+			var flicker:Flicker = new Flicker(obj, 1000, 60, true);
+			Session.effects.add(flicker);
 		}
 	}
 }
