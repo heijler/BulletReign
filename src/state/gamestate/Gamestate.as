@@ -13,6 +13,8 @@ package state.gamestate {
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	
+	import ui.HUD;
+	
 	//-----------------------------------------------------------
 	// Gamestate
 	//-----------------------------------------------------------
@@ -25,10 +27,13 @@ package state.gamestate {
 		
 		public var m_planeLayer:DisplayStateLayer;
 		public var m_worldLayer:DisplayStateLayer;
+    public var m_HUDLayer:DisplayStateLayer;
 		private var m_planes:Vector.<Plane>;
 		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_sky:Sprite;
 		private var m_ground:Sprite;
+		
+
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -51,6 +56,7 @@ package state.gamestate {
 			this.m_initSky();
 			this.m_initGround();
 			this.m_initPlanes();
+			this.m_initHUD();
 		}
 		
 		
@@ -60,6 +66,7 @@ package state.gamestate {
 		private function m_initLayers():void {
 			this.m_planeLayer = this.layers.add("plane");
 			this.m_worldLayer = this.layers.add("world");
+			this.m_HUDLayer = this.layers.add("HUD");
 		}
 		
 		
@@ -143,6 +150,16 @@ package state.gamestate {
 					}
 				}
 			}
+		}
+		
+		/**
+		 * m_initHUDLayer
+		 * 
+		 */
+		private function m_initHUD():void {
+			var hud:HUD = new HUD(this.m_HUDLayer, new Point(0, 160));
+			this.m_HUDLayer.addChild(hud);
+			
 		}
 	}
 }

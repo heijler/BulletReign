@@ -251,11 +251,11 @@ package entity {
 				var i:int;
 				for(i = 0; i < bullet.length; i++) {
 					if(this.hitTestObject(bullet[i])) {
-						m_damageControl("hit");
+						m_damageControl("hit", bullet[i].BULLETDAMAGE);
+            // Ta bort kula
 					}
 				}
 			}
-			
 		}		
 		
 		
@@ -273,9 +273,9 @@ package entity {
 		 * m_damageControl
 		 * 
 		 */
-		private function m_damageControl(hitValue:String):void {
-			if(hitValue == "hit") {
-				this.m_durability -= 10;
+		private function m_damageControl(hitValue:String, hitDamage:Number):void {
+			if(hitValue == "hit" && this.m_durability != 0) {
+				this.m_durability -= hitDamage;
 			}
 			
 			if (this.m_durability <= 0) {
@@ -291,6 +291,10 @@ package entity {
 		private function m_freeFall():void {
 			this._velocity = 0;
 			this.setGravityFactor(7);
+		}
+		
+		private function m_durabilityMeter():void {
+			
 		}
 		
 	}
