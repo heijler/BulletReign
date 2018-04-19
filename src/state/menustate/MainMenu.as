@@ -193,14 +193,14 @@ package state.menustate {
 		 * 
 		 */
 		private function m_menuShow():void {
-			this.m_menuOptions[this.m_menuSelect].text = "_" + this.m_menuOptions[this.m_menuSelect].text;
+			this.m_menuOptions[this.m_menuSelect].text = "*" + this.m_menuOptions[this.m_menuSelect].text;
 			this.m_menuOptions[this.m_menuSelect].setTextFormat(this.m_selectedFormat);
 		}
 		
 		private function m_resetMenu():void {
 			for (var i:int = 0; i < this.m_menuOptions.length; i++) {
 				this.m_menuOptions[i].text;
-				if (this.m_menuOptions[i].text.indexOf("_") != -1) {
+				if (this.m_menuOptions[i].text.indexOf("*") != -1) {
 					this.m_menuOptions[i].text = this.m_menuOptions[i].text.substring(1, this.m_menuOptions[i].text.length);
 					this.m_menuOptions[i].setTextFormat(this.m_format);
 				}
