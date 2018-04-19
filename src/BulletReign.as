@@ -23,6 +23,7 @@ package {
 		
 		[Embed(source = "../asset/ttf/adore64.ttf", fontFamily = "adore64", mimeType = "application/x-font", embedAsCFF="false")]
 		private static const COUNTER_TEXT:Class;
+		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------

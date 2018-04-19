@@ -13,7 +13,7 @@ package entity {
 	public class PlaneManager {
 		
 		//-----------------------------------------------------------
-		// Properties
+		// Private properties
 		//-----------------------------------------------------------
 		
 		private const AMOUNT_LIMIT:int = 2;

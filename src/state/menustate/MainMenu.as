@@ -22,10 +22,15 @@ package state.menustate {
 	public class MainMenu extends DisplayState {
 		
 		//-----------------------------------------------------------
-		// Properties
+		// Public properties
 		//-----------------------------------------------------------
 		
 		public var m_menuLayer:DisplayStateLayer;
+		
+		//-----------------------------------------------------------
+		// Private properties
+		//-----------------------------------------------------------
+		
 		private var m_controls_one:EvertronControls = new EvertronControls(0);
 		private var m_controls_two:EvertronControls = new EvertronControls(1);
 		private var m_menuSelect:int = 0;

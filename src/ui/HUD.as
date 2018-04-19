@@ -24,6 +24,7 @@ package ui {
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
+		
 		private var scoreCounter:Number;
 		private var m_player:int;
 		private var m_playerName:TextField;

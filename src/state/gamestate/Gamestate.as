@@ -23,12 +23,16 @@ package state.gamestate {
 	public class Gamestate extends DisplayState {
 		
 		//-----------------------------------------------------------
-		// Private properties
+		// Public properties
 		//-----------------------------------------------------------
 		
 		public var m_planeLayer:DisplayStateLayer;
 		public var m_worldLayer:DisplayStateLayer;
     	public var m_HUDLayer:DisplayStateLayer;
+		
+		//-----------------------------------------------------------
+		// Private properties
+		//-----------------------------------------------------------
 		
 		private var m_planes:Vector.<Plane>;
 		private var m_bulletManagers:Vector.<BulletManager>;
@@ -160,7 +164,6 @@ package state.gamestate {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
 						this.m_planes[i].crash(this.m_worldLayer);
-						
 					}
 				}
 			}
