@@ -55,7 +55,7 @@ package entity {
 		 */
 		private function m_initBullet():void {
 			// Make the colors not as hard coded.
-			this.color = (this.m_owner ? 0xFF00FF : 0x0000FF);
+			this.color = (this.m_owner ? 0xC37100 : 0x8A8A00);
 		}
 		
 		
@@ -101,7 +101,9 @@ package entity {
 		private function updatePosition():void {
 			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity << 1;
 			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity << 1;
+			this.rotation = this._angle;
 			
+			//@TODO: Use scale factor to get rid of ifs
 			if (this.m_owner == 0) {
 				this.x += xVel;
 				this.y += yVel;

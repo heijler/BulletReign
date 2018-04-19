@@ -168,7 +168,8 @@ package entity {
 		 * Updates the skins rotation to match the angle.
 		 */
 		public function updateRotation():void {
-			this.m_skin.rotation = this._angle;
+			//this.rotation = this._angle;
+			this.rotation = this._angle;
 		}
 		
 		
