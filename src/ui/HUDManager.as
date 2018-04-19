@@ -41,8 +41,15 @@ package ui {
 		public function add(hud:HUD):void {
 			if (this.m_huds.length < AMOUNT_LIMIT) {
 				this.m_huds.push(hud);
+				
 				this.m_parent.addChild(hud);
+				hud.name = "Player ".toUpperCase() + this.m_huds.length;
 			}
+		}
+		
+		public function incrementWins(planeIndex:int):void {
+			this.m_huds[planeIndex].win = 1; // skicka med score
+			this.m_huds[planeIndex].updateWins();
 		}
 		
 		

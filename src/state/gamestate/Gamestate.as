@@ -34,6 +34,7 @@ package state.gamestate {
 		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_sky:Sprite;
 		private var m_ground:Sprite;
+		private var m_winCondition:Boolean;
 		
 
 		
@@ -121,7 +122,7 @@ package state.gamestate {
 			var hudManager:HUDManager = new HUDManager(this.m_HUDLayer);
 				hudManager.add(new HUD(0, new Point(10, 10)));
 				hudManager.add(new HUD(1, new Point(690, 10)));
-			
+				hudManager.incrementWins(0);
 		}
 		
 		
@@ -160,7 +161,6 @@ package state.gamestate {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
 						this.m_planes[i].crash(this.m_worldLayer);
-						
 					}
 				}
 			}
