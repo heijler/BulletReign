@@ -38,7 +38,7 @@ package entity {
 		
 		public function Entity() {
 			super();
-			this._appWidth = Session.application.width; // application.size.x/y
+			this._appWidth = Session.application.size.x;
 		}
 		
 		//-----------------------------------------------------------
