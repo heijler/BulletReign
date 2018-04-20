@@ -30,7 +30,7 @@ package entity {
 		private var m_ebulletManager:BulletManager;
 		private var m_durability:Number;
 		private var m_controls:EvertronControls;
-		private var m_activePlayer:int = 0;
+		public var m_activePlayer:int = 0;
 		private var m_fireDelay:Number = FIRE_DELAY;
 		private var m_burstSize:int = 5;
 		private var m_scaleFactor:int = 1;
