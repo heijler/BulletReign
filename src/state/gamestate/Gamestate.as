@@ -34,7 +34,8 @@ package state.gamestate {
 		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_sky:Sprite;
 		private var m_ground:Sprite;
-		private var m_winCondition:Boolean;
+		
+		private var m_hudManager:HUDManager; 
 		
 
 		
@@ -119,10 +120,10 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initHUD():void {
-			var hudManager:HUDManager = new HUDManager(this.m_HUDLayer);
-				hudManager.add(new HUD(0, new Point(10, 10)));
-				hudManager.add(new HUD(1, new Point(690, 10)));
-				hudManager.incrementWins(0);
+				this.m_hudManager = new HUDManager(this.m_HUDLayer);
+				this.m_hudManager.add(new HUD(0, new Point(10, 10)));
+				this.m_hudManager.add(new HUD(1, new Point(690, 10)));
+				//hudManager.incrementWins(0);
 		}
 		
 		
@@ -133,6 +134,7 @@ package state.gamestate {
 		override public function update():void {
 			this.m_skyCollision();
 			this.m_groundCollision();
+			this.m_resolveRound();
 		}
 		
 		
@@ -161,6 +163,22 @@ package state.gamestate {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
 						this.m_planes[i].crash(this.m_worldLayer);
+					}
+				}
+			}
+		}
+		
+		/**
+		 * m_resolveRound
+		 * Non-crashed player gets a point
+		 */
+		private function m_resolveRound():void {
+			for (var i:int = 0; i < this.m_planes.length; i++) {
+				if (this.m_planes[i].crashed == true) {
+					for (var j:int = 0; j < this.m_planes.length; j++) {
+						if (this.m_planes[j].crashed == false) {
+							this.m_hudManager.incrementWins(this.m_planes[j].m_activePlayer);
+						}
 					}
 				}
 			}

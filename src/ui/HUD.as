@@ -6,7 +6,6 @@ package ui {
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	
 	import assets.DurabilityMeterv2GFX;
@@ -23,7 +22,6 @@ package ui {
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
-		private var scoreCounter:Number;
 		private var m_player:int;
 		private var m_playerName:TextField;
 		private var m_playerWins:TextField;
@@ -62,7 +60,7 @@ package ui {
 		override public function init():void {
 			this.m_initPlayerInfo();
 			this.m_setSpawn();
-			//this.m_init
+			
 		}
 		
 		/**	 
@@ -133,8 +131,6 @@ package ui {
 		}
 		
 		public function updateWins():void {
-			//antal från gameState
-			trace(this.m_playerWins.text);
 			this.m_playerWins.text = "wins".toUpperCase() + " " + this.m_wins;
 		}
 		
