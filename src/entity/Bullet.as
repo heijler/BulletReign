@@ -15,7 +15,7 @@ package entity {
 		// Public properties
 		//-----------------------------------------------------------
 		
-		public const BULLET_DAMAGE:Number = 20; // 10
+		public const BULLET_DAMAGE:Number = 1; // 10
 		public  var color:uint = 0xFFFFFF;
 		public var active:Boolean = true;
 		

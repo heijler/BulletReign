@@ -8,7 +8,8 @@ package ui {
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
-	import assets.DurabilityMeterv2GFX;
+	import assets.DurabilityMeterv3GFX;
+	import assets.DurabilityMeterv4GFX;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
 	import se.lnu.stickossdk.system.Session;
@@ -24,6 +25,7 @@ package ui {
 		//-----------------------------------------------------------
 		private var scoreCounter:Number;
 		private var m_player:int;
+		private var m_playerVisualDurability:int = 1;
 		private var m_playerName:TextField;
 		private var m_playerWins:TextField;
 		private var m_playerHealth:TextField;
@@ -51,7 +53,11 @@ package ui {
 		}
 		
 		public function set win(value:int):void {
-			this.m_wins = value;
+			this.m_wins += value;
+		}
+		
+		public function set visualDurability(value:int):void {
+			this.m_playerVisualDurability = value;
 		}
 		
 		/**	 
@@ -78,30 +84,25 @@ package ui {
 			this.m_textFormat.color = 0xFFFFFF;
 			this.m_textFormat.font = "adore64";
 			this.m_playerWins.text = "wins".toUpperCase() + " " + this.m_wins;
-			this.updateWins();
-			//this.m_durabilityMeter = new DurabilityMeterv2GFX; 
+			this.updateWins(); //??????
+			this.m_durabilityMeter = new DurabilityMeterv3GFX;
+			this.m_durabilityMeter = new DurabilityMeterv4GFX; 
 			
 			
-			/*
+			
 			if (m_player == 0) {
-				this.m_playerName.autoSize = TextFieldAutoSize.LEFT;
-				//this.m_playerName.text = "player".toUpperCase() + " " + (this.m_player + 1);
-				this.m_playerWins.text = "wins".toUpperCase() + " " + this.m_playerOneWin;
-				this.m_durabilityMeter = new DurabilityMeterv2GFX; 
+				this.m_durabilityMeter = new DurabilityMeterv3GFX; 
 				this.m_durabilityMeter.x = Session.application.size.x / 2 - this.m_durabilityMeter.width / 2 - 1;
 				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2;
-				this.m_durabilityMeter.gotoAndStop(1);
+				this.m_durabilityMeter.gotoAndStop(11);
 				
 			} else if (m_player == 1){
-				this.m_playerName.autoSize = TextFieldAutoSize.RIGHT;
-				//this.m_playerName.text = (this.m_player + 1) + " " + "player".toUpperCase();
-				this.m_playerWins.text = this.m_playerTwoWin + " " + "wins".toUpperCase();
-				this.m_durabilityMeter = new DurabilityMeterv2GFX;
+				this.m_durabilityMeter = new DurabilityMeterv4GFX;
 				this.m_durabilityMeter.x = Session.application.size.x / 2 + this.m_durabilityMeter.width / 2 + 1;
 				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2;
-				this.m_durabilityMeter.gotoAndStop(1);
+				this.m_durabilityMeter.gotoAndStop(11);
 			}
-			*/
+
 			this.m_playerName.embedFonts = true;
 			this.m_playerName.setTextFormat(this.m_textFormat);
 			this.m_playerName.defaultTextFormat = this.m_textFormat;
@@ -114,7 +115,7 @@ package ui {
 			
 			this.m_playerHealth.embedFonts = true;
 			this.m_playerHealth.setTextFormat(this.m_textFormat);
-			//addChild(this.m_durabilityMeter);
+			addChild(this.m_durabilityMeter);
 			addChild(this.m_playerHealth);
 		}
 		
@@ -136,7 +137,7 @@ package ui {
 		}
 		
 		public function updateHealth():void {
-			//nivå från gameState
+			this.m_durabilityMeter.gotoAndStop(this.m_playerVisualDurability);
 		}
 	}
 }

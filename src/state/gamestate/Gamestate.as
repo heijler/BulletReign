@@ -38,6 +38,7 @@ package state.gamestate {
 		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_sky:Sprite;
 		private var m_ground:Sprite;
+		private var m_dChangeFlag:Boolean = true;
 		
 		private var m_hudManager:HUDManager; 
 		
@@ -139,6 +140,7 @@ package state.gamestate {
 			this.m_skyCollision();
 			this.m_groundCollision();
 			this.m_resolveRound();
+			this.m_durabilityChange();
 		}
 		
 		
@@ -184,6 +186,14 @@ package state.gamestate {
 							this.m_hudManager.incrementWins(this.m_planes[j].m_activePlayer);
 						}
 					}
+				}
+			}
+		}
+		
+		private function m_durabilityChange():void {
+			for(var i:int = 0; i < this.m_planes.length; i++) {
+				if (this.m_planes[i].m_newDurability < this.m_planes[i].m_durability) {
+					this.m_hudManager.incrementDecrementHealth(this.m_planes[i].m_activePlayer, this.m_planes[i].m_newDurability);
 				}
 			}
 		}

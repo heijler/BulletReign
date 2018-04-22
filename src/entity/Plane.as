@@ -36,7 +36,8 @@ package entity {
 		private var m_skin:MovieClip;
 		private var m_bulletManager:BulletManager;
 		private var m_ebulletManager:BulletManager;
-		private var m_durability:Number;
+		public var m_durability:Number;
+		public var m_newDurability:Number;
 		private var m_controls:EvertronControls;
 		public var m_activePlayer:int = 0;
 		private var m_fireDelay:Number = FIRE_DELAY;
@@ -52,7 +53,8 @@ package entity {
 			super();
 			this.m_bulletManager = bulletMngr;
 			this.m_ebulletManager = ebulletMngr;
-			this.m_durability = 100;
+			this.m_durability = 10;
+			this.m_newDurability = this.m_durability;
 			this.m_activePlayer = player;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
 			this.m_pos = pos;
@@ -276,9 +278,10 @@ package entity {
 		 * 
 		 */
 		private function m_damageControl():void {
-			if(this.m_durability != 0) {
-				this.m_durability -= this.m_ebulletManager.damage;
-			} else if (this.m_durability <= 0) {
+			if(this.m_newDurability != 0) {
+				this.m_newDurability -= this.m_ebulletManager.damage;
+				trace(this.m_newDurability);
+			} else if (this.m_newDurability <= 0) {
 				this.m_steering = false;
 				this.m_freeFall();
 				this._flicker(this, 500);

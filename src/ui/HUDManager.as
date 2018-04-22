@@ -47,10 +47,14 @@ package ui {
 		}
 		
 		public function incrementWins(planeIndex:int):void {
-			this.m_huds[planeIndex].win = 1; // skicka med score
+			this.m_huds[planeIndex].win = 1;
 			this.m_huds[planeIndex].updateWins();
 		}
 		
+		public function incrementDecrementHealth(planeIndex:int, durability):void {
+			this.m_huds[planeIndex].visualDurability = durability;
+			this.m_huds[planeIndex].updateHealth();
+		}
 		
 		/**
 		 * 
