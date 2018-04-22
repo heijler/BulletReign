@@ -20,10 +20,18 @@ package entity {
 	public class Plane extends MotionEntity {
 		
 		//-----------------------------------------------------------
+		// Public properties
+		//-----------------------------------------------------------
+		
+		public var crashed:Boolean = false;
+		
+		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
 		private const FIRE_DELAY:int = 4;
+		private const ACCELERATE_FACTOR:Number = 0.25;
+		private const BASE_SPEED:Number = 4;
 		
 		private var m_skin:MovieClip;
 		private var m_bulletManager:BulletManager;
@@ -34,9 +42,7 @@ package entity {
 		private var m_fireDelay:Number = FIRE_DELAY;
 		private var m_burstSize:int = 5;
 		private var m_scaleFactor:int = 1;
-		public var crashed:Boolean = false;
 		private var m_steering:Boolean = true;
-		
 
 		//-----------------------------------------------------------
 		// Constructor
@@ -50,7 +56,7 @@ package entity {
 			this.m_activePlayer = player;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
 			this.m_pos = pos;
-			this._velocity = 5;
+			this._velocity = this.BASE_SPEED;
 			this._angle = 0;
 			this.m_scaleFactor = scaleFactor;
 		}
@@ -178,8 +184,8 @@ package entity {
 		 * 
 		 */
 		private function m_accelerate():void {
-			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.15);
-			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.15);
+			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
+			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 			
 			this.x += xVel * this.m_scaleFactor;
 			this.y += yVel * this.m_scaleFactor;
@@ -262,6 +268,7 @@ package entity {
 			this._velocity = 0;
 			this.removeGravity();
 			this._shake(layer, 5);
+			this._flicker(this, 500);
 		}
 		
 		/**
@@ -274,7 +281,7 @@ package entity {
 			} else if (this.m_durability <= 0) {
 				this.m_steering = false;
 				this.m_freeFall();
-				this._flicker(this);
+				this._flicker(this, 500);
 			}
 		}
 		
@@ -289,10 +296,5 @@ package entity {
 			this.setGravityFactor(7);
 			this.updateRotation();
 		}
-		
-		private function m_durabilityMeter():void {
-			
-		}
-		
 	}
 }

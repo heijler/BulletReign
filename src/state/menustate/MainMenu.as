@@ -22,17 +22,21 @@ package state.menustate {
 	public class MainMenu extends DisplayState {
 		
 		//-----------------------------------------------------------
-		// Properties
+		// Public properties
 		//-----------------------------------------------------------
 		
 		public var m_menuLayer:DisplayStateLayer;
+		
+		//-----------------------------------------------------------
+		// Private properties
+		//-----------------------------------------------------------
+		
 		private var m_controls_one:EvertronControls = new EvertronControls(0);
 		private var m_controls_two:EvertronControls = new EvertronControls(1);
 		private var m_menuSelect:int = 0;
 		private var m_menuOptions:Vector.<TextField> = new Vector.<TextField>();
 		private var m_format:TextFormat;
 		private var m_selectedFormat:TextFormat;
-		private const MENU_ITEM_MARGIN:int = 15;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -57,6 +61,7 @@ package state.menustate {
 			this.m_menuShow();
 		}
 		
+		
 		/**	
 		 * update
 		 * override
@@ -65,6 +70,7 @@ package state.menustate {
 			// Gameloop
 			this.m_updateControls();
 		}
+		
 		
 		/**	
 		 * dispose
@@ -84,6 +90,10 @@ package state.menustate {
 		}
 		
 		
+		/**
+		 * m_initFormat
+		 * 
+		 */
 		private function m_initFormat():void {
 			this.m_format = new TextFormat();
 			this.m_format.color = 0xFFFFFF;
@@ -100,50 +110,34 @@ package state.menustate {
 			this.m_selectedFormat.font = "adore64";
 		}
 		
+		
 		/**
 		 * m_initText
 		 * 
 		 */
 		private function m_initText():void {
-			
-			
-			var menu1:TextField = new TextField();
-				menu1.text = "Dogfight".toUpperCase();
-				menu1.x = Session.application.size.x * 0.5 - 200;
-				menu1.y = 150;
-				menu1.autoSize = TextFieldAutoSize.LEFT;
-				menu1.setTextFormat(this.m_format);
-				menu1.embedFonts = true;
-			this.m_menuLayer.addChild(menu1);
-			
-			var menu2:TextField = new TextField();
-				menu2.text = "Conquer the Banner".toUpperCase();
-				menu2.x = menu1.x;
-				menu2.y = menu1.y + this.m_format.size + this.MENU_ITEM_MARGIN;
-				menu2.autoSize = TextFieldAutoSize.LEFT;
-				menu2.setTextFormat(this.m_format);
-				menu2.embedFonts = true;
-			this.m_menuLayer.addChild(menu2);
-			
-			var menu3:TextField = new TextField();
-				menu3.text = "How to play".toUpperCase();
-				menu3.x = menu1.x;
-				menu3.y = menu2.y + this.m_format.size + this.MENU_ITEM_MARGIN;
-				menu3.autoSize = TextFieldAutoSize.LEFT;
-				menu3.setTextFormat(this.m_format);
-				menu3.embedFonts = true;
-			this.m_menuLayer.addChild(menu3);
-			
-			var menu4:TextField = new TextField();
-				menu4.text = "Credits".toUpperCase();
-				menu4.x = menu1.x;
-				menu4.y = menu3.y + this.m_format.size + this.MENU_ITEM_MARGIN;
-				menu4.autoSize = TextFieldAutoSize.LEFT;
-				menu4.setTextFormat(this.m_format);
-				menu4.embedFonts = true;
-			this.m_menuLayer.addChild(menu4); // Make method to addChildren to menuLayer
-			
-			this.m_menuOptions.push(menu1, menu2, menu3, menu4);
+			var menuItems:Vector.<String> = new <String>["Dogfight", "Conquer the Banner", "How to Play", "Credits"];
+			for(var i:int = 0; i < menuItems.length; i++) {
+				this.m_menuOptions.push(this.m_createMenuItem(menuItems[i]));
+				this.m_menuLayer.addChild(this.m_menuOptions[i]);
+			}
+		}
+		
+		
+		/**
+		 * m_createMenuItem
+		 * 
+		 */
+		private function m_createMenuItem(text:String):TextField {
+			var menuItem:TextField = new TextField();
+				menuItem.text = text.toUpperCase();
+				menuItem.x = Session.application.size.x * 0.5 - 200; //@FIX: Magic numbers
+				menuItem.y = Session.application.size.y * 0.25 + this.m_format.size + this.m_menuOptions.length * 50; //@FIX: Magic numbers
+				menuItem.autoSize = TextFieldAutoSize.LEFT;
+				menuItem.setTextFormat(this.m_format);
+				menuItem.defaultTextFormat = this.m_format;
+				menuItem.embedFonts = true;
+			return menuItem;
 		}
 		
 		
@@ -190,6 +184,7 @@ package state.menustate {
 		
 		
 		/**
+		 * m_menuShow
 		 * 
 		 */
 		private function m_menuShow():void {
@@ -197,12 +192,15 @@ package state.menustate {
 			this.m_menuOptions[this.m_menuSelect].setTextFormat(this.m_selectedFormat);
 		}
 		
+		
+		/**
+		 * m_resetMenu
+		 * 
+		 */
 		private function m_resetMenu():void {
 			for (var i:int = 0; i < this.m_menuOptions.length; i++) {
-				this.m_menuOptions[i].text;
 				if (this.m_menuOptions[i].text.indexOf("*") != -1) {
 					this.m_menuOptions[i].text = this.m_menuOptions[i].text.substring(1, this.m_menuOptions[i].text.length);
-					this.m_menuOptions[i].setTextFormat(this.m_format);
 				}
 			}
 		}

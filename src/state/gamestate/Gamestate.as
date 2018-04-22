@@ -23,12 +23,16 @@ package state.gamestate {
 	public class Gamestate extends DisplayState {
 		
 		//-----------------------------------------------------------
-		// Private properties
+		// Public properties
 		//-----------------------------------------------------------
 		
 		public var m_planeLayer:DisplayStateLayer;
 		public var m_worldLayer:DisplayStateLayer;
     	public var m_HUDLayer:DisplayStateLayer;
+		
+		//-----------------------------------------------------------
+		// Private properties
+		//-----------------------------------------------------------
 		
 		private var m_planes:Vector.<Plane>;
 		private var m_bulletManagers:Vector.<BulletManager>;

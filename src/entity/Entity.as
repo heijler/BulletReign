@@ -3,9 +3,7 @@ package entity {
 	// Import
 	//-----------------------------------------------------------
 	
-	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
@@ -26,7 +24,13 @@ package entity {
 		
 		protected var m_pos:Point;
 		protected var _appWidth:int = 0;
+		
+		//-----------------------------------------------------------
+		// Private properties
+		//-----------------------------------------------------------
+		
 		private const DEFAULT_SCALE:int = 2;
+		
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -34,7 +38,7 @@ package entity {
 		
 		public function Entity() {
 			super();
-			this._appWidth = Session.application.width; // application.size.x/y
+			this._appWidth = Session.application.size.x;
 		}
 		
 		//-----------------------------------------------------------
@@ -65,8 +69,8 @@ package entity {
 		/**
 		 * 
 		 */
-		protected function _flicker(obj:DisplayObjectContainer):void {
-			var flicker:Flicker = new Flicker(obj, 1000, 60, true);
+		protected function _flicker(obj:DisplayObjectContainer, duration = 1000):void {
+			var flicker:Flicker = new Flicker(obj, duration, 60, true);
 			Session.effects.add(flicker);
 		}
 	}

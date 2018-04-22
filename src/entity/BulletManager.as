@@ -19,10 +19,10 @@ package entity {
 			return this.m_bullets[0].BULLET_DAMAGE;
 		}
 		
+		//-----------------------------------------------------------
+		// Private properties
+		//-----------------------------------------------------------
 		
-		//-----------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------
 		private var m_parent:DisplayObjectContainer;
 		private  var m_bullets:Vector.<Bullet>;
 		private const AMOUNT_LIMIT:int = 15;

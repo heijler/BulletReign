@@ -10,16 +10,23 @@ package entity {
 	//-----------------------------------------------------------
 	
 	public class Bullet extends MotionEntity {
+		
+		//-----------------------------------------------------------
+		// Public properties
+		//-----------------------------------------------------------
+		
+		public const BULLET_DAMAGE:Number = 20; // 10
+		public  var color:uint = 0xFFFFFF;
+		public var active:Boolean = true;
+		
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
-		public const BULLET_DAMAGE:Number = 20; // 10
-		private const BULLET_SIZE:Number = 1.5;
 		
+		private const BULLET_SIZE:Number = 1.5;
 		private var m_skin:Sprite;
 		private var m_owner:int;
-		public  var color:uint = 0xFFFFFF;
-		public var active:Boolean = true;
+		
 		
 		
 		//-----------------------------------------------------------

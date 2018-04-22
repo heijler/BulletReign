@@ -11,13 +11,17 @@ package entity {
 	public class MotionEntity extends Entity {
 		
 		//-----------------------------------------------------------
-		// Properties
+		// Protected properties
 		//-----------------------------------------------------------
 		
 		protected const GRAVITY:Number = 0.55;
-		
 		protected var _velocity:Number;
 		protected var _angle:Number;
+		
+		//-----------------------------------------------------------
+		// Private properties
+		//-----------------------------------------------------------
+		
 		private var m_gravityFactor:int = 1;
 		
 		//-----------------------------------------------------------

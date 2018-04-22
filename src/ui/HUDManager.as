@@ -13,7 +13,7 @@ package ui {
 	public class HUDManager {
 		
 		//-----------------------------------------------------------
-		// Properties
+		// Private properties
 		//-----------------------------------------------------------
 		
 		private const AMOUNT_LIMIT:int = 2;
