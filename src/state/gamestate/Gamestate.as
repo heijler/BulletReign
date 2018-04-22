@@ -38,7 +38,6 @@ package state.gamestate {
 		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_sky:Sprite;
 		private var m_ground:Sprite;
-		private var m_dChangeFlag:Boolean = true;
 		
 		private var m_hudManager:HUDManager; 
 		

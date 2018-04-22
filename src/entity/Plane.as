@@ -280,7 +280,6 @@ package entity {
 		private function m_damageControl():void {
 			if(this.m_newDurability != 0) {
 				this.m_newDurability -= this.m_ebulletManager.damage;
-				trace(this.m_newDurability);
 			} else if (this.m_newDurability <= 0) {
 				this.m_steering = false;
 				this.m_freeFall();
