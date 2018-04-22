@@ -18,7 +18,7 @@ package entity {
 		
 		private const AMOUNT_LIMIT:int = 2;
 		private var m_parent:DisplayObjectContainer;
-		private  var m_planes:Vector.<Plane>;
+		private var m_planes:Vector.<Plane>;
 		
 		
 		//-----------------------------------------------------------

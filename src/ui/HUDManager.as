@@ -18,7 +18,7 @@ package ui {
 		
 		private const AMOUNT_LIMIT:int = 2;
 		private var m_parent:DisplayObjectContainer;
-		private  var m_huds:Vector.<HUD>;
+		private var m_huds:Vector.<HUD>;
 		
 		
 		//-----------------------------------------------------------
@@ -42,7 +42,13 @@ package ui {
 			if (this.m_huds.length < AMOUNT_LIMIT) {
 				this.m_huds.push(hud);
 				this.m_parent.addChild(hud);
+				hud.name = "Player ".toUpperCase() + this.m_huds.length;
 			}
+		}
+		
+		public function incrementWins(planeIndex:int):void {
+			this.m_huds[planeIndex].win = 1; // skicka med score
+			this.m_huds[planeIndex].updateWins();
 		}
 		
 		
