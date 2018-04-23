@@ -17,5 +17,9 @@ package entity.fx {
 		public function Trail() {
 			
 		}
+		
+		override public function update():void {
+			trace("Trail");
+		}
 	}
 }

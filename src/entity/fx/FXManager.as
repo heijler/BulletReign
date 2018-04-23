@@ -16,8 +16,8 @@ package entity.fx {
 		//-----------------------------------------------------------
 		
 		private var m_parent:DisplayObjectContainer;
-		private  var m_effects:Vector.<Effect>;
-		private const AMOUNT_LIMIT:int = 15;
+		private  var m_effects:Vector.<Effect> = new Vector.<Effect>;
+		private const AMOUNT_LIMIT:int = 20;
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
@@ -35,7 +35,14 @@ package entity.fx {
 		 * 
 		 */
 		public function add(effect:Effect):void {
-			this.m_effects.push(effect);
+			if (this.m_effects.length < AMOUNT_LIMIT) {
+				this.m_effects.push(effect);
+			} else {
+				var firstEffect:Effect = this.m_effects.shift()
+				firstEffect = null;
+			}
+			
+			trace("Effect vector length", this.m_effects.length);
 		}
 		
 		

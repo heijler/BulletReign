@@ -37,13 +37,12 @@ package entity {
 		//-----------------------------------------------------------
 		
 		
-		/**
-		 * update
-		 * Override
-		 */
-		override public function update():void {
-			this.wrapAroundObjects();
-		}
+//		/**
+//		 * update
+//		 * Override
+//		 */
+//		override public function update():void {
+//		}
 		
 		
 		/**
