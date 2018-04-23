@@ -3,13 +3,13 @@ package state.menustate {
 	// Import
 	//-----------------------------------------------------------
 	
-	import se.lnu.stickossdk.display.DisplayState;
+	
 	
 	//-----------------------------------------------------------
 	// RematchMenu
 	//-----------------------------------------------------------
 	
-	public class RematchMenu extends DisplayState {
+	public class RematchMenu extends Menu {
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -25,5 +25,9 @@ package state.menustate {
 		//-----------------------------------------------------------
 		// Methods
 		//-----------------------------------------------------------
+		
+		override protected function initMenu():void {
+			this._addMenuItems(new Vector.<String>["Rematch", "Main Menu", "How to Play"]);
+		}
 	}
 }
