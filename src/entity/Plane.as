@@ -32,11 +32,11 @@ package entity {
 		private const FIRE_DELAY:int = 4;
 		private const ACCELERATE_FACTOR:Number = 0.25;
 		private const BASE_SPEED:Number = 4;
+		public const m_durability:Number = 10;
 		
 		private var m_skin:MovieClip;
 		private var m_bulletManager:BulletManager;
 		private var m_ebulletManager:BulletManager;
-		public var m_durability:Number;
 		public var m_newDurability:Number;
 		private var m_controls:EvertronControls;
 		public var m_activePlayer:int = 0;
@@ -53,7 +53,6 @@ package entity {
 			super();
 			this.m_bulletManager = bulletMngr;
 			this.m_ebulletManager = ebulletMngr;
-			this.m_durability = 10;
 			this.m_newDurability = this.m_durability;
 			this.m_activePlayer = player;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
