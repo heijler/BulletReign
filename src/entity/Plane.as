@@ -9,6 +9,9 @@ package entity {
 	import asset.Plane1GFX;
 	import asset.Plane2GFX;
 	
+	import entity.fx.FXManager;
+	import entity.fx.Trail;
+	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
@@ -33,6 +36,7 @@ package entity {
 		private const ACCELERATE_FACTOR:Number = 0.25;
 		private const BASE_SPEED:Number = 4;
 		
+		private var m_fxMan:FXManager;
 		private var m_skin:MovieClip;
 		private var m_bulletManager:BulletManager;
 		private var m_ebulletManager:BulletManager;
@@ -61,6 +65,7 @@ package entity {
 			this._velocity = this.BASE_SPEED;
 			this._angle = 0;
 			this.m_scaleFactor = scaleFactor;
+			this.m_fxMan = new FXManager();
 		}
 		
 		//-----------------------------------------------------------
@@ -191,6 +196,9 @@ package entity {
 			
 			this.x += xVel * this.m_scaleFactor;
 			this.y += yVel * this.m_scaleFactor;
+			
+			
+			this.m_fxMan.add(new entity.fx.Trail);
 		}
 		
 		

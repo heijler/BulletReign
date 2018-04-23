@@ -26,9 +26,5 @@ package entity.fx {
 		public function Effect() {
 			super();
 		}
-		
-		override public function update():void {
-			trace("Hello");
-		}
 	}
 }
