@@ -42,7 +42,6 @@ package entity {
 		 * Override
 		 */
 		override public function update():void {
-			this.wrapAroundObjects();
 		}
 		
 		

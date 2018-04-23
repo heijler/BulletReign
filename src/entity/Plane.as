@@ -221,11 +221,7 @@ package entity {
 		 * 
 		 */
 		private function m_updatePosition():void {
-			if(this.x < -this.width) {
-				this.x = this._appWidth;
-			} else if (this.x > this._appWidth) {
-				this.x = -this.width;
-			}
+			this.wrapAroundObjects();
 		}
 		
 		

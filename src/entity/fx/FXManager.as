@@ -17,7 +17,7 @@ package entity.fx {
 		
 		private var m_parent:DisplayObjectContainer;
 		private  var m_effects:Vector.<Effect>;
-		private const AMOUNT_LIMIT:int = 15;
+		private const AMOUNT_LIMIT:int = 2;
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------

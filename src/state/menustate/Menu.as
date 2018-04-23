@@ -180,7 +180,6 @@ package state.menustate {
 				this.m_menuMove();
 			} else if (Input.keyboard.justPressed(control.PLAYER_BUTTON_1)) {
 				Session.application.displayState = new Gamestate();
-				trace("this.m_menuSelect", this.m_menuSelect);
 			}
 		}
 		
@@ -229,10 +228,6 @@ package state.menustate {
 		 * _addMenuItems
 		 */
 		protected function _addMenuItems(menuObjects:Vector.<Object>):void {
-			/*for (var i:int = 0; i < obj.length; i++) {
-				this._items.push(strings[i]);
-			}*/
-			
 			for (var i:int = 0; i < menuObjects.length; i++) {
 				//trace(obj[i].name, obj[i].state);
 				this._items.push(menuObjects[i].name);
