@@ -46,8 +46,8 @@ package ui {
 			}
 		}
 		
-		public function incrementWins(planeIndex:int):void {
-			this.m_huds[planeIndex].win = 1;
+		public function incrementWins(planeIndex:int, wins):void {
+			this.m_huds[planeIndex].win = wins;
 			this.m_huds[planeIndex].updateWins();
 		}
 		

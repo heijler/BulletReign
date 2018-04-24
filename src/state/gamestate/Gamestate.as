@@ -10,8 +10,6 @@ package state.gamestate {
 	import entity.Plane;
 	import entity.PlaneManager;
 	
-	import gamemodes.Round;
-	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	
@@ -37,13 +35,12 @@ package state.gamestate {
 		//-----------------------------------------------------------
 		
 		private var m_planes:Vector.<Plane>;
-		private var m_wins:int;
 		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_sky:Sprite;
 		private var m_ground:Sprite;
 		
 		private var m_hudManager:HUDManager;
-		private var m_round:Round;
+		//private var m_round:Round;
 		
 
 		
@@ -69,7 +66,7 @@ package state.gamestate {
 			this.m_initGround();
 			this.m_initPlanes();
 			this.m_initHUD();
-			this.m_initRound();
+			//this.m_initRound();
 		}
 		
 		
@@ -134,11 +131,11 @@ package state.gamestate {
 			this.m_hudManager.add(new HUD(1, new Point(690, 10)));
 		
 		}
-		
+		/*
 		private function m_initRound():void {
 			this.m_round = new Round();
 		}
-		
+		*/
 		
 		/**
 		 * update
@@ -191,7 +188,9 @@ package state.gamestate {
 				if (this.m_planes[i].crashed == true) {
 					for (var j:int = 0; j < this.m_planes.length; j++) {
 						if (this.m_planes[j].crashed == false) {
-							this.m_hudManager.incrementWins(this.m_planes[j].m_activePlayer,this.m_wins);
+							if (this.m_planes[j].m_newWins >= this.m_planes[j].m_wins) {
+							this.m_hudManager.incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].m_newWins);
+							}
 						}
 					}
 				}

@@ -24,7 +24,7 @@ package entity {
 		//-----------------------------------------------------------
 		
 		private var m_parent:DisplayObjectContainer;
-		private  var m_bullets:Vector.<Bullet>;
+		private var m_bullets:Vector.<Bullet>;
 		private const AMOUNT_LIMIT:int = 15;
 		
 		//-----------------------------------------------------------
