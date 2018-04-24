@@ -22,7 +22,7 @@ package entity {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private const BULLET_SIZE:Number = 1.5;
+		private const BULLET_SIZE:Number = 2;
 		private var m_skin:Sprite;
 		private var m_owner:int;
 		
@@ -72,7 +72,7 @@ package entity {
 		private function m_initSkin():void {
 			this.m_skin = new Sprite();
 			this.m_skin.graphics.beginFill(this.color);
-			this.m_skin.graphics.drawRect(this.x, this.y, this.BULLET_SIZE, this.BULLET_SIZE);
+			this.m_skin.graphics.drawRect(-this.BULLET_SIZE * 0.5, -this.BULLET_SIZE * 0.5, this.BULLET_SIZE, this.BULLET_SIZE);
 			this.m_skin.graphics.endFill();
 			this._setScale(this.m_skin);
 			this.addChild(this.m_skin);
@@ -104,8 +104,8 @@ package entity {
 		 * Shots bullet 
 		 */
 		private function updatePosition():void {
-			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity << 1;
-			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity << 1;
+			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity << 1);
+			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity << 1);
 			this.rotation = this._angle;
 			
 			//@TODO: Use scale factor to get rid of ifs

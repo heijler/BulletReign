@@ -34,7 +34,7 @@ package entity {
 		
 		private const FIRE_DELAY:int = 4;
 		private const ACCELERATE_FACTOR:Number = 0.25;
-		private const BASE_SPEED:Number = 2;
+		private const BASE_SPEED:Number = 4;
 		public const m_durability:Number = 10;
 		public var m_wins:Number = 0;
 		public var m_newWins:Number;
@@ -117,7 +117,7 @@ package entity {
 			this.applyGravity();
 			this.m_updateControls();
 			this.m_defaultSpeed();
-			this.m_collisionControl()
+			this.m_collisionControl();
 			this.m_updatePosition();
 			this.m_checkwin();
 		}
@@ -165,6 +165,7 @@ package entity {
 			this._angle %= 360; // resets angle at 360
 			if (this._angle < 0) this._angle = this._angle + 360; // Prevents minus angles
 			this.updateRotation();
+			trace("plane", this._angle);
 		}
 		
 		
