@@ -36,7 +36,8 @@ package entity {
 		private const ACCELERATE_FACTOR:Number = 0.25;
 		private const BASE_SPEED:Number = 4;
 		public const m_durability:Number = 10;
-		
+		public var m_wins:Number = 0;
+		public var m_newWins:Number;
 		private var m_fxMan:FXManager;
 		private var m_skin:MovieClip;
 		private var m_bulletManager:BulletManager;
@@ -118,6 +119,7 @@ package entity {
 			this.m_defaultSpeed();
 			this.m_collisionControl()
 			this.m_updatePosition();
+			this.m_checkwin();
 		}
 		
 		
@@ -250,7 +252,7 @@ package entity {
 		 * 
 		 */
 		private function m_collisionControl():void {
-			this.m_bulletCollision();			
+			this.m_bulletCollision();		
 		}
 		
 		
@@ -300,6 +302,15 @@ package entity {
 			this._angle = this._angle + 5 * this.m_scaleFactor;
 			this.setGravityFactor(7);
 			this.updateRotation();
+		}
+		
+		private function m_checkwin():void {
+			this.m_newWins = this.m_wins + 1; //OBS. Methoden fungerar ej!
+			if(this.m_newWins != 2) {
+				this.m_wins = this.m_newWins;
+			} else if (this.m_wins >= 2) {
+				trace("Du vann");
+			}
 		}
 	}
 }

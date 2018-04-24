@@ -29,7 +29,7 @@ package ui {
 		private var m_playerName:TextField;
 		private var m_playerWins:TextField;
 		private var m_playerHealth:TextField;
-		private var m_wins:int = 0;
+		private var m_wins:int;
 		private var m_textFormat:TextFormat;
 		private var m_pos:Point;
 		private var m_durabilityMeter:MovieClip;
@@ -53,7 +53,7 @@ package ui {
 		}
 		
 		public function set win(value:int):void {
-			this.m_wins += value;
+			this.m_wins = value;
 		}
 		
 		public function set visualDurability(value:int):void {

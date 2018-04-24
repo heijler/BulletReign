@@ -52,5 +52,15 @@ package entity {
 		public function getPlanes():Vector.<Plane> {
 			return this.m_planes;
 		}
+		
+		public function checkCollision(plane:Plane):Boolean {
+			var val:Boolean = false;
+			for(var i:int = 0; i < this.m_planes.length; i++) {
+				if(plane.hitTestObject(this.m_planes[i])) {
+					val = true;
+				}
+			}
+			return val;
+		}
 	}
 }
