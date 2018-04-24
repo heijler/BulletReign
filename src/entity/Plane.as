@@ -34,7 +34,7 @@ package entity {
 		
 		private const FIRE_DELAY:int = 4;
 		private const ACCELERATE_FACTOR:Number = 0.25;
-		private const BASE_SPEED:Number = 4;
+		private const BASE_SPEED:Number = 2;
 		public const m_durability:Number = 10;
 		public var m_wins:Number = 0;
 		public var m_newWins:Number;
@@ -298,9 +298,10 @@ package entity {
 		 * @TODO: Move this to MotionEntity
 		 */
 		private function m_freeFall():void {
-			this._velocity = 5;
-			this._angle = this._angle + 5 * this.m_scaleFactor;
-			this.setGravityFactor(7);
+			this._velocity = 4;
+			//this._angle = this._angle + 25 * this.m_scaleFactor;
+			this.setGravityFactor(4);
+			this.reflectAngle();
 			this.updateRotation();
 		}
 		
