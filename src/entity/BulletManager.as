@@ -5,6 +5,8 @@ package entity {
 	import flash.display.DisplayObjectContainer;
 	import flash.geom.Point;
 	
+	import se.lnu.stickossdk.system.Session;
+	
 	//-----------------------------------------------------------
 	// BulletManager
 	//-----------------------------------------------------------
@@ -16,16 +18,17 @@ package entity {
 		//-----------------------------------------------------------
 		
 		public function get damage():Number {
-			return this.m_bullets[0].BULLET_DAMAGE;
+			return this.m_bullets[0].BULLET_DAMAGE; //@TODO: Is this safe? 
 		}
 		
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private var m_parent:DisplayObjectContainer;
-		private  var m_bullets:Vector.<Bullet>;
 		private const AMOUNT_LIMIT:int = 15;
+		
+		private var m_parent:DisplayObjectContainer;
+		private var m_bullets:Vector.<Bullet>;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -53,8 +56,8 @@ package entity {
 				var firstBullet:Bullet = this.m_bullets.shift();
 				this.removeBullet(firstBullet);
 			}
-			//this.removeInactive();
 		}
+		
 		
 		/**
 		 * get
@@ -64,6 +67,7 @@ package entity {
 		public function getBullets():Vector.<Bullet> {
 			return this.m_bullets;
 		}
+		
 		
 		/**
 		 * removeAll
@@ -76,40 +80,41 @@ package entity {
 			this.m_bullets.length = 0;
 		}
 		
+		
 		/**
 		 * removeBullet
-		 * 
+		 * @FIX: Make this private
 		 */
 		public function removeBullet(bullet:Bullet):void {
-			if (this.m_parent.contains(bullet)) {
-				this.m_parent.removeChild(bullet);
-				bullet = null;
+			var markedBullet:Vector.<Bullet> = this.m_bullets.splice(this.m_bullets.indexOf(bullet), 1);
+			if (this.m_parent.contains(markedBullet[0])) {
+				this.m_parent.removeChild(markedBullet[0]);
+				markedBullet[0] = null;
+				markedBullet = null;
 			}
-			
 		}
 		
 		/**
 		 * removeInactive
+		 * @NOTE: If the bullets should be able to wrap the screen this function should be 
+		 * rewritten to remove bullets after they have travelled a certain distance instead.
 		 * 
+		 * @NOTE: This function should consider the size of the bullet, it might matter for bigger bullets
 		 */
-		public function removeInactive():void {
+		public function removeInactiveBullets():void {
 			for (var i:int = 0; i < this.m_bullets.length; i++) {
-				if (!this.isActive(this.m_bullets[i])) {
+				if (this.m_bullets[i].x < 0 || this.m_bullets[i].x > Session.application.size.x ||
+					this.m_bullets[i].y < 0 || this.m_bullets[i].y > Session.application.size.y) {
+					
 					this.removeBullet(this.m_bullets[i]);
+					
 				}
 			}
 		}
 		
-		/**
-		 * isActive
-		 * Checks if bullet is flagged as active or not
-		 */
-		public function isActive(bullet:Bullet):Boolean {
-			return bullet.active;
-		}
-		
 		
 		/**
+		 * checkCollision
 		 * 
 		 */
 		public function checkCollision(plane:Plane):Boolean {
@@ -122,7 +127,5 @@ package entity {
 			}
 			return val;
 		}
-		
-		
 	}
 }
