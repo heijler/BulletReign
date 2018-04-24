@@ -3,6 +3,7 @@ package state.gamestate {
 	// Import
 	//-----------------------------------------------------------
 	
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
@@ -13,9 +14,11 @@ package state.gamestate {
 	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
+//	import se.lnu.stickossdk.system.Session;
 	
 	import ui.HUD;
 	import ui.HUDManager;
+	
 	
 	//-----------------------------------------------------------
 	// Gamestate
@@ -26,7 +29,10 @@ package state.gamestate {
 		//-----------------------------------------------------------
 		// Public properties
 		//-----------------------------------------------------------
+		[Embed(source="../../../asset/png/backgrounds/mountain-bg.png")]
+		private const BG:Class;
 		
+		public var m_backgroundLayer:DisplayStateLayer;
 		public var m_planeLayer:DisplayStateLayer;
 		public var m_worldLayer:DisplayStateLayer;
     	public var m_HUDLayer:DisplayStateLayer;
@@ -43,6 +49,7 @@ package state.gamestate {
 		
 		private var m_sky:Sprite;
 		private var m_ground:Sprite;
+		private var m_background:DisplayObject;
 		
 		private var m_hudManager:HUDManager;
 		private var m_fxMan1:FXManager;
@@ -72,6 +79,7 @@ package state.gamestate {
 			this.m_initLayers();
 			this.m_initSky();
 			this.m_initGround();
+			this.m_initBackground();
 			this.m_initFX();
 			this.m_initPlanes();
 			this.m_initHUD();
@@ -83,6 +91,7 @@ package state.gamestate {
 		 * m_initLayers
 		 */
 		private function m_initLayers():void {
+			this.m_backgroundLayer = this.layers.add("background");
 			this.m_planeLayer = this.layers.add("plane");
 			this.m_worldLayer = this.layers.add("world");
 			this.m_HUDLayer = this.layers.add("HUD");
@@ -138,6 +147,18 @@ package state.gamestate {
 			this.m_ground.graphics.moveTo(0, 600);
 			this.m_ground.graphics.lineTo(800, 600);
 			this.m_worldLayer.addChild(this.m_ground);
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_initBackground():void {
+			this.m_background = new BG();
+			this.m_background.scaleX = 2.5;
+			this.m_background.scaleY = 2.5;
+			this.m_background.x = 50; 
+			this.m_backgroundLayer.addChild(this.m_background);
 		}
 		
 		

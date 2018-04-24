@@ -17,6 +17,7 @@ package entity.fx {
 		//-----------------------------------------------------------
 		
 		private const TRAIL_SIZE:int = 4;
+		private var m_alphaDecay:Number = 0.03;
 		private var m_skin:Sprite;
 		
 		
@@ -49,12 +50,12 @@ package entity.fx {
 		private function m_initSkin():void {
 //			var rand:Number = this.TRAIL_SIZE + (Math.random() * 2)
 			this.m_skin = new Sprite();
-			this.m_skin.graphics.beginFill(0xB2B2B2);
+			this.m_skin.graphics.beginFill(0xEBEBEB);
 			this.m_skin.graphics.drawRect(-this.TRAIL_SIZE * 0.5, -this.TRAIL_SIZE * 0.5, this.TRAIL_SIZE, this.TRAIL_SIZE);
 			this.m_skin.graphics.endFill();
 			this._setScale(this.m_skin);
 			this.addChild(this.m_skin);
-			this.alpha = 0.5
+			this.alpha = 0.7; // Starting alpha
 		}
 		
 		
@@ -63,11 +64,10 @@ package entity.fx {
 		 */
 		override public function update():void {
 			this.applyGravity();
-//			trace("Trail update");
-			this.alpha -= 0.03;
+			this.alpha -= this.m_alphaDecay;
 			this.width -= 0.3;
 			this.height -= 0.3;
-//			this.y -= 0.2;
+			this.y -= 0.2;
 		}
 		
 		
@@ -75,9 +75,17 @@ package entity.fx {
 		 * 
 		 */
 		private function m_setSpawnPosition():void {
-			this.x = this.m_pos.x + (Math.random() * 2); //*4 jitter
-			this.y = this.m_pos.y + (Math.random() * 2); //*4 jitter
+			this.x = this.m_createJitter(this.m_pos.x, 2);
+			this.y = this.m_createJitter(this.m_pos.y, 2);
 			this.rotation = this._angle;
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_createJitter(num:Number, amount:Number):Number {
+			return num + (Math.random() * amount);
 		}
 		
 		
