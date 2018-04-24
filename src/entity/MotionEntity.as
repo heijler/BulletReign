@@ -45,12 +45,12 @@ package entity {
 //		}
 		
 		
-		/**
-		 * init
-		 * Override
-		 */
-		override public function init():void {
-		}
+//		/**
+//		 * init
+//		 * Override
+//		 */
+//		override public function init():void {
+//		}
 		
 		
 		/**

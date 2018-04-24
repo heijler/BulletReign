@@ -15,13 +15,14 @@ package entity {
 		// Public properties
 		//-----------------------------------------------------------
 		
-		public const BULLET_DAMAGE:Number = 1; // 10
+		public const BULLET_DAMAGE:Number = 0.5; // 10
 		public  var color:uint = 0xFFFFFF;
 		
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
+		private const BULLET_SPEED:Number = 1.7;
 		private const BULLET_SIZE:Number = 2;
 		private var m_skin:Sprite;
 		private var m_owner:int;
@@ -100,12 +101,20 @@ package entity {
 		
 		
 		/**
+		 * 
+		 */
+		override public function dispose():void {
+			
+		}
+		
+		
+		/**
 		 * fire
 		 * Shots bullet 
 		 */
 		private function updatePosition():void {
-			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity << 1);
-			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity << 1);
+			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity << this.BULLET_SPEED);
+			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity << this.BULLET_SPEED);
 			this.rotation = this._angle;
 			
 			//@TODO: Use scale factor to get rid of ifs
@@ -116,6 +125,8 @@ package entity {
 				this.x -= xVel;
 				this.y -= yVel;
 			}
+			
+			this.applyGravity();
 		}
 	}
 }
