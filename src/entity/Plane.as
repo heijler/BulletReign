@@ -26,7 +26,12 @@ package entity {
 		// Public properties
 		//-----------------------------------------------------------
 		
+		public const m_durability:Number = 10;
 		public var crashed:Boolean = false;
+		public var m_wins:Number = 0; //@TODO: Rename if public, does it need to be public?
+		public var m_newWins:Number; //@TODO: Rename if public, does it need to be public?
+		public var m_newDurability:Number; //@TODO: Rename if public, does it need to be public?
+		public var m_activePlayer:int = 0; //@TODO: Rename if public, does it need to be public?
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -35,16 +40,13 @@ package entity {
 		private const FIRE_DELAY:int = 4;
 		private const ACCELERATE_FACTOR:Number = 0.25;
 		private const BASE_SPEED:Number = 4;
-		public const m_durability:Number = 10;
-		public var m_wins:Number = 0;
-		public var m_newWins:Number;
+		
+		
 		private var m_fxMan:FXManager;
 		private var m_skin:MovieClip;
 		private var m_bulletManager:BulletManager;
 		private var m_ebulletManager:BulletManager;
-		public var m_newDurability:Number;
 		private var m_controls:EvertronControls;
-		public var m_activePlayer:int = 0;
 		private var m_fireDelay:Number = FIRE_DELAY;
 		private var m_burstSize:int = 5;
 		private var m_scaleFactor:int = 1;
@@ -54,7 +56,7 @@ package entity {
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(player:int, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor) {
+		public function Plane(player:int, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor, fxMan) {
 			super();
 			this.m_bulletManager = bulletMngr;
 			this.m_ebulletManager = ebulletMngr;
@@ -65,7 +67,7 @@ package entity {
 			this._velocity = this.BASE_SPEED;
 			this._angle = 0;
 			this.m_scaleFactor = scaleFactor;
-			this.m_fxMan = new FXManager();
+			this.m_fxMan = fxMan;
 		}
 		
 		//-----------------------------------------------------------
@@ -165,7 +167,6 @@ package entity {
 			this._angle %= 360; // resets angle at 360
 			if (this._angle < 0) this._angle = this._angle + 360; // Prevents minus angles
 			this.updateRotation();
-			trace("plane", this._angle);
 		}
 		
 		
@@ -193,14 +194,15 @@ package entity {
 		 * 
 		 */
 		private function m_accelerate():void {
-			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
-			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
-			
-			this.x += xVel * this.m_scaleFactor;
-			this.y += yVel * this.m_scaleFactor;
-			
-			
-			this.m_fxMan.add(new entity.fx.Trail);
+			if (this.m_steering) {
+				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
+				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
+				
+				this.x += xVel * this.m_scaleFactor;
+				this.y += yVel * this.m_scaleFactor;
+				
+				this.m_fxMan.add(new Trail(this.m_getPos(), this._angle));
+			}
 		}
 		
 		
@@ -209,10 +211,12 @@ package entity {
 		 * 
 		 */
 		private function m_fireBullets():void {
-			this.m_fireDelay--;
-			if (this.m_fireDelay == 0) {
-				this.m_bulletManager.add(this._angle, this._velocity, m_getPos(), this.m_activePlayer);
-				this.m_fireDelay = FIRE_DELAY;
+			if (this.m_steering) {
+				this.m_fireDelay--;
+				if (this.m_fireDelay == 0) {
+					this.m_bulletManager.add(this._angle, this._velocity, this.m_getPos(), this.m_activePlayer);
+					this.m_fireDelay = FIRE_DELAY;
+				}
 			}
 		}
 		

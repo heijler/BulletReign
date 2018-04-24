@@ -50,7 +50,6 @@ package entity {
 		public function add(angle:Number, velocity:Number, pos:Point, owner:int):void {
 			if (this.m_bullets.length < AMOUNT_LIMIT) {
 				var bullet:Bullet = new Bullet(angle, velocity, pos, owner);
-				trace("bm", angle);
 				this.m_bullets.push(bullet);
 				this.m_parent.addChild(bullet);
 			} else {
