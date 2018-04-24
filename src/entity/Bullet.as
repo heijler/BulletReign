@@ -17,7 +17,6 @@ package entity {
 		
 		public const BULLET_DAMAGE:Number = 1; // 10
 		public  var color:uint = 0xFFFFFF;
-		public var active:Boolean = true;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -96,7 +95,6 @@ package entity {
 		 * Override
 		 */
 		override public function update():void {
-			this.deactivate();
 			this.updatePosition();
 		}
 		
@@ -117,17 +115,6 @@ package entity {
 			} else if (this.m_owner == 1) {
 				this.x -= xVel;
 				this.y -= yVel;
-			}
-		}
-		
-		
-		/**
-		 * trackDistance
-		 * 
-		 */
-		private function deactivate():void {
-			if (this.x < -this.width || this.x > _appWidth) {
-				this.active = false;
 			}
 		}
 	}
