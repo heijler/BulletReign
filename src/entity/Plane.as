@@ -307,7 +307,7 @@ package entity {
 		private function m_checkwin():void {
 			this.m_newWins = this.m_wins + 1; //OBS. Methoden fungerar ej!
 			if(this.m_newWins != 2) {
-				this.m_wins = this.m_newWins;
+				//this.m_wins = this.m_newWins;
 			} else if (this.m_wins >= 2) {
 				trace("Du vann");
 			}
