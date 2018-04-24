@@ -7,6 +7,8 @@ package state.gamestate {
 	import flash.geom.Point;
 	
 	import entity.BulletManager;
+	import entity.Crate;
+	import entity.CrateManager;
 	import entity.Plane;
 	import entity.PlaneManager;
 	
@@ -29,6 +31,7 @@ package state.gamestate {
 		public var m_planeLayer:DisplayStateLayer;
 		public var m_worldLayer:DisplayStateLayer;
     	public var m_HUDLayer:DisplayStateLayer;
+		public var m_crateLayer:DisplayStateLayer;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -44,6 +47,7 @@ package state.gamestate {
 		private var m_ground:Sprite;
 		
 		private var m_hudManager:HUDManager;
+		private var m_crateManager:CrateManager;
 		//private var m_round:Round;
 		
 
@@ -71,6 +75,7 @@ package state.gamestate {
 			this.m_initGround();
 			this.m_initPlanes();
 			this.m_initHUD();
+			this.m_initCrates();
 			//this.m_initRound();
 		}
 		
@@ -82,6 +87,7 @@ package state.gamestate {
 			this.m_planeLayer = this.layers.add("plane");
 			this.m_worldLayer = this.layers.add("world");
 			this.m_HUDLayer = this.layers.add("HUD");
+			this.m_crateLayer = this.layers.add("crate");
 		}
 		
 		
@@ -136,6 +142,11 @@ package state.gamestate {
 			this.m_hudManager.add(new HUD(0, new Point(10, 10)));
 			this.m_hudManager.add(new HUD(1, new Point(690, 10)));
 		
+		}
+		
+		private function m_initCrates():void {
+			this.m_crateManager = new CrateManager(this.m_crateLayer);
+			this.m_crateManager.add(new Crate(new Point(100,0)));
 		}
 
 		/**
