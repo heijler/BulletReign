@@ -35,7 +35,11 @@ package state.gamestate {
 		//-----------------------------------------------------------
 		
 		private var m_planes:Vector.<Plane>;
-		private var m_bulletManagers:Vector.<BulletManager>;
+		private var m_wins:int;
+//		private var m_bulletManagers:Vector.<BulletManager>;
+		private var m_bm1:BulletManager; // @FIX, put into Vector?
+		private var m_bm2:BulletManager; // @FIX, put into Vector?
+		
 		private var m_sky:Sprite;
 		private var m_ground:Sprite;
 		
@@ -50,6 +54,7 @@ package state.gamestate {
 		
 		public function Gamestate() {
 			super();
+//			this.m_bulletManagers = new Vector.<BulletManager>()
 		}
 		
 		//-----------------------------------------------------------
@@ -85,12 +90,13 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initPlanes():void {
-			var bm1:BulletManager = new BulletManager(this.m_planeLayer);
-			var bm2:BulletManager = new BulletManager(this.m_planeLayer);
+			this.m_bm1 = new BulletManager(this.m_planeLayer);
+			this.m_bm2 = new BulletManager(this.m_planeLayer);
 			
 			var planeManager:PlaneManager = new PlaneManager(this.m_planeLayer);
-				planeManager.add(new Plane(0, bm1, bm2, new Point(0, 150), 1));
-				planeManager.add(new Plane(1, bm2, bm1, new Point(800, 150), -1));
+				planeManager.add(new Plane(0, this.m_bm1, this.m_bm2, new Point(0, 150), 1));
+				planeManager.add(new Plane(1, this.m_bm2, this.m_bm1, new Point(800, 150), -1));
+				
 			this.m_planes = planeManager.getPlanes();
 		}
 		
@@ -131,7 +137,10 @@ package state.gamestate {
 			this.m_hudManager.add(new HUD(1, new Point(690, 10)));
 		
 		}
-		/*
+
+		/**
+		 * 
+		 */
 		private function m_initRound():void {
 			this.m_round = new Round();
 		}
@@ -146,6 +155,7 @@ package state.gamestate {
 			this.m_groundCollision();
 			this.m_resolveRound();
 			this.m_durabilityChange();
+			this.m_removeInactiveBullets();
 		}
 		
 		
@@ -179,6 +189,7 @@ package state.gamestate {
 			}
 		}
 		
+		
 		/**
 		 * m_resolveRound
 		 * Non-crashed player gets a point
@@ -197,12 +208,26 @@ package state.gamestate {
 			}
 		}
 		
+		
+		/**
+		 * 
+		 */
 		private function m_durabilityChange():void {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				if (this.m_planes[i].m_newDurability <= this.m_planes[i].m_durability) {
 					this.m_hudManager.incrementDecrementHealth(this.m_planes[i].m_activePlayer, this.m_planes[i].m_newDurability);
 				}
 			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_removeInactiveBullets():void {
+//			this.m_bulletManagers
+			this.m_bm1.removeInactiveBullets();
+			this.m_bm2.removeInactiveBullets();
 		}
 	}
 }
