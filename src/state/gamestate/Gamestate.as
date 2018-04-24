@@ -141,6 +141,7 @@ package state.gamestate {
 		/**
 		 * 
 		 */
+		/*
 		private function m_initRound():void {
 			this.m_round = new Round();
 		}
