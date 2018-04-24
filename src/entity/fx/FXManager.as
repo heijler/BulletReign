@@ -1,9 +1,9 @@
 package entity.fx {
-	import flash.display.DisplayObjectContainer;
-	
 	//-----------------------------------------------------------
 	// Imports
 	//-----------------------------------------------------------
+	
+	import flash.display.DisplayObjectContainer;
 	
 	//-----------------------------------------------------------
 	// FXManager
@@ -26,8 +26,8 @@ package entity.fx {
 		/**
 		 * 
 		 */
-		public function FXManager() {
-			
+		public function FXManager(parent:DisplayObjectContainer) {
+			this.m_parent = parent;
 		}
 		
 		
@@ -37,20 +37,25 @@ package entity.fx {
 		public function add(effect:Effect):void {
 			if (this.m_effects.length < AMOUNT_LIMIT) {
 				this.m_effects.push(effect);
+				this.m_parent.addChild(effect);
 			} else {
 				var firstEffect:Effect = this.m_effects.shift()
-				firstEffect = null;
+				this.m_removeEffect(firstEffect);
 			}
 			
-			trace("Effect vector length", this.m_effects.length);
+//			trace("Effect vector length", this.m_effects.length);
 		}
 		
 		
 		/**
+		 * m_removeEffect
 		 * 
 		 */
-		public function remove():void {
-			
+		private function m_removeEffect(effect:Effect):void {
+			if (this.m_parent.contains(effect)) {
+				this.m_parent.removeChild(effect);
+				effect = null;
+			}
 		}
 	}
 }

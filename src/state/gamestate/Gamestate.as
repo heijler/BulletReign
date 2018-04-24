@@ -9,6 +9,7 @@ package state.gamestate {
 	import entity.BulletManager;
 	import entity.Plane;
 	import entity.PlaneManager;
+	import entity.fx.FXManager;
 	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
@@ -44,6 +45,8 @@ package state.gamestate {
 		private var m_ground:Sprite;
 		
 		private var m_hudManager:HUDManager;
+		private var m_fxMan1:FXManager;
+		private var m_fxMan2:FXManager;
 		//private var m_round:Round;
 		
 
@@ -69,6 +72,7 @@ package state.gamestate {
 			this.m_initLayers();
 			this.m_initSky();
 			this.m_initGround();
+			this.m_initFX();
 			this.m_initPlanes();
 			this.m_initHUD();
 			//this.m_initRound();
@@ -94,10 +98,20 @@ package state.gamestate {
 			this.m_bm2 = new BulletManager(this.m_planeLayer);
 			
 			var planeManager:PlaneManager = new PlaneManager(this.m_planeLayer);
-				planeManager.add(new Plane(0, this.m_bm1, this.m_bm2, new Point(0, 150), 1));
-				planeManager.add(new Plane(1, this.m_bm2, this.m_bm1, new Point(800, 150), -1));
+				planeManager.add(new Plane(0, this.m_bm1, this.m_bm2, new Point(0, 150), 1, this.m_fxMan1));
+				planeManager.add(new Plane(1, this.m_bm2, this.m_bm1, new Point(800, 150), -1, this.m_fxMan2));
 				
 			this.m_planes = planeManager.getPlanes();
+		}
+		
+		
+		/**
+		 * m_initFX
+		 * 
+		 */
+		private function m_initFX():void {
+			this.m_fxMan1 = new FXManager(this.m_planeLayer);
+			this.m_fxMan2 = new FXManager(this.m_planeLayer);
 		}
 		
 		
@@ -169,7 +183,6 @@ package state.gamestate {
 				if (this.m_planes[i].hitTestObject(this.m_sky)) {
 					this.m_planes[i].reflectAngle();
 					this.m_planes[i].updateRotation();
-					
 				}
 			}
 		}
