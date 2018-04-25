@@ -8,6 +8,7 @@ package entity {
 	import asset.CrateGFX;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
+	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
 	// Crate
@@ -22,7 +23,7 @@ package entity {
 		public const ARMOR_BOOST:Number = 1; // ArmorCrates
 		public const FIREPOWER:Number = 1; // FirepowerCrates
 		public var hitGround:Boolean = false;
-		private var m_type:Number;
+		public var m_type:Number;
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
@@ -58,6 +59,7 @@ package entity {
 			this._setScale(this.m_skin, 2, 2);
 			this.m_skin.cacheAsBitmap = true;
 			this.addChild(this.m_skin);
+			this.m_crateTweenLeft();
 		}
 		
 		/**
@@ -105,6 +107,26 @@ package entity {
 						break;
 					
 				}
+			}
+		}
+		
+		private function m_crateTweenLeft():void {
+			if (this.hitGround == false) {
+			Session.tweener.add(this.m_skin, {
+				duration: 2000,
+				rotation: -25 + (this.y / 20),
+				onComplete: m_crateTweenRight
+			});
+			}
+		}
+		
+		private function m_crateTweenRight():void {
+			if (this.hitGround == false) {
+			Session.tweener.add(this.m_skin, {
+				duration: 2000,
+				rotation: 25 - (this.y / 20),
+				onComplete: m_crateTweenLeft
+			});
 			}
 		}
 	}
