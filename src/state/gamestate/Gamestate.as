@@ -31,7 +31,7 @@ package state.gamestate {
 		//-----------------------------------------------------------
 		// Public properties
 		//-----------------------------------------------------------
-		[Embed(source="../../../asset/png/backgrounds/mountain-bg.png")]
+		[Embed(source="../../../asset/png/backgrounds/mountain-bg1.png")]
 		private const BG:Class;
 		
 		public var m_backgroundLayer:DisplayStateLayer;
@@ -162,8 +162,7 @@ package state.gamestate {
 		private function m_initBackground():void {
 			this.m_background = new BG();
 			this.m_background.scaleX = 2.5;
-			this.m_background.scaleY = 2.5;
-			this.m_background.x = 50; 
+			this.m_background.scaleY = 2.5; 
 			this.m_backgroundLayer.addChild(this.m_background);
 		}
 		
