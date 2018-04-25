@@ -7,6 +7,8 @@ package entity {
 	
 	import asset.CrateGFX;
 	
+	import se.lnu.stickossdk.display.DisplayStateLayer;
+	
 	//-----------------------------------------------------------
 	// Crate
 	//-----------------------------------------------------------
@@ -19,16 +21,18 @@ package entity {
 		public const SPEED_BOOST:Number = 1; // SpeedCrates
 		public const ARMOR_BOOST:Number = 1; // ArmorCrates
 		public const FIREPOWER:Number = 1; // FirepowerCrates
-		
+		public var hitGround:Boolean = false;
+		private var m_type:Number;
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
 		private var m_skin:MovieClip;
 		
-		public function Crate(pos:Point) {
+		public function Crate(pos:Point, type:Number) {
 			super();
 			this.m_pos = pos;
+			this.m_type = type;
 		}
 		
 		//-----------------------------------------------------------
@@ -49,11 +53,9 @@ package entity {
 		 * Initialize skin
 		 */
 		private function m_initSkin():void {
-			
 			this.m_skin = new CrateGFX;
-			this.m_skin.gotoAndStop(1);
+			this.m_skin.gotoAndStop(this.m_type);
 			this._setScale(this.m_skin, 2, 2);
-			
 			this.m_skin.cacheAsBitmap = true;
 			this.addChild(this.m_skin);
 		}
@@ -73,20 +75,37 @@ package entity {
 		 */
 		override public function update():void {
 			this.applyGravity();
-			this.m_collisionControl();
+			this.checkFrames();
 		}
 		
-		private function m_collisionControl():void {
-			this.m_planeCollision();
-			this.m_groundCollision();
-		}
 		
 		private function m_planeCollision():void {
 			
 		}
 		
-		private function m_groundCollision():void {
-			
+		public function m_groundCollision(layer:DisplayStateLayer):void {
+				this.removeGravity();
+				this._shake(layer, 5);
+				this._flicker(this, 500);
+				this.m_skin.gotoAndPlay(this.m_type);
+		}
+		
+		private function checkFrames():void {
+			if (hitGround == true) {
+				switch (this.m_skin.currentFrame) {
+					
+					case 12:
+						this.m_skin.stop();
+						break;
+					case 24:
+						this.m_skin.stop();
+						break;
+					case 36:
+						this.m_skin.stop();
+						break;
+					
+				}
+			}
 		}
 	}
 }

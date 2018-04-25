@@ -16,7 +16,8 @@ package state.gamestate {
 	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
-//	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.timer.Timer;
 	
 	import ui.HUD;
 	import ui.HUDManager;
@@ -45,6 +46,8 @@ package state.gamestate {
 		//-----------------------------------------------------------
 		
 		private var m_planes:Vector.<Plane>;
+		private var m_crates:Vector.<Crate>;
+		private var m_crateSpawn:Point;
 		private var m_wins:int;
 //		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_bm1:BulletManager; // @FIX, put into Vector?
@@ -181,7 +184,10 @@ package state.gamestate {
 		
 		private function m_initCrates():void {
 			this.m_crateManager = new CrateManager(this.m_crateLayer);
-			this.m_crateManager.add(new Crate(new Point(100,0)));
+			this.m_initCrateTimer();
+			//this.m_generateCrates();
+			//new Point(100,0
+			
 		}
 
 		/**
@@ -200,6 +206,7 @@ package state.gamestate {
 		override public function update():void {
 			this.m_skyCollision();
 			this.m_groundCollision();
+			this.m_crateGroundCollision();
 			this.m_resolveRound();
 			this.m_durabilityChange();
 			this.m_removeInactiveBullets();
@@ -235,6 +242,25 @@ package state.gamestate {
 			}
 		}
 		
+		private function m_crateGroundCollision():void {
+			if (this.m_crates != null) {
+				for (var i:int = 0; i < this.m_crates.length; i++) {
+					if (this.m_crates[i].hitTestObject(this.m_ground)) {
+						if (this.m_crates[i].hitGround == false) {
+							this.m_crates[i].hitGround = true;
+							this.m_crates[i].m_groundCollision(this.m_worldLayer);
+						}
+					}
+				}
+			}
+		}
+		/*
+		private function m_cratePlaneCollision():void {
+			if (this.m_crates != null) {
+				for (var i:int = 0; i < this.m_)
+			}
+		}
+		*/
 		
 		/**
 		 * m_resolveRound
@@ -274,6 +300,22 @@ package state.gamestate {
 //			this.m_bulletManagers
 			this.m_bm1.removeInactiveBullets();
 			this.m_bm2.removeInactiveBullets();
+		}
+		
+		private function m_initCrateTimer():void {
+			var timer:Timer = Session.timer.create(Math.round(Math.random()* 1000), this.m_generateCrates, 3);
+		}
+		
+		private function m_generateCrates():void {
+			this.m_crateSpawn = new Point(Math.floor(Math.random()* Session.application.size.x), 0);
+			var randomizer:Number = Math.round(Math.random() * 2);
+			var crateType:Vector.<int>;
+				crateType = new Vector.<int>();
+				crateType.push(1, 13, 25);
+			var type:int;
+			type = crateType[randomizer];
+			this.m_crateManager.add(new Crate(this.m_crateSpawn, type));
+			this.m_crates = m_crateManager.getCrates();
 		}
 	}
 }
