@@ -15,6 +15,8 @@ package entity {
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.timer.Timer;
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -40,7 +42,9 @@ package entity {
 		
 		private const FIRE_DELAY:int = 4; //4
 		private const ACCELERATE_FACTOR:Number = 0.25;
+		private const ACCELERATE_DURATION:int = 80;
 		private const BASE_SPEED:Number = 4; //4
+//		private const FIRE_DURATION:int = 80;
 		
 		
 		private var m_fxMan:FXManager;
@@ -52,6 +56,8 @@ package entity {
 		private var m_burstSize:int = 5;
 		private var m_scaleFactor:int = 1;
 		private var m_steering:Boolean = true;
+		private var m_accelDuration:int;
+		private var m_accelerating:Boolean = true;
 
 		//-----------------------------------------------------------
 		// Constructor
@@ -69,6 +75,7 @@ package entity {
 			this._angle = 0;
 			this.m_scaleFactor = scaleFactor;
 			this.m_fxMan = fxMan;
+			this.m_accelDuration = this.ACCELERATE_DURATION;
 		}
 		
 		//-----------------------------------------------------------
@@ -117,7 +124,7 @@ package entity {
 		 * override, gameloop
 		 */
 		override public function update():void {
-			this.applyGravity();
+			//this.applyGravity();
 			this.m_updateControls();
 			this.m_defaultSpeed();
 			this.m_collisionControl();
@@ -203,14 +210,30 @@ package entity {
 		 * 
 		 */
 		private function m_accelerate():void {
-			if (this.m_steering) {
+			if (this.m_steering && this.m_accelDuration != 0 && this.m_accelerating) {
 				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				
+				this.m_accelDuration--;
 				this.x += xVel * this.m_scaleFactor;
 				this.y += yVel * this.m_scaleFactor;
-				
 				this.m_fxMan.add(new Trail(this.m_getPos(), this._angle));
+				
+			} else if (this.m_accelDuration <= 0 && this.m_accelerating){
+				this.m_accelerating = false;
+				var timer:Timer = Session.timer.create(2000, this.m_resetAcceleration);
+			}
+		}
+		
+		
+		/**
+		 * m_resetAcceleration
+		 * 
+		 */
+		private function m_resetAcceleration():void {
+			if (!this.m_accelerating) {
+				this.m_accelerating = true;
+				this.m_accelDuration = this.ACCELERATE_DURATION;
 			}
 		}
 		
@@ -320,6 +343,11 @@ package entity {
 			this.updateRotation();
 		}
 		
+		
+		/**
+		 * m_checkwin
+		 * 
+		 */
 		private function m_checkwin():void {
 			this.m_newWins = this.m_wins + 1; //OBS. Methoden fungerar ej!
 			if(this.m_newWins != 2) {
