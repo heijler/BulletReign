@@ -89,11 +89,12 @@ package entity.fx {
 		}
 		
 		
+		
 		/**
 		 * 
 		 */
 		override public function dispose():void {
-			trace("Trail dispose")
+			trace("Dispose Trail! REMOVE ME WHEN ACTUALLY DISPOSING.");
 		}
 	}
 }

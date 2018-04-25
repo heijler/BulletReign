@@ -22,6 +22,9 @@ package state.gamestate {
 	import ui.HUD;
 	import ui.HUDManager;
 	
+	import state.menustate.MainMenu;
+	import se.lnu.stickossdk.timer.Timer;
+	
 	
 	//-----------------------------------------------------------
 	// Gamestate
@@ -32,7 +35,7 @@ package state.gamestate {
 		//-----------------------------------------------------------
 		// Public properties
 		//-----------------------------------------------------------
-		[Embed(source="../../../asset/png/backgrounds/mountain-bg.png")]
+		[Embed(source="../../../asset/png/backgrounds/mountain-bg1.png")]
 		private const BG:Class;
 		
 		public var m_backgroundLayer:DisplayStateLayer;
@@ -165,8 +168,7 @@ package state.gamestate {
 		private function m_initBackground():void {
 			this.m_background = new BG();
 			this.m_background.scaleX = 2.5;
-			this.m_background.scaleY = 2.5;
-			this.m_background.x = 50; 
+			this.m_background.scaleY = 2.5; 
 			this.m_backgroundLayer.addChild(this.m_background);
 		}
 		
@@ -182,6 +184,10 @@ package state.gamestate {
 		
 		}
 		
+		
+		/**
+		 * 
+		 */
 		private function m_initCrates():void {
 			this.m_crateManager = new CrateManager(this.m_crateLayer);
 			this.m_initCrateTimer();
@@ -236,7 +242,7 @@ package state.gamestate {
 				if (this.m_planes[i].hitTestObject(this.m_ground)) {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
-						this.m_planes[i].crash(this.m_worldLayer);
+						this.m_planes[i].crash(this.m_backgroundLayer); //m_worldLayer
 					}
 				}
 			}
@@ -272,10 +278,11 @@ package state.gamestate {
 					for (var j:int = 0; j < this.m_planes.length; j++) {
 						if (this.m_planes[j].crashed == false) {
 							if (this.m_planes[j].m_newWins >= this.m_planes[j].m_wins) {
-							this.m_hudManager.incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].m_newWins);
+								this.m_hudManager.incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].m_newWins);
 							}
 						}
 					}
+					var timer:Timer = Session.timer.create(3000, this.m_roundOver);
 				}
 			}
 		}
@@ -284,9 +291,17 @@ package state.gamestate {
 		/**
 		 * 
 		 */
+		private function m_roundOver():void {
+			Session.application.displayState = new MainMenu();
+		}
+		
+		
+		/**
+		 * 
+		 */
 		private function m_durabilityChange():void {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].m_newDurability <= this.m_planes[i].m_durability) {
+				if (this.m_planes[i].m_newDurability <= this.m_planes[i].PLANE_DURABILITY) {
 					this.m_hudManager.incrementDecrementHealth(this.m_planes[i].m_activePlayer, this.m_planes[i].m_newDurability);
 				}
 			}

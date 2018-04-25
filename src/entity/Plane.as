@@ -15,6 +15,8 @@ package entity {
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.timer.Timer;
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -26,7 +28,8 @@ package entity {
 		// Public properties
 		//-----------------------------------------------------------
 		
-		public const m_durability:Number = 10;
+		public const PLANE_DURABILITY:Number = 10;
+		
 		public var crashed:Boolean = false;
 		public var m_wins:Number = 0; //@TODO: Rename if public, does it need to be public?
 		public var m_newWins:Number; //@TODO: Rename if public, does it need to be public?
@@ -37,9 +40,11 @@ package entity {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private const FIRE_DELAY:int = 4;
+		private const FIRE_DELAY:int = 4; //4
 		private const ACCELERATE_FACTOR:Number = 0.25;
-		private const BASE_SPEED:Number = 4;
+		private const ACCELERATE_DURATION:int = 80;
+		private const BASE_SPEED:Number = 4; //4
+		private const FIRE_BURST_SIZE:int = 15;
 		
 		
 		private var m_fxMan:FXManager;
@@ -51,6 +56,10 @@ package entity {
 		private var m_burstSize:int = 5;
 		private var m_scaleFactor:int = 1;
 		private var m_steering:Boolean = true;
+		private var m_accelDuration:int;
+		private var m_accelerating:Boolean = true;
+		private var m_fireCounter:int;
+		private var m_firing:Boolean = true;
 
 		//-----------------------------------------------------------
 		// Constructor
@@ -58,16 +67,19 @@ package entity {
 		
 		public function Plane(player:int, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor, fxMan) {
 			super();
+			this.m_activePlayer = player;
 			this.m_bulletManager = bulletMngr;
 			this.m_ebulletManager = ebulletMngr;
-			this.m_newDurability = this.m_durability;
-			this.m_activePlayer = player;
-			this.m_controls = new EvertronControls(this.m_activePlayer);
 			this.m_pos = pos;
-			this._velocity = this.BASE_SPEED;
-			this._angle = 0;
 			this.m_scaleFactor = scaleFactor;
 			this.m_fxMan = fxMan;
+			
+			this.m_newDurability = this.PLANE_DURABILITY;
+			this.m_controls = new EvertronControls(this.m_activePlayer);
+			this._velocity = this.BASE_SPEED;
+			this._angle = 0;
+			this.m_accelDuration = this.ACCELERATE_DURATION;
+			this.m_fireCounter = this.FIRE_BURST_SIZE;
 		}
 		
 		//-----------------------------------------------------------
@@ -122,6 +134,14 @@ package entity {
 			this.m_collisionControl();
 			this.m_updatePosition();
 			this.m_checkwin();
+		}
+		
+		
+		/**
+		 * 
+		 */
+		override public function dispose():void {
+			trace("Dispose plane! REMOVE ME WHEN ACTUALLY DISPOSING.");
 		}
 		
 		
@@ -184,7 +204,6 @@ package entity {
 		 * Updates the skins rotation to match the angle.
 		 */
 		public function updateRotation():void {
-			//this.rotation = this._angle;
 			this.rotation = this._angle;
 		}
 		
@@ -194,14 +213,30 @@ package entity {
 		 * 
 		 */
 		private function m_accelerate():void {
-			if (this.m_steering) {
+			if (this.m_steering && this.m_accelDuration != 0 && this.m_accelerating) {
 				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				
+				this.m_accelDuration--;
 				this.x += xVel * this.m_scaleFactor;
 				this.y += yVel * this.m_scaleFactor;
-				
 				this.m_fxMan.add(new Trail(this.m_getPos(), this._angle));
+				
+			} else if (this.m_accelDuration <= 0 && this.m_accelerating){
+				this.m_accelerating = false;
+				var timer:Timer = Session.timer.create(2000, this.m_resetAcceleration);
+			}
+		}
+		
+		
+		/**
+		 * m_resetAcceleration
+		 * 
+		 */
+		private function m_resetAcceleration():void {
+			if (!this.m_accelerating) {
+				this.m_accelerating = true;
+				this.m_accelDuration = this.ACCELERATE_DURATION;
 			}
 		}
 		
@@ -213,11 +248,23 @@ package entity {
 		private function m_fireBullets():void {
 			if (this.m_steering) {
 				this.m_fireDelay--;
-				if (this.m_fireDelay == 0) {
+				if (this.m_fireDelay <= 0 && this.m_fireCounter > 0 && this.m_firing) {
+					this.m_fireCounter--;
 					this.m_bulletManager.add(this._angle, this._velocity, this.m_getPos(), this.m_activePlayer);
 					this.m_fireDelay = FIRE_DELAY;
+				} else if (this.m_fireCounter <= 0 && this.m_firing){
+					this.m_firing = false;
+					var timer:Timer = Session.timer.create(2000, this.m_resetFireRate);
 				}
 			}
+		}
+		
+		private function m_resetFireRate():void {
+			if (!this.m_firing) {
+				this.m_firing = true;
+				this.m_fireCounter = this.FIRE_BURST_SIZE;
+			}
+			
 		}
 		
 		
@@ -288,9 +335,8 @@ package entity {
 		 * 
 		 */
 		private function m_damageControl():void {
-			if(this.m_newDurability != 0) {
-				this.m_newDurability -= this.m_ebulletManager.damage;
-			} else if (this.m_newDurability <= 0) {
+			this.m_newDurability -= this.m_ebulletManager.damage;
+			if (this.m_newDurability <= 0) {
 				this.m_steering = false;
 				this.m_freeFall();
 				this._flicker(this, 500);
@@ -304,12 +350,16 @@ package entity {
 		 */
 		private function m_freeFall():void {
 			this._velocity = 4;
-			//this._angle = this._angle + 25 * this.m_scaleFactor;
 			this.setGravityFactor(4);
 			this.reflectAngle();
 			this.updateRotation();
 		}
 		
+		
+		/**
+		 * m_checkwin
+		 * 
+		 */
 		private function m_checkwin():void {
 			this.m_newWins = this.m_wins + 1; //OBS. Methoden fungerar ej!
 			if(this.m_newWins != 2) {

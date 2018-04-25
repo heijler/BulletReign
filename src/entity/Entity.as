@@ -70,7 +70,7 @@ package entity {
 		 * 
 		 */
 		protected function _flicker(obj:DisplayObjectContainer, duration = 1000):void {
-			var flicker:Flicker = new Flicker(obj, duration, 60, true);
+			var flicker:Flicker = new Flicker(obj, duration, 30, true);
 			Session.effects.add(flicker);
 		}
 	}
