@@ -16,10 +16,13 @@ package state.gamestate {
 	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
-//	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.system.Session;
 	
 	import ui.HUD;
 	import ui.HUDManager;
+	
+	import state.menustate.MainMenu;
+	import se.lnu.stickossdk.timer.Timer;
 	
 	
 	//-----------------------------------------------------------
@@ -178,6 +181,10 @@ package state.gamestate {
 		
 		}
 		
+		
+		/**
+		 * 
+		 */
 		private function m_initCrates():void {
 			this.m_crateManager = new CrateManager(this.m_crateLayer);
 			this.m_crateManager.add(new Crate(new Point(100,0)));
@@ -228,7 +235,7 @@ package state.gamestate {
 				if (this.m_planes[i].hitTestObject(this.m_ground)) {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
-						this.m_planes[i].crash(this.m_worldLayer);
+						this.m_planes[i].crash(this.m_backgroundLayer); //m_worldLayer
 					}
 				}
 			}
@@ -245,12 +252,21 @@ package state.gamestate {
 					for (var j:int = 0; j < this.m_planes.length; j++) {
 						if (this.m_planes[j].crashed == false) {
 							if (this.m_planes[j].m_newWins >= this.m_planes[j].m_wins) {
-							this.m_hudManager.incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].m_newWins);
+								this.m_hudManager.incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].m_newWins);
 							}
 						}
 					}
+					var timer:Timer = Session.timer.create(3000, this.m_roundOver);
 				}
 			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_roundOver():void {
+			Session.application.displayState = new MainMenu();
 		}
 		
 		

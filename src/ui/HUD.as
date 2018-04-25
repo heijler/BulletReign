@@ -70,6 +70,15 @@ package ui {
 			
 		}
 		
+		
+		/**
+		 * 
+		 */
+		override public function dispose():void {
+			trace("Dispose HUD! REMOVE ME WHEN ACTUALLY DISPOSING.");
+		}
+		
+		
 		/**	 
 		 * m_initScoreCounter
 		 * Initialize the Score Counter

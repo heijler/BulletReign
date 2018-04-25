@@ -76,6 +76,14 @@ package entity {
 			this.m_collisionControl();
 		}
 		
+		
+		/**
+		 * 
+		 */
+		override public function dispose():void {
+			trace("Dispose Crate! REMOVE ME WHEN ACTUALLY DISPOSING.");
+		}
+		
 		private function m_collisionControl():void {
 			this.m_planeCollision();
 			this.m_groundCollision();

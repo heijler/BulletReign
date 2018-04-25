@@ -229,7 +229,6 @@ package state.menustate {
 		 */
 		protected function _addMenuItems(menuObjects:Vector.<Object>):void {
 			for (var i:int = 0; i < menuObjects.length; i++) {
-				//trace(obj[i].name, obj[i].state);
 				this._items.push(menuObjects[i].name);
 			}
 			this.m_initText();

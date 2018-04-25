@@ -126,6 +126,14 @@ package entity {
 		}
 		
 		
+		/**
+		 * 
+		 */
+		override public function dispose():void {
+			trace("Dispose plane! REMOVE ME WHEN ACTUALLY DISPOSING.");
+		}
+		
+		
 		/**	
 		 * m_updateControls
 		 * Update the planes position.
@@ -297,14 +305,6 @@ package entity {
 				this.m_freeFall();
 				this._flicker(this, 500);
 			}
-			
-			/*if(this.m_newDurability != 0) {
-				this.m_newDurability -= this.m_ebulletManager.damage;
-			} else if (this.m_newDurability <= 0) {
-				this.m_steering = false;
-				this.m_freeFall();
-				this._flicker(this, 500);
-			}*/
 		}
 		
 		
