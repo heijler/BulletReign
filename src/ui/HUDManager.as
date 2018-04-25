@@ -52,7 +52,7 @@ package ui {
 		}
 		
 		public function incrementDecrementHealth(planeIndex:int, durability):void {
-			this.m_huds[planeIndex].visualDurability = durability;
+			this.m_huds[planeIndex].visualDurability = Math.floor(durability + 1);
 			this.m_huds[planeIndex].updateHealth();
 		}
 		

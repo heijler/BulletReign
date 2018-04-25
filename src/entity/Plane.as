@@ -26,7 +26,8 @@ package entity {
 		// Public properties
 		//-----------------------------------------------------------
 		
-		public const m_durability:Number = 10;
+		public const PLANE_DURABILITY:Number = 10;
+		
 		public var crashed:Boolean = false;
 		public var m_wins:Number = 0; //@TODO: Rename if public, does it need to be public?
 		public var m_newWins:Number; //@TODO: Rename if public, does it need to be public?
@@ -37,9 +38,9 @@ package entity {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private const FIRE_DELAY:int = 4;
+		private const FIRE_DELAY:int = 60; //4
 		private const ACCELERATE_FACTOR:Number = 0.25;
-		private const BASE_SPEED:Number = 4;
+		private const BASE_SPEED:Number = 2; //4
 		
 		
 		private var m_fxMan:FXManager;
@@ -60,7 +61,7 @@ package entity {
 			super();
 			this.m_bulletManager = bulletMngr;
 			this.m_ebulletManager = ebulletMngr;
-			this.m_newDurability = this.m_durability;
+			this.m_newDurability = this.PLANE_DURABILITY;
 			this.m_activePlayer = player;
 			this.m_controls = new EvertronControls(this.m_activePlayer);
 			this.m_pos = pos;
@@ -116,7 +117,7 @@ package entity {
 		 * override, gameloop
 		 */
 		override public function update():void {
-			this.applyGravity();
+			//this.applyGravity();
 			this.m_updateControls();
 			this.m_defaultSpeed();
 			this.m_collisionControl();
@@ -268,6 +269,8 @@ package entity {
 		private function m_bulletCollision():void {
 			if (this.crashed == false && this.m_ebulletManager.checkCollision(this)) {
 				this.m_damageControl();
+//				trace("plane durability", this.m_durability);
+//				trace("plane newDurability", this.m_newDurability);
 			}
 		}
 		
@@ -288,13 +291,20 @@ package entity {
 		 * 
 		 */
 		private function m_damageControl():void {
-			if(this.m_newDurability != 0) {
+			this.m_newDurability -= this.m_ebulletManager.damage;
+			if (this.m_newDurability <= 0) {
+				this.m_steering = false;
+				this.m_freeFall();
+				this._flicker(this, 500);
+			}
+			
+			/*if(this.m_newDurability != 0) {
 				this.m_newDurability -= this.m_ebulletManager.damage;
 			} else if (this.m_newDurability <= 0) {
 				this.m_steering = false;
 				this.m_freeFall();
 				this._flicker(this, 500);
-			}
+			}*/
 		}
 		
 		

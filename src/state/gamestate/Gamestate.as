@@ -259,7 +259,7 @@ package state.gamestate {
 		 */
 		private function m_durabilityChange():void {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].m_newDurability <= this.m_planes[i].m_durability) {
+				if (this.m_planes[i].m_newDurability <= this.m_planes[i].PLANE_DURABILITY) {
 					this.m_hudManager.incrementDecrementHealth(this.m_planes[i].m_activePlayer, this.m_planes[i].m_newDurability);
 				}
 			}
