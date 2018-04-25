@@ -126,7 +126,7 @@ package entity {
 				this.y -= yVel;
 			}
 			
-			//this.applyGravity();
+			this.applyGravity();
 		}
 	}
 }

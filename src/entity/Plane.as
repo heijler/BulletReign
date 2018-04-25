@@ -38,9 +38,9 @@ package entity {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private const FIRE_DELAY:int = 60; //4
+		private const FIRE_DELAY:int = 4; //4
 		private const ACCELERATE_FACTOR:Number = 0.25;
-		private const BASE_SPEED:Number = 2; //4
+		private const BASE_SPEED:Number = 4; //4
 		
 		
 		private var m_fxMan:FXManager;
@@ -117,7 +117,7 @@ package entity {
 		 * override, gameloop
 		 */
 		override public function update():void {
-			//this.applyGravity();
+			this.applyGravity();
 			this.m_updateControls();
 			this.m_defaultSpeed();
 			this.m_collisionControl();
