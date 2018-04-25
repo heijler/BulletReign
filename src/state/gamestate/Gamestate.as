@@ -213,6 +213,7 @@ package state.gamestate {
 			this.m_skyCollision();
 			this.m_groundCollision();
 			this.m_crateGroundCollision();
+			this.m_cratePlaneCollision();
 			this.m_resolveRound();
 			this.m_durabilityChange();
 			this.m_removeInactiveBullets();
@@ -260,13 +261,19 @@ package state.gamestate {
 				}
 			}
 		}
-		/*
+		
 		private function m_cratePlaneCollision():void {
 			if (this.m_crates != null) {
-				for (var i:int = 0; i < this.m_)
+				for (var i:int = 0; i < this.m_planes.length; i++) {
+					for (var j:int = 0; j < this.m_crates.length; j++) {
+						if (this.m_planes[i].hitTestObject(this.m_crates[j])) {
+							this.m_crateManager.removeCrate(this.m_crates[j]);
+						}
+					}
+				}
 			}
 		}
-		*/
+		
 		
 		/**
 		 * m_resolveRound

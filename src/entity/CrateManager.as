@@ -37,5 +37,14 @@ package entity {
 		public function getCrates():Vector.<Crate> {
 			return this.m_crates;
 		}
+		
+		public function removeCrate(crate:Crate):void {
+			var markedCrate:Vector.<Crate> = this.m_crates.splice(this.m_crates.indexOf(crate), 1);
+			if (this.m_parent.contains(markedCrate[0])) {
+				this.m_parent.removeChild(markedCrate[0]);
+				markedCrate[0] = null;
+				markedCrate = null;
+			}
+		}
 	}
 }
