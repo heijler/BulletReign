@@ -300,6 +300,7 @@ package state.gamestate {
 		 */
 		private function m_roundOver():void {
 			Session.application.displayState = new MainMenu();
+//			Session.application.displayState = new Gamestate();
 		}
 		
 		
@@ -325,7 +326,7 @@ package state.gamestate {
 		}
 		
 		private function m_initCrateTimer():void {
-			var timer:Timer = Session.timer.create(Math.round(Math.random()* 1000), this.m_generateCrates, 3);
+			var timer:Timer = Session.timer.create(Math.round(Math.random()* 20000), this.m_generateCrates, 3);
 		}
 		
 		private function m_generateCrates():void {

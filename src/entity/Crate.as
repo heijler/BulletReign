@@ -93,10 +93,20 @@ package entity {
 //			this.m_groundCollision();
 //		}
 		
+		
+		/**
+		 * m_planeCollision
+		 * 
+		 */
 		private function m_planeCollision():void {
 			
 		}
 		
+		
+		/**
+		 * m_groundCollision
+		 * 
+		 */
 		public function m_groundCollision(layer:DisplayStateLayer):void {
 				this.removeGravity();
 				this._shake(layer, 5);
@@ -104,6 +114,11 @@ package entity {
 				this.m_skin.gotoAndPlay(this.m_type);
 		}
 		
+		
+		/**
+		 * m_checkFrames
+		 * 
+		 */
 		private function checkFrames():void {
 			if (hitGround == true) {
 				switch (this.m_skin.currentFrame) {
@@ -122,21 +137,33 @@ package entity {
 			}
 		}
 		
+		
+		/**
+		 * m_crateTweenLeft
+		 * @IMPROVE: if not enough frames, reduce the tween work by removing x property
+		 */
 		private function m_crateTweenLeft():void {
 			if (this.hitGround == false) {
 			Session.tweener.add(this.m_skin, {
-				duration: 2000,
+				duration: 1300,
 				rotation: -25 + (this.y / 20),
+				x: 10 - (this.y / 60),
 				onComplete: m_crateTweenRight
 			});
 			}
 		}
 		
+		
+		/**
+		 * m_crateTweenRight
+		 * @IMPROVE: if not enough frames, reduce the tween work by removing x property
+		 */
 		private function m_crateTweenRight():void {
 			if (this.hitGround == false) {
 			Session.tweener.add(this.m_skin, {
-				duration: 2000,
+				duration: 1300,
 				rotation: 25 - (this.y / 20),
+				x: -10 + (this.y / 60),
 				onComplete: m_crateTweenLeft
 			});
 			}
