@@ -254,11 +254,16 @@ package entity {
 					this.m_fireDelay = FIRE_DELAY;
 				} else if (this.m_fireCounter <= 0 && this.m_firing){
 					this.m_firing = false;
-					var timer:Timer = Session.timer.create(2000, this.m_resetFireRate);
+					var timer:Timer = Session.timer.create(1500, this.m_resetFireRate);
 				}
 			}
 		}
 		
+		
+		/**
+		 * 
+		 * 
+		 */
 		private function m_resetFireRate():void {
 			if (!this.m_firing) {
 				this.m_firing = true;
