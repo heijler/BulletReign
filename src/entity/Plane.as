@@ -45,7 +45,7 @@ package entity {
 		private const ACCELERATE_FACTOR:Number = 0.25;
 		private const ACCELERATE_DURATION:int = 80;
 		private const BASE_SPEED:Number = 4; //4
-		private const FIRE_BURST_SIZE:int = 15;
+		private const FIRE_BURST_SIZE:int = 20;
 		
 		
 		private var m_fxMan:FXManager;
@@ -273,7 +273,7 @@ package entity {
 					this.m_fireDelay = FIRE_DELAY;
 				} else if (this.m_fireCounter <= 0 && this.m_firing){
 					this.m_firing = false;
-					var timer:Timer = Session.timer.create(1500, this.m_resetFireRate);
+					var timer:Timer = Session.timer.create(1000, this.m_resetFireRate);
 				}
 			}
 		}
