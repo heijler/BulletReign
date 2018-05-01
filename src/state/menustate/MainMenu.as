@@ -1,4 +1,7 @@
 package state.menustate {
+	import se.lnu.stickossdk.media.SoundObject;
+	import se.lnu.stickossdk.system.Session;
+
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
@@ -14,12 +17,15 @@ package state.menustate {
 		// Private properties
 		//-----------------------------------------------------------
 		
+		private var m_menuMusic:SoundObject;
+		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
 		public function MainMenu() {
 			super();
+			initMusic();
 		}
 		
 		//-----------------------------------------------------------
@@ -47,7 +53,7 @@ package state.menustate {
 //					state: "state"
 //				}
 //			];
-			
+			this.m_menuMusic.play(); //Låten sätts till play(), låt valet kan diskuteras
 			this._addMenuItems(
 				new <Object>[
 					{name:"Dogfight", state: "Dogfight"},
@@ -56,6 +62,12 @@ package state.menustate {
 					{name: "Credits", state: "Credits"}
 				]
 			);
+		}
+		
+		private function initMusic():void {
+			Session.sound.musicChannel.sources.add("menu", BulletReign.MENU_MUSIC);
+			this.m_menuMusic = Session.sound.musicChannel.get("menu");
+			
 		}
 	}
 }

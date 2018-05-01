@@ -24,6 +24,12 @@ package {
 		[Embed(source = "../asset/ttf/adore64.ttf", fontFamily = "adore64", mimeType = "application/x-font", embedAsCFF="false")]
 		private static const COUNTER_TEXT:Class;
 		
+		[Embed(source = "../asset/sound/music/bgm_menu.mp3")]
+		public static const MENU_MUSIC:Class;
+		
+		[Embed(source = "../asset/sound/music/bgm_action_3.mp3")]
+		public static const INGAME_MUSIC:Class;
+		
 		[Embed(source = "../asset/sound/plane/sfx_wpn_machinegun_loop2.mp3")]
 		public static const GUN_FIRE:Class;
 		
