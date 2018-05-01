@@ -16,14 +16,14 @@ package state.gamestate {
 	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
+	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
 	
+	import state.menustate.MainMenu;
+	
 	import ui.HUD;
 	import ui.HUDManager;
-	
-	import state.menustate.MainMenu;
-	import se.lnu.stickossdk.timer.Timer;
 	
 	
 	//-----------------------------------------------------------
@@ -64,6 +64,7 @@ package state.gamestate {
 		private var m_crateManager:CrateManager;
 		private var m_fxMan1:FXManager;
 		private var m_fxMan2:FXManager;
+		private var m_ingameMusic:SoundObject;
 		//private var m_round:Round;
 		
 
@@ -94,6 +95,7 @@ package state.gamestate {
 			this.m_initPlanes();
 			this.m_initHUD();
 			this.m_initCrates();
+			this.m_initMusic();
 			//this.m_initRound();
 		}
 		
@@ -109,6 +111,11 @@ package state.gamestate {
 			this.m_crateLayer = this.layers.add("crate");
 		}
 		
+		private function m_initMusic():void {
+			Session.sound.musicChannel.sources.add("ingamemusic", BulletReign.INGAME_MUSIC);
+			this.m_ingameMusic = Session.sound.musicChannel.get("ingamemusic");
+			this.m_ingameMusic.play();
+		}
 		
 		/**
 		 * m_initPlanes

@@ -15,6 +15,7 @@ package entity {
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
 	
@@ -60,6 +61,11 @@ package entity {
 		private var m_accelerating:Boolean = true;
 		private var m_fireCounter:int;
 		private var m_firing:Boolean = true;
+		private var m_openFire:SoundObject;
+		private var m_crashing:SoundObject;
+		private var m_engineSound:SoundObject;
+		private var m_fallingPlane:SoundObject;
+		private var m_screamSound:SoundObject;
 
 		//-----------------------------------------------------------
 		// Constructor
@@ -93,6 +99,7 @@ package entity {
 		override public function init():void {
 			this.m_initSkin();
 			this.m_setSpawnPosition();
+			this.m_initSound();
 		}
 		
 		
@@ -122,7 +129,18 @@ package entity {
 			this.y = this.m_pos.y;
 		}
 		
-		
+		private function m_initSound():void {
+			Session.sound.soundChannel.sources.add("machinegun", BulletReign.GUN_FIRE);
+			Session.sound.soundChannel.sources.add("planecrashing", BulletReign.PLANE_CRASH);
+			Session.sound.soundChannel.sources.add("enginesound", BulletReign.ENGINE_SOUND);
+			Session.sound.soundChannel.sources.add("fallingplane", BulletReign.CRASH_SOUND);
+			Session.sound.soundChannel.sources.add("scream", BulletReign.SCREAM_SOUND);
+			this.m_openFire = Session.sound.soundChannel.get("machinegun");
+			this.m_crashing = Session.sound.soundChannel.get("planecrashing");
+			this.m_engineSound = Session.sound.soundChannel.get("enginesound"); //VAR SKA DEN VARA?
+			this.m_fallingPlane = Session.sound.soundChannel.get("fallingplane");
+			this.m_screamSound = Session.sound.soundChannel.get("scream");
+		}
 		/**	
 		 * update
 		 * override, gameloop
@@ -165,6 +183,7 @@ package entity {
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
 					this.m_fireBullets();
+					this.m_openFire.play();
 				}
 			}
 		}
@@ -333,6 +352,8 @@ package entity {
 			this.removeGravity();
 			this._shake(layer, 5);
 			this._flicker(this, 500);
+			this.m_fallingPlane.stop();
+			this.m_crashing.play();
 		}
 		
 		/**
@@ -345,6 +366,8 @@ package entity {
 				this.m_steering = false;
 				this.m_freeFall();
 				this._flicker(this, 500);
+				this.m_screamSound.play();
+				this.m_fallingPlane.play();
 			}
 		}
 		
