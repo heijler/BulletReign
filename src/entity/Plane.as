@@ -66,6 +66,7 @@ package entity {
 		private var m_engineSound:SoundObject;
 		private var m_fallingPlane:SoundObject;
 		private var m_screamSound:SoundObject;
+		private var m_takingFire:Vector.<SoundObject>;
 
 		//-----------------------------------------------------------
 		// Constructor
@@ -135,11 +136,17 @@ package entity {
 			Session.sound.soundChannel.sources.add("enginesound", BulletReign.ENGINE_SOUND);
 			Session.sound.soundChannel.sources.add("fallingplane", BulletReign.CRASH_SOUND);
 			Session.sound.soundChannel.sources.add("scream", BulletReign.SCREAM_SOUND);
+			Session.sound.soundChannel.sources.add("takingFire1", BulletReign.HIT1_SOUND);
+			Session.sound.soundChannel.sources.add("takingFire2", BulletReign.HIT2_SOUND);
+			Session.sound.soundChannel.sources.add("takingFire3", BulletReign.HIT3_SOUND);
 			this.m_openFire = Session.sound.soundChannel.get("machinegun");
 			this.m_crashing = Session.sound.soundChannel.get("planecrashing");
 			this.m_engineSound = Session.sound.soundChannel.get("enginesound"); //VAR SKA DEN VARA?
 			this.m_fallingPlane = Session.sound.soundChannel.get("fallingplane");
 			this.m_screamSound = Session.sound.soundChannel.get("scream");
+			this.m_takingFire = new Vector.<SoundObject>;
+			this.m_takingFire.push(Session.sound.soundChannel.get("takingFire1"), Session.sound.soundChannel.get("takingFire2"), Session.sound.soundChannel.get("takingFire3"));
+			
 		}
 		/**	
 		 * update
@@ -362,6 +369,11 @@ package entity {
 		 */
 		private function m_damageControl():void {
 			this.m_newDurability -= this.m_ebulletManager.damage;
+			
+			if(this.m_takingFire != null) {
+				this.m_takingFire[Math.floor(Math.random() * this.m_takingFire.length)].play(); //Spelar ett random träffljud
+			}
+			
 			if (this.m_newDurability <= 0) {
 				this.m_steering = false;
 				this.m_freeFall();

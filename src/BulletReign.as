@@ -46,13 +46,13 @@ package {
 		public static const SCREAM_SOUND:Class;
 		
 		[Embed(source = "../asset/sound/plane/sfx_damage_hit6.mp3")]
-		private static const HIT1_SOUND:Class;
+		public static const HIT1_SOUND:Class;
 		
 		[Embed(source = "../asset/sound/plane/sfx_damage_hit5.mp3")]
-		private static const HIT2_SOUND:Class;
+		public static const HIT2_SOUND:Class;
 		
 		[Embed(source = "../asset/sound/plane/sfx_damage_hit4.mp3")]
-		private static const HIT3_SOUND:Class;
+		public static const HIT3_SOUND:Class;
 		
 		//-----------------------------------------------------------
 		// Constructor
