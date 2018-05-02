@@ -184,13 +184,12 @@ package entity {
 					this.m_anglePlane(0);
 				}
 				
-				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_7)) {
+				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_2)) {
 					this.m_accelerate();
 				}
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
 					this.m_fireBullets();
-					this.m_openFire.play();
 				}
 			}
 		}
@@ -242,7 +241,6 @@ package entity {
 			if (this.m_steering && this.m_accelDuration != 0 && this.m_accelerating) {
 				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
-				
 				this.m_accelDuration--;
 				this.x += xVel * this.m_scaleFactor;
 				this.y += yVel * this.m_scaleFactor;
@@ -275,6 +273,7 @@ package entity {
 			if (this.m_steering) {
 				this.m_fireDelay--;
 				if (this.m_fireDelay <= 0 && this.m_fireCounter > 0 && this.m_firing) {
+					this.m_openFire.play();
 					this.m_fireCounter--;
 					this.m_bulletManager.add(this._angle, this._velocity, this.m_getPos(), this.m_activePlayer);
 					this.m_fireDelay = FIRE_DELAY;

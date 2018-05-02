@@ -60,8 +60,8 @@ package entity {
 				this.m_crateClips[i].gotoAndStop(0);
 				this._setScale(this.m_crateClips[i], 2, 2);
 				this.m_crateClips[i].cacheAsBitmap = true;
-				this.addChild(this.m_crateClips[i]);
 			}
+			this.addChild(this.m_crateClips[Math.floor(Math.random() * this.m_crateClips.length)]);
 			this.m_crateTweenLeft();
 		}
 		
@@ -114,7 +114,7 @@ package entity {
 				this._shake(layer, 5);
 				this._flicker(this, 500);
 				for(var i:int = 0; i < this.m_crateClips.length; i++) {
-					this.m_crateClips[i].play();
+					this.m_crateClips[i].play(); // Sätt stoppet direkt i timelinen
 				}
 		}
 		
