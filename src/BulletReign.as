@@ -21,7 +21,7 @@ package {
 	
 	public class BulletReign extends Engine {
 		
-		[Embed(source = "../asset/ttf/adore64.ttf", fontFamily = "adore64", mimeType = "application/x-font", embedAsCFF="false")]
+		[Embed(source = "../asset/ttf/BulletReign.ttf", fontFamily = "bulletreign", mimeType = "application/x-font", embedAsCFF="false")]
 		private static const COUNTER_TEXT:Class;
 		
 		[Embed(source = "../asset/sound/music/bgm_menu.mp3")]

@@ -89,9 +89,9 @@ package ui {
 			this.m_playerHealth = new TextField();
 			this.m_textFormat = new TextFormat();
 			this.m_playerHealth.text = "health".toUpperCase();
-			this.m_textFormat.size = 12; 
+			this.m_textFormat.size = 7; 
 			this.m_textFormat.color = 0xFFFFFF;
-			this.m_textFormat.font = "adore64";
+			this.m_textFormat.font = "bulletreign";
 			this.m_playerWins.text = "wins".toUpperCase() + " " + this.m_wins;
 			this.updateWins(); //??????
 			this.m_durabilityMeter = new DurabilityMeterv3GFX;

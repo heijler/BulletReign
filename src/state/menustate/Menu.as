@@ -23,6 +23,7 @@ package state.menustate {
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
+		private const SELECT_CHAR:String = "@";
 		
 		private var m_menuLayer:DisplayStateLayer;
 		private var m_controls_one:EvertronControls = new EvertronControls(0);
@@ -31,6 +32,7 @@ package state.menustate {
 		private var m_menuOptions:Vector.<TextField> = new Vector.<TextField>();
 		private var m_format:TextFormat;
 		private var m_selectedFormat:TextFormat;
+		
 		
 		//-----------------------------------------------------------
 		// Protected properties
@@ -106,15 +108,15 @@ package state.menustate {
 			this.m_format.color = 0xFFFFFF;
 			this.m_format.kerning = true;
 			this.m_format.letterSpacing = 3;
-			this.m_format.size = 24;
-			this.m_format.font = "adore64";
+			this.m_format.size = 14;
+			this.m_format.font = "bulletreign";
 			
 			this.m_selectedFormat = new TextFormat();
 			this.m_selectedFormat.color = 0xEBD320;
 			this.m_selectedFormat.kerning = true;
 			this.m_selectedFormat.letterSpacing = 3;
-			this.m_selectedFormat.size = 24;
-			this.m_selectedFormat.font = "adore64";
+			this.m_selectedFormat.size = 14;
+			this.m_selectedFormat.font = "bulletreign";
 		}
 		
 		
@@ -203,7 +205,7 @@ package state.menustate {
 		 */
 		private function m_resetMenu():void {
 			for (var i:int = 0; i < this.m_menuOptions.length; i++) {
-				if (this.m_menuOptions[i].text.indexOf("*") != -1) {
+				if (this.m_menuOptions[i].text.indexOf(this.SELECT_CHAR) != -1) {
 					this.m_menuOptions[i].text = this.m_menuOptions[i].text.substring(1, this.m_menuOptions[i].text.length);
 				}
 			}
@@ -214,7 +216,7 @@ package state.menustate {
 		 * m_menuShow
 		 */
 		private function m_menuShow():void {
-			this.m_menuOptions[this.m_menuSelect].text = "*" + this.m_menuOptions[this.m_menuSelect].text;
+			this.m_menuOptions[this.m_menuSelect].text = this.SELECT_CHAR + this.m_menuOptions[this.m_menuSelect].text;
 			this.m_menuOptions[this.m_menuSelect].setTextFormat(this.m_selectedFormat);
 		}
 		
