@@ -36,7 +36,7 @@ package {
 		[Embed(source = "../asset/sound/plane/sfx_wpn_cannon2.mp3")]
 		public static const PLANE_CRASH:Class;
 		
-		[Embed(source = "../asset/sound/plane/sfx_vehicle_helicopterloop2.mp3")]
+		[Embed(source = "../asset/sound/plane/planeEngine.mp3")]
 		public static const ENGINE_SOUND:Class;
 		
 		[Embed(source = "../asset/sound/plane/sfx_sounds_falling8.mp3")]

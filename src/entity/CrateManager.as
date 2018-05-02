@@ -13,7 +13,7 @@ package entity {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private const AMOUNT_LIMIT:int = 3;
+		private const AMOUNT_LIMIT:int = 20;
 		
 		private var m_parent:DisplayObjectContainer;
 		private var m_crates:Vector.<Crate>;

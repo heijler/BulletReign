@@ -117,6 +117,7 @@ package state.gamestate {
 			Session.sound.musicChannel.sources.add("ingamemusic", BulletReign.INGAME_MUSIC);
 			this.m_ingameMusic = Session.sound.musicChannel.get("ingamemusic");
 			this.m_ingameMusic.play();
+			this.m_ingameMusic.volume = 0.4;
 		}
 		
 		/**
@@ -277,6 +278,7 @@ package state.gamestate {
 					for (var j:int = 0; j < this.m_crates.length; j++) {
 						if (this.m_planes[i].hitTestObject(this.m_crates[j])) {
 							this.m_crateManager.removeCrate(this.m_crates[j]);
+							
 						}
 					}
 				}
@@ -342,6 +344,7 @@ package state.gamestate {
 			this.m_crateSpawn = new Point(Math.floor(Math.random()* Session.application.size.x), 0);
 			this.m_crateManager.add(new Crate(this.m_crateSpawn));
 			this.m_crates = m_crateManager.getCrates();
+			trace(this.m_crates);
 		}
 	}
 }
