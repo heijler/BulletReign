@@ -7,14 +7,15 @@ package state.gamestate {
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
+	import asset.GroundGFX;
+	
 	import entity.BulletManager;
+	import entity.Cloud;
 	import entity.Crate;
 	import entity.CrateManager;
 	import entity.Plane;
 	import entity.PlaneManager;
 	import entity.fx.FXManager;
-	
-	import asset.GroundGFX;
 	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
@@ -28,6 +29,7 @@ package state.gamestate {
 	import ui.HUDManager;
 	
 	
+	
 	//-----------------------------------------------------------
 	// Gamestate
 	//-----------------------------------------------------------
@@ -37,7 +39,7 @@ package state.gamestate {
 		//-----------------------------------------------------------
 		// Public properties
 		//-----------------------------------------------------------
-		[Embed(source="../../../GFX/Background/background.png")]
+		[Embed(source="../../../asset/png/backgrounds/background.png")]
 		private const BG:Class;
 		
 		public var m_backgroundLayer:DisplayStateLayer;
@@ -61,6 +63,7 @@ package state.gamestate {
 		private var m_sky:Sprite;
 		private var m_ground:Sprite;
 		private var m_background:DisplayObject;
+		
 		
 		private var m_hudManager:HUDManager;
 		private var m_crateManager:CrateManager;
@@ -93,6 +96,7 @@ package state.gamestate {
 			this.m_initSky();
 			this.m_initGround();
 			this.m_initBackground();
+			this.m_initClouds();
 			this.m_initFX();
 			this.m_initPlanes();
 			this.m_initHUD();
@@ -152,8 +156,8 @@ package state.gamestate {
 		private function m_initSky():void {
 			this.m_sky = new Sprite();
 			this.m_sky.graphics.lineStyle(2, 0xFFFFFF);
-			this.m_sky.graphics.moveTo(0, 0);
-			this.m_sky.graphics.lineTo(800, 0);
+			this.m_sky.graphics.moveTo(0, -40);
+			this.m_sky.graphics.lineTo(800, -40);
 			this.m_worldLayer.addChild(this.m_sky);
 		}
 		
@@ -171,6 +175,9 @@ package state.gamestate {
 		}
 		
 		
+
+		
+		
 		/**
 		 * 
 		 */
@@ -179,6 +186,18 @@ package state.gamestate {
 			this.m_background.scaleX = 2.5;
 			this.m_background.scaleY = 2.5; 
 			this.m_backgroundLayer.addChild(this.m_background);
+		}
+		
+		
+		/**
+		 * m_initClouds
+		 * 
+		 */
+		private function m_initClouds():void {
+			for (var i:int = 0; i < 6; i++) {
+				var cloud:Cloud = new Cloud();
+				this.m_backgroundLayer.addChild(cloud);
+			}
 		}
 		
 		
@@ -227,6 +246,7 @@ package state.gamestate {
 			this.m_durabilityChange();
 			this.m_removeInactiveBullets();
 		}
+		
 		
 		
 		/**
@@ -339,7 +359,7 @@ package state.gamestate {
 		}
 		
 		private function m_generateCrates():void {
-			this.m_crateSpawn = new Point(Math.floor(Math.random()* Session.application.size.x), 0);
+			this.m_crateSpawn = new Point(Math.floor(Math.random()* Session.application.size.x), -40); // -40 magic number, get height of crate somehow?
 			this.m_crateManager.add(new Crate(this.m_crateSpawn));
 			this.m_crates = m_crateManager.getCrates();
 		}
