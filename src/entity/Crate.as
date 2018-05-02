@@ -5,7 +5,9 @@ package entity {
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
-	import asset.CrateGFX;
+	import asset.CrateArmorGFX;
+	import asset.CratePowerGFX;
+	import asset.CrateSpeedGFX;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.system.Session;
@@ -23,17 +25,15 @@ package entity {
 		public const ARMOR_BOOST:Number = 1; // ArmorCrates
 		public const FIREPOWER:Number = 1; // FirepowerCrates
 		public var hitGround:Boolean = false;
-		public var m_type:Number;
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private var m_skin:MovieClip;
+		private var m_crateClips:Vector.<MovieClip>;
 		
-		public function Crate(pos:Point, type:Number) {
+		public function Crate(pos:Point) {
 			super();
 			this.m_pos = pos;
-			this.m_type = type;
 		}
 		
 		//-----------------------------------------------------------
@@ -54,11 +54,14 @@ package entity {
 		 * Initialize skin
 		 */
 		private function m_initSkin():void {
-			this.m_skin = new CrateGFX;
-			this.m_skin.gotoAndStop(this.m_type);
-			this._setScale(this.m_skin, 2, 2);
-			this.m_skin.cacheAsBitmap = true;
-			this.addChild(this.m_skin);
+			this.m_crateClips = new Vector.<MovieClip>;
+			this.m_crateClips.push(new CrateArmorGFX, new CratePowerGFX, new CrateSpeedGFX);
+			for(var i:int = 0; i < this.m_crateClips.length; i++) {
+				this.m_crateClips[i].gotoAndStop(0);
+				this._setScale(this.m_crateClips[i], 2, 2);
+				this.m_crateClips[i].cacheAsBitmap = true;
+				this.addChild(this.m_crateClips[i]);
+			}
 			this.m_crateTweenLeft();
 		}
 		
@@ -77,7 +80,6 @@ package entity {
 		 */
 		override public function update():void {
 			this.applyGravity();
-			this.checkFrames();
 		}
 		
 		
@@ -111,32 +113,10 @@ package entity {
 				this.removeGravity();
 				this._shake(layer, 5);
 				this._flicker(this, 500);
-				this.m_skin.gotoAndPlay(this.m_type);
-		}
-		
-		
-		/**
-		 * m_checkFrames
-		 * 
-		 */
-		private function checkFrames():void {
-			if (hitGround == true) {
-				switch (this.m_skin.currentFrame) {
-					
-					case 12:
-						this.m_skin.stop();
-						break;
-					case 24:
-						this.m_skin.stop();
-						break;
-					case 36:
-						this.m_skin.stop();
-						break;
-					
+				for(var i:int = 0; i < this.m_crateClips.length; i++) {
+					this.m_crateClips[i].play();
 				}
-			}
 		}
-		
 		
 		/**
 		 * m_crateTweenLeft
@@ -144,7 +124,8 @@ package entity {
 		 */
 		private function m_crateTweenLeft():void {
 			if (this.hitGround == false) {
-			Session.tweener.add(this.m_skin, {
+				for(var i:int = 0; i < this.m_crateClips.length; i++) {
+			Session.tweener.add(this.m_crateClips[i], {
 				duration: 1300,
 				rotation: -25 + (this.y / 20),
 				x: 10 - (this.y / 60),
@@ -152,7 +133,7 @@ package entity {
 			});
 			}
 		}
-		
+	}
 		
 		/**
 		 * m_crateTweenRight
@@ -160,13 +141,15 @@ package entity {
 		 */
 		private function m_crateTweenRight():void {
 			if (this.hitGround == false) {
-			Session.tweener.add(this.m_skin, {
+				for(var i:int = 0; i < this.m_crateClips.length; i++) {
+			Session.tweener.add(this.m_crateClips[i], {
 				duration: 1300,
 				rotation: 25 - (this.y / 20),
 				x: -10 + (this.y / 60),
 				onComplete: m_crateTweenLeft
 			});
 			}
+		}
 		}
 	}
 }

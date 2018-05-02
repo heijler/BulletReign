@@ -14,6 +14,8 @@ package state.gamestate {
 	import entity.PlaneManager;
 	import entity.fx.FXManager;
 	
+	import asset.GroundGFX;
+	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.media.SoundObject;
@@ -35,7 +37,7 @@ package state.gamestate {
 		//-----------------------------------------------------------
 		// Public properties
 		//-----------------------------------------------------------
-		[Embed(source="../../../asset/png/backgrounds/mountain-bg1.png")]
+		[Embed(source="../../../GFX/Background/background.png")]
 		private const BG:Class;
 		
 		public var m_backgroundLayer:DisplayStateLayer;
@@ -161,10 +163,10 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initGround():void {
-			this.m_ground = new Sprite();
-			this.m_ground.graphics.lineStyle(2, 0xFFFFFF);
-			this.m_ground.graphics.moveTo(0, 600);
-			this.m_ground.graphics.lineTo(800, 600);
+			this.m_ground = new GroundGFX();
+			this.m_ground.scaleX = 2.5;
+			this.m_ground.scaleY = 2.5;
+			this.m_ground.y = Session.application.size.y - this.m_ground.height;
 			this.m_worldLayer.addChild(this.m_ground);
 		}
 		
@@ -338,13 +340,7 @@ package state.gamestate {
 		
 		private function m_generateCrates():void {
 			this.m_crateSpawn = new Point(Math.floor(Math.random()* Session.application.size.x), 0);
-			var randomizer:Number = Math.round(Math.random() * 2);
-			var crateType:Vector.<int>;
-				crateType = new Vector.<int>();
-				crateType.push(1, 13, 25);
-			var type:int;
-			type = crateType[randomizer];
-			this.m_crateManager.add(new Crate(this.m_crateSpawn, type));
+			this.m_crateManager.add(new Crate(this.m_crateSpawn));
 			this.m_crates = m_crateManager.getCrates();
 		}
 	}
