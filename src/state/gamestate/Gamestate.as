@@ -23,7 +23,7 @@ package state.gamestate {
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
 	
-	import state.menustate.MainMenu;
+	import state.menustate.RematchMenu;
 	
 	import ui.HUD;
 	import ui.HUDManager;
@@ -74,6 +74,9 @@ package state.gamestate {
 		private var m_powerupSound:SoundObject;
 		//private var m_round:Round;
 		
+		//0 = Dogfight
+		//1 = Conquer
+		protected var _gamemode:int = 0;
 
 		
 		//-----------------------------------------------------------
@@ -114,12 +117,17 @@ package state.gamestate {
 		 */
 		private function m_initLayers():void {
 			this.m_backgroundLayer = this.layers.add("background");
-			this.m_planeLayer = this.layers.add("plane");
 			this.m_worldLayer = this.layers.add("world");
-			this.m_HUDLayer = this.layers.add("HUD");
+			this.m_planeLayer = this.layers.add("plane");
 			this.m_crateLayer = this.layers.add("crate");
+			this.m_HUDLayer = this.layers.add("HUD");
 		}
 		
+		
+		/**
+		 * m_initMusic
+		 * 
+		 */
 		private function m_initMusic():void {
 			Session.sound.musicChannel.sources.add("ingamemusic", BulletReign.INGAME_MUSIC);
 			this.m_ingameMusic = Session.sound.musicChannel.get("ingamemusic");
@@ -177,7 +185,7 @@ package state.gamestate {
 			this.m_ground.y = Session.application.size.y - this.m_ground.height;
 			this.m_worldLayer.addChild(this.m_ground);
 		}
-		
+
 		
 		private function m_initSound():void {
 			Session.sound.soundChannel.sources.add("powerup", BulletReign.POWERUP_SOUND);
@@ -186,6 +194,7 @@ package state.gamestate {
 		
 		
 		/**
+		 * m_initBackground
 		 * 
 		 */
 		private function m_initBackground():void {
@@ -221,6 +230,7 @@ package state.gamestate {
 		
 		
 		/**
+		 * m_initCrates
 		 * 
 		 */
 		private function m_initCrates():void {
@@ -231,14 +241,6 @@ package state.gamestate {
 			
 		}
 
-		/**
-		 * 
-		 */
-		/*
-		private function m_initRound():void {
-			this.m_round = new Round();
-		}
-		*/
 		
 		/**
 		 * update
@@ -285,6 +287,11 @@ package state.gamestate {
 			}
 		}
 		
+		
+		/**
+		 * m_crateGroundCollision
+		 * 
+		 */
 		private function m_crateGroundCollision():void {
 			if (this.m_crates != null) {
 				for (var i:int = 0; i < this.m_crates.length; i++) {
@@ -298,6 +305,11 @@ package state.gamestate {
 			}
 		}
 		
+		
+		/**
+		 * m_cratePlaneCllision
+		 * 
+		 */
 		private function m_cratePlaneCollision():void {
 			if (this.m_crates != null) {
 				for (var i:int = 0; i < this.m_planes.length; i++) {
@@ -343,15 +355,16 @@ package state.gamestate {
 		
 		
 		/**
+		 * m_roundOver
 		 * 
 		 */
 		private function m_roundOver():void {
-			Session.application.displayState = new MainMenu();
-//			Session.application.displayState = new Gamestate();
+			Session.application.displayState = new RematchMenu(this._gamemode);
 		}
 		
 		
 		/**
+		 * m_durabilityChange
 		 * 
 		 */
 		private function m_durabilityChange():void {
@@ -364,6 +377,7 @@ package state.gamestate {
 		
 		
 		/**
+		 * m_removeInactiveBullets
 		 * 
 		 */
 		private function m_removeInactiveBullets():void {
@@ -372,10 +386,20 @@ package state.gamestate {
 			this.m_bm2.removeInactiveBullets();
 		}
 		
+		
+		/**
+		 * m_initCrateTimer
+		 * 
+		 */
 		private function m_initCrateTimer():void {
 			var timer:Timer = Session.timer.create(Math.round(Math.random()* 10000), this.m_generateCrates, 3);
 		}
 		
+		
+		/**
+		 * m_generateCrates
+		 * 
+		 */
 		private function m_generateCrates():void {
 			this.m_crateSpawn = new Point(Math.floor(Math.random()* Session.application.size.x), -40); // -40 magic number, get height of crate somehow?
 			this.m_crate = new Crate(this.m_crateSpawn);

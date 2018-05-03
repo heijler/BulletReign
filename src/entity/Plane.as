@@ -4,11 +4,13 @@ package entity {
 	//-----------------------------------------------------------
 	
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.geom.Point;
 	
 	import asset.Plane1GFX;
 	import asset.Plane2GFX;
 	
+	import entity.BulletManager;
 	import entity.fx.FXManager;
 	import entity.fx.Trail;
 	
@@ -119,7 +121,29 @@ package entity {
 				this._setScale(this.m_skin, -2, 2);
 			}
 			this.m_skin.cacheAsBitmap = true;
+			this.m_skin.gotoAndStop(1);
+			this.m_setHitboxes();
+			
 			this.addChild(this.m_skin);
+		}
+		
+		
+		/**
+		 * m_setHitboxes
+		 * 
+		 */
+		private function m_setHitboxes():void {
+			var tailHitbox:Sprite = new Sprite();
+				tailHitbox.graphics.beginFill(0xFF0000);
+				tailHitbox.graphics.drawRect(-8, -1, 7, 3);
+				tailHitbox.graphics.endFill();
+			this.m_skin.addChild(tailHitbox);
+			
+			var bodyHitbox:Sprite = new Sprite();
+				bodyHitbox.graphics.beginFill(0xFFFF00);
+				bodyHitbox.graphics.drawRect(-1, -2, 9, 6);
+				bodyHitbox.graphics.endFill();
+			this.m_skin.addChild(bodyHitbox);
 		}
 		
 		
@@ -297,7 +321,7 @@ package entity {
 					} else {
 					var timeout:Timer = Session.timer.create(5000, this.m_clearNoFireCounter);
 					}
-					this.m_bulletManager.add(this._angle, this._velocity, this.m_getPos(), this.m_activePlayer);
+					this.m_bulletManager.add(this._angle, this._velocity, this.m_getPos(), this.m_scaleFactor);
 					this.m_fireDelay = FIRE_DELAY;
 				} else if (this.m_fireCounter <= 0 && this.m_firing){
 					this.m_firing = false;
