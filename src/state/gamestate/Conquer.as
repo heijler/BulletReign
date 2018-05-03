@@ -1,46 +1,31 @@
-package state.menustate {
+package state.gamestate {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
-	
-	import state.gamestate.Gamestate;
-	import state.gamestate.Conquer;
-	import state.menustate.MainMenu;
-	import state.menustate.infoScreen.HowToPlay;
+//	import se.lnu.stickossdk.display.DisplayState;
 	
 	//-----------------------------------------------------------
-	// RematchMenu
+	// Conquer
 	//-----------------------------------------------------------
 	
-	public class RematchMenu extends Menu {
+	public class Conquer extends Gamestate {
 		
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private var m_gamemode:int;
-		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
-		public function RematchMenu(gamemode:int) {
+		
+		public function Conquer() {
 			super();
-			this.m_gamemode = gamemode;
-			trace("Rematch gamemode:", this.m_gamemode);
+			trace("Conquer");
+			this._gamemode = 1;
 		}
 		
 		//-----------------------------------------------------------
 		// Methods
 		//-----------------------------------------------------------
-		
-		override protected function initMenu():void {
-			this._addMenuItems(
-				new <Object>[
-					{name:"Rematch", state: (this.m_gamemode ? Conquer : Gamestate)},
-					{name:"Main Menu", state: MainMenu},
-					{name: "How to Play", state: HowToPlay}
-				]
-			);
-		}
 	}
 }

@@ -120,9 +120,17 @@ package entity {
 			}
 			this.m_skin.cacheAsBitmap = true;
 			this.m_skin.gotoAndStop(1);
+			this.m_setHitboxes();
 			
-			// This draws the hitboxes, one for the back of the plane, one for the front
-			// This should be in it's own method :)
+			this.addChild(this.m_skin);
+		}
+		
+		
+		/**
+		 * m_setHitboxes
+		 * 
+		 */
+		private function m_setHitboxes():void {
 			var tailHitbox:Sprite = new Sprite();
 				tailHitbox.graphics.beginFill(0xFF0000);
 				tailHitbox.graphics.drawRect(-8, -1, 7, 3);
@@ -134,9 +142,6 @@ package entity {
 				bodyHitbox.graphics.drawRect(-1, -2, 9, 6);
 				bodyHitbox.graphics.endFill();
 			this.m_skin.addChild(bodyHitbox);
-			
-			
-			this.addChild(this.m_skin);
 		}
 		
 		

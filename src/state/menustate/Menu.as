@@ -15,6 +15,14 @@ package state.menustate {
 	import se.lnu.stickossdk.system.Session;
 	
 	import state.gamestate.Gamestate;
+////	import state.gamestate.Dogfight;
+//	import state.gamestate.Conquer;
+//	import state.menustate.MainMenu;
+//	import state.menustate.RematchMenu;
+//	import state.menustate.infoScreen.Credits;
+//	import state.menustate.infoScreen.HowToPlay;
+	
+	
 	import flash.display.Bitmap;
 
 	//-----------------------------------------------------------
@@ -33,9 +41,11 @@ package state.menustate {
 		private var m_controls_two:EvertronControls = new EvertronControls(1);
 		private var m_menuSelect:int = 0;
 		private var m_menuOptions:Vector.<TextField> = new Vector.<TextField>();
+		private var m_menuObject:Vector.<Object>;
 		private var m_format:TextFormat;
 		private var m_selectedFormat:TextFormat;
 		private var m_image:Bitmap;
+		private var m_art:Bitmap;
 		
 		
 		//-----------------------------------------------------------
@@ -149,6 +159,9 @@ package state.menustate {
 			if(this.m_image != null) {
 				this.m_menuLayer.addChild(this.m_image);
 			}
+			if (this.m_art != null) {
+				this.m_menuLayer.addChild(this.m_art);
+			}
 		}
 		
 		
@@ -189,7 +202,7 @@ package state.menustate {
 				this.m_menuSelect++;
 				this.m_menuMove();
 			} else if (Input.keyboard.justPressed(control.PLAYER_BUTTON_1)) {
-				Session.application.displayState = new Gamestate();
+				this.m_newState();
 			}
 		}
 		
@@ -205,6 +218,14 @@ package state.menustate {
 			}
 			this.m_resetMenu();
 			this.m_menuShow();
+		}
+		
+		/**
+		 * m_newState
+		 * 
+		 */
+		private function m_newState():void {
+			Session.application.displayState = new this.m_menuObject[this.m_menuSelect].state;
 		}
 		
 		
@@ -235,6 +256,7 @@ package state.menustate {
 		
 		/**
 		 * _addImage
+		 * 
 		 */
 		
 		protected function _addImage(image:Bitmap, pos:Point):void {
@@ -245,9 +267,23 @@ package state.menustate {
 		
 		
 		/**
+		 * _addArt
+		 * 
+		 */
+		
+		protected function _addArt(art:Bitmap, pos:Point):void {
+			this.m_art = art;
+			this.m_art.x = pos.x;
+			this.m_art.y = pos.y;
+		}
+		
+		
+		/**
 		 * _addMenuItems
+		 * 
 		 */
 		protected function _addMenuItems(menuObjects:Vector.<Object>):void {
+			this.m_menuObject = menuObjects;
 			for (var i:int = 0; i < menuObjects.length; i++) {
 				this._items.push(menuObjects[i].name);
 			}
