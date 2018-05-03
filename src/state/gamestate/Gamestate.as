@@ -183,6 +183,12 @@ package state.gamestate {
 			this.m_ground.scaleX = 2.5;
 			this.m_ground.scaleY = 2.5;
 			this.m_ground.y = Session.application.size.y - this.m_ground.height;
+			
+			// Hitbox
+			var groundHitbox:Sprite = new Sprite();
+				groundHitbox.graphics.drawRect(0, 8, Session.application.size.x, 12);
+			this.m_ground.addChild(groundHitbox);
+			
 			this.m_worldLayer.addChild(this.m_ground);
 		}
 
@@ -278,7 +284,7 @@ package state.gamestate {
 		 */
 		private function m_groundCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].hitTestObject(this.m_ground)) {
+				if (this.m_planes[i].hitTestObject(this.m_ground.getChildAt(1))) { // getChildAt kanske inte säkert
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
 						this.m_planes[i].crash(this.m_backgroundLayer); //m_worldLayer
@@ -295,7 +301,7 @@ package state.gamestate {
 		private function m_crateGroundCollision():void {
 			if (this.m_crates != null) {
 				for (var i:int = 0; i < this.m_crates.length; i++) {
-					if (this.m_crates[i].hitTestObject(this.m_ground)) {
+					if (this.m_crates[i].hitTestObject(this.m_ground.getChildAt(1))) {
 						if (this.m_crates[i].hitGround == false) {
 							this.m_crates[i].hitGround = true;
 							this.m_crates[i].m_groundCollision(this.m_worldLayer);

@@ -122,7 +122,7 @@ package entity {
 			}
 			this.m_skin.cacheAsBitmap = true;
 			this.m_skin.gotoAndStop(1);
-			this.m_setHitboxes();
+//			this.m_setHitboxes();
 			
 			this.addChild(this.m_skin);
 		}
@@ -422,7 +422,8 @@ package entity {
 				this.m_takingFire[Math.floor(Math.random() * this.m_takingFire.length)].play(); //Spelar ett random träffljud
 			}
 			
-			if (this.m_newDurability <= 0) {
+			if (this.m_newDurability <= 0 && this.m_noDamage == false) {
+				this.m_noDamage = true;
 				this.m_steering = false;
 				this.m_freeFall();
 				this._flicker(this, 500);
