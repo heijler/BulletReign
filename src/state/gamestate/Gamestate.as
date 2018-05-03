@@ -54,6 +54,7 @@ package state.gamestate {
 		
 		private var m_planes:Vector.<Plane>;
 		private var m_crates:Vector.<Crate>;
+		private var m_crate:Crate;
 		private var m_crateSpawn:Point;
 		private var m_wins:int;
 //		private var m_bulletManagers:Vector.<BulletManager>;
@@ -70,6 +71,7 @@ package state.gamestate {
 		private var m_fxMan1:FXManager;
 		private var m_fxMan2:FXManager;
 		private var m_ingameMusic:SoundObject;
+		private var m_powerupSound:SoundObject;
 		//private var m_round:Round;
 		
 
@@ -102,6 +104,7 @@ package state.gamestate {
 			this.m_initHUD();
 			this.m_initCrates();
 			this.m_initMusic();
+			this.m_initSound();
 			//this.m_initRound();
 		}
 		
@@ -176,7 +179,10 @@ package state.gamestate {
 		}
 		
 		
-
+		private function m_initSound():void {
+			Session.sound.soundChannel.sources.add("powerup", BulletReign.POWERUP_SOUND);
+			this.m_powerupSound = Session.sound.soundChannel.get("powerup");
+		}
 		
 		
 		/**
@@ -297,6 +303,16 @@ package state.gamestate {
 				for (var i:int = 0; i < this.m_planes.length; i++) {
 					for (var j:int = 0; j < this.m_crates.length; j++) {
 						if (this.m_planes[i].hitTestObject(this.m_crates[j])) {
+							this.m_powerupSound.play();
+							if(this.m_crates[j].m_type == 0) {
+								this.m_planes[i].m_noDamage = true;
+							}
+							if(this.m_crates[j].m_type == 1) {
+								this.m_planes[i].m_noFireCounter = true;
+							}
+							if(this.m_crates[j].m_type == 2) {
+								this.m_planes[i].m_noAccelDuration = true;
+							}
 							this.m_crateManager.removeCrate(this.m_crates[j]);
 							
 						}
@@ -357,14 +373,14 @@ package state.gamestate {
 		}
 		
 		private function m_initCrateTimer():void {
-			var timer:Timer = Session.timer.create(Math.round(Math.random()* 20000), this.m_generateCrates, 3);
+			var timer:Timer = Session.timer.create(Math.round(Math.random()* 10000), this.m_generateCrates, 3);
 		}
 		
 		private function m_generateCrates():void {
 			this.m_crateSpawn = new Point(Math.floor(Math.random()* Session.application.size.x), -40); // -40 magic number, get height of crate somehow?
-			this.m_crateManager.add(new Crate(this.m_crateSpawn));
+			this.m_crate = new Crate(this.m_crateSpawn);
+			this.m_crateManager.add(this.m_crate, m_crate.m_type);
 			this.m_crates = m_crateManager.getCrates();
-			trace(this.m_crates);
 		}
 	}
 }

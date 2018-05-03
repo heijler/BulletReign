@@ -36,6 +36,9 @@ package entity {
 		public var m_newWins:Number; //@TODO: Rename if public, does it need to be public?
 		public var m_newDurability:Number; //@TODO: Rename if public, does it need to be public?
 		public var m_activePlayer:int = 0; //@TODO: Rename if public, does it need to be public?
+		public var m_noAccelDuration:Boolean = false;
+		public var m_noDamage:Boolean = false;
+		public var m_noFireCounter:Boolean = false;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -46,7 +49,6 @@ package entity {
 		private const ACCELERATE_DURATION:int = 80;
 		private const BASE_SPEED:Number = 4; //4
 		private const FIRE_BURST_SIZE:int = 20;
-		
 		
 		private var m_fxMan:FXManager;
 		private var m_skin:MovieClip;
@@ -241,7 +243,11 @@ package entity {
 			if (this.m_steering && this.m_accelDuration != 0 && this.m_accelerating) {
 				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
+				if(this.m_noAccelDuration == false) {
 				this.m_accelDuration--;
+				} else {
+					var timeout:Timer = Session.timer.create(5000, this.m_clearNoAccelDuration);
+				}
 				this.x += xVel * this.m_scaleFactor;
 				this.y += yVel * this.m_scaleFactor;
 				this.m_fxMan.add(new Trail(this.m_getPos(), this._angle));
@@ -252,6 +258,18 @@ package entity {
 			}
 		}
 		
+		
+		private function m_clearNoAccelDuration():void {
+			this.m_noAccelDuration = false;
+		}
+		
+		private function m_clearNoFireCounter():void {
+			this.m_noFireCounter = false;
+		}
+		
+		private function m_clearNoDamage():void {
+			this.m_noDamage = false;
+		}
 		
 		/**
 		 * m_resetAcceleration
@@ -274,7 +292,11 @@ package entity {
 				this.m_fireDelay--;
 				if (this.m_fireDelay <= 0 && this.m_fireCounter > 0 && this.m_firing) {
 					this.m_openFire.play();
+					if(this.m_noFireCounter == false) {
 					this.m_fireCounter--;
+					} else {
+					var timeout:Timer = Session.timer.create(5000, this.m_clearNoFireCounter);
+					}
 					this.m_bulletManager.add(this._angle, this._velocity, this.m_getPos(), this.m_activePlayer);
 					this.m_fireDelay = FIRE_DELAY;
 				} else if (this.m_fireCounter <= 0 && this.m_firing){
@@ -367,8 +389,11 @@ package entity {
 		 * 
 		 */
 		private function m_damageControl():void {
+			if(this.m_noDamage == false) {
 			this.m_newDurability -= this.m_ebulletManager.damage;
-			
+			} else {
+			var timeout:Timer = Session.timer.create(5000, this.m_clearNoDamage);
+			}
 			if(this.m_takingFire != null) {
 				this.m_takingFire[Math.floor(Math.random() * this.m_takingFire.length)].play(); //Spelar ett random träffljud
 			}

@@ -21,15 +21,13 @@ package entity {
 		// Public properties
 		//-----------------------------------------------------------
 		
-		public const SPEED_BOOST:Number = 1; // SpeedCrates
-		public const ARMOR_BOOST:Number = 1; // ArmorCrates
-		public const FIREPOWER:Number = 1; // FirepowerCrates
 		public var hitGround:Boolean = false;
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
 		private var m_crateClips:Vector.<MovieClip>;
+		public var m_type:int;
 		
 		public function Crate(pos:Point) {
 			super();
@@ -56,12 +54,13 @@ package entity {
 		private function m_initSkin():void {
 			this.m_crateClips = new Vector.<MovieClip>;
 			this.m_crateClips.push(new CrateArmorGFX, new CratePowerGFX, new CrateSpeedGFX);
+			this.m_type = Math.floor(Math.random() * this.m_crateClips.length);
 			for(var i:int = 0; i < this.m_crateClips.length; i++) {
 				this.m_crateClips[i].gotoAndStop(0);
 				this._setScale(this.m_crateClips[i], 2, 2);
 				this.m_crateClips[i].cacheAsBitmap = true;
 			}
-			this.addChild(this.m_crateClips[Math.floor(Math.random() * this.m_crateClips.length)]);
+			this.addChild(this.m_crateClips[this.m_type]);
 			this.m_crateTweenLeft();
 		}
 		
