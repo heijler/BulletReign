@@ -27,7 +27,7 @@ package entity {
 			this.m_crates = new Vector.<Crate>;
 		}
 		
-		public function add(crate:Crate):void {
+		public function add(crate:Crate, type:int):void {
 			if (this.m_crates.length < AMOUNT_LIMIT) {
 				this.m_crates.push(crate);
 				this.m_parent.addChild(crate);
