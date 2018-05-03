@@ -414,9 +414,9 @@ package entity {
 		 */
 		private function m_damageControl():void {
 			if(this.m_noDamage == false) {
-			this.m_newDurability -= this.m_ebulletManager.damage;
+				this.m_newDurability -= this.m_ebulletManager.damage;
 			} else {
-			var timeout:Timer = Session.timer.create(5000, this.m_clearNoDamage);
+				var timeout:Timer = Session.timer.create(5000, this.m_clearNoDamage);
 			}
 			if(this.m_takingFire != null) {
 				this.m_takingFire[Math.floor(Math.random() * this.m_takingFire.length)].play(); //Spelar ett random träffljud
