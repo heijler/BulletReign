@@ -47,11 +47,22 @@ package entity {
 		 * add
 		 * Limited to AMOUNT_LIMIT;
 		 */
-		public function add(angle:Number, velocity:Number, pos:Point, owner:int):void {
+		public function add(angle:Number, velocity:Number, pos:Point, scaleFactor:int):void {
 			if (this.m_bullets.length < AMOUNT_LIMIT) {
-				var bullet:Bullet = new Bullet(angle, velocity, pos, owner);
+				var bullet:Bullet = new Bullet(angle, velocity, pos, scaleFactor);
 				this.m_bullets.push(bullet);
+				if (this.m_bullets.length % 5 == 0) {
+					var color:uint; 
+					// @TODO: Clean this up
+					if (scaleFactor == 1) {
+						color = 0xFF0000;
+					} else if (scaleFactor == -1) {
+						color = 0x0000FF;
+					}
+					bullet.color = color;
+				}
 				this.m_parent.addChild(bullet);
+				
 			} else {
 				var firstBullet:Bullet = this.m_bullets.shift();
 				this.removeBullet(firstBullet);
