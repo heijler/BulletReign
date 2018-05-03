@@ -2,14 +2,15 @@ package state.menustate {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
+	import flash.display.Bitmap;
+	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	
-	import flash.geom.Point;
-	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
+	import se.lnu.stickossdk.fx.Flicker;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.media.SoundObject;
@@ -17,15 +18,6 @@ package state.menustate {
 	import se.lnu.stickossdk.timer.Timer;
 	
 	import state.gamestate.Gamestate;
-////	import state.gamestate.Dogfight;
-//	import state.gamestate.Conquer;
-//	import state.menustate.MainMenu;
-//	import state.menustate.RematchMenu;
-//	import state.menustate.infoScreen.Credits;
-//	import state.menustate.infoScreen.HowToPlay;
-	
-	
-	import flash.display.Bitmap;
 
 	//-----------------------------------------------------------
 	// Menu
@@ -50,6 +42,8 @@ package state.menustate {
 		private var m_menuSelectSound:SoundObject;
 		private var m_image:Bitmap;
 		private var m_art:Bitmap;
+		private var m_blink:Boolean;
+		private var m_blinkCounter:int = 0;
 
 		
 		
@@ -87,6 +81,7 @@ package state.menustate {
 		 */
 		override public function update():void {
 			this.m_updateControls();
+			this.m_blinkSelection();
 		}
 		
 		
@@ -117,6 +112,11 @@ package state.menustate {
 			this.m_menuLayer = this.layers.add("mainMenu");
 		}
 		
+		
+		/**
+		 * m_initSound
+		 *  
+		 */
 		private function m_initSound():void {
 			Session.sound.soundChannel.sources.add("menumove", BulletReign.MENUMOVE_SOUND);
 			Session.sound.soundChannel.sources.add("menuselect", BulletReign.MENUSELECT_SOUND);
@@ -217,9 +217,11 @@ package state.menustate {
 				this.m_menuMove();
 			} else if (Input.keyboard.justPressed(control.PLAYER_BUTTON_1)) {
 				this.m_menuSelectSound.play();
-				var timer:Timer = Session.timer.create(1000, this.m_newState);
+				this.m_blink = true;
+				var timer:Timer = Session.timer.create(700, this.m_newState);
 			}
 		}
+		
 		
 		/**
 		 * m_menuMove
@@ -261,6 +263,26 @@ package state.menustate {
 		private function m_menuShow():void {
 			this.m_menuOptions[this.m_menuSelect].text = this.SELECT_CHAR + this.m_menuOptions[this.m_menuSelect].text;
 			this.m_menuOptions[this.m_menuSelect].setTextFormat(this.m_selectedFormat);
+		}
+		
+		
+		/**
+		 * m_blinkSelection
+		 * 
+		 */
+		private function m_blinkSelection():void {
+			//@TODO: Gör detta på något smidigare sätt
+			if (this.m_blink) {
+				this.m_blinkCounter++;
+				var text:TextField = this.m_menuOptions[this.m_menuSelect];
+				if (this.m_blinkCounter == 4) {
+					text.setTextFormat(this.m_format);
+				} else if(this.m_blinkCounter == 8) {
+					text.setTextFormat(this.m_selectedFormat);
+					this.m_blinkCounter = 0;
+				}
+				
+			}
 		}
 		
 		
