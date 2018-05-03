@@ -217,13 +217,8 @@ package state.menustate {
 				this.m_menuMove();
 			} else if (Input.keyboard.justPressed(control.PLAYER_BUTTON_1)) {
 				this.m_menuSelectSound.play();
-				var timer:Timer = Session.timer.create(1000, m_launchGame);
-				this.m_newState();
+				var timer:Timer = Session.timer.create(1000, this.m_newState);
 			}
-		}
-		
-		private function m_launchGame():void {
-			Session.application.displayState = new Gamestate();
 		}
 		
 		/**

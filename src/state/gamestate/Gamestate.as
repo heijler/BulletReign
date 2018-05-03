@@ -288,6 +288,7 @@ package state.gamestate {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
 						this.m_planes[i].crash(this.m_backgroundLayer); //m_worldLayer
+						this.m_planes[i].m_newDurability = 0;
 					}
 				}
 			}
