@@ -54,6 +54,9 @@ package {
 		[Embed(source = "../asset/sound/plane/sfx_damage_hit4.mp3")]
 		public static const HIT3_SOUND:Class;
 		
+		[Embed(source = "../asset/sound/powerup/sfx_coin_cluster1.mp3")]
+		public static const POWERUP_SOUND:Class;
+		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
