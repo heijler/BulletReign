@@ -6,6 +6,8 @@ package state.menustate {
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	
+	import flash.geom.Point;
+	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
@@ -13,7 +15,8 @@ package state.menustate {
 	import se.lnu.stickossdk.system.Session;
 	
 	import state.gamestate.Gamestate;
-	
+	import flash.display.Bitmap;
+
 	//-----------------------------------------------------------
 	// Menu
 	//-----------------------------------------------------------
@@ -32,6 +35,7 @@ package state.menustate {
 		private var m_menuOptions:Vector.<TextField> = new Vector.<TextField>();
 		private var m_format:TextFormat;
 		private var m_selectedFormat:TextFormat;
+		private var m_image:Bitmap;
 		
 		
 		//-----------------------------------------------------------
@@ -75,7 +79,7 @@ package state.menustate {
 		 * dispose
 		 */
 		override public function dispose():void {
-			
+			trace("Dispose Menu! REMOVE ME WHEN ACTUALLY DISPOSING.");
 		}
 		
 		
@@ -135,11 +139,15 @@ package state.menustate {
 		
 		
 		/**
+		 * m_addChildren
 		 * 
 		 */
 		private function m_addChildren():void {
 			for (var i:int = 0; i < this.m_menuOptions.length; i++) {
 				this.m_menuLayer.addChild(this.m_menuOptions[i]);
+			}
+			if(this.m_image != null) {
+				this.m_menuLayer.addChild(this.m_image);
 			}
 		}
 		
@@ -151,8 +159,8 @@ package state.menustate {
 		private function m_createMenuItem(text:String):TextField {
 			var menuItem:TextField = new TextField();
 			menuItem.text = text.toUpperCase();
-			menuItem.x = Session.application.size.x * 0.5 - 200; //@FIX: Magic numbers
-			menuItem.y = Session.application.size.y * 0.25 + this.m_format.size + this.m_menuOptions.length * 50; //@FIX: Magic numbers
+			menuItem.x = Session.application.size.x * 0.5 - 100; //@FIX: Magic numbers
+			menuItem.y = Session.application.size.y * 0.35 + this.m_format.size + this.m_menuOptions.length * 50; //@FIX: Magic numbers
 			menuItem.autoSize = TextFieldAutoSize.LEFT;
 			menuItem.setTextFormat(this.m_format);
 			menuItem.defaultTextFormat = this.m_format;
@@ -224,6 +232,16 @@ package state.menustate {
 		//-----------------------------------------------------------
 		// Protected methods
 		//-----------------------------------------------------------
+		
+		/**
+		 * _addImage
+		 */
+		
+		protected function _addImage(image:Bitmap, pos:Point):void {
+			this.m_image = image;
+			this.m_image.x = pos.x;
+			this.m_image.y = pos.y;
+		}
 		
 		
 		/**

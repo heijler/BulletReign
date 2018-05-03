@@ -16,7 +16,7 @@ package entity {
 		//-----------------------------------------------------------
 		
 		public const BULLET_DAMAGE:Number = 0.5; // 0.5
-		public  var color:uint = 0xFFFFFF;
+		public  var color:uint = 0x000000;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -25,7 +25,7 @@ package entity {
 		private const BULLET_SPEED:Number = 1.7;
 		private const BULLET_SIZE:Number = 2;
 		private var m_skin:Sprite;
-		private var m_owner:int;
+		private var m_scaleFactor:int;
 		
 		
 		
@@ -33,12 +33,12 @@ package entity {
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Bullet(angle:Number, velocity:Number, pos:Point, owner:int) {
+		public function Bullet(angle:Number, velocity:Number, pos:Point, scaleFactor:int) {
 			super();
 			this.m_pos = pos;
 			this._angle = angle;
 			this._velocity = velocity;
-			this.m_owner = owner;
+			this.m_scaleFactor = scaleFactor;
 		}
 		
 		//-----------------------------------------------------------
@@ -50,21 +50,21 @@ package entity {
 		 * Override.
 		 */
 		override public function init():void {
-			this.m_initBullet();
+//			this.m_initBullet();
 			this.m_initSkin();
 			this.m_setSpawnPosition();
 		}
 		
 		
-		/**
-		 * m_initBullet
-		 * 
-		 */
-		private function m_initBullet():void {
-			// Make the colors not as hard coded.
-			this.color = (this.m_owner ? 0xC37100 : 0x8A8A00);
-		}
-		
+//		/**
+//		 * m_initBullet
+//		 * 
+//		 */
+//		private function m_initBullet():void {
+//			// Make the colors not as hard coded.
+////			this.color = (this.m_owner ? 0x000000 : 0x000000);
+//		}
+//		
 		
 		/**	
 		 * m_initSkin
@@ -73,7 +73,7 @@ package entity {
 		private function m_initSkin():void {
 			this.m_skin = new Sprite();
 			this.m_skin.graphics.beginFill(this.color);
-			this.m_skin.graphics.drawRect(-this.BULLET_SIZE * 0.5, -this.BULLET_SIZE * 0.5, this.BULLET_SIZE, this.BULLET_SIZE);
+			this.m_skin.graphics.drawRect(-this.BULLET_SIZE * 0.5 + (5 * this.m_scaleFactor), -this.BULLET_SIZE * 0.5, this.BULLET_SIZE, this.BULLET_SIZE);
 			this.m_skin.graphics.endFill();
 			this._setScale(this.m_skin);
 			this.addChild(this.m_skin);
@@ -97,6 +97,8 @@ package entity {
 		 */
 		override public function update():void {
 			this.updatePosition();
+			//this.wrapAroundObjects();
+			// This wont work since we are removing them once off screen! (bulletmanager)
 		}
 		
 		
@@ -104,7 +106,7 @@ package entity {
 		 * 
 		 */
 		override public function dispose():void {
-			
+			trace("Dispose bullet! REMOVE ME WHEN ACTUALLY DISPOSING.");
 		}
 		
 		
@@ -116,15 +118,8 @@ package entity {
 			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity << this.BULLET_SPEED);
 			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity << this.BULLET_SPEED);
 			this.rotation = this._angle;
-			
-			//@TODO: Use scale factor to get rid of ifs
-			if (this.m_owner == 0) {
-				this.x += xVel;
-				this.y += yVel;
-			} else if (this.m_owner == 1) {
-				this.x -= xVel;
-				this.y -= yVel;
-			}
+			this.x += xVel * this.m_scaleFactor;
+			this.y += yVel * this.m_scaleFactor;
 			
 			this.applyGravity();
 		}

@@ -1,17 +1,25 @@
 package state.menustate {
-	import se.lnu.stickossdk.media.SoundObject;
-	import se.lnu.stickossdk.system.Session;
-
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
 	
+	import se.lnu.stickossdk.media.SoundObject;
+	import se.lnu.stickossdk.system.Session;
+	import flash.geom.Point;
+	import flash.display.Bitmap;
 	
 	//-----------------------------------------------------------
 	// MainMenu
 	//-----------------------------------------------------------
 	
 	public class MainMenu extends Menu {
+		
+		//-----------------------------------------------------------
+		// Embeds
+		//-----------------------------------------------------------
+		
+		[Embed(source="../../../asset/png/mainmenu/logo.png")]
+		private const Logo:Class;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -25,7 +33,7 @@ package state.menustate {
 		
 		public function MainMenu() {
 			super();
-			initMusic();
+			m_initMusic();
 		}
 		
 		//-----------------------------------------------------------
@@ -53,7 +61,8 @@ package state.menustate {
 //					state: "state"
 //				}
 //			];
-			this.m_menuMusic.play(); //Låten sätts till play(), låt valet kan diskuteras
+			this.m_drawLogo();
+			this.m_menuMusic.play(); //Låten sätts till play(), låtvalet kan diskuteras
 			this._addMenuItems(
 				new <Object>[
 					{name:"Dogfight", state: "Dogfight"},
@@ -64,7 +73,25 @@ package state.menustate {
 			);
 		}
 		
-		private function initMusic():void {
+		
+		/**
+		 * m_drawLogo
+		 * 
+		 */
+		private function m_drawLogo():void {
+			var logo:Bitmap = new Logo();
+				logo.scaleX = 2.5;
+				logo.scaleY = 2.5;
+			var pos:Point = new Point((Session.application.size.x * 0.5) - (logo.width*0.5) , 50);
+				this._addImage(logo, pos);
+		}
+		
+		
+		/**
+		 * m_initMusic
+		 * 
+		 */
+		private function m_initMusic():void {
 			Session.sound.musicChannel.sources.add("menu", BulletReign.MENU_MUSIC);
 			this.m_menuMusic = Session.sound.musicChannel.get("menu");
 			this.m_menuMusic.volume = 0.2;
