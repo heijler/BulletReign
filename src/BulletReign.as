@@ -57,6 +57,12 @@ package {
 		[Embed(source = "../asset/sound/powerup/sfx_coin_cluster1.mp3")]
 		public static const POWERUP_SOUND:Class;
 		
+		[Embed(source = "../asset/sound/menu/sfx_menu_move3.mp3")]
+		public static const MENUMOVE_SOUND:Class;
+		
+		[Embed(source = "../asset/sound/menu/sfx_menu_select2.mp3")]
+		public static const MENUSELECT_SOUND:Class;
+		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------

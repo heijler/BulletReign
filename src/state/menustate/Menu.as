@@ -12,7 +12,9 @@ package state.menustate {
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.timer.Timer;
 	
 	import state.gamestate.Gamestate;
 ////	import state.gamestate.Dogfight;
@@ -44,8 +46,11 @@ package state.menustate {
 		private var m_menuObject:Vector.<Object>;
 		private var m_format:TextFormat;
 		private var m_selectedFormat:TextFormat;
+		private var m_menuMoveSound:SoundObject;
+		private var m_menuSelectSound:SoundObject;
 		private var m_image:Bitmap;
 		private var m_art:Bitmap;
+
 		
 		
 		//-----------------------------------------------------------
@@ -74,8 +79,8 @@ package state.menustate {
 			this.m_initLayers();
 			this.m_initFormat();
 			this.initMenu();
+			this.m_initSound();
 		}
-		
 		
 		/**
 		 * update
@@ -110,6 +115,13 @@ package state.menustate {
 		 */
 		private function m_initLayers():void {
 			this.m_menuLayer = this.layers.add("mainMenu");
+		}
+		
+		private function m_initSound():void {
+			Session.sound.soundChannel.sources.add("menumove", BulletReign.MENUMOVE_SOUND);
+			Session.sound.soundChannel.sources.add("menuselect", BulletReign.MENUSELECT_SOUND);
+			this.m_menuMoveSound = Session.sound.soundChannel.get("menumove");
+			this.m_menuSelectSound = Session.sound.soundChannel.get("menuselect");
 		}
 		
 		
@@ -196,16 +208,23 @@ package state.menustate {
 		 */
 		private function m_controlMove(control:EvertronControls):void {
 			if (Input.keyboard.justPressed(control.PLAYER_UP)) {
+				this.m_menuMoveSound.play();
 				this.m_menuSelect--;
 				this.m_menuMove();
 			} else if (Input.keyboard.justPressed(control.PLAYER_DOWN)) {
+				this.m_menuMoveSound.play();
 				this.m_menuSelect++;
 				this.m_menuMove();
 			} else if (Input.keyboard.justPressed(control.PLAYER_BUTTON_1)) {
+				this.m_menuSelectSound.play();
+				var timer:Timer = Session.timer.create(1000, m_launchGame);
 				this.m_newState();
 			}
 		}
 		
+		private function m_launchGame():void {
+			Session.application.displayState = new Gamestate();
+		}
 		
 		/**
 		 * m_menuMove
