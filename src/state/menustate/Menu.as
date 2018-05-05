@@ -42,7 +42,7 @@ package state.menustate {
 		private var m_menuSelectSound:SoundObject;
 		private var m_image:Bitmap;
 		private var m_art:Bitmap;
-		private var m_blink:Boolean;
+		private var m_selected:Boolean;
 		private var m_blinkCounter:int = 0;
 
 		
@@ -207,17 +207,17 @@ package state.menustate {
 		 * m_controlMove
 		 */
 		private function m_controlMove(control:EvertronControls):void {
-			if (Input.keyboard.justPressed(control.PLAYER_UP)) {
+			if (Input.keyboard.justPressed(control.PLAYER_UP) && !this.m_selected) {
 				this.m_menuMoveSound.play();
 				this.m_menuSelect--;
 				this.m_menuMove();
-			} else if (Input.keyboard.justPressed(control.PLAYER_DOWN)) {
+			} else if (Input.keyboard.justPressed(control.PLAYER_DOWN) && !this.m_selected) {
 				this.m_menuMoveSound.play();
 				this.m_menuSelect++;
 				this.m_menuMove();
-			} else if (Input.keyboard.justPressed(control.PLAYER_BUTTON_1)) {
+			} else if (Input.keyboard.justPressed(control.PLAYER_BUTTON_1) && !this.m_selected) {
 				this.m_menuSelectSound.play();
-				this.m_blink = true;
+				this.m_selected = true;
 				var timer:Timer = Session.timer.create(700, this.m_newState);
 			}
 		}
@@ -234,6 +234,7 @@ package state.menustate {
 			}
 			this.m_resetMenu();
 			this.m_menuShow();
+		
 		}
 		
 		/**
@@ -272,7 +273,7 @@ package state.menustate {
 		 */
 		private function m_blinkSelection():void {
 			//@TODO: Gör detta på något smidigare sätt
-			if (this.m_blink) {
+			if (this.m_selected) {
 				this.m_blinkCounter++;
 				var text:TextField = this.m_menuOptions[this.m_menuSelect];
 				if (this.m_blinkCounter == 4) {
