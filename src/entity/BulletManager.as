@@ -6,6 +6,9 @@ package entity {
 	import flash.geom.Point;
 	
 	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.timer.Timer;
+	import se.lnu.stickossdk.tween.Tween;
+	import se.lnu.stickossdk.tween.easing.Quint;
 	
 	//-----------------------------------------------------------
 	// BulletManager
@@ -18,17 +21,19 @@ package entity {
 		//-----------------------------------------------------------
 		
 		public function get damage():Number {
-			return this.m_bullets[0].BULLET_DAMAGE; //@TODO: Is this safe? 
+			return this.m_bullets[0].BULLET_DAMAGE;
 		}
 		
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
+		private const BULLET_ACTIVE_TIME:int = 1300;
 		private const AMOUNT_LIMIT:int = 25;
 		
 		private var m_parent:DisplayObjectContainer;
 		private var m_bullets:Vector.<Bullet>;
+		private var m_scaleFactor:int;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -48,19 +53,17 @@ package entity {
 		 * Limited to AMOUNT_LIMIT;
 		 */
 		public function add(angle:Number, velocity:Number, pos:Point, scaleFactor:int):void {
+			this.m_scaleFactor = scaleFactor;
+			
 			if (this.m_bullets.length < AMOUNT_LIMIT) {
-				var bullet:Bullet = new Bullet(angle, velocity, pos, scaleFactor);
+				var bullet:Bullet = new Bullet(angle, velocity, pos, this.m_scaleFactor);
+				this.m_initTimer(bullet);
 				this.m_bullets.push(bullet);
-				if (this.m_bullets.length % 5 == 0) {
-					var color:uint; 
-					// @TODO: Clean this up
-					if (scaleFactor == 1) {
-						color = 0xFF0000;
-					} else if (scaleFactor == -1) {
-						color = 0x0000FF;
-					}
-					bullet.color = color;
+				
+				if(this.m_bullets.length % 5 == 0) {
+					this.m_makeTraceRound(bullet);
 				}
+				
 				this.m_parent.addChild(bullet);
 				
 			} else {
@@ -114,13 +117,21 @@ package entity {
 		 */
 		public function removeInactiveBullets():void {
 			for (var i:int = 0; i < this.m_bullets.length; i++) {
-				if (this.m_bullets[i].x < 0 || this.m_bullets[i].x > Session.application.size.x ||
-					this.m_bullets[i].y < 0 || this.m_bullets[i].y > Session.application.size.y) {
-					
+//				trace(this.m_bullets[i].active);
+				trace(this.m_bullets[i].alpha);
+				if (this.m_bullets[i].active == false) {
+					trace("Bullet inactive!");
 					this.removeBullet(this.m_bullets[i]);
-					
 				}
 			}
+//			for (var i:int = 0; i < this.m_bullets.length; i++) {
+//				if (this.m_bullets[i].x < 0 || this.m_bullets[i].x > Session.application.size.x ||
+//					this.m_bullets[i].y < 0 || this.m_bullets[i].y > Session.application.size.y) {
+//					
+//					this.removeBullet(this.m_bullets[i]);
+//					
+//				}
+//			}
 		}
 		
 		
@@ -137,6 +148,40 @@ package entity {
 				}
 			}
 			return val;
+		}
+		
+		
+		/**
+		 * m_initTimer
+		 * 
+		 */
+		private function m_initTimer(bullet:Bullet):void {
+			// Fade out
+			var tween:Tween = Session.tweener.add(bullet,{
+					transition: Quint.easeInOut,
+					duration: this.BULLET_ACTIVE_TIME + 300,
+					alpha: 0.1
+				});
+			
+			// Make inactive after specified amount of time
+			var timer:Timer = Session.timer.create(this.BULLET_ACTIVE_TIME, function():void {
+				bullet.active = false;
+			});
+		}
+		
+		
+		/**
+		 * m_makeTraceRound
+		 * 
+		 */
+		private function m_makeTraceRound(bullet:Bullet):void {
+			var color:uint; 		
+			if (this.m_scaleFactor == 1) {
+				color = 0xFF0000;
+			} else if (this.m_scaleFactor == -1) {
+				color = 0x0000FF;
+			}
+			bullet.color = color;
 		}
 	}
 }
