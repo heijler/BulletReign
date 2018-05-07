@@ -5,6 +5,9 @@ package entity {
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
+	import se.lnu.stickossdk.timer.Timer;
+	import se.lnu.stickossdk.system.Session;
+	
 	//-----------------------------------------------------------
 	// Bullet
 	//-----------------------------------------------------------
@@ -16,7 +19,8 @@ package entity {
 		//-----------------------------------------------------------
 		
 		public const BULLET_DAMAGE:Number = 0.5; // 0.5
-		public  var color:uint = 0x000000;
+		public var color:uint = 0x000000;
+		public var active:Boolean = true;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -50,21 +54,10 @@ package entity {
 		 * Override.
 		 */
 		override public function init():void {
-//			this.m_initBullet();
 			this.m_initSkin();
 			this.m_setSpawnPosition();
 		}
 		
-		
-//		/**
-//		 * m_initBullet
-//		 * 
-//		 */
-//		private function m_initBullet():void {
-//			// Make the colors not as hard coded.
-////			this.color = (this.m_owner ? 0x000000 : 0x000000);
-//		}
-//		
 		
 		/**	
 		 * m_initSkin
@@ -97,8 +90,7 @@ package entity {
 		 */
 		override public function update():void {
 			this.updatePosition();
-			//this.wrapAroundObjects();
-			// This wont work since we are removing them once off screen! (bulletmanager)
+			this.wrapAroundObjects();
 		}
 		
 		

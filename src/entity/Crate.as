@@ -124,15 +124,15 @@ package entity {
 		private function m_crateTweenLeft():void {
 			if (this.hitGround == false) {
 				for(var i:int = 0; i < this.m_crateClips.length; i++) {
-			Session.tweener.add(this.m_crateClips[i], {
-				duration: 1300,
-				rotation: -25 + (this.y / 20),
-				x: 10 - (this.y / 60),
-				onComplete: m_crateTweenRight
-			});
+					Session.tweener.add(this.m_crateClips[i], {
+						duration: 1300,
+						rotation: -25 + (this.y / 20),
+						x: 10 - (this.y / 60),
+						onComplete: m_crateTweenRight
+					});
+				}
 			}
 		}
-	}
 		
 		/**
 		 * m_crateTweenRight
@@ -141,14 +141,14 @@ package entity {
 		private function m_crateTweenRight():void {
 			if (this.hitGround == false) {
 				for(var i:int = 0; i < this.m_crateClips.length; i++) {
-			Session.tweener.add(this.m_crateClips[i], {
-				duration: 1300,
-				rotation: 25 - (this.y / 20),
-				x: -10 + (this.y / 60),
-				onComplete: m_crateTweenLeft
-			});
+					Session.tweener.add(this.m_crateClips[i], {
+						duration: 1300,
+						rotation: 25 - (this.y / 20),
+						x: -10 + (this.y / 60),
+						onComplete: m_crateTweenLeft
+					});
+				}
 			}
-		}
 		}
 	}
 }
