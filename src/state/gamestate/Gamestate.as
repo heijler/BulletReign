@@ -56,10 +56,10 @@ package state.gamestate {
 		private var m_crates:Vector.<Crate>;
 		private var m_crate:Crate;
 		private var m_crateSpawn:Point;
-		private var m_wins:int;
 //		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_bm1:BulletManager; // @FIX, put into Vector?
 		private var m_bm2:BulletManager; // @FIX, put into Vector?
+		private var m_roundFlag:Boolean = false;
 		
 		private var m_sky:Sprite;
 		private var m_ground:Sprite;
@@ -85,6 +85,7 @@ package state.gamestate {
 		
 		public function Gamestate() {
 			super();
+			this.m_roundFlag = true;
 //			this.m_bulletManagers = new Vector.<BulletManager>()
 		}
 		
@@ -349,10 +350,19 @@ package state.gamestate {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				if (this.m_planes[i].crashed == true) {
 					for (var j:int = 0; j < this.m_planes.length; j++) {
-						if (this.m_planes[j].crashed == false) {
-							if (this.m_planes[j].m_newWins >= this.m_planes[j].m_wins) {
-								this.m_hudManager.incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].m_newWins);
-							}
+						if (this.m_planes[j].crashed == false && this.m_roundFlag == true) {
+								switch(this.m_planes[j].wins) {
+									case 0:
+									this.m_planes[j].wins = 1;
+									this.m_roundFlag = false;
+									break;
+									
+									case 1:
+									this.m_planes[j].wins = 2;
+									this.m_roundFlag = false;
+									break;
+								}
+								this.m_hudManager.incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);
 						}
 					}
 					var timer:Timer = Session.timer.create(3000, this.m_roundOver);
@@ -413,5 +423,6 @@ package state.gamestate {
 			this.m_crateManager.add(this.m_crate, m_crate.m_type);
 			this.m_crates = m_crateManager.getCrates();
 		}
+		
 	}
 }
