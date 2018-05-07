@@ -37,11 +37,17 @@ package state.gamestate {
 	public class Gamestate extends DisplayState {
 		
 		//-----------------------------------------------------------
-		// Public properties
+		// Embeds
 		//-----------------------------------------------------------
+		
 		[Embed(source="../../../asset/png/backgrounds/background.png")]
 		private const BG:Class;
 		
+		//-----------------------------------------------------------
+		// Public properties
+		//-----------------------------------------------------------
+		
+		//@TODO: rename if public
 		public var m_backgroundLayer:DisplayStateLayer;
 		public var m_planeLayer:DisplayStateLayer;
 		public var m_worldLayer:DisplayStateLayer;
@@ -73,6 +79,10 @@ package state.gamestate {
 		private var m_ingameMusic:SoundObject;
 		private var m_powerupSound:SoundObject;
 		//private var m_round:Round;
+		
+		//-----------------------------------------------------------
+		// Protected properties
+		//-----------------------------------------------------------
 		
 		//0 = Dogfight
 		//1 = Conquer
@@ -109,6 +119,7 @@ package state.gamestate {
 			this.m_initMusic();
 			this.m_initSound();
 			//this.m_initRound();
+			this._initGamemode();
 		}
 		
 		
@@ -260,6 +271,7 @@ package state.gamestate {
 			this.m_resolveRound();
 			this.m_durabilityChange();
 			this.m_removeInactiveBullets();
+			this._updateGamemode();
 		}
 		
 		
@@ -412,6 +424,27 @@ package state.gamestate {
 			this.m_crate = new Crate(this.m_crateSpawn);
 			this.m_crateManager.add(this.m_crate, m_crate.m_type);
 			this.m_crates = m_crateManager.getCrates();
+		}
+		
+		//-----------------------------------------------------------
+		// Protected methods
+		//-----------------------------------------------------------
+		
+		/**
+		 * _initGameMode
+		 * 
+		 */
+		protected function _initGamemode():void {
+			// To be overridden by children
+		}
+		
+		
+		/**
+		 * _updateGamemode
+		 * 
+		 */
+		protected function _updateGamemode():void {
+			// To be overridden by children
 		}
 	}
 }
