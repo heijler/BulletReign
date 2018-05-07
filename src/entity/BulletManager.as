@@ -117,21 +117,10 @@ package entity {
 		 */
 		public function removeInactiveBullets():void {
 			for (var i:int = 0; i < this.m_bullets.length; i++) {
-//				trace(this.m_bullets[i].active);
-				trace(this.m_bullets[i].alpha);
 				if (this.m_bullets[i].active == false) {
-					trace("Bullet inactive!");
 					this.removeBullet(this.m_bullets[i]);
 				}
 			}
-//			for (var i:int = 0; i < this.m_bullets.length; i++) {
-//				if (this.m_bullets[i].x < 0 || this.m_bullets[i].x > Session.application.size.x ||
-//					this.m_bullets[i].y < 0 || this.m_bullets[i].y > Session.application.size.y) {
-//					
-//					this.removeBullet(this.m_bullets[i]);
-//					
-//				}
-//			}
 		}
 		
 		
