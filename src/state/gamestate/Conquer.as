@@ -1,17 +1,17 @@
 package state.gamestate {
+	//-----------------------------------------------------------
+	// Import
+	//-----------------------------------------------------------
+	
 	import flash.geom.Point;
 	
 	import entity.Banner;
+	import entity.Plane;
 	import entity.Zeppelin;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.system.Session;
-	
-
-	//-----------------------------------------------------------
-	// Import
-	//-----------------------------------------------------------
-//	import se.lnu.stickossdk.display.DisplayState;
+	import se.lnu.stickossdk.timer.Timer;
 	
 	//-----------------------------------------------------------
 	// Conquer
@@ -33,6 +33,7 @@ package state.gamestate {
 		
 		private var m_zeppelin:Zeppelin;
 		private var m_banner:Banner;
+		private var m_bannerHolder:Plane;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -108,11 +109,40 @@ package state.gamestate {
 		 */
 		override protected function _updateGamemode():void {
 //			trace("update conquer");
+			
+			// in it's own method
 			if (this.m_zeppelin.atDefaultPos) {
 				this.m_banner.showBanner();
 			}
+			
+			this.m_bannerPlaneCollision();
+			this.m_bannerFollow();
+			
 		}
 		
 		
+		/**
+		 * m_bannerPlaneCollision
+		 * 
+		 */
+		private function m_bannerPlaneCollision():void {
+			for (var i:int = 0; i < this.m_planes.length; i++) {
+				if(this.m_banner.hitBox.hitTestObject(this.m_planes[i]) && !this.m_banner.caught) {
+					trace("collide");
+					this.m_banner.caught = true;
+					this.m_bannerHolder = this.m_planes[i];
+				}
+			}
+		}
+		
+		/**
+		 * m_bannerFollow
+		 * 
+		 */
+		private function m_bannerFollow():void {
+			if (this.m_banner.caught) {
+				this.m_banner.follow(this.m_bannerHolder.m_getPos(), this.m_bannerHolder.angle, this.m_bannerHolder.scaleFactor);
+			}
+		}		
 	}
 }

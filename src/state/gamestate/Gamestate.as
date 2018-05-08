@@ -58,7 +58,7 @@ package state.gamestate {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private var m_planes:Vector.<Plane>;
+		protected var m_planes:Vector.<Plane>; //@TODO: rename
 		private var m_crates:Vector.<Crate>;
 		private var m_crate:Crate;
 		private var m_crateSpawn:Point;
@@ -120,6 +120,8 @@ package state.gamestate {
 			this.m_initSound();
 			//this.m_initRound();
 			this._initGamemode();
+			
+			this.flash(500, 0xFFFFFF);
 		}
 		
 		

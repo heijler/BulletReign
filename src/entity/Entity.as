@@ -50,8 +50,10 @@ package entity {
 		 * 
 		 */
 		protected function _setScale(obj:DisplayObjectContainer, scaleX:int = this.DEFAULT_SCALE, scaleY:int = this.DEFAULT_SCALE):void {
-			obj.scaleX = scaleX;
-			obj.scaleY = scaleY;
+			if (obj != null) {
+				obj.scaleX = scaleX;
+				obj.scaleY = scaleY;
+			}
 		}
 		
 		
@@ -67,6 +69,7 @@ package entity {
 		
 		
 		/**
+		 * _flicker
 		 * 
 		 */
 		protected function _flicker(obj:DisplayObjectContainer, duration = 1000):void {

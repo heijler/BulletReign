@@ -346,10 +346,29 @@ package entity {
 		
 		/**
 		 * m_getPos
-		 * 
+		 * @TODO: Raname!
+		 * @TODO: Move up!
 		 */
-		private function m_getPos():Point {
+		public function m_getPos():Point {
 			return new Point(this.x, this.y);
+		}
+		
+		
+		/**
+		 * get angle
+		 * @TODO: Move up!
+		 */
+		public function get angle():Number {
+			return this._angle;
+		}
+		
+		
+		/**
+		 * get scaleFactor
+		 * @TODO: Move up!
+		 */
+		public function get scaleFactor():int {
+			return this.m_scaleFactor;
 		}
 		
 		
@@ -410,7 +429,7 @@ package entity {
 		
 		/**
 		 * m_damageControl
-		 * 
+		 * @Flytta till gamestate
 		 */
 		private function m_damageControl():void {
 			if(this.m_noDamage == false) {
