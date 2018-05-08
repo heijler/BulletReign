@@ -1,22 +1,20 @@
 package gamemodes
 {
+	//--------------------------------------------------------
+	// Imports
+	//--------------------------------------------------------
+	
 	public class Round
 	{
 		
-		private const m_wins:int = 0;
+		private var m_roundNum:int;
 		
-		public var m_newWins:int;
-		
-		public function Round() {
-			initWin();
+		public function Round(roundNum:int) {
+			this.m_roundNum = roundNum;
 		}
 		
-		private function initWin():void {
-			this.m_newWins = m_wins;
+		private function getPoints():void {
 			
-			if (m_newWins <= 2) {
-				m_newWins++;	
-			}
 		}
 	}
 }

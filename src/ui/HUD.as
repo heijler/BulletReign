@@ -93,7 +93,7 @@ package ui {
 			this.m_textFormat.color = 0x000000; // 0x306141;
 			this.m_textFormat.font = "bulletreign";
 			this.m_playerWins.text = "wins".toUpperCase() + " " + this.m_wins;
-			this.updateWins(); //??????
+			this.updateWins();
 			this.m_durabilityMeter = new DurabilityMeterv3GFX;
 			this.m_durabilityMeter = new DurabilityMeterv4GFX; 
 			
