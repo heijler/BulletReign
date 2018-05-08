@@ -37,11 +37,17 @@ package state.gamestate {
 	public class Gamestate extends DisplayState {
 		
 		//-----------------------------------------------------------
-		// Public properties
+		// Embeds
 		//-----------------------------------------------------------
+		
 		[Embed(source="../../../asset/png/backgrounds/background.png")]
 		private const BG:Class;
 		
+		//-----------------------------------------------------------
+		// Public properties
+		//-----------------------------------------------------------
+		
+		//@TODO: rename if public
 		public var m_backgroundLayer:DisplayStateLayer;
 		public var m_planeLayer:DisplayStateLayer;
 		public var m_worldLayer:DisplayStateLayer;
@@ -52,7 +58,7 @@ package state.gamestate {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private var m_planes:Vector.<Plane>;
+		protected var m_planes:Vector.<Plane>; //@TODO: rename
 		private var m_crates:Vector.<Crate>;
 		private var m_crate:Crate;
 		private var m_crateSpawn:Point;
@@ -73,6 +79,10 @@ package state.gamestate {
 		private var m_ingameMusic:SoundObject;
 		private var m_powerupSound:SoundObject;
 		//private var m_round:Round;
+		
+		//-----------------------------------------------------------
+		// Protected properties
+		//-----------------------------------------------------------
 		
 		//0 = Dogfight
 		//1 = Conquer
@@ -110,6 +120,9 @@ package state.gamestate {
 			this.m_initMusic();
 			this.m_initSound();
 			//this.m_initRound();
+			this._initGamemode();
+			
+			this.flash(500, 0xFFFFFF);
 		}
 		
 		
@@ -261,6 +274,7 @@ package state.gamestate {
 			this.m_resolveRound();
 			this.m_durabilityChange();
 			this.m_removeInactiveBullets();
+			this._updateGamemode();
 		}
 		
 		
@@ -424,5 +438,26 @@ package state.gamestate {
 			this.m_crates = m_crateManager.getCrates();
 		}
 		
+
+		//-----------------------------------------------------------
+		// Protected methods
+		//-----------------------------------------------------------
+		
+		/**
+		 * _initGameMode
+		 * 
+		 */
+		protected function _initGamemode():void {
+			// To be overridden by children
+		}
+		
+		
+		/**
+		 * _updateGamemode
+		 * 
+		 */
+		protected function _updateGamemode():void {
+			// To be overridden by children
+		}
 	}
 }
