@@ -34,13 +34,12 @@ package entity {
 		public const PLANE_DURABILITY:Number = 10;
 		
 		public var crashed:Boolean = false;
-		public var m_wins:Number = 0; //@TODO: Rename if public, does it need to be public?
-		public var m_newWins:Number; //@TODO: Rename if public, does it need to be public?
 		public var m_newDurability:Number; //@TODO: Rename if public, does it need to be public?
 		public var m_activePlayer:int = 0; //@TODO: Rename if public, does it need to be public?
 		public var m_noAccelDuration:Boolean = false;
 		public var m_noDamage:Boolean = false;
 		public var m_noFireCounter:Boolean = false;
+		public var wins:int;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -184,7 +183,6 @@ package entity {
 			this.m_defaultSpeed();
 			this.m_collisionControl();
 			this.m_updatePosition();
-			this.m_checkwin();
 		}
 		
 		
@@ -463,18 +461,5 @@ package entity {
 			this.updateRotation();
 		}
 		
-		
-		/**
-		 * m_checkwin
-		 * 
-		 */
-		private function m_checkwin():void {
-			this.m_newWins = this.m_wins + 1; //OBS. Methoden fungerar ej!
-			if(this.m_newWins != 2) {
-				//this.m_wins = this.m_newWins;
-			} else if (this.m_wins >= 2) {
-				trace("Du vann");
-			}
-		}
 	}
 }
