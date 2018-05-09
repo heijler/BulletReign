@@ -70,13 +70,15 @@ package entity {
 		private var m_fallingPlane:SoundObject;
 		private var m_screamSound:SoundObject;
 		private var m_takingFire:Vector.<SoundObject>;
+		private var m_movability:Boolean;
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function Plane(player:int, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor, fxMan) {
+		public function Plane(player:int, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor, fxMan, movability) {
 			super();
+			this.m_movability = movability;
 			this.m_activePlayer = player;
 			this.m_bulletManager = bulletMngr;
 			this.m_ebulletManager = ebulletMngr;
@@ -417,12 +419,20 @@ package entity {
 		 * 
 		 */
 		public function crash(layer:DisplayStateLayer):void {
-			this._velocity = 0;
-			this.removeGravity();
+			this.movability(false);
 			this._shake(layer, 5);
 			this._flicker(this, 500);
 			this.m_fallingPlane.stop();
 			this.m_crashing.play();
+		}
+		
+		public function movability(move:Boolean):void {
+			if(move == false) {
+				this._velocity = 0;
+				this.removeGravity();
+			} else {
+				this._velocity = this.BASE_SPEED;
+			}
 		}
 		
 		/**
@@ -459,6 +469,16 @@ package entity {
 			this.setGravityFactor(4);
 			this.reflectAngle();
 			this.updateRotation();
+		}
+		
+		public function m_respawn(move:Boolean):void {
+			if(move == false ) {
+			this.x = this.m_pos.x;
+			this.y = this.m_pos.y;
+			this.m_newDurability = this.PLANE_DURABILITY;
+			this.movability(true);
+			this.crashed = false;
+			}
 		}
 		
 	}

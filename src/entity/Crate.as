@@ -113,7 +113,7 @@ package entity {
 				this._shake(layer, 5);
 				this._flicker(this, 500);
 				for(var i:int = 0; i < this.m_crateClips.length; i++) {
-					this.m_crateClips[i].play(); // Sätt stoppet direkt i timelinen
+					//this.m_crateClips[i].gotoAndStop();
 				}
 		}
 		
@@ -150,5 +150,6 @@ package entity {
 				}
 			}
 		}
+	
 	}
 }
