@@ -12,6 +12,7 @@ package entity {
 	
 	import entity.BulletManager;
 	import entity.fx.FXManager;
+	import entity.fx.Particle;
 	import entity.fx.Trail;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
@@ -184,6 +185,12 @@ package entity {
 			this.m_defaultSpeed();
 			this.m_collisionControl();
 			this.m_updatePosition();
+			
+			if (!this.m_steering) {
+//				this.m_fxMan.add(new Particle(this.m_getPos(), this._angle, 0.001, new <uint>[0xEBEBEB]));
+				this.m_fxMan.add(new Particle(this.m_getPos(), this._angle, 0.01, null, false, true));
+				this.m_fxMan.add(new Particle(this.m_getPos(), this._angle, 0.001, new <uint>[0xE35100, 0xeFFA220, 0xEBD320], false));
+			}
 		}
 		
 		
@@ -196,7 +203,7 @@ package entity {
 		
 		
 		/**	
-		 * m_updateControls
+		 * m_updateControls  
 		 * Update the planes position.
 		 */
 		private function m_updateControls():void {

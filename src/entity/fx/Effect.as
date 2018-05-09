@@ -20,11 +20,19 @@ package entity.fx {
 		// Constructor
 		//-----------------------------------------------------------
 		
-		/**
-		 * 
-		 */
 		public function Effect() {
 			super();
+		}
+		
+		//-----------------------------------------------------------
+		// Protected methods
+		//-----------------------------------------------------------
+		
+		/**
+		 * _createJitter
+		 */
+		protected function _createJitter(num:Number, amount:Number):Number {
+			return num + (Math.random() * amount);
 		}
 	}
 }

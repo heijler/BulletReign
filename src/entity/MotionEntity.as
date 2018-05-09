@@ -57,8 +57,13 @@ package entity {
 		 * applyGravity
 		 * 
 		 */
-		protected function applyGravity():void {
-			this.y = this.y + this.GRAVITY * this.m_gravityFactor;
+		protected function applyGravity(down:Boolean = true):void {
+			if (down) {
+				this.y = this.y + this.GRAVITY * this.m_gravityFactor;
+			} else {
+				this.y = this.y - this.GRAVITY * this.m_gravityFactor;
+			}
+			
  		}
 		
 		

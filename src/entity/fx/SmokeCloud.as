@@ -1,4 +1,6 @@
 package entity.fx {
+	import flash.display.Sprite;
+
 	//-----------------------------------------------------------
 	// Imports
 	//-----------------------------------------------------------
@@ -7,10 +9,9 @@ package entity.fx {
 	import flash.geom.Point;
 	
 	//-----------------------------------------------------------
-	// Trail
+	// SmokeCloud
 	//-----------------------------------------------------------
-	
-	public class Trail extends entity.fx.Effect {
+	public class SmokeCloud extends Effect {
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -20,15 +21,12 @@ package entity.fx {
 		private var m_alphaDecay:Number = 0.03;
 		private var m_skin:Sprite;
 		
-		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
-		
-		public function Trail(pos:Point, angle) {
+		public function SmokeCloud(pos:Point) {
 			super();
 			this.m_pos = pos;
-			this._angle = angle;
 		}
 		
 		//-----------------------------------------------------------
@@ -43,12 +41,10 @@ package entity.fx {
 			this.m_setSpawnPosition();
 		}
 		
-		
 		/**
 		 * 
 		 */
 		private function m_initSkin():void {
-//			var rand:Number = this.TRAIL_SIZE + (Math.random() * 2)
 			this.m_skin = new Sprite();
 			this.m_skin.graphics.beginFill(0xEBEBEB);
 			this.m_skin.graphics.drawRect(-this.TRAIL_SIZE * 0.5, -this.TRAIL_SIZE * 0.5, this.TRAIL_SIZE, this.TRAIL_SIZE);
@@ -75,18 +71,18 @@ package entity.fx {
 		 * 
 		 */
 		private function m_setSpawnPosition():void {
-			this.x = this._createJitter(this.m_pos.x, 2);
-			this.y = this._createJitter(this.m_pos.y, 2);
+			this.x = this.m_createJitter(this.m_pos.x, 2);
+			this.y = this.m_createJitter(this.m_pos.y, 2);
 			this.rotation = this._angle;
 		}
 		
-//		
-//		/**
-//		 * 
-//		 */
-//		private function m_createJitter(num:Number, amount:Number):Number {
-//			return num + (Math.random() * amount);
-//		}
+		
+		/**
+		 * 
+		 */
+		private function m_createJitter(num:Number, amount:Number):Number {
+			return num + (Math.random() * amount);
+		}
 		
 		
 		
