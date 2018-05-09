@@ -34,6 +34,7 @@ package state.gamestate {
 		private var m_zeppelin:Zeppelin;
 		private var m_banner:Banner;
 		private var m_bannerHolder:Plane;
+		private var m_angleCounter:int = 30;
 		
 		//-----------------------------------------------------------
 		// Constructor
