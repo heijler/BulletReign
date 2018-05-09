@@ -70,6 +70,7 @@ package entity {
 		private var m_fallingPlane:SoundObject;
 		private var m_screamSound:SoundObject;
 		private var m_takingFire:Vector.<SoundObject>;
+		private var m_facingUp:Boolean = false;
 
 		//-----------------------------------------------------------
 		// Constructor
@@ -244,7 +245,11 @@ package entity {
 		 * 
 		 */
 		public function reflectAngle():void {
-			this._angle = 360 - this._angle; 
+			this._angle = 360 - this._angle;
+			
+//			if (this.m_scaleFactor == -1 && this._angle < 180 && this._angle > 360) {
+//				this._angle = 360 - this._angle;
+//			}
 		}
 		
 		
@@ -254,6 +259,20 @@ package entity {
 		 */
 		public function updateRotation():void {
 			this.rotation = this._angle;
+			if (this.m_activePlayer == 0 ) {
+				if (this._angle > 180 && this._angle < 360) {
+					this.m_facingUp	= true;
+				} else {
+					this.m_facingUp = false;
+				}
+				
+			} else if (this.m_activePlayer == 1) {
+				if (this._angle > 0 && this._angle < 180) {
+					this.m_facingUp	= true;
+				} else {
+					this.m_facingUp = false;
+				}
+			}
 		}
 		
 		
@@ -457,7 +476,12 @@ package entity {
 		private function m_freeFall():void {
 			this._velocity = 4;
 			this.setGravityFactor(4);
-			this.reflectAngle();
+			if (this.m_facingUp) {
+				this.reflectAngle();
+			} else {
+				this.setGravityFactor(6);
+			}
+		
 			this.updateRotation();
 		}
 		
