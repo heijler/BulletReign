@@ -86,8 +86,8 @@ package entity {
 		 */
 		protected function wrapAroundObjects():void {
 			if(this.x < -this.width) {
-				this.x = _appWidth;
-			} else if (this.x > _appWidth) {
+				this.x = _appWidth + (this.width * 0.5);
+			} else if (this.x - (this.width * 0.5) > _appWidth) {
 				this.x = -this.width;
 			}
 		}
