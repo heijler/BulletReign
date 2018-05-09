@@ -478,6 +478,7 @@ package entity {
 			this.m_newDurability = this.PLANE_DURABILITY;
 			this.movability(true);
 			this.crashed = false;
+			this.m_steering = true;
 			}
 		}
 		
