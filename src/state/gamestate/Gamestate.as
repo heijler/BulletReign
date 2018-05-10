@@ -4,6 +4,8 @@ package state.gamestate {
 	//-----------------------------------------------------------
 	
 	import flash.display.DisplayObject;
+	import flash.display.Graphics;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
@@ -27,6 +29,7 @@ package state.gamestate {
 	
 	import ui.HUD;
 	import ui.HUDManager;
+	import flash.display.Shape;
 	
 	
 	
@@ -68,7 +71,7 @@ package state.gamestate {
 		private var m_roundFlag:Boolean = false;
 		
 		private var m_sky:Sprite;
-		private var m_ground:Sprite;
+		public var m_ground:MovieClip; // @TODO: rename & move
 		private var m_background:DisplayObject;
 		
 		
@@ -197,12 +200,13 @@ package state.gamestate {
 			this.m_ground.scaleX = 2.5;
 			this.m_ground.scaleY = 2.5;
 			this.m_ground.y = Session.application.size.y - this.m_ground.height;
+			this.m_ground.gotoAndStop(1);
 			
-			// Hitbox
+			// General hitbox
 			var groundHitbox:Sprite = new Sprite();
 				groundHitbox.graphics.drawRect(0, 8, Session.application.size.x, 12);
 			this.m_ground.addChild(groundHitbox);
-			
+				
 			this.m_worldLayer.addChild(this.m_ground);
 		}
 

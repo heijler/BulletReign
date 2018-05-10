@@ -3,6 +3,7 @@ package state.gamestate {
 	// Import
 	//-----------------------------------------------------------
 	
+	import flash.display.Shape;
 	import flash.geom.Point;
 	
 	import entity.Banner;
@@ -56,7 +57,6 @@ package state.gamestate {
 		override protected function _initGamemode():void {
 			trace("init conquer");
 			this.m_initLayers();
-			this.m_initBases();
 			this.m_initZeppelin();
 			this.m_initBanner();
 			
@@ -75,11 +75,34 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_initBases
+		 * m_indicateBase
+		 * @param base = "left" | "right"
+		 */
+		private function m_indicateBase():void {
+//			var frame:int = this.m_bannerHolder.m_activePlayer;
+//			if (frame == 0) {
+//				frame = 2;
+//			} else if (frame == 1) {
+//				frame = 3;
+//			}
+			if (this.m_bannerHolder) {
+				this.m_ground.gotoAndStop(this.m_bannerHolder.m_activePlayer + 2);
+			} else {
+				this.m_ground.gotoAndStop(1);
+			}
+			
+		}
+		
+		
+		/**
 		 * 
 		 */
-		private function m_initBases():void {
-			
+		private function m_indicateHitbox():void {
+			var leftGroundHitbox:Shape = new Shape();
+				leftGroundHitbox.graphics.beginFill(0xFF0000);
+				leftGroundHitbox.graphics.drawRect(0, 8, 60, 12);
+				leftGroundHitbox.graphics.endFill();
+			this.m_ground.addChild(leftGroundHitbox);
 		}
 		
 		
@@ -132,6 +155,9 @@ package state.gamestate {
 					trace("collide");
 					this.m_banner.caught = true;
 					this.m_bannerHolder = this.m_planes[i];
+					this.m_indicateBase();
+					//this._drawGroundHitbox(); @TODO:!
+					this.m_indicateHitbox();
 				}
 			}
 		}
