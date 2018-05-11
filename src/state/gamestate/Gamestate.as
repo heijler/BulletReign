@@ -4,7 +4,7 @@ package state.gamestate {
 	//-----------------------------------------------------------
 	
 	import flash.display.DisplayObject;
-	import flash.display.Graphics;
+//	import flash.display.Graphics;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -50,12 +50,14 @@ package state.gamestate {
 		// Public properties
 		//-----------------------------------------------------------
 		
-		//@TODO: rename if public
-		public var m_backgroundLayer:DisplayStateLayer;
-		public var m_planeLayer:DisplayStateLayer;
-		public var m_worldLayer:DisplayStateLayer;
-    	public var m_HUDLayer:DisplayStateLayer;
-		public var m_crateLayer:DisplayStateLayer;
+		public var backgroundLayer:DisplayStateLayer;
+		public var worldLayer:DisplayStateLayer;
+		public var crateLayer:DisplayStateLayer;
+		public var hqLayer:DisplayStateLayer;
+		public var bannerLayer:DisplayStateLayer;
+		public var planeLayer:DisplayStateLayer;
+		public var zeppelinLayer:DisplayStateLayer;
+		public var HUDLayer:DisplayStateLayer;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -135,11 +137,24 @@ package state.gamestate {
 		 * m_initLayers
 		 */
 		private function m_initLayers():void {
-			this.m_backgroundLayer = this.layers.add("background");
-			this.m_worldLayer = this.layers.add("world");
-			this.m_planeLayer = this.layers.add("plane");
-			this.m_crateLayer = this.layers.add("crate");
-			this.m_HUDLayer = this.layers.add("HUD");
+			this.backgroundLayer = this.layers.add("background");
+			this.worldLayer = this.layers.add("world");
+			this.crateLayer = this.layers.add("crate");
+			this.hqLayer = this.layers.add("hq")
+			this.bannerLayer = this.layers.add("banner");
+			this.planeLayer = this.layers.add("plane");
+			this.zeppelinLayer = this.layers.add("zeppelin");
+			this.HUDLayer = this.layers.add("HUD");
+			
+			
+//			public var backgroundLayer:DisplayStateLayer;
+//			public var worldLayer:DisplayStateLayer;
+//			public var crateLayer:DisplayStateLayer;
+//			public var hqLayer:DisplayStateLayer;
+//			public var bannerLayer:DisplayStateLayer;
+//			public var planeLayer:DisplayStateLayer;
+//			public var zeppelinLayer:DisplayStateLayer;
+//			public var HUDLayer:DisplayStateLayer;
 		}
 		
 		
@@ -159,10 +174,10 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initPlanes():void {
-			this.m_bm1 = new BulletManager(this.m_planeLayer);
-			this.m_bm2 = new BulletManager(this.m_planeLayer);
+			this.m_bm1 = new BulletManager(this.planeLayer);
+			this.m_bm2 = new BulletManager(this.planeLayer);
 			
-			var planeManager:PlaneManager = new PlaneManager(this.m_planeLayer);
+			var planeManager:PlaneManager = new PlaneManager(this.planeLayer);
 			var move:Boolean = true
 				planeManager.add(new Plane(0, this.m_bm1, this.m_bm2, new Point(0, 150), 1, this.m_fxMan1, move));
 				planeManager.add(new Plane(1, this.m_bm2, this.m_bm1, new Point(800, 150), -1, this.m_fxMan2, move));
@@ -176,8 +191,8 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initFX():void {
-			this.m_fxMan1 = new FXManager(this.m_planeLayer);
-			this.m_fxMan2 = new FXManager(this.m_planeLayer);
+			this.m_fxMan1 = new FXManager(this.planeLayer);
+			this.m_fxMan2 = new FXManager(this.planeLayer);
 		}
 		
 		
@@ -190,7 +205,7 @@ package state.gamestate {
 			this.m_sky.graphics.lineStyle(2, 0xFFFFFF);
 			this.m_sky.graphics.moveTo(0, -40);
 			this.m_sky.graphics.lineTo(800, -40);
-			this.m_worldLayer.addChild(this.m_sky);
+			this.worldLayer.addChild(this.m_sky);
 		}
 		
 		
@@ -206,11 +221,11 @@ package state.gamestate {
 			this.m_ground.gotoAndStop(1);
 			
 			// General hitbox
-			var groundHitbox:Sprite = new Sprite();
+			var groundHitbox:Shape = new Shape();
 				groundHitbox.graphics.drawRect(0, 8, Session.application.size.x, 12);
 			this.m_ground.addChild(groundHitbox);
 				
-			this.m_worldLayer.addChild(this.m_ground);
+			this.worldLayer.addChild(this.m_ground);
 		}
 
 		
@@ -228,7 +243,7 @@ package state.gamestate {
 			this.m_background = new BG();
 			this.m_background.scaleX = 2.5;
 			this.m_background.scaleY = 2.5; 
-			this.m_backgroundLayer.addChild(this.m_background);
+			this.backgroundLayer.addChild(this.m_background);
 		}
 		
 		
@@ -239,7 +254,7 @@ package state.gamestate {
 		private function m_initClouds():void {
 			for (var i:int = 0; i < 6; i++) {
 				var cloud:Cloud = new Cloud();
-				this.m_backgroundLayer.addChild(cloud);
+				this.backgroundLayer.addChild(cloud);
 			}
 		}
 		
@@ -249,7 +264,7 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initHUD():void {
-			this.m_hudManager = new HUDManager(this.m_HUDLayer);
+			this.m_hudManager = new HUDManager(this.HUDLayer);
 			this.m_hudManager.add(new HUD(0, new Point(10, 10)));
 			this.m_hudManager.add(new HUD(1, new Point(690, 10)));
 		
@@ -261,7 +276,7 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initCrates():void {
-			this.m_crateManager = new CrateManager(this.m_crateLayer);
+			this.m_crateManager = new CrateManager(this.crateLayer);
 			this.m_initCrateTimer();
 			//this.m_generateCrates();
 			//new Point(100,0
@@ -310,7 +325,7 @@ package state.gamestate {
 				if (this.m_planes[i].hitTestObject(this.m_ground.getChildAt(1))) { // getChildAt kanske inte säkert
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
-						this.m_planes[i].crash(this.m_backgroundLayer); //m_worldLayer
+						this.m_planes[i].crash(this.backgroundLayer); //m_worldLayer
 						this.m_planes[i].m_newDurability = 0;
 						timer = Session.timer.create(5000,this.m_respawnNow);
 					}
@@ -336,7 +351,7 @@ package state.gamestate {
 					if (this.m_crates[i].hitTestObject(this.m_ground.getChildAt(1))) {
 						if (this.m_crates[i].hitGround == false) {
 							this.m_crates[i].hitGround = true;
-							this.m_crates[i].m_groundCollision(this.m_worldLayer);
+							this.m_crates[i].m_groundCollision(this.worldLayer);
 						}
 					}
 				}

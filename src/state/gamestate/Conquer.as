@@ -10,9 +10,9 @@ package state.gamestate {
 	import entity.Plane;
 	import entity.Zeppelin;
 	
-	import se.lnu.stickossdk.display.DisplayStateLayer;
+//	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.system.Session;
-	import se.lnu.stickossdk.timer.Timer;
+//	import se.lnu.stickossdk.timer.Timer;
 	
 	//-----------------------------------------------------------
 	// Conquer
@@ -24,9 +24,9 @@ package state.gamestate {
 		// Public properties
 		//-----------------------------------------------------------
 		
-		public var hqLayer:DisplayStateLayer;
-		public var zeppelinLayer:DisplayStateLayer;
-		public var bannerLayer:DisplayStateLayer;
+//		public var hqLayer:DisplayStateLayer;
+//		public var zeppelinLayer:DisplayStateLayer;
+//		public var bannerLayer:DisplayStateLayer;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -36,6 +36,8 @@ package state.gamestate {
 		private var m_banner:Banner;
 		private var m_bannerHolder:Plane;
 		private var m_angleCounter:int = 30;
+		
+		private var m_GHB:Shape;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -55,10 +57,11 @@ package state.gamestate {
 		 * Initializes the gamemode, this method overrides the method in the parentclass
 		 */
 		override protected function _initGamemode():void {
-			trace("init conquer");
+//			trace("init conquer");
 			this.m_initLayers();
 			this.m_initZeppelin();
 			this.m_initBanner();
+			this.m_drawGHB();
 			
 		}
 		
@@ -68,9 +71,9 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initLayers():void {
-			this.hqLayer = this.layers.add("hq")
-			this.bannerLayer = this.layers.add("banner");
-			this.zeppelinLayer = this.layers.add("zeppelin");
+//			this.hqLayer = this.layers.add("hq")
+//			this.bannerLayer = this.layers.add("banner");
+//			this.zeppelinLayer = this.layers.add("zeppelin");
 		}
 		
 		
@@ -79,12 +82,6 @@ package state.gamestate {
 		 * @param base = "left" | "right"
 		 */
 		private function m_indicateBase():void {
-//			var frame:int = this.m_bannerHolder.m_activePlayer;
-//			if (frame == 0) {
-//				frame = 2;
-//			} else if (frame == 1) {
-//				frame = 3;
-//			}
 			if (this.m_bannerHolder) {
 				this.m_ground.gotoAndStop(this.m_bannerHolder.m_activePlayer + 2);
 			} else {
@@ -95,14 +92,38 @@ package state.gamestate {
 		
 		
 		/**
+		 * m_drawGHB
+		 * 
+		 */
+		private function m_drawGHB():void {
+			this.m_GHB = new Shape();
+			this.m_GHB.graphics.beginFill(0xFF0000, 0.5);
+			this.m_GHB.graphics.drawRect(0, Session.application.size.y-40, 160, 40);
+			this.m_GHB.graphics.endFill();
+			this.m_GHB.name = "GHB";
+			this.hqLayer.addChild(this.m_GHB);
+		}
+		
+		
+		/**
+		 * m_disposeGHB
+		 * 
+		 */
+		private function m_disposeGHB():void {
+			if (this.hqLayer.contains(this.m_GHB)) {
+				this.hqLayer.removeChild(this.m_GHB);
+				this.m_GHB = null;
+			}
+		}
+			
+		
+		
+		/**
+		 * m_indicateHitBox
 		 * 
 		 */
 		private function m_indicateHitbox():void {
-			var leftGroundHitbox:Shape = new Shape();
-				leftGroundHitbox.graphics.beginFill(0xFF0000);
-				leftGroundHitbox.graphics.drawRect(0, 8, 60, 12);
-				leftGroundHitbox.graphics.endFill();
-			this.m_ground.addChild(leftGroundHitbox);
+			this.m_GHB.x = (this.m_bannerHolder.m_activePlayer) ? Session.application.size.x - this.m_GHB.width : 0;
 		}
 		
 		
@@ -135,12 +156,13 @@ package state.gamestate {
 //			trace("update conquer");
 			
 			// in it's own method
-			if (this.m_zeppelin.atDefaultPos) {
+			if (this.m_zeppelin.atDefaultPos && !this.m_banner.active) {
 				this.m_banner.showBanner();
 			}
 			
 			this.m_bannerPlaneCollision();
 			this.m_bannerFollow();
+			this.m_onBannerDrop();
 			
 		}
 		
@@ -152,12 +174,13 @@ package state.gamestate {
 		private function m_bannerPlaneCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_banner.hitBox.hitTestObject(this.m_planes[i]) && !this.m_banner.caught) {
-					trace("collide");
 					this.m_banner.caught = true;
 					this.m_bannerHolder = this.m_planes[i];
+					this.m_bannerHolder.holdingBanner = true;
+					this.m_indicateHitbox();
 					this.m_indicateBase();
 					//this._drawGroundHitbox(); @TODO:!
-					this.m_indicateHitbox();
+					
 				}
 			}
 		}
@@ -170,6 +193,29 @@ package state.gamestate {
 			if (this.m_banner.caught) {
 				this.m_banner.follow(this.m_bannerHolder.m_getPos(), this.m_bannerHolder.angle, this.m_bannerHolder.scaleFactor);
 			}
-		}		
+		}
+		
+		
+		/**
+		 * m_bannerDrop
+		 * 
+		 */
+		private function m_onBannerDrop():void {
+			if (this.m_bannerHolder && this.m_bannerHolder.holdingBanner == false) {
+				this.m_dropBanner();
+			}
+		}
+		
+		
+		/**
+		 * m_dropBanner
+		 * 
+		 */
+		private function m_dropBanner():void {
+			this.m_banner.caught = false;
+			this.m_bannerHolder = null;
+			this.m_indicateBase();
+			this.m_banner.gravity = true;
+		}
 	}
 }

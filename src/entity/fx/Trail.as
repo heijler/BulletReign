@@ -50,7 +50,7 @@ package entity.fx {
 		private function m_initSkin():void {
 //			var rand:Number = this.TRAIL_SIZE + (Math.random() * 2)
 			this.m_skin = new Sprite();
-			this.m_skin.graphics.beginFill(0xEBEBEB);
+			this.m_skin.graphics.beginFill(0xFFF392);
 			this.m_skin.graphics.drawRect(-this.TRAIL_SIZE * 0.5, -this.TRAIL_SIZE * 0.5, this.TRAIL_SIZE, this.TRAIL_SIZE);
 			this.m_skin.graphics.endFill();
 			this._setScale(this.m_skin);
