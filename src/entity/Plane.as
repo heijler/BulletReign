@@ -41,6 +41,7 @@ package entity {
 		public var m_noDamage:Boolean = false;
 		public var m_noFireCounter:Boolean = false;
 		public var wins:int;
+		public var holdingBanner:Boolean = false;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -225,6 +226,10 @@ package entity {
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
 					this.m_fireBullets();
 				}
+				
+				if (Input.keyboard.justPressed(this.m_controls.PLAYER_BUTTON_4)) {
+					this.m_dropBanner();
+				}
 			}
 		}
 		
@@ -309,17 +314,30 @@ package entity {
 		}
 		
 		
+		/**
+		 * 
+		 * 
+		 */
 		private function m_clearNoAccelDuration():void {
 			this.m_noAccelDuration = false;
 		}
 		
+		
+		/**
+		 * 
+		 */
 		private function m_clearNoFireCounter():void {
 			this.m_noFireCounter = false;
 		}
 		
+		
+		/**
+		 * 
+		 */
 		private function m_clearNoDamage():void {
 			this.m_noDamage = false;
 		}
+		
 		
 		/**
 		 * m_resetAcceleration
@@ -354,6 +372,15 @@ package entity {
 					var timer:Timer = Session.timer.create(1000, this.m_resetFireRate);
 				}
 			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_dropBanner():void {
+			trace("Drop Banner");
+			this.holdingBanner = false;
 		}
 		
 		
@@ -452,6 +479,10 @@ package entity {
 			this.m_crashing.play();
 		}
 		
+		
+		/**
+		 * 
+		 */
 		public function movability(move:Boolean):void {
 			if(move == false) {
 				this._velocity = 0;

@@ -23,6 +23,7 @@ package entity {
 		//-----------------------------------------------------------
 		
 		public var hitBox:Sprite;
+		public var active:Boolean = false;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -33,6 +34,7 @@ package entity {
 		private var m_scaleFactor:int;
 		private var m_counter:int = 3;
 		private var m_oldAngle:Number;
+		private var m_gravity:Boolean;
 		
 		
 		//-----------------------------------------------------------
@@ -52,7 +54,6 @@ package entity {
 		
 		/**
 		 * set caught
-		 * 
 		 */
 		public function set caught(value:Boolean):void {
 			this.m_caught = value;
@@ -61,10 +62,17 @@ package entity {
 		
 		/**
 		 * get caught
-		 * 
 		 */
 		public function get caught():Boolean {
 			return this.m_caught;
+		}
+		
+		
+		/**
+		 * set gravity
+		 */
+		public  function set gravity(value:Boolean):void {
+			this.m_gravity = value;
 		}
 		
 		//-----------------------------------------------------------
@@ -89,6 +97,7 @@ package entity {
 				duration: 150,
 				y: 50
 			});
+			this.active = true;
 		}
 		
 		/**
@@ -96,7 +105,7 @@ package entity {
 		 * 
 		 */
 		override public function init():void {
-			trace("initBanner");
+//			trace("initBanner");
 			this.m_initSkin();
 		}
 		
@@ -105,7 +114,7 @@ package entity {
 		 * 
 		 */
 		private function m_initSkin():void {
-			trace("m_initSkin");
+//			trace("m_initSkin");
 			this.m_skin = new BannerGFX;
 			this._setScale(this.m_skin, 2, 2);
 			this.m_skin.x = -20;
@@ -120,9 +129,9 @@ package entity {
 		 */
 		private function m_initHitBox():void {
 			hitBox = new Sprite();
-			hitBox.graphics.beginFill(0xFF0000);
+//			hitBox.graphics.beginFill(0xFF0000);
 			hitBox.graphics.drawRect(-2, -3, 2, 6);
-			hitBox.graphics.endFill();
+//			hitBox.graphics.endFill();
 			this.m_skin.addChild(hitBox);
 		}
 		
@@ -143,6 +152,10 @@ package entity {
 		override public function update():void {
 //			trace("Banner update");
 			this.wrapAroundObjects();
+			if (this.m_gravity) {
+				this.applyGravity();
+				this.setGravityFactor(3);
+			}
 		}
 		
 		
@@ -178,15 +191,15 @@ package entity {
 			
 			this.m_counter--;
 			if (this.m_counter < 1) {
-				
+				// @TODO: Use old angle and compare with new angle, if positive, do something in some direction, if negative opposite
 				if (this._angle > 180 && this._angle < 360) {
 					Session.tweener.add(this, {
-						duration: 40,
+						duration: 80,
 						rotation: this._angle - 360
 					});
 				} else {
 					Session.tweener.add(this, {
-						duration: 40,
+						duration: 80,
 						rotation: this._angle
 					});
 				}

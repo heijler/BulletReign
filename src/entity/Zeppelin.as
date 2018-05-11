@@ -47,7 +47,7 @@ package entity {
 		 * 
 		 */
 		override public function init():void {
-			trace("initZeppelin");
+//			trace("initZeppelin");
 			this.m_initSkin();
 			this.m_setSpawnPosition();
 		}
@@ -105,7 +105,7 @@ package entity {
 		 * 
 		 */
 		private function m_zeppelinAtDefault():void {
-			trace("Zeppelin at default");
+//			trace("Zeppelin at default");
 			this.atDefaultPos = true;
 			
 		}
