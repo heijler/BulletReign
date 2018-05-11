@@ -12,6 +12,7 @@ package entity {
 	
 	import entity.BulletManager;
 	import entity.fx.FXManager;
+	import entity.fx.Particle;
 	import entity.fx.Trail;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
@@ -70,6 +71,7 @@ package entity {
 		private var m_fallingPlane:SoundObject;
 		private var m_screamSound:SoundObject;
 		private var m_takingFire:Vector.<SoundObject>;
+		private var m_facingUp:Boolean = false;
 		private var m_movability:Boolean;
 
 		//-----------------------------------------------------------
@@ -185,6 +187,12 @@ package entity {
 			this.m_defaultSpeed();
 			this.m_collisionControl();
 			this.m_updatePosition();
+			
+			if (!this.m_steering) {
+//				this.m_fxMan.add(new Particle(this.m_getPos(), this._angle, 0.001, new <uint>[0xEBEBEB]));
+				this.m_fxMan.add(new Particle(this.m_getPos(), this._angle, 0.01, null, false, true));
+				this.m_fxMan.add(new Particle(this.m_getPos(), this._angle, 0.001, new <uint>[0xE35100, 0xeFFA220, 0xEBD320], false));
+			}
 		}
 		
 		
@@ -197,7 +205,7 @@ package entity {
 		
 		
 		/**	
-		 * m_updateControls
+		 * m_updateControls  
 		 * Update the planes position.
 		 */
 		private function m_updateControls():void {
@@ -246,7 +254,11 @@ package entity {
 		 * 
 		 */
 		public function reflectAngle():void {
-			this._angle = 360 - this._angle; 
+			this._angle = 360 - this._angle;
+			
+//			if (this.m_scaleFactor == -1 && this._angle < 180 && this._angle > 360) {
+//				this._angle = 360 - this._angle;
+//			}
 		}
 		
 		
@@ -256,6 +268,20 @@ package entity {
 		 */
 		public function updateRotation():void {
 			this.rotation = this._angle;
+			if (this.m_activePlayer == 0 ) {
+				if (this._angle > 180 && this._angle < 360) {
+					this.m_facingUp	= true;
+				} else {
+					this.m_facingUp = false;
+				}
+				
+			} else if (this.m_activePlayer == 1) {
+				if (this._angle > 0 && this._angle < 180) {
+					this.m_facingUp	= true;
+				} else {
+					this.m_facingUp = false;
+				}
+			}
 		}
 		
 		
@@ -467,7 +493,12 @@ package entity {
 		private function m_freeFall():void {
 			this._velocity = 4;
 			this.setGravityFactor(4);
-			this.reflectAngle();
+			if (this.m_facingUp) {
+				this.reflectAngle();
+			} else {
+				this.setGravityFactor(6);
+			}
+		
 			this.updateRotation();
 		}
 		

@@ -57,8 +57,13 @@ package entity {
 		 * applyGravity
 		 * 
 		 */
-		protected function applyGravity():void {
-			this.y = this.y + this.GRAVITY * this.m_gravityFactor;
+		protected function applyGravity(down:Boolean = true):void {
+			if (down) {
+				this.y = this.y + this.GRAVITY * this.m_gravityFactor;
+			} else {
+				this.y = this.y - this.GRAVITY * this.m_gravityFactor;
+			}
+			
  		}
 		
 		
@@ -86,8 +91,8 @@ package entity {
 		 */
 		protected function wrapAroundObjects():void {
 			if(this.x < -this.width) {
-				this.x = _appWidth;
-			} else if (this.x > _appWidth) {
+				this.x = _appWidth + (this.width * 0.5);
+			} else if (this.x - (this.width * 0.5) > _appWidth) {
 				this.x = -this.width;
 			}
 		}
