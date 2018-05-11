@@ -39,6 +39,9 @@ package {
 		[Embed(source = "../asset/sound/plane/planeEngine.mp3")]
 		public static const ENGINE_SOUND:Class;
 		
+		[Embed(source = "../asset/sound/plane/planeEngineOverdrive.mp3")]
+		public static const ENGINEOVERDRIVE_SOUND:Class;
+		
 		[Embed(source = "../asset/sound/plane/sfx_sounds_falling8.mp3")]
 		public static const CRASH_SOUND:Class;
 		
@@ -62,6 +65,9 @@ package {
 		
 		[Embed(source = "../asset/sound/menu/sfx_menu_select2.mp3")]
 		public static const MENUSELECT_SOUND:Class;
+		
+		[Embed(source = "../asset/sound/win/sfx_sounds_fanfare3.mp3")]
+		public static const WIN_SOUND:Class;
 		
 		//-----------------------------------------------------------
 		// Constructor

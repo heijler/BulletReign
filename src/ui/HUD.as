@@ -12,6 +12,7 @@ package ui {
 	import assets.DurabilityMeterv4GFX;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
+	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
@@ -67,7 +68,6 @@ package ui {
 		override public function init():void {
 			this.m_initPlayerInfo();
 			this.m_setSpawn();
-			
 		}
 		
 		
@@ -77,7 +77,6 @@ package ui {
 		override public function dispose():void {
 			trace("Dispose HUD! REMOVE ME WHEN ACTUALLY DISPOSING.");
 		}
-		
 		
 		/**	 
 		 * m_initScoreCounter
