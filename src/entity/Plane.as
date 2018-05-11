@@ -68,7 +68,8 @@ package entity {
 		private var m_firing:Boolean = true;
 		private var m_openFire:SoundObject;
 		private var m_crashing:SoundObject;
-		private var m_engineSound:SoundObject;
+		public var m_engineSound:SoundObject;
+		private var m_engineOverdriveSound:SoundObject;
 		private var m_fallingPlane:SoundObject;
 		private var m_screamSound:SoundObject;
 		private var m_takingFire:Vector.<SoundObject>;
@@ -164,6 +165,7 @@ package entity {
 			Session.sound.soundChannel.sources.add("machinegun", BulletReign.GUN_FIRE);
 			Session.sound.soundChannel.sources.add("planecrashing", BulletReign.PLANE_CRASH);
 			Session.sound.soundChannel.sources.add("enginesound", BulletReign.ENGINE_SOUND);
+			Session.sound.soundChannel.sources.add("engineoverdrivesound", BulletReign.ENGINEOVERDRIVE_SOUND);
 			Session.sound.soundChannel.sources.add("fallingplane", BulletReign.CRASH_SOUND);
 			Session.sound.soundChannel.sources.add("scream", BulletReign.SCREAM_SOUND);
 			Session.sound.soundChannel.sources.add("takingFire1", BulletReign.HIT1_SOUND);
@@ -171,7 +173,8 @@ package entity {
 			Session.sound.soundChannel.sources.add("takingFire3", BulletReign.HIT3_SOUND);
 			this.m_openFire = Session.sound.soundChannel.get("machinegun");
 			this.m_crashing = Session.sound.soundChannel.get("planecrashing");
-			this.m_engineSound = Session.sound.soundChannel.get("enginesound"); //VAR SKA DEN VARA?
+			this.m_engineSound = Session.sound.soundChannel.get("enginesound");
+			this.m_engineOverdriveSound = Session.sound.soundChannel.get("engineoverdrivesound");
 			this.m_fallingPlane = Session.sound.soundChannel.get("fallingplane");
 			this.m_screamSound = Session.sound.soundChannel.get("scream");
 			this.m_takingFire = new Vector.<SoundObject>;
@@ -218,6 +221,14 @@ package entity {
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_DOWN)) {
 					this.m_anglePlane(0);
 				}
+				
+				if (Input.keyboard.justPressed(this.m_controls.PLAYER_BUTTON_2)) {
+					this.m_engineOverdriveSound.play();
+				}
+				
+				if (Input.keyboard.justReleased(this.m_controls.PLAYER_BUTTON_2)) {
+					this.m_engineOverdriveSound.stop();
+				} 
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_2)) {
 					this.m_accelerate();
@@ -309,6 +320,7 @@ package entity {
 				
 			} else if (this.m_accelDuration <= 0 && this.m_accelerating){
 				this.m_accelerating = false;
+				this.m_engineOverdriveSound.stop();
 				var timer:Timer = Session.timer.create(2000, this.m_resetAcceleration);
 			}
 		}

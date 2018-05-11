@@ -6,6 +6,7 @@ package state.gamestate {
 	import flash.display.DisplayObject;
 //	import flash.display.Graphics;
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
@@ -29,7 +30,6 @@ package state.gamestate {
 	
 	import ui.HUD;
 	import ui.HUDManager;
-	import flash.display.Shape;
 	
 	
 	
@@ -83,6 +83,7 @@ package state.gamestate {
 		private var m_fxMan2:FXManager;
 		private var m_ingameMusic:SoundObject;
 		private var m_powerupSound:SoundObject;
+		private var m_winSound:SoundObject;
 		private var m_roundNumber:int;
 		//private var m_round:Round;
 		
@@ -183,6 +184,9 @@ package state.gamestate {
 				planeManager.add(new Plane(1, this.m_bm2, this.m_bm1, new Point(800, 150), -1, this.m_fxMan2, move));
 				
 			this.m_planes = planeManager.getPlanes();
+			for(var i:int = 0; i < this.m_planes.length; i++) {
+				this.m_planes[i].m_engineSound.play();
+			}
 		}
 		
 		
@@ -230,7 +234,9 @@ package state.gamestate {
 
 		
 		private function m_initSound():void {
+			Session.sound.soundChannel.sources.add("winsound", BulletReign.WIN_SOUND);
 			Session.sound.soundChannel.sources.add("powerup", BulletReign.POWERUP_SOUND);
+			this.m_winSound = Session.sound.soundChannel.get("winsound");
 			this.m_powerupSound = Session.sound.soundChannel.get("powerup");
 		}
 		
@@ -398,16 +404,19 @@ package state.gamestate {
 						if (this.m_planes[j].crashed == false && this.m_roundFlag == true) {
 							if(this.m_planes[j].wins == 0 && this.m_roundNumber == 1) {
 								this.m_flagSwitch(false);
+								this.m_winSound.play();
 								this.m_planes[j].wins = 1;
 								this.m_flagSwitch(true);
 							}
 							if(this.m_planes[j].wins == 0 && this.m_planes[i].wins == 1 && this.m_roundNumber == 2) {
 								this.m_flagSwitch(false);
+								this.m_winSound.play();
 								this.m_planes[j].wins = 1;
 								this.m_flagSwitch(true);
 							}
 							if(this.m_planes[j].wins == 1 && this.m_planes[i].wins == 0 && this.m_roundNumber == 2) {
 								this.m_flagSwitch(false);
+								this.m_winSound.play();
 								this.m_planes[j].wins = 2;
 								this.m_flagSwitch(true);
 								var timer:Timer = Session.timer.create(3000, this.m_roundOver);
@@ -415,6 +424,7 @@ package state.gamestate {
 							
 							if(this.m_planes[j].wins == 1 && this.m_planes[i].wins == 1 && this.m_roundNumber == 3) {
 								this.m_flagSwitch(false);
+								this.m_winSound.play();
 								this.m_planes[j].wins = 2;
 								this.m_flagSwitch(true);
 								timer = Session.timer.create(3000, this.m_roundOver);
