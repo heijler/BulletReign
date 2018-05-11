@@ -68,7 +68,7 @@ package state.gamestate {
 //		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_bm1:BulletManager; // @FIX, put into Vector?
 		private var m_bm2:BulletManager; // @FIX, put into Vector?
-		private var m_roundFlag:Boolean = false;
+		public var m_roundFlag:Boolean = false;
 		
 		private var m_sky:Sprite;
 		public var m_ground:MovieClip; // @TODO: rename & move
@@ -81,6 +81,7 @@ package state.gamestate {
 		private var m_fxMan2:FXManager;
 		private var m_ingameMusic:SoundObject;
 		private var m_powerupSound:SoundObject;
+		private var m_roundNumber:int;
 		//private var m_round:Round;
 		
 		//-----------------------------------------------------------
@@ -98,7 +99,8 @@ package state.gamestate {
 		
 		public function Gamestate() {
 			super();
-			this.m_roundFlag = true;
+			this.m_flagSwitch(true);
+			this.m_roundNumber = 1;
 //			this.m_bulletManagers = new Vector.<BulletManager>()
 		}
 		
@@ -161,8 +163,9 @@ package state.gamestate {
 			this.m_bm2 = new BulletManager(this.m_planeLayer);
 			
 			var planeManager:PlaneManager = new PlaneManager(this.m_planeLayer);
-				planeManager.add(new Plane(0, this.m_bm1, this.m_bm2, new Point(0, 150), 1, this.m_fxMan1));
-				planeManager.add(new Plane(1, this.m_bm2, this.m_bm1, new Point(800, 150), -1, this.m_fxMan2));
+			var move:Boolean = true
+				planeManager.add(new Plane(0, this.m_bm1, this.m_bm2, new Point(0, 150), 1, this.m_fxMan1, move));
+				planeManager.add(new Plane(1, this.m_bm2, this.m_bm1, new Point(800, 150), -1, this.m_fxMan2, move));
 				
 			this.m_planes = planeManager.getPlanes();
 		}
@@ -303,14 +306,23 @@ package state.gamestate {
 		 */
 		private function m_groundCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
+				var timer:Timer;
 				if (this.m_planes[i].hitTestObject(this.m_ground.getChildAt(1))) { // getChildAt kanske inte säkert
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
 						this.m_planes[i].crash(this.m_backgroundLayer); //m_worldLayer
 						this.m_planes[i].m_newDurability = 0;
+						timer = Session.timer.create(5000,this.m_respawnNow);
 					}
 				}
 			}
+		}
+		
+		private function m_respawnNow():void {
+			for (var i:int = 0; i < this.m_planes.length; i++) {
+				this.m_planes[i].m_respawn(false);
+			}
+			this.m_roundNumber++;
 		}
 		
 		
@@ -369,25 +381,41 @@ package state.gamestate {
 				if (this.m_planes[i].crashed == true) {
 					for (var j:int = 0; j < this.m_planes.length; j++) {
 						if (this.m_planes[j].crashed == false && this.m_roundFlag == true) {
-								switch(this.m_planes[j].wins) {
-									case 0:
-									this.m_planes[j].wins = 1;
-									this.m_roundFlag = false;
-									break;
-									
-									case 1:
-									this.m_planes[j].wins = 2;
-									this.m_roundFlag = false;
-									break;
-								}
+							if(this.m_planes[j].wins == 0 && this.m_roundNumber == 1) {
+								this.m_flagSwitch(false);
+								this.m_planes[j].wins = 1;
+								this.m_flagSwitch(true);
+							}
+							if(this.m_planes[j].wins == 0 && this.m_planes[i].wins == 1 && this.m_roundNumber == 2) {
+								this.m_flagSwitch(false);
+								this.m_planes[j].wins = 1;
+								this.m_flagSwitch(true);
+							}
+							if(this.m_planes[j].wins == 1 && this.m_planes[i].wins == 0 && this.m_roundNumber == 2) {
+								this.m_flagSwitch(false);
+								this.m_planes[j].wins = 2;
+								this.m_flagSwitch(true);
+								var timer:Timer = Session.timer.create(3000, this.m_roundOver);
+							}
+							
+							if(this.m_planes[j].wins == 1 && this.m_planes[i].wins == 1 && this.m_roundNumber == 3) {
+								this.m_flagSwitch(false);
+								this.m_planes[j].wins = 2;
+								this.m_flagSwitch(true);
+								timer = Session.timer.create(3000, this.m_roundOver);
+								
+							}
 								this.m_hudManager.incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);
 						}
 					}
-					var timer:Timer = Session.timer.create(3000, this.m_roundOver);
+					
 				}
 			}
 		}
 		
+		private function m_flagSwitch(flag):void {
+			this.m_roundFlag = flag;
+		}
 		
 		/**
 		 * m_roundOver
