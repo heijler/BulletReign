@@ -3,7 +3,7 @@ package state.menustate {
 	// Import
 	//-----------------------------------------------------------
 	
-	import state.gamestate.Gamestate;
+	import state.gamestate.Dogfight;
 	import state.gamestate.Conquer;
 	import state.menustate.MainMenu;
 	import state.menustate.infoScreen.HowToPlay;
@@ -36,7 +36,7 @@ package state.menustate {
 		override protected function initMenu():void {
 			this._addMenuItems(
 				new <Object>[
-					{name:"Rematch", state: (this.m_gamemode ? Conquer : Gamestate)},
+					{name:"Rematch", state: (this.m_gamemode ? Conquer : Dogfight)},
 					{name:"Main Menu", state: MainMenu},
 					{name: "How to Play", state: HowToPlay}
 				]

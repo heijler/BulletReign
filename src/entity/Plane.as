@@ -42,6 +42,8 @@ package entity {
 		public var m_noFireCounter:Boolean = false;
 		public var wins:int;
 		public var holdingBanner:Boolean = false;
+		public var m_engineSound:SoundObject;
+		public var wonRound:Boolean = false;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -68,7 +70,6 @@ package entity {
 		private var m_firing:Boolean = true;
 		private var m_openFire:SoundObject;
 		private var m_crashing:SoundObject;
-		public var m_engineSound:SoundObject;
 		private var m_engineOverdriveSound:SoundObject;
 		private var m_fallingPlane:SoundObject;
 		private var m_screamSound:SoundObject;
@@ -501,6 +502,8 @@ package entity {
 				this.removeGravity();
 			} else {
 				this._velocity = this.BASE_SPEED;
+				this.applyGravity();
+				this.setGravityFactor(1);
 			}
 		}
 		
@@ -553,6 +556,8 @@ package entity {
 			this.movability(true);
 			this.crashed = false;
 			this.m_steering = true;
+			this._angle = 0;
+			this.updateRotation();
 			}
 		}
 		

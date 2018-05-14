@@ -84,8 +84,8 @@ package state.gamestate {
 		private var m_fxMan2:FXManager;
 		private var m_ingameMusic:SoundObject;
 		private var m_powerupSound:SoundObject;
-		private var m_winSound:SoundObject;
-		private var m_roundNumber:int;
+		protected var m_winSound:SoundObject;
+		protected var _winLimit:int = 2;
 		//private var m_round:Round;
 		
 		//-----------------------------------------------------------
@@ -103,8 +103,6 @@ package state.gamestate {
 		
 		public function Gamestate() {
 			super();
-			this.m_flagSwitch(true);
-			this.m_roundNumber = 1;
 //			this.m_bulletManagers = new Vector.<BulletManager>()
 		}
 		
@@ -302,7 +300,6 @@ package state.gamestate {
 			this.m_groundCollision();
 			this.m_crateGroundCollision();
 			this.m_cratePlaneCollision();
-			this.m_resolveRound();
 			this.m_durabilityChange();
 			this.m_removeInactiveBullets();
 			this._updateGamemode();
@@ -336,19 +333,21 @@ package state.gamestate {
 						this.m_planes[i].crashed = true;
 						this.m_planes[i].crash(this.backgroundLayer);
 						this.m_planes[i].m_newDurability = 0;
-						timer = Session.timer.create(5000,this.m_respawnNow);
 					}
 				}
 			}
 		}
 		
-		private function m_respawnNow():void {
+		protected function m_respawnNow():void {
+			trace("NU")
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				this.m_planes[i].m_respawn(false);
 			}
-			this.m_roundNumber++;
 		}
 		
+		/*protected function m_gameOver():void {
+			
+		}*/
 		
 		/**
 		 * m_crateGroundCollision
@@ -396,60 +395,13 @@ package state.gamestate {
 		}
 		
 		
-		/**
-		 * m_resolveRound
-		 * Non-crashed player gets a point
-		 */
-		private function m_resolveRound():void {
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].crashed == true) {
-					for (var j:int = 0; j < this.m_planes.length; j++) {
-						if (this.m_planes[j].crashed == false && this.m_roundFlag == true) {
-							if(this.m_planes[j].wins == 0 && this.m_roundNumber == 1) {
-								this.m_flagSwitch(false);
-								this.m_winSound.play();
-								this.m_planes[j].wins = 1;
-								this.m_flagSwitch(true);
-							}
-							if(this.m_planes[j].wins == 0 && this.m_planes[i].wins == 1 && this.m_roundNumber == 2) {
-								this.m_flagSwitch(false);
-								this.m_winSound.play();
-								this.m_planes[j].wins = 1;
-								this.m_flagSwitch(true);
-							}
-							if(this.m_planes[j].wins == 1 && this.m_planes[i].wins == 0 && this.m_roundNumber == 2) {
-								this.m_flagSwitch(false);
-								this.m_winSound.play();
-								this.m_planes[j].wins = 2;
-								this.m_flagSwitch(true);
-								var timer:Timer = Session.timer.create(3000, this.m_roundOver);
-							}
-							
-							if(this.m_planes[j].wins == 1 && this.m_planes[i].wins == 1 && this.m_roundNumber == 3) {
-								this.m_flagSwitch(false);
-								this.m_winSound.play();
-								this.m_planes[j].wins = 2;
-								this.m_flagSwitch(true);
-								timer = Session.timer.create(3000, this.m_roundOver);
-								
-							}
-								this.m_hudManager.incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);
-						}
-					}
-					
-				}
-			}
-		}
 		
-		private function m_flagSwitch(flag):void {
-			this.m_roundFlag = flag;
-		}
 		
 		/**
 		 * m_roundOver
 		 * 
 		 */
-		private function m_roundOver():void {
+		protected function m_matchOver():void {
 			Session.application.displayState = new RematchMenu(this._gamemode);
 		}
 		
@@ -466,6 +418,9 @@ package state.gamestate {
 			}
 		}
 		
+		protected function m_incrementWins(activePlayer:int, wins:int):void {
+			this.m_hudManager.incrementWins(activePlayer, wins);
+		}
 		
 		/**
 		 * m_removeInactiveBullets
