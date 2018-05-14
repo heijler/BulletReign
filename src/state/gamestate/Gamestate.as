@@ -74,6 +74,7 @@ package state.gamestate {
 		
 		private var m_sky:Sprite;
 		public var m_ground:MovieClip; // @TODO: rename & move
+		public var groundHitbox:Shape;
 		private var m_background:DisplayObject;
 		
 		
@@ -225,11 +226,13 @@ package state.gamestate {
 			this.m_ground.gotoAndStop(1);
 			
 			// General hitbox
-			var groundHitbox:Shape = new Shape();
-				groundHitbox.graphics.drawRect(0, 8, Session.application.size.x, 12);
-			this.m_ground.addChild(groundHitbox);
-				
+			this.groundHitbox = new Shape();
+//			this.groundHitbox.graphics.beginFill(0x00FF00);
+			this.groundHitbox.graphics.drawRect(0, Session.application.size.y - 30, Session.application.size.x, 12);
+//			this.groundHitbox.graphics.endFill();
+//			this.m_ground.addChild(this.groundHitbox);
 			this.worldLayer.addChild(this.m_ground);
+			this.worldLayer.addChild(this.groundHitbox);
 		}
 
 		
@@ -328,10 +331,10 @@ package state.gamestate {
 		private function m_groundCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				var timer:Timer;
-				if (this.m_planes[i].hitTestObject(this.m_ground.getChildAt(1))) { // getChildAt kanske inte säkert
+				if (this.m_planes[i].hitTestObject(this.groundHitbox)) {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
-						this.m_planes[i].crash(this.backgroundLayer); //m_worldLayer
+						this.m_planes[i].crash(this.backgroundLayer);
 						this.m_planes[i].m_newDurability = 0;
 						timer = Session.timer.create(5000,this.m_respawnNow);
 					}
@@ -354,7 +357,7 @@ package state.gamestate {
 		private function m_crateGroundCollision():void {
 			if (this.m_crates != null) {
 				for (var i:int = 0; i < this.m_crates.length; i++) {
-					if (this.m_crates[i].hitTestObject(this.m_ground.getChildAt(1))) {
+					if (this.m_crates[i].hitTestObject(this.groundHitbox)) {
 						if (this.m_crates[i].hitGround == false) {
 							this.m_crates[i].hitGround = true;
 							this.m_crates[i].m_groundCollision(this.worldLayer);

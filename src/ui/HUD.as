@@ -101,13 +101,13 @@ package ui {
 			if (m_player == 0) {
 				this.m_durabilityMeter = new DurabilityMeterv3GFX; 
 				this.m_durabilityMeter.x = Session.application.size.x / 2 - this.m_durabilityMeter.width / 2 - 1;
-				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2;
+				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2 - 12;
 				this.m_durabilityMeter.gotoAndStop(11);
 				
 			} else if (m_player == 1){
 				this.m_durabilityMeter = new DurabilityMeterv4GFX;
 				this.m_durabilityMeter.x = Session.application.size.x / 2 + this.m_durabilityMeter.width / 2 + 1;
-				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2;
+				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2 - 12;
 				this.m_durabilityMeter.gotoAndStop(11);
 			}
 

@@ -24,6 +24,8 @@ package entity {
 		
 		public var hitBox:Sprite;
 		public var active:Boolean = false;
+		public var onGround:Boolean = false;
+		public var lastHolder:int;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -152,7 +154,7 @@ package entity {
 		override public function update():void {
 //			trace("Banner update");
 			this.wrapAroundObjects();
-			if (this.m_gravity) {
+			if (this.m_gravity && !this.onGround) {
 				this.applyGravity();
 				this.setGravityFactor(3);
 			}
