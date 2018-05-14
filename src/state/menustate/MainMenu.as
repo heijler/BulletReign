@@ -10,7 +10,7 @@ package state.menustate {
 	import se.lnu.stickossdk.system.Session;
 	
 	import state.gamestate.Conquer;
-	import state.gamestate.Gamestate;
+	import state.gamestate.Dogfight;
 	import state.menustate.infoScreen.Credits;
 	import state.menustate.infoScreen.HowToPlay;
 	
@@ -55,7 +55,7 @@ package state.menustate {
 			this.m_menuMusic.play(); //Låten sätts till play(), låtvalet kan diskuteras
 			this._addMenuItems(
 				new <Object>[
-					{name:"Dogfight", state: Gamestate},
+					{name:"Dogfight", state: Dogfight},
 					{name:"Conquer the Banner", state: Conquer},
 					{name: "How to Play", state: HowToPlay},
 					{name: "Credits", state: Credits}
