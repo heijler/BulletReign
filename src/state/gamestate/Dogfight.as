@@ -6,6 +6,7 @@ package state.gamestate
 	public class Dogfight extends Gamestate { 
 		
 		private var m_currentRound:int;
+		private var m_winFlag:Boolean = false;
 		
 		public function Dogfight() {
 			super();
@@ -23,12 +24,18 @@ package state.gamestate
 		 */
 		protected function m_resolveRound():void {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if(this.m_planes[i].crashed && this.m_planes[i].wonRound == false ) {
+				if(this.m_planes[i].crashed) {
 					for(var j:int = 0; j < this.m_planes.length; j++) {
 						if(this.m_planes[j].crashed == false) {
-							this.m_planes[j].wonRound = true;
-							trace("asdadgsfdg");
-							/*this.m_planes[j].wins++;
+//							this.m_planes[j].wonRound = true;
+							
+							if(this.m_winFlag == false) {
+								
+							this.m_planes[j].wins++;
+							this.m_winFlag = true;
+							this.m_incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);
+							}
+							/*
 							this.m_planes[0].crashed = false;
 							this.m_planes[1].crashed = false;
 							this.m_incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);*/
@@ -77,6 +84,10 @@ package state.gamestate
 			}*/
 		}
 		
+		override protected function m_respawnNow():void {
+			super.m_respawnNow();
+			this.m_winFlag = false;
+		}
 		private function m_flagSwitch(flag):void {
 			this.m_roundFlag = flag;
 		}

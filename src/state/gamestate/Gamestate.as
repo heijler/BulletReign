@@ -338,7 +338,7 @@ package state.gamestate {
 			}
 		}
 		
-		private function m_respawnNow():void {
+		protected function m_respawnNow():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				this.m_planes[i].m_respawn(false);
 			}
