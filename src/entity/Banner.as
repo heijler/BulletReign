@@ -107,7 +107,6 @@ package entity {
 		 * 
 		 */
 		override public function init():void {
-//			trace("initBanner");
 			this.m_initSkin();
 		}
 		
@@ -116,7 +115,6 @@ package entity {
 		 * 
 		 */
 		private function m_initSkin():void {
-//			trace("m_initSkin");
 			this.m_skin = new BannerGFX;
 			this._setScale(this.m_skin, 2, 2);
 			this.m_skin.x = -20;
@@ -131,9 +129,7 @@ package entity {
 		 */
 		private function m_initHitBox():void {
 			hitBox = new Sprite();
-//			hitBox.graphics.beginFill(0xFF0000);
 			hitBox.graphics.drawRect(-2, -3, 2, 6);
-//			hitBox.graphics.endFill();
 			this.m_skin.addChild(hitBox);
 		}
 		
@@ -152,11 +148,16 @@ package entity {
 		 * 
 		 */
 		override public function update():void {
-//			trace("Banner update");
 			this.wrapAroundObjects();
 			if (this.m_gravity && !this.onGround) {
 				this.applyGravity();
 				this.setGravityFactor(3);
+				if (this.rotation < 0 && this.rotation > -90 || this.rotation > 0 && this.rotation < 90) {
+					this.rotation += 0.5 * this.m_scaleFactor;	
+				} else {
+					this.rotation -= 0.5 * this.m_scaleFactor;
+				}
+				
 			}
 		}
 		

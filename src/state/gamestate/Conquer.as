@@ -10,9 +10,7 @@ package state.gamestate {
 	import entity.Plane;
 	import entity.Zeppelin;
 	
-//	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.system.Session;
-//	import se.lnu.stickossdk.timer.Timer;
 	
 	//-----------------------------------------------------------
 	// Conquer
@@ -24,9 +22,7 @@ package state.gamestate {
 		// Public properties
 		//-----------------------------------------------------------
 		
-//		public var hqLayer:DisplayStateLayer;
-//		public var zeppelinLayer:DisplayStateLayer;
-//		public var bannerLayer:DisplayStateLayer;
+
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -57,23 +53,10 @@ package state.gamestate {
 		 * Initializes the gamemode, this method overrides the method in the parentclass
 		 */
 		override protected function _initGamemode():void {
-//			trace("init conquer");
-//			this.m_initLayers();
 			this.m_initZeppelin();
 			this.m_initBanner();
 			this.m_drawGHB();
 			
-		}
-		
-		
-		/**
-		 * m_initLayers
-		 * 
-		 */
-		private function m_initLayers():void {
-//			this.hqLayer = this.layers.add("hq")
-//			this.bannerLayer = this.layers.add("banner");
-//			this.zeppelinLayer = this.layers.add("zeppelin");
 		}
 		
 		
@@ -83,16 +66,8 @@ package state.gamestate {
 		private function m_indicateBase(player:int = -1):void {
 			if (player !== -1) {
 				this.m_ground.gotoAndStop(player + 2);
-//				if (player) {
-//					this.m_ground.gotoAndStop(player + 2);
-//				} else {
-//					this.m_ground.gotoAndStop(1);
-//				}
-//				if (player || this.m_bannerHolder) {
-//					this.m_ground.gotoAndStop(this.m_bannerHolder.m_activePlayer + 2);
-//				} else {
-//					this.m_ground.gotoAndStop(1);
-//				}
+			}else {
+				this.m_ground.gotoAndStop(1);
 			}
 		}
 		
