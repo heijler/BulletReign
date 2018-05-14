@@ -84,7 +84,7 @@ package state.gamestate {
 		private var m_ingameMusic:SoundObject;
 		private var m_powerupSound:SoundObject;
 		protected var m_winSound:SoundObject;
-		protected var m_roundNumber:int;
+		protected var _winLimit:int = 2;
 		//private var m_round:Round;
 		
 		//-----------------------------------------------------------
@@ -102,7 +102,6 @@ package state.gamestate {
 		
 		public function Gamestate() {
 			super();
-			this.m_roundNumber = 1;
 //			this.m_bulletManagers = new Vector.<BulletManager>()
 		}
 		
@@ -298,7 +297,6 @@ package state.gamestate {
 			this.m_groundCollision();
 			this.m_crateGroundCollision();
 			this.m_cratePlaneCollision();
-			//this.m_resolveRound();
 			this.m_durabilityChange();
 			this.m_removeInactiveBullets();
 			this._updateGamemode();
@@ -326,25 +324,26 @@ package state.gamestate {
 		 */
 		private function m_groundCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				var timer:Timer;
 				if (this.m_planes[i].hitTestObject(this.m_ground.getChildAt(1))) { // getChildAt kanske inte säkert
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
 						this.m_planes[i].crash(this.backgroundLayer); //m_worldLayer
 						this.m_planes[i].m_newDurability = 0;
-						timer = Session.timer.create(5000,this.m_respawnNow);
 					}
 				}
 			}
 		}
 		
 		protected function m_respawnNow():void {
+			trace("NU")
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				this.m_planes[i].m_respawn(false);
 			}
-			this.m_roundNumber++;
 		}
 		
+		/*protected function m_gameOver():void {
+			
+		}*/
 		
 		/**
 		 * m_crateGroundCollision
@@ -398,7 +397,7 @@ package state.gamestate {
 		 * m_roundOver
 		 * 
 		 */
-		protected function m_roundOver():void {
+		protected function m_matchOver():void {
 			Session.application.displayState = new RematchMenu(this._gamemode);
 		}
 		

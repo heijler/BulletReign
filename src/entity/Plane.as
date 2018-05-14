@@ -502,6 +502,8 @@ package entity {
 				this.removeGravity();
 			} else {
 				this._velocity = this.BASE_SPEED;
+				this.applyGravity();
+				this.setGravityFactor(1);
 			}
 		}
 		
@@ -554,6 +556,8 @@ package entity {
 			this.movability(true);
 			this.crashed = false;
 			this.m_steering = true;
+			this._angle = 0;
+			this.updateRotation();
 			}
 		}
 		

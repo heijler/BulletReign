@@ -16,72 +16,41 @@ package state.gamestate
 		
 		override protected function _updateGamemode():void {
 			this.m_resolveRound();
+			this.m_resolveGame();
 		}
 		
 		/**
 		 * m_resolveRound
 		 * Non-crashed player gets a point
 		 */
-		protected function m_resolveRound():void {
+		private function m_resolveRound():void {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_planes[i].crashed) {
 					for(var j:int = 0; j < this.m_planes.length; j++) {
-						if(this.m_planes[j].crashed == false) {
-//							this.m_planes[j].wonRound = true;
-							
+						if(this.m_planes[j].crashed == false) {							
 							if(this.m_winFlag == false) {
-								
-							this.m_planes[j].wins++;
-							this.m_winFlag = true;
-							this.m_incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);
+								this.m_winSound.play();
+								this.m_planes[j].wins++;
+								this.m_winFlag = true;
+								this.m_incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);
+								var timer:Timer = Session.timer.create(3000, this.m_respawnNow);
 							}
-							/*
-							this.m_planes[0].crashed = false;
-							this.m_planes[1].crashed = false;
-							this.m_incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);*/
 						}
 					}
+				}
+				if(this.m_planes[0].crashed == true && this.m_planes[1].crashed == true && this.m_winFlag == false) {
+					var dimer:Timer = Session.timer.create(3000, this.m_respawnNow);
+					this.m_winFlag = true;
 				}
 			}
-			/*trace(this.m_roundNumber);
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].crashed == true) {
-					for (var j:int = 0; j < this.m_planes.length; j++) {
-						if (this.m_planes[j].crashed == false && this.m_roundFlag == true) {
-							if(this.m_planes[j].wins == 0 && this.m_roundNumber == 1) {
-								this.m_flagSwitch(false);
-								this.m_winSound.play();
-								this.m_planes[j].wins = 1;
-								this.m_flagSwitch(true);
-							}
-							if(this.m_planes[j].wins == 0 && this.m_planes[i].wins == 1 && this.m_roundNumber == 2) {
-								this.m_flagSwitch(false);
-								this.m_winSound.play();
-								this.m_planes[j].wins = 1;
-								this.m_flagSwitch(true);
-							}
-							if(this.m_planes[j].wins == 1 && this.m_planes[i].wins == 0 && this.m_roundNumber == 2) {
-								this.m_flagSwitch(false);
-								this.m_winSound.play();
-								this.m_planes[j].wins = 2;
-								this.m_flagSwitch(true);
-								var timer:Timer = Session.timer.create(3000, this.m_roundOver);
-							}
-							
-							if(this.m_planes[j].wins == 1 && this.m_planes[i].wins == 1 && this.m_currentRound == 3) {
-								this.m_flagSwitch(false);
-								this.m_winSound.play();
-								this.m_planes[j].wins = 2;
-								this.m_flagSwitch(true);
-								timer = Session.timer.create(3000, this.m_roundOver);
-								
-							}
-							this.m_incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);
-						}
-					}
-					
+		}
+		
+		private function m_resolveGame():void {
+			for(var i:int = 0; i < this.m_planes.length; i++) {
+				if(this.m_planes[i].wins == this._winLimit) {
+					var timer:Timer = Session.timer.create(3000, this.m_matchOver);
 				}
-			}*/
+			}
 		}
 		
 		override protected function m_respawnNow():void {
