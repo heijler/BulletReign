@@ -70,9 +70,9 @@ package state.menustate {
 		 */
 		private function m_drawLogo():void {
 			var logo:Bitmap = new Logo();
-				logo.scaleX = 2.5;
-				logo.scaleY = 2.5;
-			var pos:Point = new Point((Session.application.size.x * 0.5) - (logo.width*0.5) , 50);
+				logo.scaleX = 2;
+				logo.scaleY = 2;
+			var pos:Point = new Point((Session.application.size.x * 0.5) - (logo.width*0.5) , 0);
 				this._addImage(logo, pos);
 		}
 		

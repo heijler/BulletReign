@@ -58,7 +58,7 @@ package state.gamestate {
 		 */
 		override protected function _initGamemode():void {
 //			trace("init conquer");
-			this.m_initLayers();
+//			this.m_initLayers();
 			this.m_initZeppelin();
 			this.m_initBanner();
 			this.m_drawGHB();
@@ -79,15 +79,21 @@ package state.gamestate {
 		
 		/**
 		 * m_indicateBase
-		 * @param base = "left" | "right"
 		 */
-		private function m_indicateBase():void {
-			if (this.m_bannerHolder) {
-				this.m_ground.gotoAndStop(this.m_bannerHolder.m_activePlayer + 2);
-			} else {
-				this.m_ground.gotoAndStop(1);
+		private function m_indicateBase(player:int = -1):void {
+			if (player !== -1) {
+				this.m_ground.gotoAndStop(player + 2);
+//				if (player) {
+//					this.m_ground.gotoAndStop(player + 2);
+//				} else {
+//					this.m_ground.gotoAndStop(1);
+//				}
+//				if (player || this.m_bannerHolder) {
+//					this.m_ground.gotoAndStop(this.m_bannerHolder.m_activePlayer + 2);
+//				} else {
+//					this.m_ground.gotoAndStop(1);
+//				}
 			}
-			
 		}
 		
 		
@@ -98,7 +104,7 @@ package state.gamestate {
 		private function m_drawGHB():void {
 			this.m_GHB = new Shape();
 			this.m_GHB.graphics.beginFill(0xFF0000, 0.5);
-			this.m_GHB.graphics.drawRect(0, Session.application.size.y-40, 160, 40);
+			this.m_GHB.graphics.drawRect(0, Session.application.size.y-30, 160, 30);
 			this.m_GHB.graphics.endFill();
 			this.m_GHB.name = "GHB";
 			this.hqLayer.addChild(this.m_GHB);
@@ -153,17 +159,13 @@ package state.gamestate {
 		 * Method that is run on gameloop, overrides the method in the parentclass
 		 */
 		override protected function _updateGamemode():void {
-//			trace("update conquer");
-			
-			// in it's own method
 			if (this.m_zeppelin.atDefaultPos && !this.m_banner.active) {
 				this.m_banner.showBanner();
 			}
-			
 			this.m_bannerPlaneCollision();
+			this.m_bannerGroundCollision();
 			this.m_bannerFollow();
 			this.m_onBannerDrop();
-			
 		}
 		
 		
@@ -177,13 +179,26 @@ package state.gamestate {
 					this.m_banner.caught = true;
 					this.m_bannerHolder = this.m_planes[i];
 					this.m_bannerHolder.holdingBanner = true;
+					this.m_banner.lastHolder = this.m_planes[i].m_activePlayer;
 					this.m_indicateHitbox();
-					this.m_indicateBase();
-					//this._drawGroundHitbox(); @TODO:!
-					
+					this.m_indicateBase(this.m_planes[i].m_activePlayer);
 				}
 			}
 		}
+		
+		
+		/**
+		 * m_bannerGroundCollision
+		 * 
+		 */
+		private function m_bannerGroundCollision():void {
+			if (this.m_banner.hitTestObject(this.m_GHB) && this.m_banner.onGround == false) {
+				this.m_banner.onGround = true;
+				this.m_indicateBase(this.m_banner.lastHolder);
+			}
+		}
+		
+		
 		
 		/**
 		 * m_bannerFollow
@@ -216,6 +231,9 @@ package state.gamestate {
 			this.m_bannerHolder = null;
 			this.m_indicateBase();
 			this.m_banner.gravity = true;
+			if (this.m_banner.onGround) {
+				this.m_banner.gravity = false;
+			}
 		}
 	}
 }
