@@ -13,7 +13,7 @@ package {
 	// Evertron settings
 	//-----------------------------------------------------------
 	
-	[SWF(width="800", height="600", frameRate="60", backgroundColor="#ffffff")]
+	[SWF(width="800", height="600", frameRate="60", backgroundColor="#000000")]
 	
 	//-----------------------------------------------------------
 	// BulletReign

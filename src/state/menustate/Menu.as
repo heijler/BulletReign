@@ -131,7 +131,7 @@ package state.menustate {
 		 */
 		private function m_initFormat():void {
 			this.m_format = new TextFormat();
-			this.m_format.color = 0xFFFFFF;
+			this.m_format.color = 0xFFF392; //0xFFFFFF
 			this.m_format.kerning = true;
 			this.m_format.letterSpacing = 3;
 			this.m_format.size = 14;
