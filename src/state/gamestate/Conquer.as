@@ -181,7 +181,7 @@ package state.gamestate {
 		 */
 		private function m_bannerFollow():void {
 			if (this.m_banner.caught) {
-				this.m_banner.follow(this.m_bannerHolder.m_getPos(), this.m_bannerHolder.angle, this.m_bannerHolder.scaleFactor);
+				this.m_banner.follow(this.m_bannerHolder.m_getPos(), this.m_bannerHolder.angle, this.m_bannerHolder.scaleFactor, this.m_bannerHolder.velocity);
 			}
 		}
 		

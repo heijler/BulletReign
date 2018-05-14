@@ -4,12 +4,14 @@ package entity {
 	//-----------------------------------------------------------
 	
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
+//	import flash.display.Sprite;
+	import flash.display.Shape;
 	import flash.geom.Point;
 	
 	import asset.BannerGFX;
 	
 	import se.lnu.stickossdk.system.Session;
+	
 	
 	
 	//-----------------------------------------------------------
@@ -22,7 +24,7 @@ package entity {
 		// Public properties
 		//-----------------------------------------------------------
 		
-		public var hitBox:Sprite;
+		public var hitBox:Shape;
 		public var active:Boolean = false;
 		public var onGround:Boolean = false;
 		public var lastHolder:int;
@@ -128,8 +130,10 @@ package entity {
 		 * 
 		 */
 		private function m_initHitBox():void {
-			hitBox = new Sprite();
-			hitBox.graphics.drawRect(-2, -3, 2, 6);
+			hitBox = new Shape();
+//			hitBox.graphics.beginFill(0xFF0000);
+			hitBox.graphics.drawRect(-12, -2, 12, 4);
+//			hitBox.graphics.endFill();
 			this.m_skin.addChild(hitBox);
 		}
 		
@@ -158,6 +162,12 @@ package entity {
 					this.rotation -= 0.5 * this.m_scaleFactor;
 				}
 				
+//				if (this.y < 200) {
+					this.setGravityFactor(3 + (0.009* this.y));
+//				}
+				this.x += (Math.cos(this._angle * (Math.PI / 180)) * this._velocity >> 1.5) * this.m_scaleFactor;
+				this.y += (Math.sin(this._angle * (Math.PI / 180)) * this._velocity >> 1.5) * this.m_scaleFactor;
+				
 			}
 		}
 		
@@ -165,9 +175,10 @@ package entity {
 		/**
 		 * 
 		 */
-		public function follow(pos:Point, angle:Number, scaleFactor:int):void {
+		public function follow(pos:Point, angle:Number, scaleFactor:int, vel:Number):void {
 			this.m_pos = pos;
 			this._angle = angle;
+			this._velocity = vel;
 			this.m_scaleFactor = scaleFactor;
 			this.m_updatePos();
 			this.m_updateAngle();

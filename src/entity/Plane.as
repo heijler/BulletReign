@@ -80,7 +80,7 @@ package entity {
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
-		
+		//@TODO type all parameters
 		public function Plane(player:int, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor, fxMan, movability) {
 			super();
 			this.m_movability = movability;
@@ -435,6 +435,14 @@ package entity {
 		 */
 		public function get scaleFactor():int {
 			return this.m_scaleFactor;
+		}
+		
+		/**
+		 * get velocity
+		 * @TODO: Move up!
+		 */
+		public function get velocity():int {
+			return this._velocity;
 		}
 		
 		
