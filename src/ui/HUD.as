@@ -12,11 +12,10 @@ package ui {
 	import assets.DurabilityMeterv4GFX;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
-	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
-	// Gamestate
+	// HUD
 	//-----------------------------------------------------------
 	
 	public class HUD extends DisplayStateLayerSprite {

@@ -126,8 +126,6 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initBanner():void {
-//			this.m_banner = new Banner(new Point(Session.application.size.x*0.5, 0));
-//			this.bannerLayer.addChild(this.m_banner);
 			this.m_addBanner();
 		}
 		
@@ -206,11 +204,11 @@ package state.gamestate {
 		
 		
 		/**
-		 * 
-		 * @TODO: DOESN'T WORK
+		 * m_bannerGroundColl
+		 * @TODO: 
 		 */
 		private function m_bannerGroundColl():void {
-			if (this.m_banner.hitTestObject(this.m_GHB) && this.m_banner.onGround == false) {
+			if (this.m_banner.hitTestObject(this.groundHitbox) && this.m_banner.onGround == false) {
 				trace("onGround");
 			}
 		}
@@ -240,7 +238,6 @@ package state.gamestate {
 		}
 		
 		
-		
 		/**
 		 * m_bannerFollow
 		 * 
@@ -263,16 +260,6 @@ package state.gamestate {
 		}
 		
 		
-//		/**
-//		 * 
-//		 */
-//		private function m_wrapBanner():void {
-//			if (this.m_banner.y > Session.application.size.y) {
-//				this.m_banner.y = 0;
-//			}
-//		}
-		
-		
 		/**
 		 * m_resolveGame
 		 * 
@@ -288,6 +275,7 @@ package state.gamestate {
 		
 		
 		/**
+		 * m_resolveRound
 		 * 
 		 */
 		private function m_resolveRound():void {

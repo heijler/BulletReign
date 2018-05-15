@@ -10,14 +10,11 @@ package state.menustate {
 	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
-	import se.lnu.stickossdk.fx.Flicker;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
-	
-	import state.gamestate.Gamestate;
 
 	//-----------------------------------------------------------
 	// Menu
@@ -75,6 +72,7 @@ package state.menustate {
 			this.initMenu();
 			this.m_initSound();
 		}
+		
 		
 		/**
 		 * update
@@ -196,6 +194,7 @@ package state.menustate {
 		
 		/**
 		 * m_updateControls
+		 * 
 		 */
 		private function m_updateControls():void {
 			this.m_controlMove(this.m_controls_one);
@@ -205,6 +204,7 @@ package state.menustate {
 		
 		/**
 		 * m_controlMove
+		 * 
 		 */
 		private function m_controlMove(control:EvertronControls):void {
 			if (Input.keyboard.justPressed(control.PLAYER_UP) && !this.m_selected) {
@@ -225,6 +225,7 @@ package state.menustate {
 		
 		/**
 		 * m_menuMove
+		 * 
 		 */
 		private function m_menuMove():void {
 			if (this.m_menuSelect < 0) {
@@ -236,6 +237,7 @@ package state.menustate {
 			this.m_menuShow();
 		
 		}
+		
 		
 		/**
 		 * m_newState
@@ -260,6 +262,7 @@ package state.menustate {
 		
 		/**
 		 * m_menuShow
+		 * 
 		 */
 		private function m_menuShow():void {
 			this.m_menuOptions[this.m_menuSelect].text = this.SELECT_CHAR + this.m_menuOptions[this.m_menuSelect].text;
@@ -295,7 +298,6 @@ package state.menustate {
 		 * _addImage
 		 * 
 		 */
-		
 		protected function _addImage(image:Bitmap, pos:Point):void {
 			this.m_image = image;
 			this.m_image.x = pos.x;
@@ -307,7 +309,6 @@ package state.menustate {
 		 * _addArt
 		 * 
 		 */
-		
 		protected function _addArt(art:Bitmap, pos:Point):void {
 			this.m_art = art;
 			this.m_art.x = pos.x;

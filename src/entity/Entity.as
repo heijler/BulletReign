@@ -13,7 +13,7 @@ package entity {
 	
 	
 	//-----------------------------------------------------------
-	// Game
+	// Entity
 	//-----------------------------------------------------------
 	
 	public class Entity extends DisplayStateLayerSprite {

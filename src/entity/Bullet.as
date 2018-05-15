@@ -5,9 +5,6 @@ package entity {
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	import se.lnu.stickossdk.timer.Timer;
-	import se.lnu.stickossdk.system.Session;
-	
 	//-----------------------------------------------------------
 	// Bullet
 	//-----------------------------------------------------------

@@ -4,15 +4,12 @@ package entity {
 	//-----------------------------------------------------------
 	
 	import flash.display.MovieClip;
-//	import flash.display.Sprite;
 	import flash.display.Shape;
 	import flash.geom.Point;
 	
 	import asset.BannerGFX;
 	
 	import se.lnu.stickossdk.system.Session;
-	
-	
 	
 	//-----------------------------------------------------------
 	// Banner

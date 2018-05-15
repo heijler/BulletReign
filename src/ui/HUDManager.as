@@ -5,12 +5,9 @@ package ui {
 	//-----------------------------------------------------------
 	
 	import flash.display.DisplayObjectContainer;
-//	import asset.HealthCloudGFX;
-	import flash.display.MovieClip;
-	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
-	// PlaneManager
+	// HUDManager
 	//-----------------------------------------------------------
 	
 	public class HUDManager {
