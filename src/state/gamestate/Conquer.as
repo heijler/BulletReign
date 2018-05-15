@@ -80,9 +80,9 @@ package state.gamestate {
 		 */
 		private function m_drawGHB():void {
 			this.m_GHB = new Shape();
-//			this.m_GHB.graphics.beginFill(0xFF0000, 0.5);
+			this.m_GHB.graphics.beginFill(0xFF0000, 0.5);
 			this.m_GHB.graphics.drawRect(0, Session.application.size.y-30, 160, 30);
-//			this.m_GHB.graphics.endFill();
+			this.m_GHB.graphics.endFill();
 			this.m_GHB.name = "GHB";
 			this.hqLayer.addChild(this.m_GHB);
 		}
@@ -200,17 +200,17 @@ package state.gamestate {
 				this.m_banner.lastHolder.wins++;
 				this.m_incrementWins(this.m_banner.lastHolder.m_activePlayer, this.m_banner.lastHolder.wins);
 				this.m_resolveGame();
-				var timer:Timer = Session.timer.create(1000, this.m_respawn);
-//				this.m_respawn();
+				var timer:Timer = Session.timer.create(3000, this.m_respawn);
 			}
 		}
 		
 		
 		/**
 		 * 
+		 * @TODO: DOESN'T WORK
 		 */
 		private function m_bannerGroundColl():void {
-			if (this.m_banner.hitTestObject(this.m_ground) && this.m_banner.onGround == false) {
+			if (this.m_banner.hitTestObject(this.m_GHB) && this.m_banner.onGround == false) {
 				trace("onGround");
 			}
 		}
@@ -221,10 +221,11 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_respawn():void {
-//			trace("matchfin", this.m_matchFin);
+			trace("matchfin", this.m_matchFin);
 			if (this.m_matchFin == false) {
 				this.m_respawnNow();
 				this.m_respawnBanner();
+				this.m_winFlag = false;
 			}
 		}
 		
@@ -293,10 +294,10 @@ package state.gamestate {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_planes[i].crashed) {
 					for(var j:int = 0; j < this.m_planes.length; j++) {
-						if(this.m_planes[j].crashed == false) {							
+						if(this.m_planes[j].crashed == false) {
 							if(this.m_winFlag == false) {
-								this.m_respawn();
 								this.m_winFlag = true;
+								var timer:Timer = Session.timer.create(3000, this.m_respawn);
 							}
 						}
 					}

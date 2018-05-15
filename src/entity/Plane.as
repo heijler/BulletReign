@@ -187,6 +187,7 @@ package entity {
 		 * override, gameloop
 		 */
 		override public function update():void {
+			super.update();
 			this.applyGravity();
 			this.m_updateControls();
 			this.m_defaultSpeed();
@@ -311,13 +312,13 @@ package entity {
 				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				if(this.m_noAccelDuration == false) {
-				this.m_accelDuration--;
+					this.m_accelDuration--;
 				} else {
 					var timeout:Timer = Session.timer.create(5000, this.m_clearNoAccelDuration);
 				}
 				this.x += xVel * this.m_scaleFactor;
 				this.y += yVel * this.m_scaleFactor;
-				this.m_fxMan.add(new Trail(this.m_getPos(), this._angle));
+				this.m_fxMan.add(new Trail(this.m_getPos(), this._angle));			
 				
 			} else if (this.m_accelDuration <= 0 && this.m_accelerating){
 				this.m_accelerating = false;
@@ -558,14 +559,14 @@ package entity {
 		
 		public function m_respawn(move:Boolean):void {
 			if(move == false ) {
-			this.x = this.m_pos.x;
-			this.y = this.m_pos.y;
-			this.m_newDurability = this.PLANE_DURABILITY;
-			this.movability(true);
-			this.crashed = false;
-			this.m_steering = true;
-			this._angle = 0;
-			this.updateRotation();
+				this.x = this.m_pos.x;
+				this.y = this.m_pos.y;
+				this.m_newDurability = this.PLANE_DURABILITY;
+				this.movability(true);
+				this.crashed = false;
+				this.m_steering = true;
+				this._angle = 0;
+				this.updateRotation();
 			}
 		}
 		

@@ -68,10 +68,9 @@ package state.gamestate {
 		private var m_crates:Vector.<Crate>;
 		private var m_crate:Crate;
 		private var m_crateSpawn:Point;
-//		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_bm1:BulletManager; // @FIX, put into Vector?
 		private var m_bm2:BulletManager; // @FIX, put into Vector?
-		public var m_roundFlag:Boolean = false;
+		public var m_roundFlag:Boolean = false; //@TODO: rename
 		
 		private var m_sky:Sprite;
 		public var m_ground:MovieClip; // @TODO: rename & move
@@ -85,7 +84,7 @@ package state.gamestate {
 		private var m_fxMan2:FXManager;
 		private var m_ingameMusic:SoundObject;
 		private var m_powerupSound:SoundObject;
-		protected var m_winSound:SoundObject;
+		protected var m_winSound:SoundObject; //@TODO: rename
 		protected var _winLimit:int = 2;
 		protected var _icons:Icon;
 		//private var m_round:Round;
@@ -350,9 +349,6 @@ package state.gamestate {
 			}
 		}
 		
-		/*protected function m_gameOver():void {
-			
-		}*/
 		
 		/**
 		 * m_crateGroundCollision
