@@ -4,7 +4,6 @@ package state.gamestate {
 	//-----------------------------------------------------------
 	
 	import flash.display.DisplayObject;
-//	import flash.display.Graphics;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -16,6 +15,7 @@ package state.gamestate {
 	import entity.Cloud;
 	import entity.Crate;
 	import entity.CrateManager;
+	import entity.Icon;
 	import entity.Plane;
 	import entity.PlaneManager;
 	import entity.fx.FXManager;
@@ -58,6 +58,7 @@ package state.gamestate {
 		public var planeLayer:DisplayStateLayer;
 		public var zeppelinLayer:DisplayStateLayer;
 		public var HUDLayer:DisplayStateLayer;
+		public var IconLayer:DisplayStateLayer;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -85,6 +86,7 @@ package state.gamestate {
 		private var m_powerupSound:SoundObject;
 		protected var m_winSound:SoundObject;
 		protected var _winLimit:int = 2;
+		protected var _icons:Icon;
 		//private var m_round:Round;
 		
 		//-----------------------------------------------------------
@@ -144,6 +146,7 @@ package state.gamestate {
 			this.planeLayer = this.layers.add("plane");
 			this.zeppelinLayer = this.layers.add("zeppelin");
 			this.HUDLayer = this.layers.add("HUD");
+			this.IconLayer = this.layers.add("ICON");
 			
 			
 //			public var backgroundLayer:DisplayStateLayer;
@@ -375,12 +378,15 @@ package state.gamestate {
 							this.m_powerupSound.play();
 							if(this.m_crates[j].m_type == 0) {
 								this.m_planes[i].m_noDamage = true;
+								this._icons = new Icon(this.IconLayer, new Point(30, 30), this.m_crates[j].m_type);
 							}
 							if(this.m_crates[j].m_type == 1) {
 								this.m_planes[i].m_noFireCounter = true;
+								this._icons = new Icon(this.IconLayer, new Point(30, 30), this.m_crates[j].m_type);
 							}
 							if(this.m_crates[j].m_type == 2) {
 								this.m_planes[i].m_noAccelDuration = true;
+								this._icons = new Icon(this.IconLayer, new Point(30, 30), this.m_crates[j].m_type);
 							}
 							this.m_crateManager.removeCrate(this.m_crates[j]);
 							
