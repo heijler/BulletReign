@@ -114,6 +114,7 @@ package entity {
 		
 		
 		/**
+		 * m_initSkin
 		 * 
 		 */
 		private function m_initSkin():void {
@@ -139,6 +140,7 @@ package entity {
 		
 		
 		/**
+		 * m_setSpawnPosition
 		 * 
 		 */
 		private function m_setSpawnPosition():void {
@@ -170,6 +172,7 @@ package entity {
 		
 		
 		/**
+		 * follow
 		 * 
 		 */
 		public function follow(pos:Point, angle:Number, scaleFactor:int, vel:Number):void {
@@ -220,6 +223,7 @@ package entity {
 			
 //			this.rotation = this._angle; // standard stel
 		}
+		
 		
 		/**
 		 * m_updateDirection
