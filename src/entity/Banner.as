@@ -162,9 +162,7 @@ package entity {
 					this.rotation -= 0.5 * this.m_scaleFactor;
 				}
 				
-//				if (this.y < 200) {
-					this.setGravityFactor(3 + (0.009* this.y));
-//				}
+				this.setGravityFactor(3 + (0.004* this.y));
 				this.x += (Math.cos(this._angle * (Math.PI / 180)) * this._velocity >> 1.5) * this.m_scaleFactor;
 				this.y += (Math.sin(this._angle * (Math.PI / 180)) * this._velocity >> 1.5) * this.m_scaleFactor;
 			}
