@@ -4,12 +4,14 @@ package entity {
 	//-----------------------------------------------------------
 	
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
+//	import flash.display.Sprite;
+	import flash.display.Shape;
 	import flash.geom.Point;
 	
 	import asset.BannerGFX;
 	
 	import se.lnu.stickossdk.system.Session;
+	
 	
 	
 	//-----------------------------------------------------------
@@ -22,10 +24,10 @@ package entity {
 		// Public properties
 		//-----------------------------------------------------------
 		
-		public var hitBox:Sprite;
+		public var hitBox:Shape;
 		public var active:Boolean = false;
 		public var onGround:Boolean = false;
-		public var lastHolder:int;
+		public var lastHolder:Plane;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -107,7 +109,6 @@ package entity {
 		 * 
 		 */
 		override public function init():void {
-//			trace("initBanner");
 			this.m_initSkin();
 		}
 		
@@ -116,7 +117,6 @@ package entity {
 		 * 
 		 */
 		private function m_initSkin():void {
-//			trace("m_initSkin");
 			this.m_skin = new BannerGFX;
 			this._setScale(this.m_skin, 2, 2);
 			this.m_skin.x = -20;
@@ -130,9 +130,9 @@ package entity {
 		 * 
 		 */
 		private function m_initHitBox():void {
-			hitBox = new Sprite();
+			hitBox = new Shape();
 //			hitBox.graphics.beginFill(0xFF0000);
-			hitBox.graphics.drawRect(-2, -3, 2, 6);
+			hitBox.graphics.drawRect(-12, -2, 12, 4);
 //			hitBox.graphics.endFill();
 			this.m_skin.addChild(hitBox);
 		}
@@ -152,11 +152,19 @@ package entity {
 		 * 
 		 */
 		override public function update():void {
-//			trace("Banner update");
 			this.wrapAroundObjects();
 			if (this.m_gravity && !this.onGround) {
 				this.applyGravity();
 				this.setGravityFactor(3);
+				if (this.rotation < 0 && this.rotation > -90 || this.rotation > 0 && this.rotation < 90) {
+					this.rotation += 0.5 * this.m_scaleFactor;	
+				} else {
+					this.rotation -= 0.5 * this.m_scaleFactor;
+				}
+				
+				this.setGravityFactor(3 + (0.004* this.y));
+				this.x += (Math.cos(this._angle * (Math.PI / 180)) * this._velocity >> 1.5) * this.m_scaleFactor;
+				this.y += (Math.sin(this._angle * (Math.PI / 180)) * this._velocity >> 1.5) * this.m_scaleFactor;
 			}
 		}
 		
@@ -164,9 +172,10 @@ package entity {
 		/**
 		 * 
 		 */
-		public function follow(pos:Point, angle:Number, scaleFactor:int):void {
+		public function follow(pos:Point, angle:Number, scaleFactor:int, vel:Number):void {
 			this.m_pos = pos;
 			this._angle = angle;
+			this._velocity = vel;
 			this.m_scaleFactor = scaleFactor;
 			this.m_updatePos();
 			this.m_updateAngle();

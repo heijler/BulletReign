@@ -5,7 +5,7 @@ package ui {
 	//-----------------------------------------------------------
 	
 	import flash.display.DisplayObjectContainer;
-	import asset.HealthCloudGFX;
+//	import asset.HealthCloudGFX;
 	import flash.display.MovieClip;
 	import se.lnu.stickossdk.system.Session;
 	
@@ -31,7 +31,7 @@ package ui {
 		public function HUDManager(parent:DisplayObjectContainer) {
 			this.m_parent = parent;
 			this.m_huds = new Vector.<HUD>;
-			this.m_initHealthCloud();
+//			this.m_initHealthCloud();
 		}
 		
 		//-----------------------------------------------------------
@@ -69,16 +69,16 @@ package ui {
 		}
 		
 		
-		/**
-		 * 
-		 */
-		private function m_initHealthCloud():void {
-			var skin:MovieClip = new HealthCloudGFX;
-				skin.scaleX = 2.5;
-				skin.scaleY = 2.5;
-				skin.x = Session.application.size.x/2;
-				skin.y = 16;
-			this.m_parent.addChild(skin);	
-		}
+//		/**
+//		 * 
+//		 */
+//		private function m_initHealthCloud():void {
+//			var skin:MovieClip = new HealthCloudGFX;
+//				skin.scaleX = 2.5;
+//				skin.scaleY = 2.5;
+//				skin.x = Session.application.size.x/2;
+//				skin.y = 16;
+//			this.m_parent.addChild(skin);	
+//		}
 	}
 }

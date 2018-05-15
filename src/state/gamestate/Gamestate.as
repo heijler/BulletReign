@@ -188,6 +188,7 @@ package state.gamestate {
 			this.m_planes = planeManager.getPlanes();
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				this.m_planes[i].m_engineSound.play();
+				this.m_planes[i].m_engineSound.volume = 0.4;
 			}
 		}
 		
@@ -341,6 +342,7 @@ package state.gamestate {
 			}
 		}
 		
+		//@TODO: rename
 		protected function m_respawnNow():void {
 			trace("NU")
 			for (var i:int = 0; i < this.m_planes.length; i++) {
