@@ -27,7 +27,7 @@ package entity {
 		public var hitBox:Shape;
 		public var active:Boolean = false;
 		public var onGround:Boolean = false;
-		public var lastHolder:int;
+		public var lastHolder:Plane;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -167,7 +167,6 @@ package entity {
 //				}
 				this.x += (Math.cos(this._angle * (Math.PI / 180)) * this._velocity >> 1.5) * this.m_scaleFactor;
 				this.y += (Math.sin(this._angle * (Math.PI / 180)) * this._velocity >> 1.5) * this.m_scaleFactor;
-				
 			}
 		}
 		

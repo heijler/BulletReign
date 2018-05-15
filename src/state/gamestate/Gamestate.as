@@ -338,6 +338,7 @@ package state.gamestate {
 			}
 		}
 		
+		//@TODO: rename
 		protected function m_respawnNow():void {
 			trace("NU")
 			for (var i:int = 0; i < this.m_planes.length; i++) {
