@@ -7,11 +7,11 @@ package entity {
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
-	import se.lnu.stickossdk.system.Session;
-	
 	import asset.armoriconGFX;
 	import asset.powericonGFX;
 	import asset.speediconGFX;
+	
+	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
 	// Crate
@@ -26,12 +26,14 @@ package entity {
 		private var m_skin:MovieClip;
 		private var m_type:int
 		private var m_parent:DisplayObjectContainer;
+		private var m_player:int;
 		
-		public function Icon(parent:DisplayObjectContainer, pos:Point, type:int) {
+		public function Icon(player:int, parent:DisplayObjectContainer, pos:Point, type:int) {
 			super();
 			this.m_parent = parent;
 			this.m_pos = pos;
 			this.m_type = type;
+			this.m_player = player;
 			this.init();
 		}
 		
@@ -47,20 +49,35 @@ package entity {
 		private function m_initSkin():void {
 			if (this.m_type == 0) {
 				this.m_skin = new armoriconGFX;
-				this.m_skin.x = Session.application.size.x -100;
-				this.m_skin.y = Session.application.size.y -535;
+				if(this.m_player == 0 ) {
+					this.m_skin.x = Session.application.size.x / 5;
+					this.m_skin.y = Session.application.size.y / 5;
+				} else {
+					this.m_skin.x = Session.application.size.x;
+					this.m_skin.y = Session.application.size.y;
+				}
 				this._setScale(this.m_skin, 2, 2);
 			}
 			if (this.m_type == 1) {
 				this.m_skin = new powericonGFX;
-				this.m_skin.x = Session.application.size.x -70;
-				this.m_skin.y = Session.application.size.y -535;
+				if(this.m_player == 0 ) {
+					this.m_skin.x = Session.application.size.x / 5;
+					this.m_skin.y = Session.application.size.y / 5;
+				} else {
+					this.m_skin.x = Session.application.size.x;
+					this.m_skin.y = Session.application.size.y;
+				}
 				this._setScale(this.m_skin, 2, 2);
 			}
 			if (this.m_type == 2) {
 				this.m_skin = new speediconGFX;
-				this.m_skin.x = Session.application.size.x -40;
-				this.m_skin.y = Session.application.size.y -535;
+				if(this.m_player == 0 ) {
+					this.m_skin.x = Session.application.size.x / 5;
+					this.m_skin.y = Session.application.size.y / 5;
+				} else {
+					this.m_skin.x = Session.application.size.x;
+					this.m_skin.y = Session.application.size.y;
+				}
 				this._setScale(this.m_skin, 2, 2);
 			}
 			this.m_setSpawnPosition();

@@ -380,15 +380,15 @@ package state.gamestate {
 							this.m_powerupSound.play();
 							if(this.m_crates[j].m_type == 0) {
 								this.m_planes[i].m_noDamage = true;
-								this._icons = new Icon(this.IconLayer, new Point(30, 30), this.m_crates[j].m_type);
+								this._icons = new Icon(this.m_planes[i].m_activePlayer, this.IconLayer, new Point(30, 30), this.m_crates[j].m_type);
 							}
 							if(this.m_crates[j].m_type == 1) {
 								this.m_planes[i].m_noFireCounter = true;
-								this._icons = new Icon(this.IconLayer, new Point(30, 30), this.m_crates[j].m_type);
+								this._icons = new Icon(this.m_planes[i].m_activePlayer, this.IconLayer, new Point(30, 30), this.m_crates[j].m_type);
 							}
 							if(this.m_crates[j].m_type == 2) {
 								this.m_planes[i].m_noAccelDuration = true;
-								this._icons = new Icon(this.IconLayer, new Point(30, 30), this.m_crates[j].m_type);
+								this._icons = new Icon(this.m_planes[i].m_activePlayer, this.IconLayer, new Point(30, 30), this.m_crates[j].m_type);
 							}
 							this.m_crateManager.removeCrate(this.m_crates[j]);
 							
