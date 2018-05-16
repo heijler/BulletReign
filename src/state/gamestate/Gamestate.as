@@ -284,8 +284,8 @@ package state.gamestate {
 		 */
 		private function m_initCrates():void {
 			this.m_crateManager = new CrateManager(this.crateLayer);
-			this.m_initCrateTimer();
-			//this.m_generateCrates();
+			//this.m_initCrateTimer();
+			this.m_generateCrate();
 			//new Point(100,0
 			
 		}
@@ -409,6 +409,7 @@ package state.gamestate {
 								this.m_generateIcons(this.m_planes[i].m_activePlayer);
 							}
 							this.m_crateManager.removeCrate(this.m_crates[j]);
+							var timer:Timer = Session.timer.create(Math.floor(Math.random() * 30000), this.m_generateCrate);
 						}
 					}
 				}
@@ -461,16 +462,16 @@ package state.gamestate {
 		 * m_initCrateTimer
 		 * 
 		 */
-		private function m_initCrateTimer():void {
+		/*private function m_initCrateTimer():void {
 			var timer:Timer = Session.timer.create(Math.round(Math.random()* 10000), this.m_generateCrates, 3);
-		}
+		}*/
 		
 		
 		/**
 		 * m_generateCrates
 		 * 
 		 */
-		private function m_generateCrates():void {
+		private function m_generateCrate():void {
 			this.m_crateSpawn = new Point(Math.floor(Math.random()* Session.application.size.x), -40); // -40 magic number, get height of crate somehow?
 			this.m_crate = new Crate(this.m_crateSpawn);
 			this.m_crateManager.add(this.m_crate, this.m_crate.m_type);

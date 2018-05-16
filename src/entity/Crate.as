@@ -109,12 +109,12 @@ package entity {
 		 * 
 		 */
 		public function m_groundCollision(layer:DisplayStateLayer):void {
-				this.removeGravity();
-				this._shake(layer, 5);
-				this._flicker(this, 500);
-				for(var i:int = 0; i < this.m_crateClips.length; i++) {
-					this.m_crateClips[i].play();
-				}
+			this.removeGravity();
+			this._shake(layer, 5);
+			this._flicker(this, 500);
+			for(var i:int = 0; i < this.m_crateClips.length; i++) {
+				this.m_crateClips[i].play();
+			}
 		}
 		
 		/**
