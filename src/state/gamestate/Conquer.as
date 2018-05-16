@@ -161,6 +161,7 @@ package state.gamestate {
 				this.m_banner.showBanner();
 			}
 			this.m_bannerPlaneCollision();
+			this.m_bannerBaseCollision();
 			this.m_bannerGroundCollision();
 			this.m_bannerFollow();
 			this.m_onBannerDrop();
@@ -176,6 +177,7 @@ package state.gamestate {
 		private function m_bannerPlaneCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_banner.hitBox.hitTestObject(this.m_planes[i]) && !this.m_banner.caught) {
+					trace("Banner caught");
 					this.m_banner.caught = true;
 					this.m_bannerHolder = this.m_planes[i];
 					this.m_bannerHolder.holdingBanner = true;
@@ -188,12 +190,13 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_bannerGroundCollision
+		 * m_bannerBaseCollision
 		 * 
 		 */
-		private function m_bannerGroundCollision():void {
-			if (this.m_banner.hitTestObject(this.m_GHB) && this.m_banner.onGround == false && this.m_bannerHolder == null) {
-				this.m_banner.onGround = true;
+		private function m_bannerBaseCollision():void {
+			if (this.m_banner.hitBox.hitTestObject(this.m_GHB) && this.m_banner.onBase == false && this.m_bannerHolder == null) {
+				trace("Base");
+				this.m_banner.onBase = true;
 				this.m_indicateBase(this.m_banner.lastHolder.m_activePlayer);
 				this.m_winSound.play();
 				this.m_banner.lastHolder.wins++;
@@ -205,12 +208,13 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_bannerGroundColl
+		 * m_bannerGroundCollision
 		 * @TODO: 
 		 */
-		private function m_bannerGroundColl():void {
-			if (this.m_banner.hitTestObject(this.groundHitbox) && this.m_banner.onGround == false) {
-				trace("onGround");
+		private function m_bannerGroundCollision():void {
+			if (this.m_banner.hitBox.hitTestObject(this.groundHitbox) && this.m_banner.onGround == false && this.m_bannerHolder == null) {
+				trace("Ground");
+				this.m_banner.onGround = true;
 			}
 		}
 		
@@ -318,11 +322,13 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_dropBanner():void {
+//			trace("m_dropBanner");
 			this.m_banner.caught = false;
 			this.m_bannerHolder = null;
 			this.m_indicateBase();
 			this.m_banner.gravity = true;
-			if (this.m_banner.onGround) {
+			
+			if (this.m_banner.onGround || this.m_banner.onBase) {
 				this.m_banner.gravity = false;
 			}
 		}

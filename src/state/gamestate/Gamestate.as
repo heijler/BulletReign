@@ -479,6 +479,10 @@ package state.gamestate {
 			this.m_crates = m_crateManager.getCrates();
 		}
 		
+		
+		/**
+		 * 
+		 */
 		private function m_generateIcons(player):void {
 			var catcher:int = player;
 			if(catcher == 0) {

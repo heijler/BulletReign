@@ -4,16 +4,18 @@ package objects {
 	//-----------------------------------------------------------
 	
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
+	import flash.display.Shape;
 	import flash.geom.Point;
 	
 	import asset.Plane1GFX;
 	import asset.Plane2GFX;
 	
-	import managers.BulletManager;
+	import entity.MotionEntity;
 	import entity.fx.FXManager;
 	import entity.fx.Particle;
 	import entity.fx.Trail;
+	
+	import managers.BulletManager;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
@@ -21,8 +23,7 @@ package objects {
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
-	import managers.BulletManager;
-	import entity.MotionEntity;
+	
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -47,6 +48,8 @@ package objects {
 		public var m_engineSound:SoundObject;
 		public var wonRound:Boolean = false;
 		public var powerUpActive:Boolean = false;
+		public var tailHitbox:Shape;
+		public var bodyHitbox:Shape;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -131,7 +134,8 @@ package objects {
 				this._setScale(this.m_skin, -2, 2);
 			}
 			this.m_skin.cacheAsBitmap = true; // @TODO: Check perf.
-			this.m_skin.gotoAndStop(1);			
+			this.m_skin.gotoAndStop(1);
+			this.m_setHitboxes();
 			this.addChild(this.m_skin);
 		}
 		
@@ -141,17 +145,17 @@ package objects {
 		 * 
 		 */
 		private function m_setHitboxes():void {
-			var tailHitbox:Sprite = new Sprite();
-				tailHitbox.graphics.beginFill(0xFF0000);
-				tailHitbox.graphics.drawRect(-8, -1, 7, 3);
-				tailHitbox.graphics.endFill();
-			this.m_skin.addChild(tailHitbox);
+			this.tailHitbox = new Shape();
+			this.tailHitbox.graphics.beginFill(0xFF0000);
+			this.tailHitbox.graphics.drawRect(-8, -1, 7, 3);
+			this.tailHitbox.graphics.endFill();
+			this.m_skin.addChild(this.tailHitbox);
 			
-			var bodyHitbox:Sprite = new Sprite();
-				bodyHitbox.graphics.beginFill(0xFFFF00);
-				bodyHitbox.graphics.drawRect(-1, -2, 9, 6);
-				bodyHitbox.graphics.endFill();
-			this.m_skin.addChild(bodyHitbox);
+			this.bodyHitbox = new Shape();
+			this.bodyHitbox.graphics.beginFill(0xFFFF00);
+			this.bodyHitbox.graphics.drawRect(-1, -2, 9, 6);
+			this.bodyHitbox.graphics.endFill();
+			this.m_skin.addChild(this.bodyHitbox);
 		}
 		
 		

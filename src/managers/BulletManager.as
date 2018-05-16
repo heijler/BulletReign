@@ -133,7 +133,7 @@ package managers {
 		public function checkCollision(plane:Plane):Boolean {
 			var val:Boolean = false;
 			for(var i:int = 0; i < this.m_bullets.length; i++) {
-				if(plane.hitTestObject(this.m_bullets[i])) {
+				if(plane.tailHitbox.hitTestObject(this.m_bullets[i]) || plane.bodyHitbox.hitTestObject(this.m_bullets[i])) {
 					val = true;
 					this.removeBullet(this.m_bullets[i]);
 				}

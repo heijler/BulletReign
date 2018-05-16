@@ -25,6 +25,7 @@ package objects {
 		public var hitBox:Shape;
 		public var active:Boolean = false;
 		public var onGround:Boolean = false;
+		public var onBase:Boolean = false;
 		public var lastHolder:Plane;
 		
 		//-----------------------------------------------------------
@@ -118,7 +119,7 @@ package objects {
 		private function m_initSkin():void {
 			this.m_skin = new BannerGFX;
 			this._setScale(this.m_skin, 2, 2);
-			this.m_skin.x = -20;
+			this.m_skin.x = -24;
 			this.m_initHitBox();
 			this.addChild(this.m_skin);
 		}
@@ -129,11 +130,11 @@ package objects {
 		 * 
 		 */
 		private function m_initHitBox():void {
-			hitBox = new Shape();
-//			hitBox.graphics.beginFill(0xFF0000);
-			hitBox.graphics.drawRect(-12, -2, 12, 4);
-//			hitBox.graphics.endFill();
-			this.m_skin.addChild(hitBox);
+			this.hitBox = new Shape();
+			hitBox.graphics.beginFill(0xFF0000);
+			this.hitBox.graphics.drawRect(-12, -2, 12, 4);
+			hitBox.graphics.endFill();
+			this.m_skin.addChild(this.hitBox);
 		}
 		
 		
@@ -153,7 +154,7 @@ package objects {
 		 */
 		override public function update():void {
 			this.wrapAroundObjects();
-			if (this.m_gravity && !this.onGround) {
+			if (this.m_gravity && (!this.onGround || !this.onBase)) {
 				this.applyGravity();
 				this.setGravityFactor(3);
 				if (this.rotation < 0 && this.rotation > -90 || this.rotation > 0 && this.rotation < 90) {
