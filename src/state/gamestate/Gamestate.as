@@ -16,6 +16,7 @@ package state.gamestate {
 	import entity.Crate;
 	import entity.CrateManager;
 	import entity.Icon;
+	import entity.IconManager;
 	import entity.Plane;
 	import entity.PlaneManager;
 	import entity.fx.FXManager;
@@ -68,9 +69,14 @@ package state.gamestate {
 		private var m_crates:Vector.<Crate>;
 		private var m_crate:Crate;
 		private var m_crateSpawn:Point;
+		private var m_icons:Vector.<Icon>;
+		private var m_icon:Icon;
+		private var m_iconSpawn:Point;
 //		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_bm1:BulletManager; // @FIX, put into Vector?
 		private var m_bm2:BulletManager; // @FIX, put into Vector?
+		private var m_im1:IconManager;
+		private var m_im2:IconManager;
 		public var m_roundFlag:Boolean = false;
 		
 		private var m_sky:Sprite;
@@ -87,7 +93,6 @@ package state.gamestate {
 		private var m_powerupSound:SoundObject;
 		protected var m_winSound:SoundObject;
 		protected var _winLimit:int = 2;
-		protected var _icons:Icon;
 		//private var m_round:Round;
 		
 		//-----------------------------------------------------------
@@ -126,6 +131,7 @@ package state.gamestate {
 			this.m_initPlanes();
 			this.m_initHUD();
 			this.m_initCrates();
+			this.m_initIconManagers();
 			this.m_initMusic();
 			this.m_initSound();
 			//this.m_initRound();
@@ -293,6 +299,11 @@ package state.gamestate {
 			//new Point(100,0
 			
 		}
+		
+		private function m_initIconManagers():void {
+			this.m_im1 = new IconManager(0, this.IconLayer);
+			this.m_im2 = new IconManager(1, this.IconLayer);
+		}
 
 		
 		/**
@@ -344,7 +355,6 @@ package state.gamestate {
 		
 		//@TODO: rename
 		protected function m_respawnNow():void {
-			trace("NU")
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				this.m_planes[i].m_respawn(false);
 			}
@@ -384,18 +394,17 @@ package state.gamestate {
 							this.m_powerupSound.play();
 							if(this.m_crates[j].m_type == 0) {
 								this.m_planes[i].m_noDamage = true;
-								this._icons = new Icon(this.m_planes[i].m_activePlayer, this.IconLayer, new Point(30, 30), this.m_crates[j].m_type);
+								this.m_generateIcons(this.m_planes[i].m_activePlayer);
 							}
 							if(this.m_crates[j].m_type == 1) {
 								this.m_planes[i].m_noFireCounter = true;
-								this._icons = new Icon(this.m_planes[i].m_activePlayer, this.IconLayer, new Point(30, 30), this.m_crates[j].m_type);
+								this.m_generateIcons(this.m_planes[i].m_activePlayer);
 							}
 							if(this.m_crates[j].m_type == 2) {
 								this.m_planes[i].m_noAccelDuration = true;
-								this._icons = new Icon(this.m_planes[i].m_activePlayer, this.IconLayer, new Point(30, 30), this.m_crates[j].m_type);
+								this.m_generateIcons(this.m_planes[i].m_activePlayer);
 							}
 							this.m_crateManager.removeCrate(this.m_crates[j]);
-							
 						}
 					}
 				}
@@ -457,10 +466,25 @@ package state.gamestate {
 		private function m_generateCrates():void {
 			this.m_crateSpawn = new Point(Math.floor(Math.random()* Session.application.size.x), -40); // -40 magic number, get height of crate somehow?
 			this.m_crate = new Crate(this.m_crateSpawn);
-			this.m_crateManager.add(this.m_crate, m_crate.m_type);
+			this.m_crateManager.add(this.m_crate, this.m_crate.m_type);
 			this.m_crates = m_crateManager.getCrates();
 		}
 		
+		private function m_generateIcons(player):void {
+			var catcher:int = player;
+			if(catcher == 0) {
+				this.m_iconSpawn = new Point(Session.application.size.x / 35, Session.application.size.y / 10);
+				this.m_icon = new Icon(this.m_iconSpawn, this.m_crates[0].m_type);
+				this.m_im1.add(this.m_icon);	
+				//this.m_im1.m_expire();
+			}
+			if(catcher == 1) {
+				this.m_iconSpawn = new Point(Session.application.size.x - 30, Session.application.size.y / 10);
+				this.m_icon = new Icon(this.m_iconSpawn, this.m_crates[0].m_type);
+				this.m_im2.add(this.m_icon);		
+				//this.m_im2.m_expire();
+			}
+		}
 
 		//-----------------------------------------------------------
 		// Protected methods
