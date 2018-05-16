@@ -36,6 +36,7 @@ package state.gamestate {
 		
 		private var m_GHB:Shape;
 		private var m_winFlag:Boolean = false;
+		private var m_crashedPlane:int;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -219,9 +220,21 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_respawn():void {
-			trace("matchfin", this.m_matchFin);
 			if (this.m_matchFin == false) {
 				this.m_respawnNow();
+				this.m_respawnBanner();
+				this.m_winFlag = false;
+			}
+		}
+		
+		
+		/**
+		 * m_respawnPlane
+		 * 
+		 */
+		private function m_respawnPlane():void {
+			if (this.m_matchFin == false) {
+				this._respawnPlane(this.m_crashedPlane);
 				this.m_respawnBanner();
 				this.m_winFlag = false;
 			}
@@ -284,6 +297,8 @@ package state.gamestate {
 					for(var j:int = 0; j < this.m_planes.length; j++) {
 						if(this.m_planes[j].crashed == false) {
 							if(this.m_winFlag == false) {
+								trace("resolve round player crashed", this.m_planes[i].m_activePlayer);
+								this.m_crashedPlane = this.m_planes[i].m_activePlayer;
 								this.m_winFlag = true;
 								var timer:Timer = Session.timer.create(3000, this.m_respawn);
 							}

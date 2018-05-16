@@ -193,6 +193,7 @@ package entity {
 			this.m_defaultSpeed();
 			this.m_collisionControl();
 			this.m_updatePosition();
+			this.m_powerUps();
 			
 			if (!this.m_steering) {
 //				this.m_fxMan.add(new Particle(this.m_getPos(), this._angle, 0.001, new <uint>[0xEBEBEB]));
@@ -313,8 +314,6 @@ package entity {
 				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				if(this.m_noAccelDuration == false) {
 					this.m_accelDuration--;
-				} else {
-					var timeout:Timer = Session.timer.create(5000, this.m_clearNoAccelDuration);
 				}
 				this.x += xVel * this.m_scaleFactor;
 				this.y += yVel * this.m_scaleFactor;
@@ -375,9 +374,7 @@ package entity {
 				if (this.m_fireDelay <= 0 && this.m_fireCounter > 0 && this.m_firing) {
 					this.m_openFire.play();
 					if(this.m_noFireCounter == false) {
-					this.m_fireCounter--;
-					} else {
-					var timeout:Timer = Session.timer.create(5000, this.m_clearNoFireCounter);
+						this.m_fireCounter--;
 					}
 					this.m_bulletManager.add(this._angle, this._velocity, this.m_getPos(), this.m_scaleFactor);
 					this.m_fireDelay = FIRE_DELAY;
@@ -456,6 +453,24 @@ package entity {
 		}
 		
 		
+		/**
+		 * 
+		 */
+		private function m_powerUps():void {
+			if (m_noDamage) {
+				var timeout1:Timer = Session.timer.create(5000, this.m_clearNoDamage);
+			}
+			
+			if (m_noFireCounter) {
+				var timeout2:Timer = Session.timer.create(5000, this.m_clearNoFireCounter);
+			}
+			
+			if (m_noAccelDuration) {
+				var timeout3:Timer = Session.timer.create(5000, this.m_clearNoAccelDuration);
+			}
+		}
+		
+		
 		/**	
 		 * m_defaultSpeed
 		 * Default speed of planes, no acceleration needed to keep in air
@@ -523,8 +538,6 @@ package entity {
 		private function m_damageControl():void {
 			if(this.m_noDamage == false) {
 				this.m_newDurability -= this.m_ebulletManager.damage;
-			} else {
-				var timeout:Timer = Session.timer.create(5000, this.m_clearNoDamage);
 			}
 			if(this.m_takingFire != null) {
 				this.m_takingFire[Math.floor(Math.random() * this.m_takingFire.length)].play(); //Spelar ett random träffljud
@@ -558,7 +571,7 @@ package entity {
 		}
 		
 		public function m_respawn(move:Boolean):void {
-			if(move == false ) {
+			if(move == false) {
 				this.x = this.m_pos.x;
 				this.y = this.m_pos.y;
 				this.m_newDurability = this.PLANE_DURABILITY;

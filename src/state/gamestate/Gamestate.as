@@ -346,11 +346,24 @@ package state.gamestate {
 		
 		/**
 		 * m_respawnNow
-		 * @TODO: rename
+		 * @TODO: rename && move
 		 */
 		protected function m_respawnNow():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				this.m_planes[i].m_respawn(false);
+			}
+		}
+		
+		
+		/**
+		 * _respawnPlane
+		 * @TODO: move
+		 */
+		protected function _respawnPlane(player:int):void {
+			for (var i:int = 0; i < this.m_planes.length; i++) {
+				if (this.m_planes[i].m_activePlayer == player) {
+					this.m_planes[i].m_respawn(false);
+				}
 			}
 		}
 		
@@ -439,7 +452,6 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_removeInactiveBullets():void {
-//			this.m_bulletManagers
 			this.m_bm1.removeInactiveBullets();
 			this.m_bm2.removeInactiveBullets();
 		}
