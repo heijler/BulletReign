@@ -1,4 +1,4 @@
-package entity {
+package objects {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
@@ -10,7 +10,7 @@ package entity {
 	import asset.Plane1GFX;
 	import asset.Plane2GFX;
 	
-	import entity.BulletManager;
+	import managers.BulletManager;
 	import entity.fx.FXManager;
 	import entity.fx.Particle;
 	import entity.fx.Trail;
@@ -21,6 +21,8 @@ package entity {
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
+	import managers.BulletManager;
+	import entity.MotionEntity;
 	
 	//-----------------------------------------------------------
 	// Plane
@@ -44,6 +46,7 @@ package entity {
 		public var holdingBanner:Boolean = false;
 		public var m_engineSound:SoundObject;
 		public var wonRound:Boolean = false;
+		public var powerUpActive:Boolean = false;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -76,12 +79,13 @@ package entity {
 		private var m_takingFire:Vector.<SoundObject>;
 		private var m_facingUp:Boolean = false;
 		private var m_movability:Boolean;
+		private var m_onePU:Boolean = false;
 
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		//@TODO type all parameters
-		public function Plane(player:int, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor, fxMan, movability) {
+		public function Plane(player:int, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor:int, fxMan:FXManager, movability:Boolean) {
 			super();
 			this.m_movability = movability;
 			this.m_activePlayer = player;
@@ -126,10 +130,8 @@ package entity {
 				this.m_skin = new Plane2GFX;
 				this._setScale(this.m_skin, -2, 2);
 			}
-			this.m_skin.cacheAsBitmap = true;
-			this.m_skin.gotoAndStop(1);
-//			this.m_setHitboxes();
-			
+			this.m_skin.cacheAsBitmap = true; // @TODO: Check perf.
+			this.m_skin.gotoAndStop(1);			
 			this.addChild(this.m_skin);
 		}
 		
@@ -162,6 +164,20 @@ package entity {
 			this.y = this.m_pos.y;
 		}
 		
+		
+		/**
+		 * m_setFrame
+		 * 
+		 */
+		private function m_setFrame(frame:int):void {
+			this.m_skin.gotoAndStop(frame);
+		}
+		
+		
+		/**
+		 * m_initSound
+		 * 
+		 */
 		private function m_initSound():void {
 			Session.sound.soundChannel.sources.add("machinegun", BulletReign.GUN_FIRE);
 			Session.sound.soundChannel.sources.add("planecrashing", BulletReign.PLANE_CRASH);
@@ -182,6 +198,8 @@ package entity {
 			this.m_takingFire.push(Session.sound.soundChannel.get("takingFire1"), Session.sound.soundChannel.get("takingFire2"), Session.sound.soundChannel.get("takingFire3"));
 			
 		}
+		
+		
 		/**	
 		 * update
 		 * override, gameloop
@@ -204,6 +222,7 @@ package entity {
 		
 		
 		/**
+		 * dispose
 		 * 
 		 */
 		override public function dispose():void {
@@ -214,6 +233,7 @@ package entity {
 		/**	
 		 * m_updateControls  
 		 * Update the planes position.
+		 * @TODO: Switch case
 		 */
 		private function m_updateControls():void {
 			if (this.m_controls != null) {
@@ -328,27 +348,71 @@ package entity {
 		
 		
 		/**
-		 * 
+		 * m_clearNoAccelDuration
 		 * 
 		 */
 		private function m_clearNoAccelDuration():void {
-			this.m_noAccelDuration = false;
+			if(powerUpActive && this.m_noAccelDuration) {
+				this.m_setFrame(1);
+				this.m_noAccelDuration = false;
+				this.powerUpActive = false;
+				this.m_onePU = false;
+			}
 		}
 		
 		
 		/**
+		 * m_clearNoFireCounter
 		 * 
 		 */
 		private function m_clearNoFireCounter():void {
-			this.m_noFireCounter = false;
+			if(powerUpActive && this.m_noFireCounter) {
+				this.m_setFrame(1);
+				this.m_noFireCounter = false;
+				this.powerUpActive = false;
+				this.m_onePU = false;
+			}
 		}
 		
 		
 		/**
+		 * m_clearNoDamage
 		 * 
 		 */
 		private function m_clearNoDamage():void {
-			this.m_noDamage = false;
+			if(powerUpActive && this.m_noDamage) {
+				this.m_setFrame(1);
+				this.m_noDamage = false;
+				this.powerUpActive = false;
+				this.m_onePU = false;
+			}
+		}
+		
+		
+		/**
+		 * m_powerUps
+		 * 
+		 */
+		private function m_powerUps():void {
+			if (m_noDamage && !this.m_onePU) {
+				this.m_onePU = true;
+				this.m_setFrame(2);
+				var timeout1:Timer = Session.timer.create(5000, this.m_clearNoDamage);
+				
+			}
+			
+			if (m_noFireCounter && !this.m_onePU) {
+				this.m_onePU = true;
+				this.m_setFrame(3);
+				var timeout2:Timer = Session.timer.create(5000, this.m_clearNoFireCounter);
+				
+			}
+			
+			if (m_noAccelDuration && !this.m_onePU) {
+				this.m_onePU = true;
+				this.m_setFrame(4);
+				var timeout3:Timer = Session.timer.create(5000, this.m_clearNoAccelDuration);
+			}
 		}
 		
 		
@@ -387,16 +451,16 @@ package entity {
 		
 		
 		/**
+		 * m_dropBanner
 		 * 
 		 */
 		private function m_dropBanner():void {
-			trace("Drop Banner");
 			this.holdingBanner = false;
 		}
 		
 		
 		/**
-		 * 
+		 * m_resetFireRate
 		 * 
 		 */
 		private function m_resetFireRate():void {
@@ -435,6 +499,7 @@ package entity {
 			return this.m_scaleFactor;
 		}
 		
+		
 		/**
 		 * get velocity
 		 * @TODO: Move up!
@@ -450,24 +515,6 @@ package entity {
 		 */
 		private function m_updatePosition():void {
 			this.wrapAroundObjects();
-		}
-		
-		
-		/**
-		 * 
-		 */
-		private function m_powerUps():void {
-			if (m_noDamage) {
-				var timeout1:Timer = Session.timer.create(5000, this.m_clearNoDamage);
-			}
-			
-			if (m_noFireCounter) {
-				var timeout2:Timer = Session.timer.create(5000, this.m_clearNoFireCounter);
-			}
-			
-			if (m_noAccelDuration) {
-				var timeout3:Timer = Session.timer.create(5000, this.m_clearNoAccelDuration);
-			}
 		}
 		
 		
@@ -518,6 +565,7 @@ package entity {
 		
 		
 		/**
+		 * movability
 		 * 
 		 */
 		public function movability(move:Boolean):void {
@@ -530,6 +578,7 @@ package entity {
 				this.setGravityFactor(1);
 			}
 		}
+		
 		
 		/**
 		 * m_damageControl
@@ -570,6 +619,11 @@ package entity {
 			this.updateRotation();
 		}
 		
+		
+		/**
+		 * m_respawn
+		 * 
+		 */
 		public function m_respawn(move:Boolean):void {
 			if(move == false) {
 				this.x = this.m_pos.x;

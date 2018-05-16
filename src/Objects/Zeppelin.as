@@ -1,4 +1,4 @@
-package entity {
+package objects {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
@@ -11,6 +11,7 @@ package entity {
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.tween.easing.Quint;
+	import entity.MotionEntity;
 	
 	//-----------------------------------------------------------
 	// Banner

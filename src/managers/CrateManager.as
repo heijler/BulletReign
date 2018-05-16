@@ -1,8 +1,11 @@
-package entity {
+package managers {
 	//-----------------------------------------------------------
 	// Imports
 	//-----------------------------------------------------------
 	import flash.display.DisplayObjectContainer;
+
+	import Objects.Crate;
+
 	import flash.utils.Timer;
 	
 	import se.lnu.stickossdk.fx.Flicker;

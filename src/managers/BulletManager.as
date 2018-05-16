@@ -1,4 +1,4 @@
-package entity {
+package managers {
 	//-----------------------------------------------------------
 	// Imports
 	//-----------------------------------------------------------
@@ -9,6 +9,8 @@ package entity {
 	import se.lnu.stickossdk.timer.Timer;
 	import se.lnu.stickossdk.tween.Tween;
 	import se.lnu.stickossdk.tween.easing.Quint;
+	import objects.Bullet;
+	import objects.Plane;
 	
 	//-----------------------------------------------------------
 	// BulletManager

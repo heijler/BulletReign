@@ -1,9 +1,10 @@
-package entity {
+package objects {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import entity.MotionEntity;
 	
 	//-----------------------------------------------------------
 	// Bullet

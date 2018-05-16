@@ -11,14 +11,14 @@ package state.gamestate {
 	
 	import asset.GroundGFX;
 	
-	import entity.BulletManager;
-	import entity.Cloud;
-	import entity.Crate;
-	import entity.CrateManager;
+	import managers.BulletManager;
+	import objects.Cloud;
+	import objects.Crate;
+	import managers.CrateManager;
 	import entity.Icon;
-	import entity.IconManager;
-	import entity.Plane;
-	import entity.PlaneManager;
+	import managers.IconManager;
+	import objects.Plane;
+	import managers.PlaneManager;
 	import entity.fx.FXManager;
 	
 	import se.lnu.stickossdk.display.DisplayState;
@@ -394,8 +394,9 @@ package state.gamestate {
 			if (this.m_crates != null) {
 				for (var i:int = 0; i < this.m_planes.length; i++) {
 					for (var j:int = 0; j < this.m_crates.length; j++) {
-						if (this.m_planes[i].hitTestObject(this.m_crates[j])) {
+						if (this.m_planes[i].hitTestObject(this.m_crates[j]) && this.m_planes[i].powerUpActive == false) {
 							this.m_powerupSound.play();
+							this.m_planes[i].powerUpActive = true;
 							if(this.m_crates[j].m_type == 0) {
 								this.m_planes[i].m_noDamage = true;
 								this.m_generateIcons(this.m_planes[i].m_activePlayer);
