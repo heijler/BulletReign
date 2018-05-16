@@ -1,4 +1,4 @@
-package entity {
+package Objects {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
@@ -10,6 +10,7 @@ package entity {
 	import asset.BannerGFX;
 	
 	import se.lnu.stickossdk.system.Session;
+	import entity.MotionEntity;
 	
 	//-----------------------------------------------------------
 	// Banner

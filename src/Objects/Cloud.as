@@ -1,4 +1,4 @@
-package entity {
+package Objects {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
@@ -7,6 +7,7 @@ package entity {
 	import asset.SmallCloudsGFX;
 	
 	import se.lnu.stickossdk.system.Session;
+	import entity.MotionEntity;
 	
 	
 	//-----------------------------------------------------------

@@ -1,8 +1,9 @@
-package entity {
+package managers {
 	//-----------------------------------------------------------
 	// Imports
 	//-----------------------------------------------------------
 	import flash.display.DisplayObjectContainer;
+	import Objects.Crate;
 	
 	//-----------------------------------------------------------
 	// CrateManager

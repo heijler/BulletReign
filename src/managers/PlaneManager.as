@@ -1,9 +1,10 @@
-package entity {
+package managers {
 	//-----------------------------------------------------------
 	// Imports
 	//-----------------------------------------------------------
 	
 	import flash.display.DisplayObjectContainer;
+	import Objects.Plane;
 	
 	//-----------------------------------------------------------
 	// PlaneManager
