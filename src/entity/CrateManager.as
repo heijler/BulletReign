@@ -13,7 +13,7 @@ package entity {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private const AMOUNT_LIMIT:int = 20;
+		//private const AMOUNT_LIMIT:int = 20;
 		
 		private var m_parent:DisplayObjectContainer;
 		private var m_crates:Vector.<Crate>;
@@ -28,10 +28,10 @@ package entity {
 		}
 		
 		public function add(crate:Crate, type:int):void {
-			if (this.m_crates.length < AMOUNT_LIMIT) {
+			//if (this.m_crates.length < AMOUNT_LIMIT) {
 				this.m_crates.push(crate);
 				this.m_parent.addChild(crate);
-			}
+			//}
 		}
 		
 		public function getCrates():Vector.<Crate> {
@@ -39,6 +39,7 @@ package entity {
 		}
 		
 		public function removeCrate(crate:Crate):void {
+			trace(this.m_crates.length);
 			var markedCrate:Vector.<Crate> = this.m_crates.splice(this.m_crates.indexOf(crate), 1);
 			if (this.m_parent.contains(markedCrate[0])) {
 				this.m_parent.removeChild(markedCrate[0]);
