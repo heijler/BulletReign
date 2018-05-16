@@ -4,7 +4,7 @@ package managers {
 	//-----------------------------------------------------------
 	import flash.display.DisplayObjectContainer;
 
-	import Objects.Crate;
+	import objects.Crate;
 
 	import flash.utils.Timer;
 	
