@@ -177,7 +177,6 @@ package state.gamestate {
 		private function m_bannerPlaneCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_banner.hitBox.hitTestObject(this.m_planes[i]) && !this.m_banner.caught) {
-					trace("Banner caught");
 					this.m_banner.caught = true;
 					this.m_bannerHolder = this.m_planes[i];
 					this.m_bannerHolder.holdingBanner = true;
@@ -195,7 +194,6 @@ package state.gamestate {
 		 */
 		private function m_bannerBaseCollision():void {
 			if (this.m_banner.hitBox.hitTestObject(this.m_GHB) && this.m_banner.onBase == false && this.m_bannerHolder == null) {
-				trace("Base");
 				this.m_banner.onBase = true;
 				this.m_indicateBase(this.m_banner.lastHolder.m_activePlayer);
 				this.m_winSound.play();
@@ -260,7 +258,7 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_bannerFollow():void {
-			if (this.m_banner.caught) {
+			if (this.m_banner.caught && this.m_bannerHolder) {
 				this.m_banner.follow(this.m_bannerHolder.m_getPos(), this.m_bannerHolder.angle, this.m_bannerHolder.scaleFactor, this.m_bannerHolder.velocity);
 			}
 		}
@@ -323,7 +321,8 @@ package state.gamestate {
 		 */
 		private function m_dropBanner():void {
 //			trace("m_dropBanner");
-			this.m_banner.caught = false;
+			Session.timer.create(100, this.m_toggleBanner);
+//			this.m_banner.caught = false;
 			this.m_bannerHolder = null;
 			this.m_indicateBase();
 			this.m_banner.gravity = true;
@@ -331,6 +330,14 @@ package state.gamestate {
 			if (this.m_banner.onGround || this.m_banner.onBase) {
 				this.m_banner.gravity = false;
 			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_toggleBanner():void {
+			this.m_banner.caught = !this.m_banner.caught;
 		}
 	}
 }
