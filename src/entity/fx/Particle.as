@@ -84,13 +84,15 @@ package entity.fx {
 			this.applyGravity(m_gravity);
 			this.alpha -= this.m_alphaDecay;
 			if (m_grow) {
-				this.width += 0.2; // 0.2
-				this.height += 0.3;
+				this.width += 0.1; // 0.2
+				this.height += 0.1; // 0.3
 			} else {
 				this.width -= 0.3; // @TODO: magic numbers
 				this.height -= 0.3; // @TODO: magic numbers
 			}
 //			this.y -= 0.2;
+			this.x += Math.random();
+			this.y += Math.random();
 		}
 		
 		

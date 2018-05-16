@@ -84,16 +84,14 @@ package state.gamestate {
 		public var groundHitbox:Shape;
 		private var m_background:DisplayObject;
 		
-		
 		private var m_hudManager:HUDManager;
 		private var m_crateManager:CrateManager;
 		private var m_fxMan1:FXManager;
 		private var m_fxMan2:FXManager;
 		private var m_ingameMusic:SoundObject;
 		private var m_powerupSound:SoundObject;
-		protected var m_winSound:SoundObject;
+		protected var m_winSound:SoundObject; //@TODO: rename
 		protected var _winLimit:int = 2;
-		//private var m_round:Round;
 		
 		//-----------------------------------------------------------
 		// Protected properties
@@ -110,7 +108,6 @@ package state.gamestate {
 		
 		public function Gamestate() {
 			super();
-//			this.m_bulletManagers = new Vector.<BulletManager>()
 		}
 		
 		//-----------------------------------------------------------
@@ -134,7 +131,6 @@ package state.gamestate {
 			this.m_initIconManagers();
 			this.m_initMusic();
 			this.m_initSound();
-			//this.m_initRound();
 			this._initGamemode();
 			
 			this.flash(500, 0xFFFFFF);
@@ -154,16 +150,6 @@ package state.gamestate {
 			this.zeppelinLayer = this.layers.add("zeppelin");
 			this.HUDLayer = this.layers.add("HUD");
 			this.IconLayer = this.layers.add("ICON");
-			
-			
-//			public var backgroundLayer:DisplayStateLayer;
-//			public var worldLayer:DisplayStateLayer;
-//			public var crateLayer:DisplayStateLayer;
-//			public var hqLayer:DisplayStateLayer;
-//			public var bannerLayer:DisplayStateLayer;
-//			public var planeLayer:DisplayStateLayer;
-//			public var zeppelinLayer:DisplayStateLayer;
-//			public var HUDLayer:DisplayStateLayer;
 		}
 		
 		
@@ -177,6 +163,7 @@ package state.gamestate {
 			this.m_ingameMusic.play();
 			this.m_ingameMusic.volume = 0.4;
 		}
+		
 		
 		/**
 		 * m_initPlanes
@@ -233,7 +220,6 @@ package state.gamestate {
 			this.m_ground.y = Session.application.size.y - this.m_ground.height;
 			this.m_ground.gotoAndStop(1);
 			
-			// General hitbox
 			this.groundHitbox = new Shape();
 //			this.groundHitbox.graphics.beginFill(0x00FF00);
 			this.groundHitbox.graphics.drawRect(0, Session.application.size.y - 30, Session.application.size.x, 12);
@@ -244,6 +230,10 @@ package state.gamestate {
 		}
 
 		
+		/**
+		 * m_initSound
+		 * 
+		 */
 		private function m_initSound():void {
 			Session.sound.soundChannel.sources.add("winsound", BulletReign.WIN_SOUND);
 			Session.sound.soundChannel.sources.add("powerup", BulletReign.POWERUP_SOUND);
@@ -353,16 +343,17 @@ package state.gamestate {
 			}
 		}
 		
-		//@TODO: rename
+		
+		/**
+		 * m_respawnNow
+		 * @TODO: rename
+		 */
 		protected function m_respawnNow():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				this.m_planes[i].m_respawn(false);
 			}
 		}
 		
-		/*protected function m_gameOver():void {
-			
-		}*/
 		
 		/**
 		 * m_crateGroundCollision
@@ -412,8 +403,6 @@ package state.gamestate {
 		}
 		
 		
-		
-		
 		/**
 		 * m_roundOver
 		 * 
@@ -435,9 +424,15 @@ package state.gamestate {
 			}
 		}
 		
+		
+		/**
+		 * m_incrementWins
+		 * @TODO: move
+		 */
 		protected function m_incrementWins(activePlayer:int, wins:int):void {
 			this.m_hudManager.incrementWins(activePlayer, wins);
 		}
+		
 		
 		/**
 		 * m_removeInactiveBullets

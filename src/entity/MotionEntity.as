@@ -37,20 +37,21 @@ package entity {
 		//-----------------------------------------------------------
 		
 		
-//		/**
-//		 * update
-//		 * Override
-//		 */
-//		override public function update():void {
-//		}
+		/**
+		 * update
+		 * Override
+		 */
+		override public function update():void {
+			super.update();
+		}
 		
 		
-//		/**
-//		 * init
-//		 * Override
-//		 */
-//		override public function init():void {
-//		}
+		/**
+		 * init
+		 * Override
+		 */
+		override public function init():void {
+		}
 		
 		
 		/**

@@ -1,12 +1,27 @@
-package state.gamestate
-{
+package state.gamestate {
+	//-----------------------------------------------------------
+	// Import
+	//-----------------------------------------------------------
+	
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
+	
+	//-----------------------------------------------------------
+	// Dogfight
+	//-----------------------------------------------------------
 
 	public class Dogfight extends Gamestate { 
 		
+		//-----------------------------------------------------------
+		// Private properties
+		//-----------------------------------------------------------
+		
 		private var m_currentRound:int;
 		private var m_winFlag:Boolean = false;
+		
+		//-----------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------
 		
 		public function Dogfight() {
 			super();
@@ -14,10 +29,19 @@ package state.gamestate
 			this.m_flagSwitch(true);
 		}
 		
+		//-----------------------------------------------------------
+		// Methods
+		//-----------------------------------------------------------
+		
+		/**
+		 * _updateGamemode
+		 * 
+		 */
 		override protected function _updateGamemode():void {
 			this.m_resolveRound();
 			this.m_resolveGame();
 		}
+		
 		
 		/**
 		 * m_resolveRound
@@ -45,6 +69,11 @@ package state.gamestate
 			}
 		}
 		
+		
+		/**
+		 * m_resolveGame
+		 * 
+		 */
 		private function m_resolveGame():void {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_planes[i].wins == this._winLimit) {
@@ -53,10 +82,20 @@ package state.gamestate
 			}
 		}
 		
+		
+		/**
+		 * m_respawnNow
+		 * 
+		 */
 		override protected function m_respawnNow():void {
 			super.m_respawnNow();
 			this.m_winFlag = false;
 		}
+		
+		
+		/**
+		 * m_flagSwitch
+		 */
 		private function m_flagSwitch(flag):void {
 			this.m_roundFlag = flag;
 		}

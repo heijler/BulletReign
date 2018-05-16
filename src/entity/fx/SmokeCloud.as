@@ -1,5 +1,4 @@
 package entity.fx {
-	import flash.display.Sprite;
 
 	//-----------------------------------------------------------
 	// Imports

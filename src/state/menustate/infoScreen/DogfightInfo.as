@@ -11,18 +11,19 @@ package state.menustate.infoScreen {
 	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.system.Session;
 	
-	import state.menustate.MainMenu;
+	import state.gamestate.Dogfight;
 	
 	//-----------------------------------------------------------
-	// HowToPlay
+	// DogfightInfo
 	//-----------------------------------------------------------
 	
-	public class HowToPlay extends DisplayState {
+	public class DogfightInfo extends DisplayState {
+		
 		//-----------------------------------------------------------
 		// Embeds
 		//-----------------------------------------------------------
 		
-		[Embed(source="../../../../asset/png/infoscreen/howtoplay/howtoplay.png")]
+		[Embed(source="../../../../asset/png/infoscreen/dogfight/dogfight.png")]
 		private const InstructionsSheet:Class;
 		
 		//-----------------------------------------------------------
@@ -39,9 +40,8 @@ package state.menustate.infoScreen {
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function HowToPlay() {
+		public function DogfightInfo() {
 			super();
-			
 		}
 		
 		//-----------------------------------------------------------
@@ -117,7 +117,7 @@ package state.menustate.infoScreen {
 		 * 
 		 */
 		private function m_newState():void {
-			Session.application.displayState = new MainMenu();
+			Session.application.displayState = new Dogfight();
 		}
 	}
 }

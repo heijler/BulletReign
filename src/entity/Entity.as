@@ -13,7 +13,7 @@ package entity {
 	
 	
 	//-----------------------------------------------------------
-	// Game
+	// Entity
 	//-----------------------------------------------------------
 	
 	public class Entity extends DisplayStateLayerSprite {
@@ -44,6 +44,23 @@ package entity {
 		//-----------------------------------------------------------
 		// Methods
 		//-----------------------------------------------------------
+		
+		/**
+		 * update
+		 * Override
+		 */
+		override public function update():void {
+			super.update();
+		}
+		
+		
+		/**
+		 * init
+		 * Override
+		 */
+		override public function init():void {
+			
+		}
 		
 		/**
 		 * _setScale

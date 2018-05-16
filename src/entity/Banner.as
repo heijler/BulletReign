@@ -4,15 +4,12 @@ package entity {
 	//-----------------------------------------------------------
 	
 	import flash.display.MovieClip;
-//	import flash.display.Sprite;
 	import flash.display.Shape;
 	import flash.geom.Point;
 	
 	import asset.BannerGFX;
 	
 	import se.lnu.stickossdk.system.Session;
-	
-	
 	
 	//-----------------------------------------------------------
 	// Banner
@@ -114,6 +111,7 @@ package entity {
 		
 		
 		/**
+		 * m_initSkin
 		 * 
 		 */
 		private function m_initSkin():void {
@@ -139,6 +137,7 @@ package entity {
 		
 		
 		/**
+		 * m_setSpawnPosition
 		 * 
 		 */
 		private function m_setSpawnPosition():void {
@@ -170,6 +169,7 @@ package entity {
 		
 		
 		/**
+		 * follow
 		 * 
 		 */
 		public function follow(pos:Point, angle:Number, scaleFactor:int, vel:Number):void {
@@ -220,6 +220,7 @@ package entity {
 			
 //			this.rotation = this._angle; // standard stel
 		}
+		
 		
 		/**
 		 * m_updateDirection
