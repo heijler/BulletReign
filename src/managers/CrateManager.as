@@ -3,7 +3,13 @@ package managers {
 	// Imports
 	//-----------------------------------------------------------
 	import flash.display.DisplayObjectContainer;
-	import objects.Crate;
+
+	import Objects.Crate;
+
+	import flash.utils.Timer;
+	
+	import se.lnu.stickossdk.fx.Flicker;
+	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
 	// CrateManager
@@ -14,7 +20,7 @@ package managers {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private const AMOUNT_LIMIT:int = 20;
+		//private const AMOUNT_LIMIT:int = 20;
 		
 		private var m_parent:DisplayObjectContainer;
 		private var m_crates:Vector.<Crate>;
@@ -29,10 +35,10 @@ package managers {
 		}
 		
 		public function add(crate:Crate, type:int):void {
-			if (this.m_crates.length < AMOUNT_LIMIT) {
+			//if (this.m_crates.length < AMOUNT_LIMIT) {
 				this.m_crates.push(crate);
 				this.m_parent.addChild(crate);
-			}
+			//}
 		}
 		
 		public function getCrates():Vector.<Crate> {

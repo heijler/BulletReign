@@ -62,14 +62,6 @@ package entity {
 			this.x = this.m_pos.x;
 			this.y = this.m_pos.y;
 		}
-		
-		public function m_moveLeft():void {
-			this.x = this.x -25
-		}
-		
-		public function m_moveRight():void {
-			this.x = this.x +25
-		}
 
 	}
 }
