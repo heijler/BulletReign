@@ -3,6 +3,10 @@ package entity {
 	// Imports
 	//-----------------------------------------------------------
 	import flash.display.DisplayObjectContainer;
+	import flash.utils.Timer;
+	
+	import se.lnu.stickossdk.fx.Flicker;
+	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
 	// CrateManager
@@ -39,7 +43,6 @@ package entity {
 		}
 		
 		public function removeCrate(crate:Crate):void {
-			trace(this.m_crates.length);
 			var markedCrate:Vector.<Crate> = this.m_crates.splice(this.m_crates.indexOf(crate), 1);
 			if (this.m_parent.contains(markedCrate[0])) {
 				this.m_parent.removeChild(markedCrate[0]);
