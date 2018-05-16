@@ -3,7 +3,7 @@ package managers {
 	// Imports
 	//-----------------------------------------------------------
 	import flash.display.DisplayObjectContainer;
-	import Objects.Crate;
+	import objects.Crate;
 	
 	//-----------------------------------------------------------
 	// CrateManager

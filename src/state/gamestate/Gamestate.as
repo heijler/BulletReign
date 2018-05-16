@@ -12,12 +12,12 @@ package state.gamestate {
 	import asset.GroundGFX;
 	
 	import managers.BulletManager;
-	import Objects.Cloud;
-	import Objects.Crate;
+	import objects.Cloud;
+	import objects.Crate;
 	import managers.CrateManager;
 	import entity.Icon;
 	import managers.IconManager;
-	import Objects.Plane;
+	import objects.Plane;
 	import managers.PlaneManager;
 	import entity.fx.FXManager;
 	

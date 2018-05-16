@@ -6,9 +6,9 @@ package state.gamestate {
 	import flash.display.Shape;
 	import flash.geom.Point;
 	
-	import Objects.Banner;
-	import Objects.Plane;
-	import Objects.Zeppelin;
+	import objects.Banner;
+	import objects.Plane;
+	import objects.Zeppelin;
 	
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
