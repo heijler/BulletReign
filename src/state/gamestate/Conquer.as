@@ -38,6 +38,8 @@ package state.gamestate {
 		private var m_winFlag:Boolean = false;
 		private var m_crashedPlane:int;
 		
+		private var m_blinktimer:Timer;
+		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
@@ -177,6 +179,7 @@ package state.gamestate {
 		private function m_bannerPlaneCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_banner.hitBox.hitTestObject(this.m_planes[i]) && !this.m_banner.caught && !this.m_planes[i].crashed) {
+					Session.timer.remove(this.m_blinktimer);
 					this.m_banner.caught = true;
 					this.m_banner.gravity = true;
 					this.m_banner.onGround = false;
@@ -214,9 +217,11 @@ package state.gamestate {
 		 */
 		private function m_bannerGroundCollision():void {
 			if (this.m_banner.hitBox.hitTestObject(this.groundHitbox) && this.m_banner.onGround == false && this.m_bannerHolder == null) {
-				trace("Banner on ground");
+//				trace("Banner on ground");
 				this.m_banner.onGround = true;
-				var timer:Timer = Session.timer.create(3000, this.m_onGroundCount);
+				if (!this.m_banner.onBase) {
+					this.m_blinktimer = Session.timer.create(3000, this.m_onGroundCount);
+				}
 			}
 		}
 		

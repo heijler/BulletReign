@@ -38,6 +38,7 @@ package objects {
 		public const PLANE_DURABILITY:Number = 10;
 		
 		public var crashed:Boolean = false;
+		public var shotDown:Boolean = false;
 		public var m_newDurability:Number; //@TODO: Rename if public, does it need to be public?
 		public var m_activePlayer:int = 0; //@TODO: Rename if public, does it need to be public?
 		public var m_noAccelDuration:Boolean = false;
@@ -600,6 +601,7 @@ package objects {
 			
 			if (this.m_newDurability <= 0 && this.m_noDamage == false) {
 //				this.m_noDamage = true;
+				this.shotDown = true;
 				this.m_steering = false;
 				this.m_freeFall();
 				this._flicker(this, 500);
@@ -639,6 +641,7 @@ package objects {
 				this.movability(true);
 				this.crashed = false;
 				this.m_steering = true;
+				this.shotDown = false;
 				this._angle = 0;
 				this.updateRotation();
 			}
