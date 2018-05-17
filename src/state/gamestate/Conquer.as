@@ -37,6 +37,7 @@ package state.gamestate {
 		private var m_winFlag:Boolean = false;
 		private var m_crashedPlane:int;
 		private var m_blinktimer:Timer;
+		private var m_callWinner:Boolean = false;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -309,7 +310,11 @@ package state.gamestate {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_planes[i].wins == this._winLimit) {
 					this.m_matchFin = true;
-					var timer:Timer = Session.timer.create(3000, this.m_matchOver);
+					this.m_planes[i].m_winner = true;
+					if(this.m_callWinner == false) {
+					var timer:Timer = Session.timer.create(1000, this.m_matchOver);
+					}
+					this.m_callWinner = true;
 				}
 			}
 		}
