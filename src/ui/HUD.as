@@ -8,8 +8,8 @@ package ui {
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
-	import assets.DurabilityMeterv3GFX;
-	import assets.DurabilityMeterv4GFX;
+	import asset.healthP1GFX;
+	import asset.healthP2GFX;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
 	import se.lnu.stickossdk.system.Session;
@@ -92,24 +92,24 @@ package ui {
 			this.m_textFormat.font = "bulletreign";
 			this.m_playerWins.text = "wins".toUpperCase() + " " + this.m_wins;
 			this.updateWins();
-			this.m_durabilityMeter = new DurabilityMeterv3GFX;
-			this.m_durabilityMeter = new DurabilityMeterv4GFX; 
-			
-			
 			
 			if (m_player == 0) {
-				this.m_durabilityMeter = new DurabilityMeterv3GFX; 
-				this.m_durabilityMeter.x = Session.application.size.x / 2 - this.m_durabilityMeter.width / 2 - 1;
-				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2 - 12;
+				this.m_durabilityMeter = new healthP1GFX; 
+				this.m_durabilityMeter.scaleX = 3;
+				this.m_durabilityMeter.scaleY = 3;
+				this.m_durabilityMeter.x = (Session.application.size.x / 2) - this.m_durabilityMeter.width - 5;
+				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2;
 				this.m_durabilityMeter.gotoAndStop(11);
 				
 			} else if (m_player == 1){
-				this.m_durabilityMeter = new DurabilityMeterv4GFX;
-				this.m_durabilityMeter.x = Session.application.size.x / 2 + this.m_durabilityMeter.width / 2 + 1;
-				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2 - 12;
+				this.m_durabilityMeter = new healthP2GFX;
+				this.m_durabilityMeter.scaleX = 3;
+				this.m_durabilityMeter.scaleY = 3;
+				this.m_durabilityMeter.x = (Session.application.size.x / 2) + 5;
+				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2;
 				this.m_durabilityMeter.gotoAndStop(11);
 			}
-
+			
 			this.m_playerName.embedFonts = true;
 			this.m_playerName.setTextFormat(this.m_textFormat);
 			this.m_playerName.defaultTextFormat = this.m_textFormat;
