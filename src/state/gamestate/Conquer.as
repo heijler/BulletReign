@@ -37,6 +37,7 @@ package state.gamestate {
 		private var m_winFlag:Boolean = false;
 		private var m_crashedPlane:int;
 		private var m_blinktimer:Timer;
+		private var m_respawnBlinkTimer:Timer;
 		private var m_callWinner:Boolean = false;
 		
 		//-----------------------------------------------------------
@@ -179,6 +180,7 @@ package state.gamestate {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_banner.hitBox.hitTestObject(this.m_planes[i]) && !this.m_banner.caught && !this.m_planes[i].crashed) {
 					Session.timer.remove(this.m_blinktimer);
+					Session.timer.remove(this.m_respawnBlinkTimer);
 					this.m_banner.caught = true;
 					this.m_banner.gravity = true;
 					this.m_banner.onGround = false;
@@ -230,7 +232,7 @@ package state.gamestate {
 		 */
 		private function m_onGroundCount():void {
 			this.m_banner.blink();
-			var timer:Timer = Session.timer.create(2000, this.m_respawnBanner);
+			this.m_respawnBlinkTimer = Session.timer.create(2000, this.m_respawnBanner);
 		}
 		
 		
