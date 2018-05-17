@@ -178,7 +178,7 @@ package state.gamestate {
 		 */
 		private function m_bannerPlaneCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if(this.m_banner.hitBox.hitTestObject(this.m_planes[i]) && !this.m_banner.caught && !this.m_planes[i].crashed) {
+				if((this.m_banner.hitBox.hitTestObject(this.m_planes[i].tailHitbox) || this.m_banner.hitBox.hitTestObject(this.m_planes[i].bodyHitbox) ) && !this.m_banner.caught && !this.m_planes[i].crashed) {
 					Session.timer.remove(this.m_blinktimer);
 					Session.timer.remove(this.m_respawnBlinkTimer);
 					this.m_banner.caught = true;

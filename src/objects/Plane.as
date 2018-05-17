@@ -134,11 +134,11 @@ package objects {
 			if (m_activePlayer == 0) {
 				this.m_skin = new Plane1GFX;
 				this._setScale(this.m_skin, 2, 2);
-				this.m_color = 0x8a8a00;
+				this.m_color = 0x8a8a00; // 0xEBD320
 			} else if (m_activePlayer == 1) {
 				this.m_skin = new Plane2GFX;
 				this._setScale(this.m_skin, -2, 2);
-				this.m_color = 0xc37100;
+				this.m_color = 0xc37100;// 0xFFA200
 			}
 			this.m_skin.cacheAsBitmap = true; // @TODO: Check perf.
 			this.m_skin.gotoAndStop(1);
@@ -617,7 +617,7 @@ package objects {
 		 */
 		private function m_damageControl():void {
 			if(this.m_noDamage == false) {
-				this.m_newDurability -= this.m_ebulletManager.damage;
+				this.m_onHit();
 			}
 			if(this.m_takingFire != null) {
 				this.m_takingFire[Math.floor(Math.random() * this.m_takingFire.length)].play(); //Spelar ett random träffljud
@@ -633,6 +633,15 @@ package objects {
 				this.m_fallingPlane.volume = 0.6;
 				this.holdingBanner = false;
 			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_onHit():void {
+			this.m_newDurability -= this.m_ebulletManager.damage;
+			this._shake(this.m_skin, 2);
 		}
 		
 		

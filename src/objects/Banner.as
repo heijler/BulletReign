@@ -141,9 +141,9 @@ package objects {
 		 */
 		private function m_initHitBox():void {
 			this.hitBox = new Shape();
-			hitBox.graphics.beginFill(0xFF0000);
+//			hitBox.graphics.beginFill(0xFF0000);
 			this.hitBox.graphics.drawRect(-12, -2, 12, 4);
-			hitBox.graphics.endFill();
+//			hitBox.graphics.endFill();
 			this.m_skin.addChild(this.hitBox);
 		}
 		
