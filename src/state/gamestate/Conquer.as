@@ -81,9 +81,9 @@ package state.gamestate {
 		 */
 		private function m_drawGHB():void {
 			this.m_GHB = new Shape();
-			this.m_GHB.graphics.beginFill(0xFF0000, 0.5);
+//			this.m_GHB.graphics.beginFill(0xFF0000, 0.5);
 			this.m_GHB.graphics.drawRect(0, Session.application.size.y-30, 160, 30);
-			this.m_GHB.graphics.endFill();
+//			this.m_GHB.graphics.endFill();
 //			this.m_GHB.name = "GHB";
 			this.hqLayer.addChild(this.m_GHB);
 		}
@@ -176,7 +176,7 @@ package state.gamestate {
 		 */
 		private function m_bannerPlaneCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if(this.m_banner.hitBox.hitTestObject(this.m_planes[i]) && !this.m_banner.caught) {
+				if(this.m_banner.hitBox.hitTestObject(this.m_planes[i]) && !this.m_banner.caught && !this.m_planes[i].crashed) {
 					this.m_banner.caught = true;
 					this.m_banner.gravity = true;
 					this.m_banner.onGround = false;
@@ -214,9 +214,19 @@ package state.gamestate {
 		 */
 		private function m_bannerGroundCollision():void {
 			if (this.m_banner.hitBox.hitTestObject(this.groundHitbox) && this.m_banner.onGround == false && this.m_bannerHolder == null) {
-//				trace("Ground");
+				trace("Banner on ground");
 				this.m_banner.onGround = true;
+				var timer:Timer = Session.timer.create(3000, this.m_onGroundCount);
 			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_onGroundCount():void {
+			this.m_banner.blink();
+			var timer:Timer = Session.timer.create(2000, this.m_respawnBanner);
 		}
 		
 		

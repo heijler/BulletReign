@@ -337,6 +337,7 @@ package state.gamestate {
 				if (this.m_planes[i].hitTestObject(this.groundHitbox)) {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
+						this.m_planes[i].holdingBanner = false;
 						this.m_planes[i].crash(this.backgroundLayer);
 						this.m_planes[i].m_newDurability = 0;
 					}

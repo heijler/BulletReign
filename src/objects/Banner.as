@@ -92,6 +92,15 @@ package objects {
 		
 		
 		/**
+		 * blink
+		 * 
+		 */
+		public function blink():void {
+			this._flicker(this, 2000, 100);
+		}
+		
+		
+		/**
 		 * showBanner
 		 * 
 		 */
@@ -155,15 +164,23 @@ package objects {
 		override public function update():void {
 			this.wrapAroundObjects();
 			if (this.m_gravity && !this.onGround && !this.onBase) {
-				this.applyGravity();
-				this.setGravityFactor(3);
+				
+//				this.setGravityFactor(4);
 				if (this.rotation < 0 && this.rotation > -90 || this.rotation > 0 && this.rotation < 90) {
 					this.rotation += 0.5 * this.m_scaleFactor;	
 				} else {
 					this.rotation -= 0.5 * this.m_scaleFactor;
 				}
 				
-				this.setGravityFactor(3 + (0.004* this.y));
+				
+				
+//				this.setGravityFactor(3 + (0.006 * this.y));
+				this.setGravityFactor(3 + (0.0085 * this.y));
+				this.applyGravity();
+				
+//				if (this.rotation > -135 && this.rotation < -45) {
+//					this.setGravityFactor(4 + (0.006* this.y));
+//				}
 				this.x += (Math.cos(this._angle * (Math.PI / 180)) * this._velocity >> 1.5) * this.m_scaleFactor;
 				this.y += (Math.sin(this._angle * (Math.PI / 180)) * this._velocity >> 1.5) * this.m_scaleFactor;
 			}
