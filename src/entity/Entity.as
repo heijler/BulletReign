@@ -89,8 +89,8 @@ package entity {
 		 * _flicker
 		 * 
 		 */
-		protected function _flicker(obj:DisplayObjectContainer, duration = 1000):void {
-			var flicker:Flicker = new Flicker(obj, duration, 30, true);
+		protected function _flicker(obj:DisplayObjectContainer, duration:int = 1000, interval:int = 30):void {
+			var flicker:Flicker = new Flicker(obj, duration, interval, true);
 			Session.effects.add(flicker);
 		}
 	}

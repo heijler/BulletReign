@@ -33,10 +33,10 @@ package state.gamestate {
 		private var m_bannerHolder:Plane;
 		private var m_angleCounter:int = 30;
 		private var m_matchFin:Boolean = false;
-		
 		private var m_GHB:Shape;
 		private var m_winFlag:Boolean = false;
 		private var m_crashedPlane:int;
+		private var m_blinktimer:Timer;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -81,10 +81,9 @@ package state.gamestate {
 		 */
 		private function m_drawGHB():void {
 			this.m_GHB = new Shape();
-			this.m_GHB.graphics.beginFill(0xFF0000, 0.5);
+//			this.m_GHB.graphics.beginFill(0xFF0000, 0.5);
 			this.m_GHB.graphics.drawRect(0, Session.application.size.y-30, 160, 30);
-			this.m_GHB.graphics.endFill();
-			this.m_GHB.name = "GHB";
+//			this.m_GHB.graphics.endFill();
 			this.hqLayer.addChild(this.m_GHB);
 		}
 		
@@ -167,7 +166,7 @@ package state.gamestate {
 			this.m_bannerFollow();
 			this.m_onBannerDrop();
 			this.m_resolveRound();
-//			this.m_wrapBanner();
+			this.m_bannerOutOfBounds();
 		}
 		
 		
@@ -177,7 +176,8 @@ package state.gamestate {
 		 */
 		private function m_bannerPlaneCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if(this.m_banner.hitBox.hitTestObject(this.m_planes[i]) && !this.m_banner.caught) {
+				if(this.m_banner.hitBox.hitTestObject(this.m_planes[i]) && !this.m_banner.caught && !this.m_planes[i].crashed) {
+					Session.timer.remove(this.m_blinktimer);
 					this.m_banner.caught = true;
 					this.m_banner.gravity = true;
 					this.m_banner.onGround = false;
@@ -215,9 +215,21 @@ package state.gamestate {
 		 */
 		private function m_bannerGroundCollision():void {
 			if (this.m_banner.hitBox.hitTestObject(this.groundHitbox) && this.m_banner.onGround == false && this.m_bannerHolder == null) {
-//				trace("Ground");
+//				trace("Banner on ground");
 				this.m_banner.onGround = true;
+				if (!this.m_banner.onBase) {
+					this.m_blinktimer = Session.timer.create(3000, this.m_onGroundCount);
+				}
 			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_onGroundCount():void {
+			this.m_banner.blink();
+			var timer:Timer = Session.timer.create(2000, this.m_respawnBanner);
 		}
 		
 		
@@ -241,7 +253,7 @@ package state.gamestate {
 		private function m_respawnPlane():void {
 			if (this.m_matchFin == false) {
 				this._respawnPlane(this.m_crashedPlane);
-				this.m_respawnBanner();
+//				this.m_respawnBanner();
 				this.m_winFlag = false;
 			}
 		}
@@ -262,7 +274,7 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_bannerFollow():void {
-			if (this.m_banner.caught && this.m_bannerHolder) {
+			if (this.m_banner.caught && this.m_bannerHolder && !this.m_banner.onBase) {
 				this.m_banner.follow(this.m_bannerHolder.m_getPos(), this.m_bannerHolder.angle, this.m_bannerHolder.scaleFactor, this.m_bannerHolder.velocity);
 			}
 		}
@@ -274,8 +286,17 @@ package state.gamestate {
 		 */
 		private function m_onBannerDrop():void {
 			if (this.m_bannerHolder && this.m_bannerHolder.holdingBanner == false && this.m_banner.active) {
-				trace("m_onBannerDrop");
 				this.m_dropBanner();
+			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_bannerOutOfBounds():void {
+			if (this.m_banner.outOfBounds) {
+				var timer:Timer = Session.timer.create(2000, this.m_respawnBanner);
 			}
 		}
 		
@@ -307,9 +328,7 @@ package state.gamestate {
 								trace("resolve round player crashed", this.m_planes[i].m_activePlayer);
 								this.m_crashedPlane = this.m_planes[i].m_activePlayer;
 								this.m_winFlag = true;
-//								if (!this.m_banner.onBase) {
-									var timer:Timer = Session.timer.create(3000, this.m_respawn);
-//								}
+								var timer:Timer = Session.timer.create(3000, this.m_respawnPlane);
 							}
 						}
 					}
@@ -327,7 +346,6 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_dropBanner():void {
-			trace("m_dropBanner");
 			Session.timer.create(100, this.m_toggleBanner);
 			this.m_bannerHolder = null;
 			

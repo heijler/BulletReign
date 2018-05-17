@@ -83,7 +83,7 @@ package state.gamestate {
 		
 		private var m_sky:Sprite;
 		public var m_ground:MovieClip; // @TODO: rename & move
-		public var groundHitbox:Shape;
+		public var groundHitbox:Shape; // @TODO: move
 		private var m_background:DisplayObject;
 		
 		private var m_hudManager:HUDManager;
@@ -92,6 +92,9 @@ package state.gamestate {
 		private var m_fxMan2:FXManager;
 		private var m_ingameMusic:SoundObject;
 		private var m_powerupSound:SoundObject;
+		private var m_flashScreen:Boolean = false;
+		
+		
 		protected var m_winSound:SoundObject; //@TODO: rename
 		protected var _winLimit:int = 2;
 		
@@ -121,6 +124,7 @@ package state.gamestate {
 		 * override
 		 */
 		override public function init():void {
+			this.m_initFlash();
 			this.m_initLayers();
 			this.m_initSky();
 			this.m_initGround();
@@ -135,6 +139,13 @@ package state.gamestate {
 			this.m_initSound();
 			this._initGamemode();
 			
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_initFlash():void {
 			this.flash(500, 0xFFFFFF);
 		}
 		
@@ -309,6 +320,7 @@ package state.gamestate {
 			this.m_durabilityChange();
 			this.m_removeInactiveBullets();
 			this._updateGamemode();
+			this.m_flashWorld();
 		}
 		
 		
@@ -337,6 +349,7 @@ package state.gamestate {
 				if (this.m_planes[i].hitTestObject(this.groundHitbox)) {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
+						this.m_planes[i].holdingBanner = false;
 						this.m_planes[i].crash(this.backgroundLayer);
 						this.m_planes[i].m_newDurability = 0;
 					}
@@ -353,6 +366,7 @@ package state.gamestate {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				this.m_planes[i].m_respawn(false);
 			}
+			this.m_flashScreen = false;
 		}
 		
 		
@@ -504,6 +518,19 @@ package state.gamestate {
 				this.m_icon = new Icon(this.m_iconSpawn, this.m_crates[0].m_type);
 				this.m_im2.add(this.m_icon);		
 				//this.m_im2.m_expire();
+			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_flashWorld():void {
+			for (var i:int = 0; i < this.m_planes.length; i++) {
+				if (this.m_planes[i].shotDown && !this.m_flashScreen) {
+					this.flash(200, 0xFFFFFF); //0xFFF392
+					this.m_flashScreen = true;
+				}
 			}
 		}
 

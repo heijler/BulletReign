@@ -38,6 +38,7 @@ package objects {
 		public const PLANE_DURABILITY:Number = 10;
 		
 		public var crashed:Boolean = false;
+		public var shotDown:Boolean = false;
 		public var m_newDurability:Number; //@TODO: Rename if public, does it need to be public?
 		public var m_activePlayer:int = 0; //@TODO: Rename if public, does it need to be public?
 		public var m_noAccelDuration:Boolean = false;
@@ -146,15 +147,15 @@ package objects {
 		 */
 		private function m_setHitboxes():void {
 			this.tailHitbox = new Shape();
-			this.tailHitbox.graphics.beginFill(0xFF0000);
+//			this.tailHitbox.graphics.beginFill(0xFF0000);
 			this.tailHitbox.graphics.drawRect(-8, -1, 7, 3);
-			this.tailHitbox.graphics.endFill();
+//			this.tailHitbox.graphics.endFill();
 			this.m_skin.addChild(this.tailHitbox);
 			
 			this.bodyHitbox = new Shape();
-			this.bodyHitbox.graphics.beginFill(0xFFFF00);
+//			this.bodyHitbox.graphics.beginFill(0xFFFF00);
 			this.bodyHitbox.graphics.drawRect(-1, -2, 9, 6);
-			this.bodyHitbox.graphics.endFill();
+//			this.bodyHitbox.graphics.endFill();
 			this.m_skin.addChild(this.bodyHitbox);
 		}
 		
@@ -598,11 +599,13 @@ package objects {
 				this.m_takingFire[Math.floor(Math.random() * this.m_takingFire.length)].play(); //Spelar ett random träffljud
 			}
 			if (this.m_newDurability <= 0 && this.m_noDamage == false) {
+				this.shotDown = true;
 				this.m_steering = false;
 				this.m_freeFall();
 				this._flicker(this, 500);
 				this.m_screamSound.play();
 				this.m_fallingPlane.play();
+				this.holdingBanner = false;
 			}
 		}
 		
@@ -636,6 +639,7 @@ package objects {
 				this.movability(true);
 				this.crashed = false;
 				this.m_steering = true;
+				this.shotDown = false;
 				this._angle = 0;
 				this.updateRotation();
 				this.m_clearNoAccelDuration();
