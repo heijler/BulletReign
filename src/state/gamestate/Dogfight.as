@@ -16,8 +16,8 @@ package state.gamestate {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private var m_currentRound:int;
 		private var m_winFlag:Boolean = false;
+		private var m_callWinner:Boolean = false;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -26,7 +26,6 @@ package state.gamestate {
 		public function Dogfight() {
 			super();
 			this._gamemode = 0;
-			this.m_flagSwitch(true);
 		}
 		
 		//-----------------------------------------------------------
@@ -77,7 +76,11 @@ package state.gamestate {
 		private function m_resolveGame():void {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_planes[i].wins == this._winLimit) {
-					var timer:Timer = Session.timer.create(3000, this.m_matchOver);
+					this.m_planes[i].m_winner = true;
+					if(this.m_callWinner == false){
+						var timer:Timer = Session.timer.create(1000, this.m_matchOver); // Skall vi ha Timer???????
+					}
+					this.m_callWinner = true;
 				}
 			}
 		}
@@ -92,12 +95,5 @@ package state.gamestate {
 			this.m_winFlag = false;
 		}
 		
-		
-		/**
-		 * m_flagSwitch
-		 */
-		private function m_flagSwitch(flag):void {
-			this.m_roundFlag = flag;
-		}
 	}
 }

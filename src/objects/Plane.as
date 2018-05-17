@@ -50,6 +50,8 @@ package objects {
 		public var powerUpActive:Boolean = false;
 		public var tailHitbox:Shape;
 		public var bodyHitbox:Shape;
+		public var m_color:int;
+		public var m_winner:Boolean = false;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -83,6 +85,7 @@ package objects {
 		private var m_facingUp:Boolean = false;
 		private var m_movability:Boolean;
 		private var m_onePU:Boolean = false;
+		
 
 		//-----------------------------------------------------------
 		// Constructor
@@ -129,9 +132,11 @@ package objects {
 			if (m_activePlayer == 0) {
 				this.m_skin = new Plane1GFX;
 				this._setScale(this.m_skin, 2, 2);
+				this.m_color = 0x8a8a00;
 			} else if (m_activePlayer == 1) {
 				this.m_skin = new Plane2GFX;
 				this._setScale(this.m_skin, -2, 2);
+				this.m_color = 0xc37100;
 			}
 			this.m_skin.cacheAsBitmap = true; // @TODO: Check perf.
 			this.m_skin.gotoAndStop(1);
