@@ -15,7 +15,7 @@ package state.gamestate {
 	import objects.Cloud;
 	import objects.Crate;
 	import managers.CrateManager;
-	import entity.Icon;
+	
 	import managers.IconManager;
 	import objects.Plane;
 	import managers.PlaneManager;
@@ -31,6 +31,7 @@ package state.gamestate {
 	
 	import ui.HUD;
 	import ui.HUDManager;
+	import ui.Icon;
 	
 	
 	

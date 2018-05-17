@@ -1,9 +1,8 @@
-package entity {
+package ui {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
 	
-	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
@@ -11,14 +10,13 @@ package entity {
 	import asset.powericonGFX;
 	import asset.speediconGFX;
 	
-	import se.lnu.stickossdk.system.Session;
-	import se.lnu.stickossdk.timer.Timer;
+	import se.lnu.stickossdk.display.DisplayStateLayerSprite;
 	
 	//-----------------------------------------------------------
 	// Crate
 	//-----------------------------------------------------------
 	
-	public class Icon extends Entity {
+	public class Icon extends DisplayStateLayerSprite {
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -28,6 +26,7 @@ package entity {
 		private var m_type:int
 		private var m_player:int;
 		private var m_iconClips:Vector.<MovieClip>;
+		private var m_pos:Point;
 		
 		public function Icon(pos:Point, type:int) {
 			super();
@@ -52,7 +51,9 @@ package entity {
 			this.m_iconClips = new Vector.<MovieClip>;
 			this.m_iconClips.push(new armoriconGFX, new powericonGFX, new speediconGFX);
 			for(var i:int = 0; i < this.m_iconClips.length; i++) {
-				this._setScale(this.m_iconClips[i], 2, 2);
+				//this._setScale(this.m_iconClips[i], 2, 2);	DETTA ÄR MER OPTIMALT ÄN NEDANSTÅENDE ALTERNATIV
+				this.m_iconClips[i].scaleX = 2;
+				this.m_iconClips[i].scaleY = 2;
 				this.m_iconClips[i].cacheAsBitmap = true;
 			}
 			this.addChild(this.m_iconClips[this.m_type]);

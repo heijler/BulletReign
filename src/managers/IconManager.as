@@ -1,11 +1,10 @@
 package managers {
 	
 	import flash.display.DisplayObjectContainer;
-	import flash.display.MovieClip;
-	
+		
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
-	import entity.Icon;
+	import ui.Icon;
 	
 	
 	public class IconManager {
