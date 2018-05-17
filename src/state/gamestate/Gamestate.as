@@ -177,7 +177,7 @@ package state.gamestate {
 			Session.sound.musicChannel.sources.add("ingamemusic", BulletReign.INGAME_MUSIC);
 			this.m_ingameMusic = Session.sound.musicChannel.get("ingamemusic");
 			this.m_ingameMusic.play();
-			this.m_ingameMusic.volume = 0.4;
+			this.m_ingameMusic.volume = 0.5;
 		}
 		
 		
@@ -197,7 +197,7 @@ package state.gamestate {
 			this.m_planes = planeManager.getPlanes();
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				this.m_planes[i].m_engineSound.play();
-				this.m_planes[i].m_engineSound.volume = 0.4;
+				this.m_planes[i].m_engineSound.volume = 0.6;
 			}
 		}
 		
@@ -414,6 +414,7 @@ package state.gamestate {
 					for (var j:int = 0; j < this.m_crates.length; j++) {
 						if (this.m_planes[i].hitTestObject(this.m_crates[j]) && this.m_planes[i].powerUpActive == false) {
 							this.m_powerupSound.play();
+							this.m_powerupSound.volume = 0.6;
 							this.m_planes[i].powerUpActive = true;
 							if(this.m_crates[j].m_type == 0) {
 								this.m_planes[i].m_noDamage = true;
