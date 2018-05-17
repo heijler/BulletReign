@@ -99,7 +99,7 @@ package state.menustate {
 		private function m_initMusic():void {
 			Session.sound.musicChannel.sources.add("menu", BulletReign.MENU_MUSIC);
 			this.m_menuMusic = Session.sound.musicChannel.get("menu");
-			this.m_menuMusic.volume = 0.2;
+			this.m_menuMusic.volume = 0.5;
 			
 		}
 	}
