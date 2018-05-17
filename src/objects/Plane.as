@@ -459,7 +459,9 @@ package objects {
 		 * 
 		 */
 		private function m_dropBanner():void {
-			this.holdingBanner = false;
+			if (!this.crashed && this.holdingBanner) {
+				this.holdingBanner = false;
+			}
 		}
 		
 		
@@ -596,7 +598,6 @@ package objects {
 				this.m_takingFire[Math.floor(Math.random() * this.m_takingFire.length)].play(); //Spelar ett random träffljud
 			}
 			if (this.m_newDurability <= 0 && this.m_noDamage == false) {
-				//this.m_noDamage = true; VAD GÖR DEN HÄR ? KVARLEVA?
 				this.m_steering = false;
 				this.m_freeFall();
 				this._flicker(this, 500);

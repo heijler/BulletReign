@@ -154,7 +154,7 @@ package objects {
 		 */
 		override public function update():void {
 			this.wrapAroundObjects();
-			if (this.m_gravity && (!this.onGround || !this.onBase)) {
+			if (this.m_gravity && !this.onGround && !this.onBase) {
 				this.applyGravity();
 				this.setGravityFactor(3);
 				if (this.rotation < 0 && this.rotation > -90 || this.rotation > 0 && this.rotation < 90) {
