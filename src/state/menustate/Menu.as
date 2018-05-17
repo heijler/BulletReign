@@ -27,6 +27,8 @@ package state.menustate {
 		//-----------------------------------------------------------
 		private const SELECT_CHAR:String = "@";
 		
+		private const COPY_CHAR:String = "©";
+		
 		private var m_menuLayer:DisplayStateLayer;
 		private var m_controls_one:EvertronControls = new EvertronControls(0);
 		private var m_controls_two:EvertronControls = new EvertronControls(1);
@@ -41,6 +43,7 @@ package state.menustate {
 		private var m_art:Bitmap;
 		private var m_selected:Boolean;
 		private var m_blinkCounter:int = 0;
+		private var m_copy:TextField;
 
 		
 		
@@ -326,6 +329,21 @@ package state.menustate {
 				this._items.push(menuObjects[i].name);
 			}
 			this.m_initText();
+		}
+		
+		
+		/**
+		 * 
+		 */
+		protected function _addCopy():void {
+			this.m_copy = new TextField();
+			this.m_copy.text = (this.COPY_CHAR + "\\>[} skak-fx");
+			this.m_copy.setTextFormat(this.m_selectedFormat);
+			this.m_copy.embedFonts = true;
+			this.m_copy.autoSize = TextFieldAutoSize.LEFT;
+			this.m_copy.x = (Session.application.size.x * 0.5) - (this.m_copy.width * 0.5);
+			this.m_copy.y = Session.application.size.y - 40;
+			this.m_menuLayer.addChild(this.m_copy);
 		}
 		
 	}

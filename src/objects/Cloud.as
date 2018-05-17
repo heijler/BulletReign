@@ -65,7 +65,7 @@ package objects {
 		 */
 		private function m_setSpawnPosition():void {
 			this.x = Math.random() * Session.application.size.x - this.width;
-			this.y = Math.random() * 200;
+			this.y = Math.random() * 250;
 		}
 		
 		
