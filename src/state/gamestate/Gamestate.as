@@ -11,15 +11,16 @@ package state.gamestate {
 	
 	import asset.GroundGFX;
 	
+	import entity.fx.FXManager;
+	
 	import managers.BulletManager;
+	import managers.CrateManager;
+	import managers.IconManager;
+	import managers.PlaneManager;
+	
 	import objects.Cloud;
 	import objects.Crate;
-	import managers.CrateManager;
-	
-	import managers.IconManager;
 	import objects.Plane;
-	import managers.PlaneManager;
-	import entity.fx.FXManager;
 	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
@@ -275,7 +276,6 @@ package state.gamestate {
 			this.m_hudManager = new HUDManager(this.HUDLayer);
 			this.m_hudManager.add(new HUD(0, new Point(10, 10)));
 			this.m_hudManager.add(new HUD(1, new Point(690, 10)));
-		
 		}
 		
 		
@@ -411,13 +411,20 @@ package state.gamestate {
 								this.m_generateIcons(this.m_planes[i].m_activePlayer);
 							}
 							this.m_crateManager.removeCrate(this.m_crates[j]);
-							var timer:Timer = Session.timer.create(Math.floor(Math.random() * 30000), this.m_generateCrate);
+							var spawnTime:int = this.m_getRandomBetweenMAXMIN();
+							var timer:Timer = Session.timer.create(spawnTime, this.m_generateCrate);
 						}
 					}
 				}
 			}
 		}
 		
+		private function m_getRandomBetweenMAXMIN():int {
+			const MAX:int = 30000;
+			const MIN:int = 5000;
+			
+			return Math.random() * (MAX - MIN) + MIN;
+		}
 		
 		/**
 		 * m_roundOver

@@ -38,7 +38,6 @@ package managers {
 		
 		private function m_expire():void {
 			this.m_expireTimer = Session.timer.create(5000, this.m_remove);
-			//var stopper:TImer = Session.timer.
 		}
 		
 		private function m_remove():void {
