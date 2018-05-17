@@ -98,7 +98,7 @@ package ui {
 				this.m_durabilityMeter.scaleX = 3;
 				this.m_durabilityMeter.scaleY = 3;
 				this.m_durabilityMeter.x = (Session.application.size.x / 2) - this.m_durabilityMeter.width - 5;
-				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2;
+				this.m_durabilityMeter.y = this.m_pos.y;
 				this.m_durabilityMeter.gotoAndStop(11);
 				
 			} else if (m_player == 1){
@@ -106,7 +106,7 @@ package ui {
 				this.m_durabilityMeter.scaleX = 3;
 				this.m_durabilityMeter.scaleY = 3;
 				this.m_durabilityMeter.x = (Session.application.size.x / 2) + 5;
-				this.m_durabilityMeter.y = Session.application.size.y / this.m_durabilityMeter.height / 2;
+				this.m_durabilityMeter.y = this.m_pos.y;
 				this.m_durabilityMeter.gotoAndStop(11);
 			}
 			
