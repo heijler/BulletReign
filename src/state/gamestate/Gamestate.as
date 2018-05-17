@@ -368,8 +368,11 @@ package state.gamestate {
 		protected function m_respawnNow():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				this.m_planes[i].m_respawn(false);
+				
 			}
 			this.m_flashScreen = false;
+			this.m_im1.m_remove();
+			this.m_im2.m_remove();
 		}
 		
 		

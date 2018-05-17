@@ -80,6 +80,7 @@ package objects {
 		private var m_openFire:SoundObject;
 		private var m_crashing:SoundObject;
 		private var m_engineOverdriveSound:SoundObject;
+		private var m_engineNoJuiceSound:SoundObject;
 		private var m_fallingPlane:SoundObject;
 		private var m_screamSound:SoundObject;
 		private var m_takingFire:Vector.<SoundObject>;
@@ -193,6 +194,7 @@ package objects {
 			Session.sound.soundChannel.sources.add("planecrashing", BulletReign.PLANE_CRASH);
 			Session.sound.soundChannel.sources.add("enginesound", BulletReign.ENGINE_SOUND);
 			Session.sound.soundChannel.sources.add("engineoverdrivesound", BulletReign.ENGINEOVERDRIVE_SOUND);
+			Session.sound.soundChannel.sources.add("enginenojuicesound", BulletReign.ENGINENOJUICE_SOUND);
 			Session.sound.soundChannel.sources.add("fallingplane", BulletReign.CRASH_SOUND);
 			Session.sound.soundChannel.sources.add("scream", BulletReign.SCREAM_SOUND);
 			Session.sound.soundChannel.sources.add("takingFire1", BulletReign.HIT1_SOUND);
@@ -202,6 +204,7 @@ package objects {
 			this.m_crashing = Session.sound.soundChannel.get("planecrashing");
 			this.m_engineSound = Session.sound.soundChannel.get("enginesound");
 			this.m_engineOverdriveSound = Session.sound.soundChannel.get("engineoverdrivesound");
+			this.m_engineNoJuiceSound = Session.sound.soundChannel.get("enginenojuicesound");
 			this.m_fallingPlane = Session.sound.soundChannel.get("fallingplane");
 			this.m_screamSound = Session.sound.soundChannel.get("scream");
 			this.m_takingFire = new Vector.<SoundObject>;
@@ -256,8 +259,13 @@ package objects {
 				}
 				
 				if (Input.keyboard.justPressed(this.m_controls.PLAYER_BUTTON_2)) {
-					this.m_engineOverdriveSound.play();
-					this.m_engineOverdriveSound.volume = 0.6;
+					if(this.m_accelDuration == 0) {
+						this.m_engineNoJuiceSound.play();
+						this.m_engineNoJuiceSound.volume = 0.6;
+					} else {
+						this.m_engineOverdriveSound.play();
+						this.m_engineOverdriveSound.volume = 0.6;
+					}
 				}
 				
 				if (Input.keyboard.justReleased(this.m_controls.PLAYER_BUTTON_2)) {
@@ -277,7 +285,6 @@ package objects {
 				}
 			}
 		}
-		
 		
 		/**
 		 * m_anglePlane
