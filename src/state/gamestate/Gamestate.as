@@ -124,6 +124,7 @@ package state.gamestate {
 		 * override
 		 */
 		override public function init():void {
+			this.m_initFlash();
 			this.m_initLayers();
 			this.m_initSky();
 			this.m_initGround();
@@ -138,6 +139,13 @@ package state.gamestate {
 			this.m_initSound();
 			this._initGamemode();
 			
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_initFlash():void {
 			this.flash(500, 0xFFFFFF);
 		}
 		

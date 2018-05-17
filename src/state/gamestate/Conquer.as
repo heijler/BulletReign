@@ -33,11 +33,9 @@ package state.gamestate {
 		private var m_bannerHolder:Plane;
 		private var m_angleCounter:int = 30;
 		private var m_matchFin:Boolean = false;
-		
 		private var m_GHB:Shape;
 		private var m_winFlag:Boolean = false;
 		private var m_crashedPlane:int;
-		
 		private var m_blinktimer:Timer;
 		
 		//-----------------------------------------------------------
@@ -86,7 +84,6 @@ package state.gamestate {
 //			this.m_GHB.graphics.beginFill(0xFF0000, 0.5);
 			this.m_GHB.graphics.drawRect(0, Session.application.size.y-30, 160, 30);
 //			this.m_GHB.graphics.endFill();
-//			this.m_GHB.name = "GHB";
 			this.hqLayer.addChild(this.m_GHB);
 		}
 		

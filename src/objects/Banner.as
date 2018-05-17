@@ -167,27 +167,16 @@ package objects {
 			
 			if ((this.y > Session.application.size.y || this.y < -100 || this.x > Session.application.size.x + 40 || this.x < -40) && this.active) {
 				this.outOfBounds = true;
-				trace("out of bounds");
 			}
 			
 			if (this.m_gravity && !this.onGround && !this.onBase) {
-				
-//				this.setGravityFactor(4);
 				if (this.rotation < 0 && this.rotation > -90 || this.rotation > 0 && this.rotation < 90) {
 					this.rotation += 0.5 * this.m_scaleFactor;	
 				} else {
 					this.rotation -= 0.5 * this.m_scaleFactor;
 				}
-				
-				
-				
-//				this.setGravityFactor(3 + (0.006 * this.y));
 				this.setGravityFactor(3 + (0.0085 * this.y));
 				this.applyGravity();
-				
-//				if (this.rotation > -135 && this.rotation < -45) {
-//					this.setGravityFactor(4 + (0.006* this.y));
-//				}
 				this.x += (Math.cos(this._angle * (Math.PI / 180)) * this._velocity >> 1.5) * this.m_scaleFactor;
 				this.y += (Math.sin(this._angle * (Math.PI / 180)) * this._velocity >> 1.5) * this.m_scaleFactor;
 			}
