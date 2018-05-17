@@ -5,15 +5,14 @@ package state.menustate {
 	
 	import flash.display.Bitmap;
 	import flash.geom.Point;
+	import flash.text.TextField;
 	
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	
-//	import state.gamestate.Conquer;
-//	import state.gamestate.Dogfight;
 	import state.menustate.infoScreen.ConquerInfo;
-	import state.menustate.infoScreen.DogfightInfo;
 	import state.menustate.infoScreen.Credits;
+	import state.menustate.infoScreen.DogfightInfo;
 	import state.menustate.infoScreen.HowToPlay;
 	
 	//-----------------------------------------------------------
@@ -63,6 +62,7 @@ package state.menustate {
 					{name: "Credits", state: Credits}
 				]
 			);
+			this._addCopy();
 		}
 		
 		
@@ -74,7 +74,7 @@ package state.menustate {
 			var logo:Bitmap = new Logo();
 				logo.scaleX = 2;
 				logo.scaleY = 2;
-			var pos:Point = new Point((Session.application.size.x * 0.5) - (logo.width*0.5) , 0);
+			var pos:Point = new Point((Session.application.size.x * 0.5) - (logo.width*0.5) , -25);
 				this._addImage(logo, pos);
 		}
 		
@@ -87,7 +87,7 @@ package state.menustate {
 			var art:Bitmap = new Art();
 				art.scaleX = 2.5;
 				art.scaleY = 2.5;
-			var pos:Point = new Point(0, 220);
+			var pos:Point = new Point(0, 0); //0, 220
 				this._addArt(art, pos);
 		}
 		

@@ -11,6 +11,7 @@ package state.gamestate {
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	import asset.ExplosionGFX;
 	import asset.GroundGFX;
 	
 	import entity.fx.FXManager;
@@ -61,6 +62,7 @@ package state.gamestate {
 		public var hqLayer:DisplayStateLayer;
 		public var bannerLayer:DisplayStateLayer;
 		public var planeLayer:DisplayStateLayer;
+		public var explosionLayer:DisplayStateLayer;
 		public var zeppelinLayer:DisplayStateLayer;
 		public var HUDLayer:DisplayStateLayer;
 		public var IconLayer:DisplayStateLayer;
@@ -162,6 +164,7 @@ package state.gamestate {
 			this.hqLayer = this.layers.add("hq")
 			this.bannerLayer = this.layers.add("banner");
 			this.planeLayer = this.layers.add("plane");
+			this.explosionLayer = this.layers.add("explosion");
 			this.zeppelinLayer = this.layers.add("zeppelin");
 			this.HUDLayer = this.layers.add("HUD");
 			this.IconLayer = this.layers.add("ICON");
@@ -355,6 +358,7 @@ package state.gamestate {
 						this.m_planes[i].holdingBanner = false;
 						this.m_planes[i].crash(this.backgroundLayer);
 						this.m_planes[i].m_newDurability = 0;
+						this.m_createExplosion(this.m_planes[i].m_getPos());
 					}
 				}
 			}
@@ -555,6 +559,23 @@ package state.gamestate {
 					this.m_flashScreen = true;
 				}
 			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_createExplosion(pos:Point):void {
+			var explosion:ExplosionGFX = new ExplosionGFX;
+				explosion.gotoAndPlay(1);
+				explosion.addFrameScript(explosion.totalFrames - 1, function():void 
+				{
+					explosion.stop();
+				});
+				explosion.scaleX = explosion.scaleY = 2.5;
+				explosion.x = pos.x;
+				explosion.y = pos.y;
+			this.explosionLayer.addChild(explosion);
 		}
 
 		//-----------------------------------------------------------
