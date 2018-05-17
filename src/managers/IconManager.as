@@ -40,12 +40,14 @@ package managers {
 			this.m_expireTimer = Session.timer.create(5000, this.m_remove);
 		}
 		
-		private function m_remove():void {
-			if(this.m_parent.contains(this.m_icon)) {			
-				this.m_parent.removeChild(this.m_icon);
-				this.m_icon = null;
-			}
+		public function m_remove():void {
+			if(this.m_icon != null) {
+				if(this.m_parent.contains(this.m_icon)) {			
+					this.m_parent.removeChild(this.m_icon);
+					this.m_icon = null;
+				}
 			
+			}
 		}
 	}
 }
