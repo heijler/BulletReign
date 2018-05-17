@@ -535,8 +535,17 @@ package objects {
 		 * Default speed of planes, no acceleration needed to keep in air
 		 */
 		private function m_defaultSpeed():void {
-			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
-			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
+			var xVel:Number;
+			var yVel:Number;
+			if (!this.holdingBanner) {
+				xVel = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
+				yVel = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
+			} else {
+				xVel = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity - 0.5);
+				yVel = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity - 0.5);
+			}
+//			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
+//			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
 			
 			this.x += xVel * this.m_scaleFactor;
 			this.y += yVel * this.m_scaleFactor;
