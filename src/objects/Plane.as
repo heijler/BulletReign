@@ -459,7 +459,9 @@ package objects {
 		 * 
 		 */
 		private function m_dropBanner():void {
-			this.holdingBanner = false;
+			if (!this.crashed && this.holdingBanner) {
+				this.holdingBanner = false;
+			}
 		}
 		
 		

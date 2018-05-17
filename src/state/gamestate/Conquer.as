@@ -148,6 +148,7 @@ package state.gamestate {
 		 */
 		private function m_addBanner():void {
 			this.m_banner = new Banner(new Point(Session.application.size.x * 0.5, 0));
+			this.m_bannerHolder = null;
 			this.bannerLayer.addChild(this.m_banner);
 		}
 		
@@ -178,6 +179,9 @@ package state.gamestate {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_banner.hitBox.hitTestObject(this.m_planes[i]) && !this.m_banner.caught) {
 					this.m_banner.caught = true;
+					this.m_banner.gravity = true;
+					this.m_banner.onGround = false;
+					this.m_banner.onBase = false;
 					this.m_bannerHolder = this.m_planes[i];
 					this.m_bannerHolder.holdingBanner = true;
 					this.m_banner.lastHolder = this.m_planes[i];
@@ -211,7 +215,7 @@ package state.gamestate {
 		 */
 		private function m_bannerGroundCollision():void {
 			if (this.m_banner.hitBox.hitTestObject(this.groundHitbox) && this.m_banner.onGround == false && this.m_bannerHolder == null) {
-				trace("Ground");
+//				trace("Ground");
 				this.m_banner.onGround = true;
 			}
 		}
@@ -269,7 +273,8 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_onBannerDrop():void {
-			if (this.m_bannerHolder && this.m_bannerHolder.holdingBanner == false) {
+			if (this.m_bannerHolder && this.m_bannerHolder.holdingBanner == false && this.m_banner.active) {
+				trace("m_onBannerDrop");
 				this.m_dropBanner();
 			}
 		}
@@ -320,14 +325,18 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_dropBanner():void {
-//			trace("m_dropBanner");
+			trace("m_dropBanner");
 			Session.timer.create(100, this.m_toggleBanner);
-//			this.m_banner.caught = false;
 			this.m_bannerHolder = null;
+			
 			this.m_indicateBase();
 			this.m_banner.gravity = true;
 			
-			if (this.m_banner.onGround || this.m_banner.onBase) {
+			if (this.m_banner.onBase) {
+				this.m_banner.gravity = false;
+			}
+			
+			if (this.m_banner.onGround) {
 				this.m_banner.gravity = false;
 			}
 		}

@@ -37,7 +37,7 @@ package objects {
 		private var m_scaleFactor:int;
 		private var m_counter:int = 3;
 		private var m_oldAngle:Number;
-		private var m_gravity:Boolean;
+		public var m_gravity:Boolean; // @TODO: CHANGE TO PRIVATE !!!!!!!!!!!!!
 		
 		
 		//-----------------------------------------------------------
@@ -154,7 +154,7 @@ package objects {
 		 */
 		override public function update():void {
 			this.wrapAroundObjects();
-			if (this.m_gravity && (!this.onGround || !this.onBase)) {
+			if (this.m_gravity && !this.onGround && !this.onBase) {
 				this.applyGravity();
 				this.setGravityFactor(3);
 				if (this.rotation < 0 && this.rotation > -90 || this.rotation > 0 && this.rotation < 90) {
