@@ -459,7 +459,7 @@ package state.gamestate {
 			
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_planes[i].m_winner == true) {
-					winMessage.text = "PLAYER " + (this.m_planes[i].m_activePlayer + 1) + " ARE VICTORIOUS!";
+					winMessage.text = "PLAYER " + (this.m_planes[i].m_activePlayer + 1) + " IS VICTORIOUS!";
 					textFormat.color = this.m_planes[i].m_color;
 				}
 			}
@@ -473,7 +473,7 @@ package state.gamestate {
 				winMessage.autoSize = "center";
 				
 				winMessage.x = (Session.application.size.x / 2) - (winMessage.width / 2);
-				winMessage.y = (Session.application.size.y / 2) - (winMessage.height / 2);
+				winMessage.y = (Session.application.size.y / 2) - (winMessage.height / 2) - 40;
 			
 			this.winLayer.addChild(winMessage);
 		}
