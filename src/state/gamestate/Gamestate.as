@@ -459,7 +459,7 @@ package state.gamestate {
 			
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_planes[i].m_winner == true) {
-					winMessage.text = "Player " + (this.m_planes[i].m_activePlayer + 1) + " are victorious";
+					winMessage.text = "PLAYER " + (this.m_planes[i].m_activePlayer + 1) + " ARE VICTORIOUS!";
 					textFormat.color = this.m_planes[i].m_color;
 				}
 			}
