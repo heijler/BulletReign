@@ -595,9 +595,8 @@ package objects {
 			if(this.m_takingFire != null) {
 				this.m_takingFire[Math.floor(Math.random() * this.m_takingFire.length)].play(); //Spelar ett random träffljud
 			}
-			
 			if (this.m_newDurability <= 0 && this.m_noDamage == false) {
-				this.m_noDamage = true;
+				//this.m_noDamage = true; VAD GÖR DEN HÄR ? KVARLEVA?
 				this.m_steering = false;
 				this.m_freeFall();
 				this._flicker(this, 500);
@@ -638,6 +637,9 @@ package objects {
 				this.m_steering = true;
 				this._angle = 0;
 				this.updateRotation();
+				this.m_clearNoAccelDuration();
+				this.m_clearNoDamage();
+				this.m_clearNoFireCounter();
 			}
 		}
 		
