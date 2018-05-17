@@ -147,7 +147,7 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_addBanner():void {
-			this.m_banner = new Banner(new Point(Session.application.size.x * 0.5, 0));
+			this.m_banner = new Banner(new Point(Session.application.size.x * 0.5, -50));
 			this.m_bannerHolder = null;
 			this.bannerLayer.addChild(this.m_banner);
 		}
@@ -303,16 +303,18 @@ package state.gamestate {
 				if(this.m_planes[i].crashed) {
 					for(var j:int = 0; j < this.m_planes.length; j++) {
 						if(this.m_planes[j].crashed == false) {
-							if(this.m_winFlag == false) {
+							if(this.m_winFlag == false && !this.m_banner.onBase) {
 								trace("resolve round player crashed", this.m_planes[i].m_activePlayer);
 								this.m_crashedPlane = this.m_planes[i].m_activePlayer;
 								this.m_winFlag = true;
-								var timer:Timer = Session.timer.create(3000, this.m_respawn);
+//								if (!this.m_banner.onBase) {
+									var timer:Timer = Session.timer.create(3000, this.m_respawn);
+//								}
 							}
 						}
 					}
 				}
-				if(this.m_planes[0].crashed == true && this.m_planes[1].crashed == true && this.m_winFlag == false) {
+				if(this.m_planes[0].crashed == true && this.m_planes[1].crashed == true && this.m_winFlag == false && !this.m_banner.onBase) {
 					var dimer:Timer = Session.timer.create(3000, this.m_respawn);
 					this.m_winFlag = true;
 				}

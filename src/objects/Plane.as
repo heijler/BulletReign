@@ -599,7 +599,7 @@ package objects {
 			}
 			
 			if (this.m_newDurability <= 0 && this.m_noDamage == false) {
-				this.m_noDamage = true;
+//				this.m_noDamage = true;
 				this.m_steering = false;
 				this.m_freeFall();
 				this._flicker(this, 500);

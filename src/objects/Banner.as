@@ -37,7 +37,7 @@ package objects {
 		private var m_scaleFactor:int;
 		private var m_counter:int = 3;
 		private var m_oldAngle:Number;
-		public var m_gravity:Boolean; // @TODO: CHANGE TO PRIVATE !!!!!!!!!!!!!
+		private var m_gravity:Boolean;
 		
 		
 		//-----------------------------------------------------------
