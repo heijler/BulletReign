@@ -26,6 +26,7 @@ package objects {
 		public var active:Boolean = false;
 		public var onGround:Boolean = false;
 		public var onBase:Boolean = false;
+		public var outOfBounds:Boolean = false;
 		public var lastHolder:Plane;
 		
 		//-----------------------------------------------------------
@@ -159,10 +160,16 @@ package objects {
 		
 		/**
 		 * update
-		 * 
+		 * @TODO: Divide into several methods
 		 */
 		override public function update():void {
 			this.wrapAroundObjects();
+			
+			if ((this.y > Session.application.size.y || this.y < -100 || this.x > Session.application.size.x + 40 || this.x < -40) && this.active) {
+				this.outOfBounds = true;
+				trace("out of bounds");
+			}
+			
 			if (this.m_gravity && !this.onGround && !this.onBase) {
 				
 //				this.setGravityFactor(4);

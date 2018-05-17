@@ -169,6 +169,7 @@ package state.gamestate {
 			this.m_bannerFollow();
 			this.m_onBannerDrop();
 			this.m_resolveRound();
+			this.m_bannerOutOfBounds();
 		}
 		
 		
@@ -276,7 +277,7 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_bannerFollow():void {
-			if (this.m_banner.caught && this.m_bannerHolder) {
+			if (this.m_banner.caught && this.m_bannerHolder && !this.m_banner.onBase) {
 				this.m_banner.follow(this.m_bannerHolder.m_getPos(), this.m_bannerHolder.angle, this.m_bannerHolder.scaleFactor, this.m_bannerHolder.velocity);
 			}
 		}
@@ -289,6 +290,16 @@ package state.gamestate {
 		private function m_onBannerDrop():void {
 			if (this.m_bannerHolder && this.m_bannerHolder.holdingBanner == false && this.m_banner.active) {
 				this.m_dropBanner();
+			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_bannerOutOfBounds():void {
+			if (this.m_banner.outOfBounds) {
+				var timer:Timer = Session.timer.create(2000, this.m_respawnBanner);
 			}
 		}
 		
