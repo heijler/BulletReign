@@ -412,7 +412,7 @@ package state.gamestate {
 		private function m_groundCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				var timer:Timer;
-				if (this.m_planes[i].hitTestObject(this.groundHitbox)) {
+				if (this.m_planes[i].tailHitbox.hitTestObject(this.groundHitbox) || this.m_planes[i].bodyHitbox.hitTestObject(this.groundHitbox)) {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
 						this.m_planes[i].holdingBanner = false;
@@ -476,7 +476,8 @@ package state.gamestate {
 			if (this.m_crates != null) {
 				for (var i:int = 0; i < this.m_planes.length; i++) {
 					for (var j:int = 0; j < this.m_crates.length; j++) {
-						if (this.m_planes[i].hitTestObject(this.m_crates[j]) && this.m_planes[i].powerUpActive == false) {
+						
+						if ((this.m_planes[i].tailHitbox.hitTestObject(this.m_crates[j]) || this.m_planes[i].bodyHitbox.hitTestObject(this.m_crates[j])) && this.m_planes[i].powerUpActive == false) {
 							this.m_powerupSound.play();
 							this.m_powerupSound.volume = 0.6;
 							this.m_planes[i].powerUpActive = true;
