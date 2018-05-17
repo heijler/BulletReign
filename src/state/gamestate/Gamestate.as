@@ -513,13 +513,8 @@ package state.gamestate {
 		 */
 		private function m_flashWorld():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				trace("----------------------------------");
-				trace("Plane:", this.m_planes[i].m_activePlayer);
-				trace("ShotDown?:", this.m_planes[i].shotDown);
-				trace("FlashScreen:", this.m_flashScreen);
-				trace("----------------------------------");
 				if (this.m_planes[i].shotDown && !this.m_flashScreen) {
-					this.flash(200, 0xFFF392);
+					this.flash(200, 0xFFFFFF); //0xFFF392
 					this.m_flashScreen = true;
 				}
 			}
