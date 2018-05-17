@@ -8,6 +8,8 @@ package state.gamestate {
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	import asset.GroundGFX;
 	
@@ -62,6 +64,7 @@ package state.gamestate {
 		public var zeppelinLayer:DisplayStateLayer;
 		public var HUDLayer:DisplayStateLayer;
 		public var IconLayer:DisplayStateLayer;
+		public var winLayer:DisplayStateLayer;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -79,7 +82,6 @@ package state.gamestate {
 		private var m_bm2:BulletManager; // @FIX, put into Vector?
 		private var m_im1:IconManager;
 		private var m_im2:IconManager;
-		public var m_roundFlag:Boolean = false;
 		
 		private var m_sky:Sprite;
 		public var m_ground:MovieClip; // @TODO: rename & move
@@ -163,6 +165,7 @@ package state.gamestate {
 			this.zeppelinLayer = this.layers.add("zeppelin");
 			this.HUDLayer = this.layers.add("HUD");
 			this.IconLayer = this.layers.add("ICON");
+			this.winLayer = this.layers.add("win");
 		}
 		
 		
@@ -445,9 +448,38 @@ package state.gamestate {
 		 * 
 		 */
 		protected function m_matchOver():void {
-			Session.application.displayState = new RematchMenu(this._gamemode);
+			var timer:Timer = Session.timer.create(2000, this.m_wrapItUp);
+			this.m_winScreen();
 		}
 		
+		private function m_winScreen():void {
+			var winMessage:TextField = new TextField();
+			var textFormat:TextFormat = new TextFormat();
+			
+			for(var i:int = 0; i < this.m_planes.length; i++) {
+				if(this.m_planes[i].m_winner == true) {
+					winMessage.text = "Player " + (this.m_planes[i].m_activePlayer + 1) + " are victorious";
+					textFormat.color = this.m_planes[i].m_color;
+				}
+			}
+			
+				textFormat.size = 12; 
+				textFormat.font = "bulletreign";
+				
+				winMessage.embedFonts = true;
+				winMessage.setTextFormat(textFormat);
+				winMessage.defaultTextFormat = textFormat;
+				winMessage.autoSize = "center";
+				
+				winMessage.x = (Session.application.size.x / 2) - (winMessage.width / 2);
+				winMessage.y = (Session.application.size.y / 2) - (winMessage.height / 2);
+			
+			this.winLayer.addChild(winMessage);
+		}
+		
+		private function m_wrapItUp():void {
+			Session.application.displayState = new RematchMenu(this._gamemode);
+		}
 		
 		/**
 		 * m_durabilityChange
@@ -479,16 +511,6 @@ package state.gamestate {
 			this.m_bm1.removeInactiveBullets();
 			this.m_bm2.removeInactiveBullets();
 		}
-		
-		
-		/**
-		 * m_initCrateTimer
-		 * 
-		 */
-		/*private function m_initCrateTimer():void {
-			var timer:Timer = Session.timer.create(Math.round(Math.random()* 10000), this.m_generateCrates, 3);
-		}*/
-		
 		
 		/**
 		 * m_generateCrates
