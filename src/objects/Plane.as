@@ -550,8 +550,8 @@ package objects {
 				xVel = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
 				yVel = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;
 			} else {
-				xVel = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity - 0.5);
-				yVel = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity - 0.5);
+				xVel = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity - 0.7);
+				yVel = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity - 0.7);
 			}
 //			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * this._velocity;
 //			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * this._velocity;

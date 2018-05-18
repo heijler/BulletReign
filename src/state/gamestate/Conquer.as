@@ -62,10 +62,13 @@ package state.gamestate {
 		 * Initializes the gamemode, this method overrides the method in the parentclass
 		 */
 		override protected function _initGamemode():void {
+//			super.init();
 			this.m_initZeppelin();
 			this.m_initBanner();
 			this.m_drawGHB();
 			this.m_initSounds();
+			this.m_planes[0].m_newDurability = 3;
+			this.m_planes[1].m_newDurability = 3;
 		}
 		
 		
@@ -265,6 +268,8 @@ package state.gamestate {
 		private function m_respawn():void {
 			if (this.m_matchFin == false) {
 				this.m_respawnNow();
+				this.m_planes[0].m_newDurability = 3;
+				this.m_planes[1].m_newDurability = 3;
 				this.m_respawnBanner();
 				this.m_winFlag = false;
 			}
@@ -278,6 +283,8 @@ package state.gamestate {
 		private function m_respawnPlane():void {
 			if (this.m_matchFin == false) {
 				this._respawnPlane(this.m_crashedPlane);
+				this.m_planes[this.m_crashedPlane].m_newDurability = 3;
+//				this.m_planes[1].m_newDurability = 2;
 //				this.m_respawnBanner();
 				this.m_winFlag = false;
 			}
@@ -323,7 +330,7 @@ package state.gamestate {
 		 */
 		private function m_bannerOutOfBounds():void {
 			if (this.m_banner.outOfBounds) {
-				var timer:Timer = Session.timer.create(2000, this.m_respawnBanner);
+				var timer:Timer = Session.timer.create(1000, this.m_respawnBanner);
 			}
 		}
 		
@@ -359,13 +366,13 @@ package state.gamestate {
 								trace("resolve round player crashed", this.m_planes[i].m_activePlayer);
 								this.m_crashedPlane = this.m_planes[i].m_activePlayer;
 								this.m_winFlag = true;
-								var timer:Timer = Session.timer.create(3000, this.m_respawnPlane);
+								var timer:Timer = Session.timer.create(1000, this.m_respawnPlane);
 							}
 						}
 					}
 				}
 				if(this.m_planes[0].crashed == true && this.m_planes[1].crashed == true && this.m_winFlag == false && !this.m_banner.onBase) {
-					var dimer:Timer = Session.timer.create(3000, this.m_respawn);
+					var dimer:Timer = Session.timer.create(1000, this.m_respawn);
 					this.m_winFlag = true;
 				}
 			}

@@ -54,6 +54,7 @@ package state.menustate {
 			this.m_drawLogo();
 			this.m_drawArt();
 			this.m_menuMusic.play(); //Låten sätts till play(), låtvalet kan diskuteras
+			this.m_menuMusic.volume = 0.4;
 			this._addMenuItems(
 				new <Object>[
 					{name:"Dogfight", state: DogfightInfo},
@@ -99,7 +100,7 @@ package state.menustate {
 		private function m_initMusic():void {
 			Session.sound.musicChannel.sources.add("menu", BulletReign.MENU_MUSIC);
 			this.m_menuMusic = Session.sound.musicChannel.get("menu");
-			this.m_menuMusic.volume = 0.5;
+//			this.m_menuMusic.volume = 0.3;
 			
 		}
 	}
