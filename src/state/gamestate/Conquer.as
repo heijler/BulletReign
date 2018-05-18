@@ -35,6 +35,8 @@ package state.gamestate {
 		private var m_angleCounter:int = 30;
 		private var m_matchFin:Boolean = false;
 		private var m_GHB:Shape;
+		private var m_b1HB:Shape;
+		private var m_b2HB:Shape;
 		private var m_winFlag:Boolean = false;
 		private var m_crashedPlane:int;
 		private var m_blinktimer:Timer;
@@ -43,6 +45,7 @@ package state.gamestate {
 		private var m_bannerPickupSound:SoundObject;
 		private var m_bannerDropSound:SoundObject;
 		private var m_bannerLandSound:SoundObject;
+		private var m_bannerRespawnSound:SoundObject;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -65,7 +68,8 @@ package state.gamestate {
 //			super.init();
 			this.m_initZeppelin();
 			this.m_initBanner();
-			this.m_drawGHB();
+			this.m_initHitboxes();
+//			this.m_drawGHB();
 			this.m_initSounds();
 			this.m_planes[0].m_newDurability = 3;
 			this.m_planes[1].m_newDurability = 3;
@@ -83,6 +87,31 @@ package state.gamestate {
 			}
 		}
 		
+		
+		/**
+		 * 
+		 */
+		private function m_initHitboxes():void {
+			this.m_drawGHB();
+			this.m_drawBaseHB();
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_drawBaseHB():void {
+			this.m_b1HB = new Shape();
+			this.m_b2HB = new Shape();
+//			this.m_b1HB.graphics.beginFill(0x00FF00);
+//			this.m_b2HB.graphics.beginFill(0x0000FF);
+			this.m_b1HB.graphics.drawRect(0, Session.application.size.y - 30, 160, 30);
+			this.m_b2HB.graphics.drawRect(Session.application.size.x - this.m_GHB.width, Session.application.size.y - 30, 160, 30);
+//			this.m_b1HB.graphics.endFill();
+//			this.m_b2HB.graphics.endFill();
+			this.hqLayer.addChild(this.m_b1HB);
+			this.hqLayer.addChild(this.m_b2HB);
+		}
 		
 		/**
 		 * m_drawGHB
@@ -127,9 +156,11 @@ package state.gamestate {
 			Session.sound.soundChannel.sources.add("bannerpickup", BulletReign.BANNER_PICKUP);
 			Session.sound.soundChannel.sources.add("bannerdrop", BulletReign.BANNER_DROP);
 			Session.sound.soundChannel.sources.add("bannerland", BulletReign.BANNER_LAND);
+			Session.sound.soundChannel.sources.add("bannerrespawn", BulletReign.BANNER_RESPAWN);
 			this.m_bannerPickupSound = Session.sound.soundChannel.get("bannerpickup");
 			this.m_bannerDropSound = Session.sound.soundChannel.get("bannerdrop");
 			this.m_bannerLandSound = Session.sound.soundChannel.get("bannerland");
+			this.m_bannerRespawnSound = Session.sound.soundChannel.get("bannerrespawn");
 		}
 		
 		
@@ -185,6 +216,7 @@ package state.gamestate {
 			}
 			this.m_bannerPlaneCollision();
 			this.m_bannerBaseCollision();
+			this.m_bannerInactiveBaseCollision();
 			this.m_bannerGroundCollision();
 			this.m_bannerFollow();
 			this.m_onBannerDrop();
@@ -199,7 +231,7 @@ package state.gamestate {
 		 */
 		private function m_bannerPlaneCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if((this.m_banner.hitBox.hitTestObject(this.m_planes[i].tailHitbox) || this.m_banner.hitBox.hitTestObject(this.m_planes[i].bodyHitbox) ) && !this.m_banner.caught && !this.m_planes[i].crashed) {
+				if((this.m_banner.hitBox.hitTestObject(this.m_planes[i].tailHitbox) || this.m_banner.hitBox.hitTestObject(this.m_planes[i].bodyHitbox) ) && !this.m_banner.caught && !this.m_planes[i].crashed && this.m_banner.active) {
 					Session.timer.remove(this.m_blinktimer);
 					Session.timer.remove(this.m_respawnBlinkTimer);
 					this.m_banner.caught = true;
@@ -224,6 +256,7 @@ package state.gamestate {
 		 */
 		private function m_bannerBaseCollision():void {
 			if (this.m_banner.hitBox.hitTestObject(this.m_GHB) && this.m_banner.onBase == false && this.m_bannerHolder == null) {
+				trace("Banner base collision");
 				this.m_banner.onBase = true;
 				this.m_indicateBase(this.m_banner.lastHolder.m_activePlayer);
 				this.m_winSound.play();
@@ -247,7 +280,7 @@ package state.gamestate {
 				this.m_bannerLandSound.play();
 				this.m_bannerLandSound.volume = 1;
 				if (!this.m_banner.onBase) {
-					this.m_blinktimer = Session.timer.create(3000, this.m_onGroundCount);
+					this.m_blinktimer = Session.timer.create(1500, this.m_onGroundCount);
 				}
 			}
 		}
@@ -256,9 +289,22 @@ package state.gamestate {
 		/**
 		 * 
 		 */
+		private function m_bannerInactiveBaseCollision():void {
+			if ((this.m_banner.hitBox.hitTestObject(this.m_b1HB) || this.m_banner.hitBox.hitTestObject(this.m_b2HB)) && !this.m_banner.onBase) {
+				var timer:Timer = Session.timer.create(500, this.m_respawnBanner);
+			}
+		}
+		
+		
+		/**
+		 * 
+		 */
 		private function m_onGroundCount():void {
-			this.m_banner.blink();
-			this.m_respawnBlinkTimer = Session.timer.create(2000, this.m_respawnBanner);
+			if (!this.m_banner.onBase) {
+				this.m_banner.blink();
+				this.m_respawnBlinkTimer = Session.timer.create(2000, this.m_respawnBanner);
+			}
+			
 		}
 		
 		
@@ -297,8 +343,11 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_respawnBanner():void {
+			this.m_bannerRespawnSound.play();
+			this.m_bannerRespawnSound.volume = 0.5;
 			this.m_removeBanner();
 			this.m_addBanner();
+			this.m_indicateBase(-1);
 		}
 		
 		
@@ -364,8 +413,9 @@ package state.gamestate {
 				if(this.m_planes[i].crashed) {
 					for(var j:int = 0; j < this.m_planes.length; j++) {
 						if(this.m_planes[j].crashed == false) {
-							if(this.m_winFlag == false && !this.m_banner.onBase) {
+							if(this.m_winFlag == false) {
 								trace("resolve round player crashed", this.m_planes[i].m_activePlayer);
+								trace("onBase", this.m_banner.onBase);
 								this.m_crashedPlane = this.m_planes[i].m_activePlayer;
 								this.m_winFlag = true;
 								var timer:Timer = Session.timer.create(1000, this.m_respawnPlane);
