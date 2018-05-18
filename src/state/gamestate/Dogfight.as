@@ -53,7 +53,7 @@ package state.gamestate {
 						if(this.m_planes[j].crashed == false) {							
 							if(this.m_winFlag == false) {
 								this.m_winSound.play();
-								this.m_winSound.volume = 0.6;
+								this.m_winSound.volume = 0.2;
 								this.m_planes[j].wins++;
 								this.m_winFlag = true;
 								this.m_incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);

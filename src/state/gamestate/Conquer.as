@@ -212,7 +212,7 @@ package state.gamestate {
 					this.m_indicateHitbox();
 					this.m_indicateBase(this.m_planes[i].m_activePlayer);
 					this.m_bannerPickupSound.play();
-					this.m_bannerPickupSound.volume = 0.6;
+					this.m_bannerPickupSound.volume = 0.5;
 				}
 			}
 		}
@@ -320,7 +320,7 @@ package state.gamestate {
 			if (this.m_bannerHolder && this.m_bannerHolder.holdingBanner == false && this.m_banner.active) {
 				this.m_dropBanner();
 				this.m_bannerDropSound.play();
-				this.m_bannerDropSound.volume = 0.6;
+				this.m_bannerDropSound.volume = 0.5;
 			}
 		}
 		
