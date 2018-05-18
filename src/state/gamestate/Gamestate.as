@@ -99,6 +99,7 @@ package state.gamestate {
 		private var m_ingameMusic:SoundObject;
 		private var m_powerupSound:SoundObject;
 		private var m_flashScreen:Boolean = false;
+		private var m_scoreText:TextField;
 		
 		
 		protected var m_winSound:SoundObject; //@TODO: rename
@@ -544,6 +545,39 @@ package state.gamestate {
 				winMessage.y = (Session.application.size.y / 2) - (winMessage.height / 2) - 40;
 			
 			this.winLayer.addChild(winMessage);
+		}
+		
+		protected function m_scoreMessage():void {
+			this.m_scoreText = new TextField();
+			var textFormat:TextFormat = new TextFormat();
+			
+			for(var i:int = 0; i < this.m_planes.length; i++) {
+				if(this.m_planes[i].wins != 0) {
+					this.m_scoreText.text = "PLAYER " + (this.m_planes[i].m_activePlayer + 1) + " SCORES!";
+					textFormat.color = this.m_planes[i].m_color;
+				}
+			}
+			
+			textFormat.size = 12; 
+			textFormat.font = "bulletreign";
+			
+			this.m_scoreText.embedFonts = true;
+			this.m_scoreText.setTextFormat(textFormat);
+			this.m_scoreText.defaultTextFormat = textFormat;
+			this.m_scoreText.autoSize = "center";
+			
+			this.m_scoreText.x = (Session.application.size.x / 2) - (this.m_scoreText.width / 2);
+			this.m_scoreText.y = (Session.application.size.y / 2) - (this.m_scoreText.height / 2) - 40;
+			
+			this.winLayer.addChild(this.m_scoreText);
+			
+			var timer:Timer = Session.timer.create(2000, this.m_scoreMessageRemove);
+		}
+		
+		protected function m_scoreMessageRemove():void {
+			if(this.winLayer.contains(this.m_scoreText)) {
+				this.winLayer.removeChild(this.m_scoreText);
+			}
 		}
 		
 		private function m_wrapItUp():void {
