@@ -81,6 +81,9 @@ package {
 		[Embed(source = "../asset/sound/banner/sfx_movement_jump13_landing.mp3")]
 		public static const BANNER_LAND:Class;
 		
+		[Embed(source = "../asset/sound/banner/sfx_sounds_error10.mp3")]
+		public static const BANNER_RESPAWN:Class;
+		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
