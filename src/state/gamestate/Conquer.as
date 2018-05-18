@@ -228,6 +228,7 @@ package state.gamestate {
 				this.m_indicateBase(this.m_banner.lastHolder.m_activePlayer);
 				this.m_winSound.play();
 				this.m_banner.lastHolder.wins++;
+				this.m_scoreMessage();
 				this.m_incrementWins(this.m_banner.lastHolder.m_activePlayer, this.m_banner.lastHolder.wins);
 				this.m_resolveGame();
 				var timer:Timer = Session.timer.create(3000, this.m_respawn);
@@ -345,7 +346,8 @@ package state.gamestate {
 					this.m_matchFin = true;
 					this.m_planes[i].m_winner = true;
 					if(this.m_callWinner == false) {
-					var timer:Timer = Session.timer.create(1000, this.m_matchOver);
+						this.m_scoreMessageRemove();
+						var timer:Timer = Session.timer.create(1000, this.m_matchOver);
 					}
 					this.m_callWinner = true;
 				}
