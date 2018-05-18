@@ -72,6 +72,15 @@ package {
 		[Embed(source = "../asset/sound/win/sfx_sounds_fanfare3.mp3")]
 		public static const WIN_SOUND:Class;
 		
+		[Embed(source = "../asset/sound/banner/sfx_sounds_interaction21.mp3")]
+		public static const BANNER_PICKUP:Class;
+		
+		[Embed(source = "../asset/sound/banner/sfx_sounds_interaction22.mp3")]
+		public static const BANNER_DROP:Class;
+		
+		[Embed(source = "../asset/sound/banner/sfx_movement_jump13_landing.mp3")]
+		public static const BANNER_LAND:Class;
+		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------

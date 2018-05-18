@@ -10,6 +10,7 @@ package state.gamestate {
 	import objects.Plane;
 	import objects.Zeppelin;
 	
+	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
 	
@@ -39,6 +40,9 @@ package state.gamestate {
 		private var m_blinktimer:Timer;
 		private var m_respawnBlinkTimer:Timer;
 		private var m_callWinner:Boolean = false;
+		private var m_bannerPickupSound:SoundObject;
+		private var m_bannerDropSound:SoundObject;
+		private var m_bannerLandSound:SoundObject;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -61,7 +65,7 @@ package state.gamestate {
 			this.m_initZeppelin();
 			this.m_initBanner();
 			this.m_drawGHB();
-			
+			this.m_initSounds();
 		}
 		
 		
@@ -109,6 +113,20 @@ package state.gamestate {
 		 */
 		private function m_indicateHitbox():void {
 			this.m_GHB.x = (this.m_bannerHolder.m_activePlayer) ? Session.application.size.x - this.m_GHB.width : 0;
+		}
+		
+		
+		/**
+		 * m_initSounds
+		 * 
+		 */
+		private function m_initSounds():void {
+			Session.sound.soundChannel.sources.add("bannerpickup", BulletReign.BANNER_PICKUP);
+			Session.sound.soundChannel.sources.add("bannerdrop", BulletReign.BANNER_DROP);
+			Session.sound.soundChannel.sources.add("bannerland", BulletReign.BANNER_LAND);
+			this.m_bannerPickupSound = Session.sound.soundChannel.get("bannerpickup");
+			this.m_bannerDropSound = Session.sound.soundChannel.get("bannerdrop");
+			this.m_bannerLandSound = Session.sound.soundChannel.get("bannerland");
 		}
 		
 		
@@ -190,6 +208,8 @@ package state.gamestate {
 					this.m_banner.lastHolder = this.m_planes[i];
 					this.m_indicateHitbox();
 					this.m_indicateBase(this.m_planes[i].m_activePlayer);
+					this.m_bannerPickupSound.play();
+					this.m_bannerPickupSound.volume = 0.6;
 				}
 			}
 		}
@@ -220,6 +240,8 @@ package state.gamestate {
 			if (this.m_banner.hitBox.hitTestObject(this.groundHitbox) && this.m_banner.onGround == false && this.m_bannerHolder == null) {
 //				trace("Banner on ground");
 				this.m_banner.onGround = true;
+				this.m_bannerLandSound.play();
+				this.m_bannerLandSound.volume = 1;
 				if (!this.m_banner.onBase) {
 					this.m_blinktimer = Session.timer.create(3000, this.m_onGroundCount);
 				}
@@ -290,6 +312,8 @@ package state.gamestate {
 		private function m_onBannerDrop():void {
 			if (this.m_bannerHolder && this.m_bannerHolder.holdingBanner == false && this.m_banner.active) {
 				this.m_dropBanner();
+				this.m_bannerDropSound.play();
+				this.m_bannerDropSound.volume = 0.6;
 			}
 		}
 		
