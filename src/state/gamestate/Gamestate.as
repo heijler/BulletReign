@@ -482,7 +482,7 @@ package state.gamestate {
 						
 						if ((this.m_planes[i].tailHitbox.hitTestObject(this.m_crates[j]) || this.m_planes[i].bodyHitbox.hitTestObject(this.m_crates[j])) && this.m_planes[i].powerUpActive == false) {
 							this.m_powerupSound.play();
-							this.m_powerupSound.volume = 0.6;
+							this.m_powerupSound.volume = 0.1;
 							this.m_planes[i].powerUpActive = true;
 							if(this.m_crates[j].m_type == 0) {
 								this.m_planes[i].m_noDamage = true;

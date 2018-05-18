@@ -455,7 +455,7 @@ package objects {
 				this.m_fireDelay--;
 				if (this.m_fireDelay <= 0 && this.m_fireCounter > 0 && this.m_firing) {
 					this.m_openFire.play();
-					this.m_openFire.volume = 0.6;
+					this.m_openFire.volume = 0.4;
 					if(this.m_noFireCounter == false) {
 						this.m_fireCounter--;
 					}
@@ -591,7 +591,7 @@ package objects {
 			this._flicker(this, 500);
 			this.m_fallingPlane.stop();
 			this.m_crashing.play();
-			this.m_crashing.volume = 0.6;
+			this.m_crashing.volume = 0.5;
 		}
 		
 		
@@ -630,7 +630,7 @@ package objects {
 				this.m_screamSound.play();
 				this.m_screamSound.volume = 0.8;
 				this.m_fallingPlane.play();
-				this.m_fallingPlane.volume = 0.6;
+				this.m_fallingPlane.volume = 0.5;
 				this.holdingBanner = false;
 			}
 		}
