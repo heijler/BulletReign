@@ -41,19 +41,18 @@ package objects {
 		public var shotDown:Boolean = false;
 		public var m_newDurability:Number; //@TODO: Rename if public, does it need to be public?
 		public var m_activePlayer:int = 0; //@TODO: Rename if public, does it need to be public?
-		public var m_noAccelDuration:Boolean = false;
-		public var m_noDamage:Boolean = false;
-		public var m_noFireCounter:Boolean = false;
+		public var m_noAccelDuration:Boolean = false; //@TODO: Rename
+		public var m_noDamage:Boolean = false; //@TODO: Rename
+		public var m_noFireCounter:Boolean = false; //@TODO: Rename
 		public var wins:int;
 		public var holdingBanner:Boolean = false;
-		public var m_engineSound:SoundObject;
+		public var m_engineSound:SoundObject; //@TODO: Rename
 		public var wonRound:Boolean = false;
 		public var powerUpActive:Boolean = false;
 		public var tailHitbox:Shape;
 		public var bodyHitbox:Shape;
-		public var m_color:int;
-		public var m_winner:Boolean = false;
-		
+		public var m_color:int; //@TODO: Rename
+		public var m_winner:Boolean = false; //@TODO: Rename
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
@@ -257,7 +256,7 @@ package objects {
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_DOWN)) {
 					this.m_anglePlane(0);
 				}
-				
+
 				if (Input.keyboard.justPressed(this.m_controls.PLAYER_BUTTON_2)) {
 					if(this.m_accelDuration == 0) {
 						this.m_engineNoJuiceSound.play();
