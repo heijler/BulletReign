@@ -9,8 +9,9 @@ package objects {
 	
 	import asset.BannerGFX;
 	
-	import se.lnu.stickossdk.system.Session;
 	import entity.MotionEntity;
+	
+	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
 	// Banner
@@ -36,9 +37,8 @@ package objects {
 		private var m_skin:MovieClip;
 		private var m_caught:Boolean = false;
 		private var m_scaleFactor:int;
-		private var m_counter:int = 3;
-		private var m_oldAngle:Number;
 		private var m_gravity:Boolean;
+		private var m_angleVals:Vector.<Number> = new Vector.<Number>();
 		
 		
 		//-----------------------------------------------------------
@@ -212,28 +212,14 @@ package objects {
 		 * 
 		 */
 		private function m_updateAngle():void {
-			this._angle %= 360; // resets angle at 360
-			if (this._angle < 0) this._angle = this._angle + 360; // Prevents minus angles
 			
-			this.m_counter--;
-			if (this.m_counter < 1) {
-				// @TODO: Use old angle and compare with new angle, if positive, do something in some direction, if negative opposite
-				if (this._angle > 180 && this._angle < 360) {
-					Session.tweener.add(this, {
-						duration: 80,
-						rotation: this._angle - 360
-					});
-				} else {
-					Session.tweener.add(this, {
-						duration: 80,
-						rotation: this._angle
-					});
-				}
-				this.m_counter = 2;
+			if (this.m_angleVals.length < 8) {
+				this.m_angleVals.push(this._angle);
+			} else {
+				this.m_angleVals.shift();
+				this.m_angleVals.push(this._angle);
 			}
-			
-			
-//			this.rotation = this._angle; // standard stel
+			this.rotation = this.m_angleVals[0];
 		}
 		
 		
