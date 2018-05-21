@@ -301,10 +301,9 @@ package state.gamestate {
 			this.m_ground.gotoAndStop(1);
 			
 			this.groundHitbox = new Shape();
-//			this.groundHitbox.graphics.beginFill(0x00FF00);
-			this.groundHitbox.graphics.drawRect(0, Session.application.size.y - 30, Session.application.size.x, 12);
-//			this.groundHitbox.graphics.endFill();
-//			this.m_ground.addChild(this.groundHitbox);
+			this.groundHitbox.graphics.beginFill(0x00FF00);
+			this.groundHitbox.graphics.drawRect(-50, Session.application.size.y - 30, Session.application.size.x + 100, 12);
+			this.groundHitbox.graphics.endFill();
 			this.worldLayer.addChild(this.m_ground);
 			this.worldLayer.addChild(this.groundHitbox);
 		}
