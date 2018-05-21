@@ -24,6 +24,7 @@ package entity.fx {
 		
 		
 		/**
+		 * FXManager
 		 * 
 		 */
 		public function FXManager(parent:DisplayObjectContainer) {
@@ -32,6 +33,7 @@ package entity.fx {
 		
 		
 		/**
+		 * add
 		 * 
 		 */
 		public function add(effect:Effect):void {

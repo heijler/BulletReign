@@ -8,9 +8,9 @@ package entity.fx {
 	import flash.geom.Point;
 	
 	//-----------------------------------------------------------
-	// SmokeCloud
+	// SmokeTrail
 	//-----------------------------------------------------------
-	public class SmokeCloud extends Effect {
+	public class SmokeTrail extends Trail {
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -23,8 +23,8 @@ package entity.fx {
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
-		public function SmokeCloud(pos:Point) {
-			super();
+		public function SmokeTrail(pos:Point, angle:Number) {
+			super(pos, angle);
 			this.m_pos = pos;
 		}
 		
