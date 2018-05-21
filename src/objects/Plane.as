@@ -47,11 +47,9 @@ package objects {
 		public var wins:int;
 		public var holdingBanner:Boolean = false;
 		public var m_engineSound:SoundObject; //@TODO: Rename
-		public var wonRound:Boolean = false;
 		public var powerUpActive:Boolean = false;
 		public var tailHitbox:Shape;
 		public var bodyHitbox:Shape;
-		public var m_color:int; //@TODO: Rename
 		public var m_winner:Boolean = false; //@TODO: Rename
 		//-----------------------------------------------------------
 		// Private properties
@@ -133,11 +131,9 @@ package objects {
 			if (m_activePlayer == 0) {
 				this.m_skin = new Plane1GFX;
 				this._setScale(this.m_skin, 2, 2);
-				this.m_color = 0x8a8a00; // 0xEBD320
 			} else if (m_activePlayer == 1) {
 				this.m_skin = new Plane2GFX;
 				this._setScale(this.m_skin, -2, 2);
-				this.m_color = 0xc37100;// 0xFFA200
 			}
 			this.m_skin.cacheAsBitmap = true; // @TODO: Check perf.
 			this.m_skin.gotoAndStop(1);
@@ -262,8 +258,7 @@ package objects {
 						this.m_engineNoJuiceSound.play();
 						this.m_engineNoJuiceSound.volume = 0.6;
 					} else {
-						this.m_engineOverdriveSound.play();
-						this.m_engineOverdriveSound.volume = 0.6;
+						this.m_overdrive(true);
 					}
 				}
 				
@@ -273,6 +268,7 @@ package objects {
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_2)) {
 					this.m_accelerate();
+					this.m_overdrive(true);
 				}
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
@@ -679,8 +675,18 @@ package objects {
 				this.m_clearNoAccelDuration();
 				this.m_clearNoDamage();
 				this.m_clearNoFireCounter();
+				this.m_accelDuration = this.ACCELERATE_DURATION;
+				this.m_fireCounter = this.FIRE_BURST_SIZE;
 			}
 		}
 		
+		private function m_overdrive(flag:Boolean):void {
+			if(flag == true) {
+				trace("a");
+				this.m_engineOverdriveSound.play();
+				this.m_engineOverdriveSound.volume = 0.6;
+				flag == false;
+			}
+		}
 	}
 }
