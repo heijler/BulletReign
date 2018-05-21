@@ -21,9 +21,9 @@ package entity.fx {
 		
 		protected var type:String;
 		protected var _pos:Point;
-		protected var _hasGravity:Boolean;
-		protected var _canGrow:Boolean;
-		protected var _canFade:Boolean;
+		protected var _hasGravity:Boolean = false;
+		protected var _canGrow:Boolean = false;
+		protected var _canFade:Boolean = false;
 		protected var _skin:Sprite;
 		
 		//-----------------------------------------------------------
@@ -43,7 +43,6 @@ package entity.fx {
 		 * 
 		 */
 		override public function init():void {
-			super.init();
 		}
 		
 		
@@ -51,7 +50,6 @@ package entity.fx {
 		 * 
 		 */
 		override public function update():void {
-			super.update();
 			this._effectGrowth();
 			this._effectGravity();
 		}

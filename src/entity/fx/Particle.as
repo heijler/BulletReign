@@ -49,7 +49,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function init():void {
-			super.init();
+//			super.init();
 			this.m_initSkin();
 			this.m_setSpawnPosition();
 		}
@@ -82,7 +82,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function update():void {
-			super.update();
+//			super.update();
 			this.applyGravity(m_gravity);
 			this.alpha -= this.m_alphaDecay;
 			if (m_grow) {

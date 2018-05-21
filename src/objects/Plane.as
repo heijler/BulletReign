@@ -354,7 +354,7 @@ package objects {
 				}
 				this.x += xVel * this.m_scaleFactor;
 				this.y += yVel * this.m_scaleFactor;
-				this.m_fxMan.add(new Trail(this.m_getPos(), this._angle));			
+				this.m_fxMan.add(new Trail(this.m_getPos(), this._angle));		
 				
 			} else if (this.m_accelDuration <= 0 && this.m_accelerating){
 				this.m_accelerating = false;
