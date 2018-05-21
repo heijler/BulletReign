@@ -43,6 +43,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function init():void {
+			super.init();
 		}
 		
 		
@@ -50,6 +51,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function update():void {
+			super.update();
 			this._effectGrowth();
 			this._effectGravity();
 		}

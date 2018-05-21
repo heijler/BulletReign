@@ -36,6 +36,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function init():void {
+			super.init();
 			this.m_initSkin();
 			this.m_setSpawnPosition();
 		}
@@ -58,6 +59,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function update():void {
+			super.update();
 			this.applyGravity();
 			this.alpha -= this.m_alphaDecay;
 			this.width -= 0.3;

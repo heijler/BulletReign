@@ -64,7 +64,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function update():void {
-//			super.update();
+			super.update();
 			this.applyGravity();
 			this.alpha -= this.m_alphaDecay;
 			this.width -= 0.3;
