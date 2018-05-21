@@ -152,15 +152,28 @@ package objects {
 		 */
 		private function m_setHitboxes():void {
 			this.tailHitbox = new Shape();
-//			this.tailHitbox.graphics.beginFill(0xFF0000);
+			
+			// Debug
+			if (BulletReign.debug) this.tailHitbox.graphics.beginFill(0xFF0000);
+			
 			this.tailHitbox.graphics.drawRect(-8, -1, 7, 3);
-//			this.tailHitbox.graphics.endFill();
+			
+			// Debug
+			if (BulletReign.debug) this.tailHitbox.graphics.endFill();
+			
 			this.m_skin.addChild(this.tailHitbox);
 			
+			
 			this.bodyHitbox = new Shape();
-//			this.bodyHitbox.graphics.beginFill(0xFFFF00);
+			
+			// Debug
+			if (BulletReign.debug) this.bodyHitbox.graphics.beginFill(0xFFFF00);
+			
 			this.bodyHitbox.graphics.drawRect(-1, -2, 9, 6);
-//			this.bodyHitbox.graphics.endFill();
+			
+			// Debug
+			if (BulletReign.debug) this.bodyHitbox.graphics.endFill();
+			
 			this.m_skin.addChild(this.bodyHitbox);
 		}
 		
