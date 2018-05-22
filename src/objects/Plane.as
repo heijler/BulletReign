@@ -84,6 +84,7 @@ package objects {
 		private var m_facingUp:Boolean = false;
 		private var m_movability:Boolean;
 		private var m_onePU:Boolean = false;
+		private var m_recharging:Boolean = false;
 		
 
 		//-----------------------------------------------------------
@@ -220,6 +221,7 @@ package objects {
 			this.m_collisionControl();
 			this.m_updatePosition();
 			this.m_powerUps();
+			this.m_accelDurationRecharge();
 			
 			if (!this.m_steering) {
 //				this.m_fxMan.add(new Particle(this.m_getPos(), this._angle, 0.001, new <uint>[0xEBEBEB]));
@@ -252,23 +254,16 @@ package objects {
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_DOWN)) {
 					this.m_anglePlane(0);
 				}
-
-				if (Input.keyboard.justPressed(this.m_controls.PLAYER_BUTTON_2)) {
-					if(this.m_accelDuration == 0) {
-						this.m_engineNoJuiceSound.play();
-						this.m_engineNoJuiceSound.volume = 0.6;
-					} else {
-						this.m_overdrive(true);
-					}
-				}
 				
 				if (Input.keyboard.justReleased(this.m_controls.PLAYER_BUTTON_2)) {
 					this.m_engineOverdriveSound.stop();
-				} 
+					this.m_recharging = true;
+					this.m_accelDurationRecharge();
+				}
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_2)) {
 					this.m_accelerate();
-					this.m_overdrive(true);
+					this.m_recharging = false;
 				}
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
@@ -335,13 +330,21 @@ package objects {
 				}
 			}
 		}
-		
+		//Delad resurs eller unik egen. Loop MAX_VALUE.
 		
 		/**
 		 * m_accelerate
 		 * 
 		 */
 		private function m_accelerate():void {
+			if (this.m_accelDuration == this.ACCELERATE_DURATION && this.m_accelerating) {
+				this.m_engineOverdriveSound.play();
+			}
+			
+			if (this.m_accelDuration == 0) {
+				this.m_engineNoJuiceSound.play();
+			}
+			
 			if (this.m_steering && this.m_accelDuration != 0 && this.m_accelerating) {
 				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
@@ -356,6 +359,12 @@ package objects {
 				this.m_accelerating = false;
 				this.m_engineOverdriveSound.stop();
 				var timer:Timer = Session.timer.create(2000, this.m_resetAcceleration);
+			}
+		}
+		
+		private function m_accelDurationRecharge():void {
+			if (this.m_recharging == true && this.m_accelDuration != this.ACCELERATE_DURATION) {
+				this.m_accelDuration++;
 			}
 		}
 		
@@ -680,13 +689,5 @@ package objects {
 			}
 		}
 		
-		private function m_overdrive(flag:Boolean):void {
-			if(flag == true) {
-				trace("a");
-				this.m_engineOverdriveSound.play();
-				this.m_engineOverdriveSound.volume = 0.6;
-				flag == false;
-			}
-		}
 	}
 }
