@@ -92,9 +92,9 @@ package entity.fx {
 				this.width -= 0.3; // @TODO: magic numbers
 				this.height -= 0.3; // @TODO: magic numbers
 			}
-//			this.y -= 0.2;
-			this.x += Math.random();
-			this.y += Math.random();
+			this.y -= 0.2;
+//			this.x += Math.random();
+//			this.y += Math.random();
 		}
 		
 		

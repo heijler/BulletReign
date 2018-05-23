@@ -118,6 +118,7 @@ package objects {
 			}
 		}
 		
+		
 		/**
 		 * m_crateTweenLeft
 		 * @IMPROVE: if not enough frames, reduce the tween work by removing x property

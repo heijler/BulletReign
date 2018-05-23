@@ -10,7 +10,7 @@ package entity.fx {
 	// Trail
 	//-----------------------------------------------------------
 	
-	public class Trail extends Particle {
+	public class Trail extends Effect {
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -26,7 +26,8 @@ package entity.fx {
 		//-----------------------------------------------------------
 		
 		public function Trail(pos:Point, angle) {
-			super(pos, angle);
+//			super(pos, angle);
+			super();
 			this.m_pos = pos;
 			this._angle = angle;
 		}
@@ -64,7 +65,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function update():void {
-			super.update();
+//			super.update();
 			this.applyGravity();
 			this.alpha -= this.m_alphaDecay;
 			this.width -= 0.3;

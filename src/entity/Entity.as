@@ -59,7 +59,7 @@ package entity {
 		 * Override
 		 */
 		override public function init():void {
-			
+			super.init();
 		}
 		
 		/**
