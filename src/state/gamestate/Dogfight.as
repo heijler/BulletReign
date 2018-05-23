@@ -55,7 +55,7 @@ package state.gamestate {
 								this.m_winSound.play();
 								this.m_winSound.volume = 0.2;
 								this.m_planes[j].wins++;
-								this.m_scoreMessage();
+								this.m_scoreMessage(this.m_planes[j].m_activePlayer);
 								this.m_winFlag = true;
 								this.m_incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);
 								var timer:Timer = Session.timer.create(3000, this.m_respawnNow);
@@ -81,7 +81,7 @@ package state.gamestate {
 					this.m_planes[i].m_winner = true;
 					if(this.m_callWinner == false){
 						this.m_scoreMessageRemove();
-						var timer:Timer = Session.timer.create(1000, this.m_matchOver); // Skall vi ha Timer???????
+						this.m_matchOver(this.m_planes[i].m_activePlayer);
 					}
 					this.m_callWinner = true;
 				}

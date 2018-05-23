@@ -301,9 +301,13 @@ package state.gamestate {
 			this.m_ground.gotoAndStop(1);
 			
 			this.groundHitbox = new Shape();
-			this.groundHitbox.graphics.beginFill(0x00FF00);
+			
+			if (BulletReign.debug) this.groundHitbox.graphics.beginFill(0x00FF00);
+			
 			this.groundHitbox.graphics.drawRect(-50, Session.application.size.y - 30, Session.application.size.x + 100, 12);
-			this.groundHitbox.graphics.endFill();
+			
+			if (BulletReign.debug) this.groundHitbox.graphics.endFill();
+			
 			this.worldLayer.addChild(this.m_ground);
 			this.worldLayer.addChild(this.groundHitbox);
 		}
@@ -397,7 +401,7 @@ package state.gamestate {
 		 */
 		private function m_skyCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].hitTestObject(this.m_sky)) {
+				if (this.m_planes[i].tailHitbox.hitTestObject(this.m_sky) || this.m_planes[i].bodyHitbox.hitTestObject(this.m_sky)) {
 					this.m_planes[i].reflectAngle();
 					this.m_planes[i].updateRotation();
 				}
@@ -516,20 +520,18 @@ package state.gamestate {
 		 * m_roundOver
 		 * 
 		 */
-		protected function m_matchOver():void {
+		protected function m_matchOver(player):void {
 			var timer:Timer = Session.timer.create(2000, this.m_wrapItUp);
-			this.m_winScreen();
+			this.m_winScreen(player);
 		}
 		
-		private function m_winScreen():void {
+		private function m_winScreen(player):void {
 			var winMessage:TextField = new TextField();
 			var textFormat:TextFormat = new TextFormat();
 			
 			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if(this.m_planes[i].m_winner == true) {
-					winMessage.text = "PLAYER " + (this.m_planes[i].m_activePlayer + 1) + " IS VICTORIOUS!";
-					textFormat.color = this.m_planes[i].m_color;
-				}
+					winMessage.text = "PLAYER " + (player + 1) + " IS VICTORIOUS!";
+					textFormat.color = 0x000000;
 			}
 			
 				textFormat.size = 12; 
@@ -546,16 +548,11 @@ package state.gamestate {
 			this.winLayer.addChild(winMessage);
 		}
 		
-		protected function m_scoreMessage():void {
+		protected function m_scoreMessage(player:int):void {
 			this.m_scoreText = new TextField();
 			var textFormat:TextFormat = new TextFormat();
-			
-			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if(this.m_planes[i].wins != 0) {
-					this.m_scoreText.text = "PLAYER " + (this.m_planes[i].m_activePlayer + 1) + " SCORES!";
-					textFormat.color = this.m_planes[i].m_color;
-				}
-			}
+			this.m_scoreText.text = "PLAYER " + (player + 1) + " SCORES!";
+			textFormat.color = 0x000000;
 			
 			textFormat.size = 12; 
 			textFormat.font = "bulletreign";

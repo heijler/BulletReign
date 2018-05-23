@@ -69,7 +69,6 @@ package state.gamestate {
 			this.m_initZeppelin();
 			this.m_initBanner();
 			this.m_initHitboxes();
-//			this.m_drawGHB();
 			this.m_initSounds();
 			this.m_planes[0].m_newDurability = 3;
 			this.m_planes[1].m_newDurability = 3;
@@ -103,12 +102,20 @@ package state.gamestate {
 		private function m_drawBaseHB():void {
 			this.m_b1HB = new Shape();
 			this.m_b2HB = new Shape();
-//			this.m_b1HB.graphics.beginFill(0x00FF00);
-//			this.m_b2HB.graphics.beginFill(0x0000FF);
+
+			
+			if (BulletReign.debug) {
+				this.m_b1HB.graphics.beginFill(0x00FF00, 0.5);
+				this.m_b2HB.graphics.beginFill(0x0000FF, 0.5);
+			}
 			this.m_b1HB.graphics.drawRect(0, Session.application.size.y - 30, 160, 30);
 			this.m_b2HB.graphics.drawRect(Session.application.size.x - this.m_GHB.width, Session.application.size.y - 30, 160, 30);
-//			this.m_b1HB.graphics.endFill();
-//			this.m_b2HB.graphics.endFill();
+			
+			if (BulletReign.debug) {
+				this.m_b1HB.graphics.endFill();
+				this.m_b2HB.graphics.endFill();
+			}
+				
 			this.hqLayer.addChild(this.m_b1HB);
 			this.hqLayer.addChild(this.m_b2HB);
 		}
@@ -119,9 +126,15 @@ package state.gamestate {
 		 */
 		private function m_drawGHB():void {
 			this.m_GHB = new Shape();
-//			this.m_GHB.graphics.beginFill(0xFF0000, 0.5);
+			
+			// Debug
+			if (BulletReign.debug) this.m_GHB.graphics.beginFill(0xFF0000);	
+			
 			this.m_GHB.graphics.drawRect(0, Session.application.size.y-30, 160, 30);
-//			this.m_GHB.graphics.endFill();
+			
+			// Debug
+			if (BulletReign.debug) this.m_GHB.graphics.endFill();
+			
 			this.hqLayer.addChild(this.m_GHB);
 		}
 		
@@ -261,7 +274,7 @@ package state.gamestate {
 				this.m_indicateBase(this.m_banner.lastHolder.m_activePlayer);
 				this.m_winSound.play();
 				this.m_banner.lastHolder.wins++;
-				this.m_scoreMessage();
+				this.m_scoreMessage(this.m_banner.lastHolder.m_activePlayer);
 				this.m_incrementWins(this.m_banner.lastHolder.m_activePlayer, this.m_banner.lastHolder.wins);
 				this.m_resolveGame();
 				var timer:Timer = Session.timer.create(3000, this.m_respawn);
@@ -396,7 +409,7 @@ package state.gamestate {
 					this.m_planes[i].m_winner = true;
 					if(this.m_callWinner == false) {
 						this.m_scoreMessageRemove();
-						var timer:Timer = Session.timer.create(1000, this.m_matchOver);
+						this.m_matchOver(this.m_planes[i].m_activePlayer);
 					}
 					this.m_callWinner = true;
 				}

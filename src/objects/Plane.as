@@ -48,11 +48,9 @@ package objects {
 		public var wins:int;
 		public var holdingBanner:Boolean = false;
 		public var m_engineSound:SoundObject; //@TODO: Rename
-		public var wonRound:Boolean = false;
 		public var powerUpActive:Boolean = false;
 		public var tailHitbox:Shape;
 		public var bodyHitbox:Shape;
-		public var m_color:int; //@TODO: Rename
 		public var m_winner:Boolean = false; //@TODO: Rename
 		//-----------------------------------------------------------
 		// Private properties
@@ -88,6 +86,7 @@ package objects {
 		private var m_movability:Boolean;
 		private var m_onePU:Boolean = false;
 		private var m_smoke:Smoke;
+		private var m_recharging:Boolean = false;
 		
 
 		//-----------------------------------------------------------
@@ -137,11 +136,9 @@ package objects {
 			if (m_activePlayer == 0) {
 				this.m_skin = new Plane1GFX;
 				this._setScale(this.m_skin, 2, 2);
-				this.m_color = 0x8a8a00; // 0xEBD320
 			} else if (m_activePlayer == 1) {
 				this.m_skin = new Plane2GFX;
 				this._setScale(this.m_skin, -2, 2);
-				this.m_color = 0xc37100;// 0xFFA200
 			}
 			this.m_skin.cacheAsBitmap = true; // @TODO: Check perf.
 			this.m_skin.gotoAndStop(1);
@@ -156,15 +153,28 @@ package objects {
 		 */
 		private function m_setHitboxes():void {
 			this.tailHitbox = new Shape();
-//			this.tailHitbox.graphics.beginFill(0xFF0000);
+			
+			// Debug
+			if (BulletReign.debug) this.tailHitbox.graphics.beginFill(0xFF0000);
+			
 			this.tailHitbox.graphics.drawRect(-8, -1, 7, 3);
-//			this.tailHitbox.graphics.endFill();
+			
+			// Debug
+			if (BulletReign.debug) this.tailHitbox.graphics.endFill();
+			
 			this.m_skin.addChild(this.tailHitbox);
 			
+			
 			this.bodyHitbox = new Shape();
-//			this.bodyHitbox.graphics.beginFill(0xFFFF00);
+			
+			// Debug
+			if (BulletReign.debug) this.bodyHitbox.graphics.beginFill(0xFFFF00);
+			
 			this.bodyHitbox.graphics.drawRect(-1, -2, 9, 6);
-//			this.bodyHitbox.graphics.endFill();
+			
+			// Debug
+			if (BulletReign.debug) this.bodyHitbox.graphics.endFill();
+			
 			this.m_skin.addChild(this.bodyHitbox);
 		}
 		
@@ -228,6 +238,7 @@ package objects {
 			this.m_collisionControl();
 			this.m_updatePosition();
 			this.m_powerUps();
+			this.m_accelDurationRecharge();
 			
 			this.m_smoke.x = this.x;
 			this.m_smoke.y = this.y;
@@ -263,23 +274,16 @@ package objects {
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_DOWN)) {
 					this.m_anglePlane(0);
 				}
-
-				if (Input.keyboard.justPressed(this.m_controls.PLAYER_BUTTON_2)) {
-					if(this.m_accelDuration == 0) {
-						this.m_engineNoJuiceSound.play();
-						this.m_engineNoJuiceSound.volume = 0.6;
-					} else {
-						this.m_engineOverdriveSound.play();
-						this.m_engineOverdriveSound.volume = 0.6;
-					}
-				}
 				
 				if (Input.keyboard.justReleased(this.m_controls.PLAYER_BUTTON_2)) {
 					this.m_engineOverdriveSound.stop();
-				} 
+					this.m_recharging = true;
+					this.m_accelDurationRecharge();
+				}
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_2)) {
 					this.m_accelerate();
+					this.m_recharging = false;
 				}
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
@@ -346,13 +350,21 @@ package objects {
 				}
 			}
 		}
-		
+		//Delad resurs eller unik egen. Loop MAX_VALUE.
 		
 		/**
 		 * m_accelerate
 		 * 
 		 */
 		private function m_accelerate():void {
+			if (this.m_accelDuration == this.ACCELERATE_DURATION && this.m_accelerating) {
+				this.m_engineOverdriveSound.play();
+			}
+			
+			if (this.m_accelDuration == 0) {
+				this.m_engineNoJuiceSound.play();
+			}
+			
 			if (this.m_steering && this.m_accelDuration != 0 && this.m_accelerating) {
 				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
@@ -367,6 +379,12 @@ package objects {
 				this.m_accelerating = false;
 				this.m_engineOverdriveSound.stop();
 				var timer:Timer = Session.timer.create(2000, this.m_resetAcceleration);
+			}
+		}
+		
+		private function m_accelDurationRecharge():void {
+			if (this.m_recharging == true && this.m_accelDuration != this.ACCELERATE_DURATION) {
+				this.m_accelDuration++;
 			}
 		}
 		
@@ -691,6 +709,8 @@ package objects {
 				this.m_clearNoDamage();
 				this.m_clearNoFireCounter();
 				this.m_smoke.stop();
+				this.m_accelDuration = this.ACCELERATE_DURATION;
+				this.m_fireCounter = this.FIRE_BURST_SIZE;
 			}
 		}
 		
