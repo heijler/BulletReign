@@ -21,6 +21,8 @@ package {
 	
 	public class BulletReign extends Engine {
 		
+		static public var debug:Boolean = true;
+		
 		[Embed(source = "../asset/ttf/BulletReign.ttf", fontFamily = "bulletreign", mimeType = "application/x-font", embedAsCFF="false")]
 		private static const COUNTER_TEXT:Class;
 		

@@ -141,9 +141,15 @@ package objects {
 		 */
 		private function m_initHitBox():void {
 			this.hitBox = new Shape();
-//			hitBox.graphics.beginFill(0xFF0000);
+			
+			// Debug
+			if (BulletReign.debug) hitBox.graphics.beginFill(0xFF0000);
+			
 			this.hitBox.graphics.drawRect(-12, -2, 12, 4);
-//			hitBox.graphics.endFill();
+			
+			// Debug
+			if (BulletReign.debug) hitBox.graphics.endFill();
+			
 			this.m_skin.addChild(this.hitBox);
 		}
 		

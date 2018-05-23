@@ -301,9 +301,13 @@ package state.gamestate {
 			this.m_ground.gotoAndStop(1);
 			
 			this.groundHitbox = new Shape();
-			this.groundHitbox.graphics.beginFill(0x00FF00);
+			
+			if (BulletReign.debug) this.groundHitbox.graphics.beginFill(0x00FF00);
+			
 			this.groundHitbox.graphics.drawRect(-50, Session.application.size.y - 30, Session.application.size.x + 100, 12);
-			this.groundHitbox.graphics.endFill();
+			
+			if (BulletReign.debug) this.groundHitbox.graphics.endFill();
+			
 			this.worldLayer.addChild(this.m_ground);
 			this.worldLayer.addChild(this.groundHitbox);
 		}
@@ -397,7 +401,7 @@ package state.gamestate {
 		 */
 		private function m_skyCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].hitTestObject(this.m_sky)) {
+				if (this.m_planes[i].tailHitbox.hitTestObject(this.m_sky) || this.m_planes[i].bodyHitbox.hitTestObject(this.m_sky)) {
 					this.m_planes[i].reflectAngle();
 					this.m_planes[i].updateRotation();
 				}
