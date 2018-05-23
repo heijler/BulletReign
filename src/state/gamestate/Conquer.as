@@ -46,6 +46,7 @@ package state.gamestate {
 		private var m_bannerDropSound:SoundObject;
 		private var m_bannerLandSound:SoundObject;
 		private var m_bannerRespawnSound:SoundObject;
+		private var m_resentlyStolen:Boolean = false;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -227,6 +228,12 @@ package state.gamestate {
 			if (this.m_zeppelin.atDefaultPos && !this.m_banner.active) {
 				this.m_banner.showBanner();
 			}
+			
+			if (this.m_bannerHolder != null) {
+				trace(this.m_bannerHolder);
+					this.m_planesBannerSwitch();
+			}
+			
 			this.m_bannerPlaneCollision();
 			this.m_bannerBaseCollision();
 			this.m_bannerInactiveBaseCollision();
@@ -259,10 +266,41 @@ package state.gamestate {
 					this.m_bannerPickupSound.play();
 					this.m_bannerPickupSound.volume = 0.5;
 				}
+				
 			}
 		}
 		
+		private function m_planesBannerSwitch():void {
+				trace(this.m_resentlyStolen);
+				if(this.m_planes[1].hitTestObject(this.m_planes[0].tailHitbox) && this.m_resentlyStolen == false && this.m_planes[1].holdingBanner == false) {
+					trace("A");
+					this.m_bannerHolder = this.m_planes[1];
+					this.m_banner.lastHolder = this.m_planes[1];
+					this.m_indicateBase(this.m_planes[1].m_activePlayer);
+					this.m_resentlyStolen = true;
+					this.m_planes[1].holdingBanner = true;
+					this.m_planes[0].holdingBanner = false;
+					var slampa:Timer = Session.timer.create(1000, this.m_longlonglongTimeago);
+					slampa = null;
+				}
+				if(this.m_planes[0].hitTestObject(this.m_planes[1].tailHitbox) && this.m_resentlyStolen == false && this.m_planes[0].holdingBanner == false) {
+					trace("B");
+					this.m_bannerHolder = this.m_planes[0];
+					this.m_banner.lastHolder = this.m_planes[0];
+					this.m_indicateBase(this.m_planes[0].m_activePlayer);
+					this.m_resentlyStolen = true;
+					this.m_planes[0].holdingBanner = true;
+					this.m_planes[1].holdingBanner = false;
+					var slinka:Timer = Session.timer.create(1000, this.m_longlonglongTimeago);
+					slinka = null;
+				}
+			
+		}
 		
+		private function m_longlonglongTimeago():void {
+			this.m_resentlyStolen = false;
+			trace("C");
+		}
 		/**
 		 * m_bannerBaseCollision
 		 * 
