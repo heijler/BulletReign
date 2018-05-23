@@ -49,6 +49,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function init():void {
+			super.init();
 			this.m_initSkin();
 			this.m_setSpawnPosition();
 		}
@@ -81,6 +82,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function update():void {
+			super.update();
 			this.applyGravity(m_gravity);
 			this.alpha -= this.m_alphaDecay;
 			if (m_grow) {
@@ -90,9 +92,9 @@ package entity.fx {
 				this.width -= 0.3; // @TODO: magic numbers
 				this.height -= 0.3; // @TODO: magic numbers
 			}
-//			this.y -= 0.2;
-			this.x += Math.random();
-			this.y += Math.random();
+			this.y -= 0.2;
+//			this.x += Math.random();
+//			this.y += Math.random();
 		}
 		
 		

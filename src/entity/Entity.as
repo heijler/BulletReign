@@ -50,7 +50,7 @@ package entity {
 		 * Override
 		 */
 		override public function update():void {
-			super.update();
+//			super.update();
 		}
 		
 		
@@ -59,7 +59,7 @@ package entity {
 		 * Override
 		 */
 		override public function init():void {
-			
+			super.init();
 		}
 		
 		/**

@@ -10,7 +10,7 @@ package entity.fx {
 	// Trail
 	//-----------------------------------------------------------
 	
-	public class Trail extends entity.fx.Effect {
+	public class Trail extends Effect {
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -26,6 +26,7 @@ package entity.fx {
 		//-----------------------------------------------------------
 		
 		public function Trail(pos:Point, angle) {
+//			super(pos, angle);
 			super();
 			this.m_pos = pos;
 			this._angle = angle;
@@ -39,6 +40,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function init():void {
+			super.init();
 			this.m_initSkin();
 			this.m_setSpawnPosition();
 		}
@@ -63,6 +65,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function update():void {
+//			super.update();
 			this.applyGravity();
 			this.alpha -= this.m_alphaDecay;
 			this.width -= 0.3;
