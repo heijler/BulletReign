@@ -24,6 +24,7 @@ package objects {
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
+	import asset.Plane3GFX;
 	
 	
 	//-----------------------------------------------------------
@@ -135,15 +136,22 @@ package objects {
 		private function m_initSkin():void {
 			if (m_activePlayer == 0) {
 				this.m_skin = new Plane1GFX;
+				if (BulletReign.rbp == 0) this.m_initAltSkin();
 				this._setScale(this.m_skin, 2, 2);
 			} else if (m_activePlayer == 1) {
 				this.m_skin = new Plane2GFX;
+				if (BulletReign.rbp == 1) this.m_initAltSkin();
 				this._setScale(this.m_skin, -2, 2);
 			}
 			this.m_skin.cacheAsBitmap = true; // @TODO: Check perf.
 			this.m_skin.gotoAndStop(1);
 			this.m_setHitboxes();
 			this.addChild(this.m_skin);
+		}
+		public function m_initAltSkin():void {
+			if (BulletReign.rb && (BulletReign.rbp > -1)) {
+				this.m_skin = new Plane3GFX;
+			}
 		}
 		
 		

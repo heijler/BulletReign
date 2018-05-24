@@ -180,8 +180,14 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initMusic():void {
-			Session.sound.musicChannel.sources.add("ingamemusic", BulletReign.INGAME_MUSIC);
-			this.m_ingameMusic = Session.sound.musicChannel.get("ingamemusic");
+			if (BulletReign.rb) {
+				Session.sound.musicChannel.sources.add("rbingamemusic", BulletReign.RB_INGAME_MUSIC);
+				this.m_ingameMusic = Session.sound.musicChannel.get("rbingamemusic");
+			} else {
+				Session.sound.musicChannel.sources.add("ingamemusic", BulletReign.INGAME_MUSIC);
+				this.m_ingameMusic = Session.sound.musicChannel.get("ingamemusic");
+			}
+			
 			this.m_ingameMusic.play();
 			this.m_ingameMusic.volume = 0.3;
 		}
