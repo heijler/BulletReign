@@ -283,8 +283,8 @@ package state.gamestate {
 		private function m_initSky():void {
 			this.m_sky = new Sprite();
 			this.m_sky.graphics.lineStyle(2, 0xFFFFFF);
-			this.m_sky.graphics.moveTo(0, -40);
-			this.m_sky.graphics.lineTo(800, -40);
+			this.m_sky.graphics.moveTo(-50, -40);
+			this.m_sky.graphics.lineTo(850, -40);
 			this.worldLayer.addChild(this.m_sky);
 		}
 		
