@@ -180,8 +180,14 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initMusic():void {
-			Session.sound.musicChannel.sources.add("ingamemusic", BulletReign.INGAME_MUSIC);
-			this.m_ingameMusic = Session.sound.musicChannel.get("ingamemusic");
+			if (BulletReign.rb) {
+				Session.sound.musicChannel.sources.add("rbingamemusic", BulletReign.RB_INGAME_MUSIC);
+				this.m_ingameMusic = Session.sound.musicChannel.get("rbingamemusic");
+			} else {
+				Session.sound.musicChannel.sources.add("ingamemusic", BulletReign.INGAME_MUSIC);
+				this.m_ingameMusic = Session.sound.musicChannel.get("ingamemusic");
+			}
+			
 			this.m_ingameMusic.play();
 			this.m_ingameMusic.volume = 0.3;
 		}
@@ -283,8 +289,8 @@ package state.gamestate {
 		private function m_initSky():void {
 			this.m_sky = new Sprite();
 			this.m_sky.graphics.lineStyle(2, 0xFFFFFF);
-			this.m_sky.graphics.moveTo(0, -40);
-			this.m_sky.graphics.lineTo(800, -40);
+			this.m_sky.graphics.moveTo(-50, -40);
+			this.m_sky.graphics.lineTo(850, -40);
 			this.worldLayer.addChild(this.m_sky);
 		}
 		

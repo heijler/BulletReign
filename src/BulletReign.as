@@ -32,6 +32,9 @@ package {
 		[Embed(source = "../asset/sound/music/bgm_action_3.mp3")]
 		public static const INGAME_MUSIC:Class;
 		
+		[Embed(source = "../asset/sound/music/rotv-8bit.mp3")]
+		public static const RB_INGAME_MUSIC:Class;
+		
 		[Embed(source = "../asset/sound/plane/sfx_wpn_machinegun_loop2.mp3")]
 		public static const GUN_FIRE:Class;
 		
@@ -85,6 +88,9 @@ package {
 		
 		[Embed(source = "../asset/sound/banner/sfx_sounds_error10.mp3")]
 		public static const BANNER_RESPAWN:Class;
+		
+		static public var rb:Boolean = false;
+		static public var rbp:int = -1;
 		
 		//-----------------------------------------------------------
 		// Constructor

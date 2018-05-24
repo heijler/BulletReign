@@ -105,6 +105,11 @@ package state.menustate.infoScreen {
 		 * 
 		 */
 		private function m_controlMove(control:EvertronControls):void {
+			if (Input.keyboard.pressed(control.PLAYER_UP)) {
+				BulletReign.rb = true;
+				BulletReign.rbp = control.player;
+			}
+			
 			if (Input.keyboard.anyPressed()) {
 				this.m_newState();
 			}
