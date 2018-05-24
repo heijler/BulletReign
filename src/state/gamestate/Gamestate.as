@@ -33,7 +33,7 @@ package state.gamestate {
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
 	
-	import state.menustate.RematchMenu;
+	import state.menustate.infoScreen.WinnerScreen;
 	
 	import ui.HUD;
 	import ui.HUDManager;
@@ -577,7 +577,7 @@ package state.gamestate {
 		}
 		
 		private function m_wrapItUp():void {
-			Session.application.displayState = new RematchMenu(this._gamemode);
+			Session.application.displayState = new WinnerScreen(this._gamemode);
 		}
 		
 		/**
