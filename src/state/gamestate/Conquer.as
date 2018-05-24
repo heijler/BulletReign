@@ -280,6 +280,8 @@ package state.gamestate {
 					this.m_recentlyStolen = true;
 					this.m_planes[1].holdingBanner = true;
 					this.m_planes[0].holdingBanner = false;
+					this.m_bannerDropSound.play();
+					this.m_bannerDropSound.volume = 0.5;
 					var timerA:Timer = Session.timer.create(1000, this.m_longlonglongTimeago);
 					timerA = null;
 				}
@@ -292,6 +294,8 @@ package state.gamestate {
 					this.m_recentlyStolen = true;
 					this.m_planes[0].holdingBanner = true;
 					this.m_planes[1].holdingBanner = false;
+					this.m_bannerDropSound.play();
+					this.m_bannerDropSound.volume = 0.5;
 					var timerB:Timer = Session.timer.create(1000, this.m_longlonglongTimeago);
 					timerB = null;
 				}
@@ -327,7 +331,6 @@ package state.gamestate {
 		 */
 		private function m_bannerGroundCollision():void {
 			if (this.m_banner.hitBox.hitTestObject(this.groundHitbox) && this.m_banner.onGround == false && this.m_bannerHolder == null) {
-//				trace("Banner on ground");
 				this.m_banner.onGround = true;
 				this.m_bannerLandSound.play();
 				this.m_bannerLandSound.volume = 1;
