@@ -307,7 +307,7 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_bannerBaseCollision():void {
-			if (this.m_banner.hitBox.hitTestObject(this.m_GHB) && this.m_banner.onBase == false && this.m_bannerHolder == null) {
+			if (this.m_banner.hitBox.hitTestObject(this.m_GHB) && this.m_banner.onBase == false && this.m_bannerHolder == null && !this.m_banner.lastHolder.crashed) {
 				trace("Banner base collision");
 				this.m_banner.onBase = true;
 				this.m_indicateBase(this.m_banner.lastHolder.m_activePlayer);
