@@ -46,7 +46,7 @@ package state.gamestate {
 		private var m_bannerDropSound:SoundObject;
 		private var m_bannerLandSound:SoundObject;
 		private var m_bannerRespawnSound:SoundObject;
-		private var m_resentlyStolen:Boolean = false;
+		private var m_recentlyStolen:Boolean = false;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -230,8 +230,7 @@ package state.gamestate {
 			}
 			
 			if (this.m_bannerHolder != null) {
-				trace(this.m_bannerHolder);
-					this.m_planesBannerSwitch();
+				this.m_planesBannerSwitch();
 			}
 			
 			this.m_bannerPlaneCollision();
@@ -271,35 +270,37 @@ package state.gamestate {
 		}
 		
 		private function m_planesBannerSwitch():void {
-				trace(this.m_resentlyStolen);
-				if(this.m_planes[1].hitTestObject(this.m_planes[0].tailHitbox) && this.m_resentlyStolen == false && this.m_planes[1].holdingBanner == false) {
-					trace("A");
+//				trace(this.m_recentlyStolen);
+				if(this.m_planes[1].bodyHitbox.hitTestObject(this.m_planes[0].tailHitbox) && this.m_recentlyStolen == false && this.m_planes[1].holdingBanner == false) {
+//					trace("A");
 					this.m_bannerHolder = this.m_planes[1];
 					this.m_banner.lastHolder = this.m_planes[1];
 					this.m_indicateBase(this.m_planes[1].m_activePlayer);
-					this.m_resentlyStolen = true;
+					this.m_indicateHitbox();
+					this.m_recentlyStolen = true;
 					this.m_planes[1].holdingBanner = true;
 					this.m_planes[0].holdingBanner = false;
-					var slampa:Timer = Session.timer.create(1000, this.m_longlonglongTimeago);
-					slampa = null;
+					var timerA:Timer = Session.timer.create(1000, this.m_longlonglongTimeago);
+					timerA = null;
 				}
-				if(this.m_planes[0].hitTestObject(this.m_planes[1].tailHitbox) && this.m_resentlyStolen == false && this.m_planes[0].holdingBanner == false) {
-					trace("B");
+				if(this.m_planes[0].bodyHitbox.hitTestObject(this.m_planes[1].tailHitbox) && this.m_recentlyStolen == false && this.m_planes[0].holdingBanner == false) {
+//					trace("B");
 					this.m_bannerHolder = this.m_planes[0];
 					this.m_banner.lastHolder = this.m_planes[0];
 					this.m_indicateBase(this.m_planes[0].m_activePlayer);
-					this.m_resentlyStolen = true;
+					this.m_indicateHitbox();
+					this.m_recentlyStolen = true;
 					this.m_planes[0].holdingBanner = true;
 					this.m_planes[1].holdingBanner = false;
-					var slinka:Timer = Session.timer.create(1000, this.m_longlonglongTimeago);
-					slinka = null;
+					var timerB:Timer = Session.timer.create(1000, this.m_longlonglongTimeago);
+					timerB = null;
 				}
 			
 		}
 		
 		private function m_longlonglongTimeago():void {
-			this.m_resentlyStolen = false;
-			trace("C");
+			this.m_recentlyStolen = false;
+//			trace("C");
 		}
 		/**
 		 * m_bannerBaseCollision
