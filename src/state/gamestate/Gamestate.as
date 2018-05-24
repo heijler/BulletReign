@@ -583,7 +583,12 @@ package state.gamestate {
 		}
 		
 		private function m_wrapItUp():void {
-			Session.application.displayState = new WinnerScreen(this._gamemode);
+			for(var i:int = 0; i < this.m_planes.length; i++) {
+				if(this.m_planes[i].m_winner == true) {
+					Session.application.displayState = new WinnerScreen(this._gamemode, this.m_planes[i].m_activePlayer);
+				}
+			}
+			
 		}
 		
 		/**
