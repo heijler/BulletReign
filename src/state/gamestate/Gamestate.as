@@ -189,7 +189,7 @@ package state.gamestate {
 			}
 			
 			this.m_ingameMusic.play();
-			this.m_ingameMusic.volume = 0.3;
+			this.m_ingameMusic.volume = 0.7;
 		}
 		
 		
@@ -209,7 +209,7 @@ package state.gamestate {
 			this.m_planes = planeManager.getPlanes();
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				this.m_planes[i].m_engineSound.play();
-				this.m_planes[i].m_engineSound.volume = 0.3;
+				this.m_planes[i].m_engineSound.volume = 0.9;
 			}
 			
 			this.m_indicators();
@@ -492,7 +492,7 @@ package state.gamestate {
 						
 						if ((this.m_planes[i].tailHitbox.hitTestObject(this.m_crates[j]) || this.m_planes[i].bodyHitbox.hitTestObject(this.m_crates[j])) && this.m_planes[i].powerUpActive == false) {
 							this.m_powerupSound.play();
-							this.m_powerupSound.volume = 0.1;
+							this.m_powerupSound.volume = 0.7;
 							this.m_planes[i].powerUpActive = true;
 							if(this.m_crates[j].m_type == 0) {
 								this.m_planes[i].m_noDamage = true;

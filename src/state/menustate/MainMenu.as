@@ -54,7 +54,7 @@ package state.menustate {
 			this.m_drawLogo();
 			this.m_drawArt();
 			this.m_menuMusic.play(); //Låten sätts till play(), låtvalet kan diskuteras
-			this.m_menuMusic.volume = 0.4;
+			this.m_menuMusic.volume = 0.9;
 			this._addMenuItems(
 				new <Object>[
 					{name:"Dogfight", state: DogfightInfo},
