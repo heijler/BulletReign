@@ -31,7 +31,6 @@ package state.menustate {
 		[Embed(source="../../../asset/png/mainmenu/art1.png")]
 		private const Art1:Class;
 		
-		
 		[Embed(source="../../../asset/png/mainmenu/art2.png")]
 		private const Art2:Class;
 		

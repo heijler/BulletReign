@@ -32,6 +32,7 @@ package state.gamestate {
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
+	import se.lnu.stickossdk.util.MathUtils;
 	
 	import state.menustate.infoScreen.WinnerScreen;
 	
@@ -507,7 +508,7 @@ package state.gamestate {
 								this.m_generateIcons(this.m_planes[i].m_activePlayer);
 							}
 							this.m_crateManager.removeCrate(this.m_crates[j]);
-							var spawnTime:int = this.m_getRandomBetweenMAXMIN();
+							var spawnTime:int = MathUtils.randomRange(5000, 30000);
 							var timer:Timer = Session.timer.create(spawnTime, this.m_generateCrate);
 						}
 					}
@@ -515,12 +516,6 @@ package state.gamestate {
 			}
 		}
 		
-		private function m_getRandomBetweenMAXMIN():int {
-			const MAX:int = 30000;
-			const MIN:int = 5000;
-			
-			return Math.random() * (MAX - MIN) + MIN;
-		}
 		
 		/**
 		 * m_roundOver

@@ -44,8 +44,6 @@ package entity.fx {
 				var firstEffect:Effect = this.m_effects.shift()
 				this.m_removeEffect(firstEffect);
 			}
-			
-//			trace("Effect vector length", this.m_effects.length);
 		}
 		
 		
