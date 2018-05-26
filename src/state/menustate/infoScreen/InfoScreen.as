@@ -68,7 +68,11 @@ package state.menustate.infoScreen {
 		 * 
 		 */
 		override public function dispose():void {
-			
+			this.m_infoScreenLayer = null;
+			this.m_controls_one = null;
+			this.m_controls_two = null;
+			this._infoScreen = null;
+			this._background = null;
 		}
 		
 		/**
