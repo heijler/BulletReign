@@ -6,7 +6,7 @@ package state.gamestate {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
-	import flash.display.Sprite;
+//	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -87,7 +87,7 @@ package state.gamestate {
 		private var m_im1:IconManager;
 		private var m_im2:IconManager;
 		
-		private var m_sky:Sprite;
+		private var m_sky:Shape;
 		public var m_ground:MovieClip; // @TODO: rename & move
 		public var groundHitbox:Shape; // @TODO: move
 		private var m_background:DisplayObject;
@@ -287,7 +287,7 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_initSky():void {
-			this.m_sky = new Sprite();
+			this.m_sky = new Shape();
 			this.m_sky.graphics.lineStyle(2, 0xFFFFFF);
 			this.m_sky.graphics.moveTo(-50, -40);
 			this.m_sky.graphics.lineTo(850, -40);

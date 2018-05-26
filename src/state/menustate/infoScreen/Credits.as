@@ -33,8 +33,10 @@ package state.menustate.infoScreen {
 		//-----------------------------------------------------------
 		// Methods
 		//-----------------------------------------------------------
+		
 		/**
-		 * 
+		 * Sets the state to MainMenu on activation.
+		 * Overrides function that is called in parent.
 		 */
 		override protected function _newState():void {
 			Session.application.displayState = new MainMenu;
@@ -42,7 +44,8 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * Sets the infoscreen/background to be the embedded image.
+		 * Overrides function that is called in parent.
 		 */
 		override protected function _initInfoScreen():void {
 			this._infoScreen = new InstructionsSheet;
@@ -50,7 +53,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * Overrides the parent _controlMove method because it deviates from normal InfoScreen behaviour.
 		 */
 		override protected function _controlMove(control:EvertronControls):void {
 			if (Input.keyboard.pressed(control.PLAYER_UP)) {
