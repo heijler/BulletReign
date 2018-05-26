@@ -47,6 +47,12 @@ package state.gamestate {
 		private var m_bannerLandSound:SoundObject;
 		private var m_bannerRespawnSound:SoundObject;
 		private var m_recentlyStolen:Boolean = false;
+		private var m_respawnPlaneTimer:Timer;
+		private var m_respawnTimer:Timer;
+		private var m_stealTimer:Timer;
+		private var m_respawnDelay:Timer;
+		private var m_respawnBannerDelay:Timer;
+		private var m_oOBRespawnTimer:Timer;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -66,7 +72,6 @@ package state.gamestate {
 		 * Initializes the gamemode, this method overrides the method in the parentclass
 		 */
 		override protected function _initGamemode():void {
-//			super.init();
 			this.m_initZeppelin();
 			this.m_initBanner();
 			this.m_initHitboxes();
@@ -270,9 +275,7 @@ package state.gamestate {
 		}
 		
 		private function m_planesBannerSwitch():void {
-//				trace(this.m_recentlyStolen);
 				if(this.m_planes[1].bodyHitbox.hitTestObject(this.m_planes[0].tailHitbox) && this.m_recentlyStolen == false && this.m_planes[1].holdingBanner == false) {
-//					trace("A");
 					this.m_bannerHolder = this.m_planes[1];
 					this.m_banner.lastHolder = this.m_planes[1];
 					this.m_indicateBase(this.m_planes[1].m_activePlayer);
@@ -282,11 +285,10 @@ package state.gamestate {
 					this.m_planes[0].holdingBanner = false;
 					this.m_bannerDropSound.play();
 					this.m_bannerDropSound.volume = 0.5;
-					var timerA:Timer = Session.timer.create(1000, this.m_longlonglongTimeago);
-					timerA = null;
+					this.m_stealTimer = Session.timer.create(1000, this.m_resetSteal);
+					this.m_stealTimer = null;
 				}
 				if(this.m_planes[0].bodyHitbox.hitTestObject(this.m_planes[1].tailHitbox) && this.m_recentlyStolen == false && this.m_planes[0].holdingBanner == false) {
-//					trace("B");
 					this.m_bannerHolder = this.m_planes[0];
 					this.m_banner.lastHolder = this.m_planes[0];
 					this.m_indicateBase(this.m_planes[0].m_activePlayer);
@@ -296,15 +298,14 @@ package state.gamestate {
 					this.m_planes[1].holdingBanner = false;
 					this.m_bannerDropSound.play();
 					this.m_bannerDropSound.volume = 0.5;
-					var timerB:Timer = Session.timer.create(1000, this.m_longlonglongTimeago);
-					timerB = null;
+					this.m_stealTimer = Session.timer.create(1000, this.m_resetSteal);
+					this.m_stealTimer = null;
 				}
 			
 		}
 		
-		private function m_longlonglongTimeago():void {
+		private function m_resetSteal():void {
 			this.m_recentlyStolen = false;
-//			trace("C");
 		}
 		/**
 		 * m_bannerBaseCollision
@@ -312,7 +313,6 @@ package state.gamestate {
 		 */
 		private function m_bannerBaseCollision():void {
 			if (this.m_banner.hitBox.hitTestObject(this.m_GHB) && this.m_banner.onBase == false && this.m_bannerHolder == null && !this.m_banner.lastHolder.crashed) {
-				trace("Banner base collision");
 				this.m_banner.onBase = true;
 				this.m_indicateBase(this.m_banner.lastHolder.m_activePlayer);
 				this.m_winSound.play();
@@ -320,7 +320,7 @@ package state.gamestate {
 				this.m_scoreMessage(this.m_banner.lastHolder.m_activePlayer);
 				this.m_incrementWins(this.m_banner.lastHolder.m_activePlayer, this.m_banner.lastHolder.wins);
 				this.m_resolveGame();
-				var timer:Timer = Session.timer.create(3000, this.m_respawn);
+				this.m_respawnDelay = Session.timer.create(3000, this.m_respawn);
 			}
 		}
 		
@@ -346,7 +346,7 @@ package state.gamestate {
 		 */
 		private function m_bannerInactiveBaseCollision():void {
 			if ((this.m_banner.hitBox.hitTestObject(this.m_b1HB) || this.m_banner.hitBox.hitTestObject(this.m_b2HB)) && !this.m_banner.onBase) {
-				var timer:Timer = Session.timer.create(500, this.m_respawnBanner);
+				this.m_respawnBannerDelay = Session.timer.create(500, this.m_respawnBanner);
 			}
 		}
 		
@@ -386,8 +386,6 @@ package state.gamestate {
 			if (this.m_matchFin == false) {
 				this._respawnPlane(this.m_crashedPlane);
 				this.m_planes[this.m_crashedPlane].m_newDurability = 3;
-//				this.m_planes[1].m_newDurability = 2;
-//				this.m_respawnBanner();
 				this.m_winFlag = false;
 			}
 		}
@@ -435,7 +433,7 @@ package state.gamestate {
 		 */
 		private function m_bannerOutOfBounds():void {
 			if (this.m_banner.outOfBounds) {
-				var timer:Timer = Session.timer.create(1000, this.m_respawnBanner);
+				this.m_oOBRespawnTimer = Session.timer.create(1000, this.m_respawnBanner);
 			}
 		}
 		
@@ -469,17 +467,15 @@ package state.gamestate {
 					for(var j:int = 0; j < this.m_planes.length; j++) {
 						if(this.m_planes[j].crashed == false) {
 							if(this.m_winFlag == false) {
-								trace("resolve round player crashed", this.m_planes[i].m_activePlayer);
-								trace("onBase", this.m_banner.onBase);
 								this.m_crashedPlane = this.m_planes[i].m_activePlayer;
 								this.m_winFlag = true;
-								var timer:Timer = Session.timer.create(1000, this.m_respawnPlane);
+								this.m_respawnPlaneTimer = Session.timer.create(1000, this.m_respawnPlane);
 							}
 						}
 					}
 				}
 				if(this.m_planes[0].crashed == true && this.m_planes[1].crashed == true && this.m_winFlag == false && !this.m_banner.onBase) {
-					var dimer:Timer = Session.timer.create(1000, this.m_respawn);
+					this.m_respawnTimer = Session.timer.create(1000, this.m_respawn);
 					this.m_winFlag = true;
 				}
 			}
@@ -512,6 +508,39 @@ package state.gamestate {
 		 */
 		private function m_toggleBanner():void {
 			this.m_banner.caught = !this.m_banner.caught;
+		}
+		
+		override public function dispose():void {
+			this.m_zeppelin = null;
+			this.m_banner = null;
+			this.m_bannerHolder = null;
+			this.m_angleCounter = 0;
+			this.m_matchFin = false;
+			this.m_GHB = null;
+			this.m_b1HB = null;
+			this.m_b2HB = null;
+			this.m_winFlag = false;
+			this.m_crashedPlane = 0;
+			Session.timer.remove(m_blinktimer);
+			this.m_respawnBlinkTimer = null;
+			this.m_callWinner = false;
+			this.m_bannerPickupSound = null;
+			this.m_bannerDropSound = null;
+			this.m_bannerLandSound = null;
+			this.m_bannerRespawnSound = null;
+			this.m_recentlyStolen = false;
+			Session.timer.remove(this.m_respawnPlaneTimer);
+			this.m_respawnPlaneTimer = null;
+			Session.timer.remove(this.m_respawnTimer);
+			this.m_respawnTimer = null;
+			Session.timer.remove(this.m_stealTimer);
+			this.m_stealTimer = null;
+			Session.timer.remove(this.m_respawnDelay);
+			this.m_respawnDelay = null;
+			Session.timer.remove(this.m_respawnBannerDelay);
+			this.m_respawnBannerDelay = null;
+			Session.timer.remove(this.m_oOBRespawnTimer);
+			this.m_oOBRespawnTimer = null;
 		}
 	}
 }

@@ -100,6 +100,7 @@ package state.gamestate {
 		private var m_powerupSound:SoundObject;
 		private var m_flashScreen:Boolean = false;
 		private var m_scoreText:TextField;
+		private var m_planeManager:PlaneManager;
 		
 		
 		protected var m_winSound:SoundObject; //@TODO: rename
@@ -188,7 +189,7 @@ package state.gamestate {
 				this.m_ingameMusic = Session.sound.musicChannel.get("ingamemusic");
 			}
 			
-			this.m_ingameMusic.play();
+			this.m_ingameMusic.play(int.MAX_VALUE);
 			this.m_ingameMusic.volume = 0.7;
 		}
 		
@@ -201,12 +202,12 @@ package state.gamestate {
 			this.m_bm1 = new BulletManager(this.planeLayer);
 			this.m_bm2 = new BulletManager(this.planeLayer);
 			
-			var planeManager:PlaneManager = new PlaneManager(this.planeLayer);
+			this.m_planeManager = new PlaneManager(this.planeLayer);
 			var move:Boolean = true
-				planeManager.add(new Plane(0, this.m_bm1, this.m_bm2, new Point(0, 150), 1, this.m_fxMan1, move));
-				planeManager.add(new Plane(1, this.m_bm2, this.m_bm1, new Point(800, 150), -1, this.m_fxMan2, move));
+			this.m_planeManager.add(new Plane(0, this.m_bm1, this.m_bm2, new Point(0, 150), 1, this.m_fxMan1, move));
+			this.m_planeManager.add(new Plane(1, this.m_bm2, this.m_bm1, new Point(800, 150), -1, this.m_fxMan2, move));
 				
-			this.m_planes = planeManager.getPlanes();
+			this.m_planes = this.m_planeManager.getPlanes();
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				this.m_planes[i].m_engineSound.play();
 				this.m_planes[i].m_engineSound.volume = 0.9;
@@ -702,6 +703,15 @@ package state.gamestate {
 		 */
 		protected function _updateGamemode():void {
 			// To be overridden by children
+		}
+		
+		override public function dispose():void {
+			this.m_bm1.dispose();
+			this.m_bm2.dispose();
+			this.m_crateManager.dispose();
+			this.m_im1.dispose();
+			this.m_im2.dispose();
+			this.m_planeManager.dispose();
 		}
 	}
 }
