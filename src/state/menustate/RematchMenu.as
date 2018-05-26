@@ -26,13 +26,15 @@ package state.menustate {
 		public function RematchMenu(gamemode:int) {
 			super();
 			this.m_gamemode = gamemode;
-			trace("Rematch gamemode:", this.m_gamemode);
 		}
 		
 		//-----------------------------------------------------------
 		// Methods
 		//-----------------------------------------------------------
 		
+		/**
+		 * 
+		 */
 		override protected function initMenu():void {
 			this._addMenuItems(
 				new <Object>[
@@ -41,6 +43,14 @@ package state.menustate {
 					{name: "How to Play", state: HowToPlay}
 				]
 			);
+		}
+		
+		
+		/**
+		 * 
+		 */
+		override protected function _disposeMenu():void {
+			this.m_gamemode = 0;
 		}
 	}
 }

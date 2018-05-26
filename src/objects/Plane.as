@@ -13,8 +13,8 @@ package objects {
 	
 	import entity.MotionEntity;
 	import entity.fx.FXManager;
-	import entity.fx.Particle;
 	import entity.fx.Smoke;
+  import entity.fx.Fire;
 	import entity.fx.Trail;
 	
 	import managers.BulletManager;
@@ -25,6 +25,7 @@ package objects {
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
+
 	
 	
 	//-----------------------------------------------------------
@@ -87,6 +88,7 @@ package objects {
 		private var m_movability:Boolean;
 		private var m_onePU:Boolean = false;
 		private var m_smoke:Smoke;
+		private var m_fire:Fire;
 		private var m_recharging:Boolean = false;
 		private var m_gunCoolingdown:Boolean = true;
 		
@@ -125,8 +127,7 @@ package objects {
 			this.m_initSkin();
 			this.m_setSpawnPosition();
 			this.m_initSound();
-			
-			this.m_smoke = new Smoke(this.parent);
+			this.m_initEffects();
 		}
 		
 		
@@ -233,6 +234,16 @@ package objects {
 		}
 		
 		
+		/**
+		 * 
+		 * 
+		 */
+		private function m_initEffects():void {
+			this.m_smoke = new Smoke(this.parent);
+			this.m_fire = new Fire(this.parent);
+		}
+		
+		
 		/**	
 		 * update
 		 * override, gameloop
@@ -246,16 +257,8 @@ package objects {
 			this.m_updatePosition();
 			this.m_powerUps();
 			this.m_accelDurationRecharge();
+			this.m_updateEffects();
 			this.m_gunCooldown();
-			
-			this.m_smoke.x = this.x;
-			this.m_smoke.y = this.y;
-			
-			if (!this.m_steering) {
-//				this.m_fxMan.add(new Particle(this.m_getPos(), this._angle, 0.001, new <uint>[0xEBEBEB]));
-//				this.m_fxMan.add(new Particle(this.m_getPos(), this._angle, 0.01, null, false, true));
-				this.m_fxMan.add(new Particle(this.m_getPos(), this._angle, 0.001, new <uint>[0xE35100, 0xeFFA220, 0xEBD320], false, false));
-			}
 		}
 		
 		
@@ -381,7 +384,8 @@ package objects {
 				}
 				this.x += xVel * this.m_scaleFactor;
 				this.y += yVel * this.m_scaleFactor;
-				this.m_fxMan.add(new Trail(this.m_getPos(), this._angle));		
+				
+				this.m_fxMan.add(new Trail(this.m_getPos(), this._angle));
 				
 			} else if (this.m_accelDuration <= 0 && this.m_accelerating){
 				this.m_accelerating = false;
@@ -530,6 +534,14 @@ package objects {
 		}
 		
 		
+		private function m_updateEffects():void {
+			this.m_smoke.x = this.x;
+			this.m_smoke.y = this.y;
+			this.m_fire.x = this.x;
+			this.m_fire.y = this.y;
+		}
+		
+		
 		/**
 		 * m_getPos
 		 * @TODO: Raname!
@@ -627,6 +639,8 @@ package objects {
 			this._shake(layer, 5);
 			this._flicker(this, 500);
 			this.m_fallingPlane.stop();
+			this.m_fire.start();
+			this.m_smoke.start(2);
 			this.m_crashing.play();
 			this.m_crashing.volume = 0.9;
 		}
@@ -660,15 +674,7 @@ package objects {
 				this.m_takingFire[Math.floor(Math.random() * this.m_takingFire.length)].play(); //Spelar ett random träffljud
 			}
 			if (this.m_newDurability <= 0 && this.m_noDamage == false) {
-				this.shotDown = true;
-				this.m_steering = false;
-				this.m_freeFall();
-				this._flicker(this, 500);
-				this.m_screamSound.play();
-				this.m_screamSound.volume = 0.9;
-				this.m_fallingPlane.play();
-				this.m_fallingPlane.volume = 0.9;
-				this.holdingBanner = false;
+				this.m_onShotDown();
 			}
 		}
 		
@@ -686,6 +692,24 @@ package objects {
 				this.m_smoke.start(this.m_newDurability);
 			}
 		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_onShotDown():void {
+			this.shotDown = true;
+			this.m_steering = false;
+			this.m_fire.start();
+			this.m_freeFall();
+			this._flicker(this, 500);
+			this.m_screamSound.play();
+			this.m_screamSound.volume = 0.9;
+			this.m_fallingPlane.play();
+			this.m_fallingPlane.volume = 0.9;
+			this.holdingBanner = false;
+		}
+		
 		
 		
 		/**
@@ -724,6 +748,7 @@ package objects {
 				this.m_clearNoDamage();
 				this.m_clearNoFireCounter();
 				this.m_smoke.stop();
+				this.m_fire.stop();
 				this.m_accelDuration = this.ACCELERATE_DURATION;
 				this.m_fireCounter = this.FIRE_BURST_SIZE;
 			}
