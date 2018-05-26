@@ -3,13 +3,8 @@ package managers {
 	// Imports
 	//-----------------------------------------------------------
 	import flash.display.DisplayObjectContainer;
-
-	import objects.Crate;
-
-	import flash.utils.Timer;
 	
-	import se.lnu.stickossdk.fx.Flicker;
-	import se.lnu.stickossdk.system.Session;
+	import objects.Crate;
 	
 	//-----------------------------------------------------------
 	// CrateManager
@@ -24,6 +19,7 @@ package managers {
 		
 		private var m_parent:DisplayObjectContainer;
 		private var m_crates:Vector.<Crate>;
+		private var m_markedCrate:Vector.<Crate>;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -46,12 +42,23 @@ package managers {
 		}
 		
 		public function removeCrate(crate:Crate):void {
-			var markedCrate:Vector.<Crate> = this.m_crates.splice(this.m_crates.indexOf(crate), 1);
-			if (this.m_parent.contains(markedCrate[0])) {
-				this.m_parent.removeChild(markedCrate[0]);
-				markedCrate[0] = null;
-				markedCrate = null;
+			this.m_markedCrate = this.m_crates.splice(this.m_crates.indexOf(crate), 1);
+			if (this.m_parent.contains(this.m_markedCrate[0])) {
+				this.m_parent.removeChild(this.m_markedCrate[0]);
+				this.m_markedCrate[0] = null;
+				this.m_markedCrate = null;
 			}
+		}
+		
+		public function dispose():void {
+			for(var i:int; i < this.m_crates.length; i++) {
+				this.m_crates[i].dispose();
+				if(this.m_parent.contains(this.m_crates[i])) {
+					this.m_parent.removeChild(this.m_crates[i]);
+				}
+				this.m_crates[i] = null;
+			}
+			this.m_parent = null;
 		}
 	}
 }

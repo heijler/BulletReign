@@ -4,6 +4,7 @@ package managers {
 	//-----------------------------------------------------------
 	
 	import flash.display.DisplayObjectContainer;
+	
 	import objects.Plane;
 	
 	//-----------------------------------------------------------
@@ -19,6 +20,7 @@ package managers {
 		private const AMOUNT_LIMIT:int = 2;
 		private var m_parent:DisplayObjectContainer;
 		private var m_planes:Vector.<Plane>;
+		private var m_val:Boolean = false;
 		
 		
 		//-----------------------------------------------------------
@@ -54,13 +56,25 @@ package managers {
 		}
 		
 		public function checkCollision(plane:Plane):Boolean {
-			var val:Boolean = false;
+			this.m_val = false;
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				if(plane.hitTestObject(this.m_planes[i])) {
-					val = true;
+					this.m_val = true;
 				}
 			}
-			return val;
+			return this.m_val;
+		}
+		
+		public function dispose():void {
+			for(var i:int; i < this.m_planes.length; i++) {
+				this.m_planes[i].dispose();
+				if(this.m_parent.contains(this.m_planes[i])) {
+					this.m_parent.removeChild(this.m_planes[i]);
+				}
+				this.m_planes[i] = null;
+			}
+			this.m_parent = null;
+			this.m_val = false;
 		}
 	}
 }

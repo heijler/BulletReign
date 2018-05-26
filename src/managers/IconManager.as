@@ -49,5 +49,13 @@ package managers {
 			
 			}
 		}
+		
+		public function dispose():void {
+			this.m_parent = null;
+			Session.timer.remove(this.m_expireTimer);
+			this.m_expireTimer = null;
+			this.m_player = 0;
+			this.m_icon = null;
+		}
 	}
 }

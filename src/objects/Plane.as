@@ -9,6 +9,7 @@ package objects {
 	
 	import asset.Plane1GFX;
 	import asset.Plane2GFX;
+	import asset.Plane3GFX;
 	
 	import entity.MotionEntity;
 	import entity.fx.FXManager;
@@ -24,7 +25,6 @@ package objects {
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
-	import asset.Plane3GFX;
 	
 	
 	//-----------------------------------------------------------
@@ -88,6 +88,7 @@ package objects {
 		private var m_onePU:Boolean = false;
 		private var m_smoke:Smoke;
 		private var m_recharging:Boolean = false;
+		private var m_gunCoolingdown:Boolean = true;
 		
 
 		//-----------------------------------------------------------
@@ -245,6 +246,7 @@ package objects {
 			this.m_updatePosition();
 			this.m_powerUps();
 			this.m_accelDurationRecharge();
+			this.m_gunCooldown();
 			
 			this.m_smoke.x = this.x;
 			this.m_smoke.y = this.y;
@@ -284,7 +286,6 @@ package objects {
 				if (Input.keyboard.justReleased(this.m_controls.PLAYER_BUTTON_2)) {
 					this.m_engineOverdriveSound.stop();
 					this.m_recharging = true;
-					this.m_accelDurationRecharge();
 				}
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_2)) {
@@ -294,6 +295,11 @@ package objects {
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
 					this.m_fireBullets();
+					this.m_gunCoolingdown = false;
+				}
+				
+				if (Input.keyboard.justReleased(this.m_controls.PLAYER_BUTTON_1)) {
+					this.m_gunCoolingdown = true;
 				}
 				
 				if (Input.keyboard.justPressed(this.m_controls.PLAYER_BUTTON_4)) {
@@ -390,6 +396,11 @@ package objects {
 			}
 		}
 		
+		private function m_gunCooldown():void {
+			if (this.m_gunCoolingdown == true && this.m_fireCounter != this.FIRE_BURST_SIZE) {
+				this.m_fireCounter ++;
+			}
+		}
 		
 		/**
 		 * m_clearNoAccelDuration
