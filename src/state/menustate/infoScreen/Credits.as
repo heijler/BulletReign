@@ -3,10 +3,6 @@ package state.menustate.infoScreen {
 	// Import
 	//-----------------------------------------------------------
 	
-	import flash.display.DisplayObject;
-	
-	import se.lnu.stickossdk.display.DisplayState;
-	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
 	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.system.Session;
@@ -17,7 +13,7 @@ package state.menustate.infoScreen {
 	// Credits
 	//-----------------------------------------------------------
 	
-	public class Credits extends DisplayState {
+	public class Credits extends InfoScreen {
 		
 		//-----------------------------------------------------------
 		// Embeds
@@ -25,16 +21,6 @@ package state.menustate.infoScreen {
 		
 		[Embed(source="../../../../asset/png/infoscreen/credits/credits.png")]
 		private const InstructionsSheet:Class;
-		
-		//-----------------------------------------------------------
-		// Private properties
-		//-----------------------------------------------------------
-		
-		private var m_instructionsLayer:DisplayStateLayer;
-		private var m_background:DisplayObject;
-		
-		private var m_controls_one:EvertronControls = new EvertronControls(0);
-		private var m_controls_two:EvertronControls = new EvertronControls(1);
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -47,81 +33,34 @@ package state.menustate.infoScreen {
 		//-----------------------------------------------------------
 		// Methods
 		//-----------------------------------------------------------
-		
-		
-		/**	 
-		 * init
-		 * override
+		/**
+		 * 
 		 */
-		override public function init():void {
-			this.m_initLayers();
-			this.m_initBackground();
-			this.update();
+		override protected function _newState():void {
+			Session.application.displayState = new MainMenu;
 		}
 		
 		
 		/**
-		 * m_initLayers
 		 * 
 		 */
-		private function m_initLayers():void {
-			this.m_instructionsLayer = this.layers.add("howtoplay");
+		override protected function _initInfoScreen():void {
+			this._infoScreen = new InstructionsSheet;
 		}
 		
 		
 		/**
-		 * m_initBackground
 		 * 
 		 */
-		private function m_initBackground():void {
-			this.m_background = new InstructionsSheet();
-			this.m_background.scaleX = 2.5;
-			this.m_background.scaleY = 2.5; 
-			this.m_instructionsLayer.addChild(this.m_background);
-		}
-		
-		
-		/**
-		 * update
-		 * 
-		 */
-		override public function update():void {
-			this.m_updateControls();
-		}
-		
-		
-		/**
-		 * m_updateControls
-		 * 
-		 */
-		private function m_updateControls():void {
-			this.m_controlMove(this.m_controls_one);
-			this.m_controlMove(this.m_controls_two);
-		}
-		
-		
-		/**
-		 * m_controlMove
-		 * 
-		 */
-		private function m_controlMove(control:EvertronControls):void {
+		override protected function _controlMove(control:EvertronControls):void {
 			if (Input.keyboard.pressed(control.PLAYER_UP)) {
 				BulletReign.rb = true;
 				BulletReign.rbp = control.player;
 			}
 			
 			if (Input.keyboard.anyPressed()) {
-				this.m_newState();
+				this._newState();
 			}
-		}
-		
-		
-		/**
-		 * m_newState
-		 * 
-		 */
-		private function m_newState():void {
-			Session.application.displayState = new MainMenu();
 		}
 	}
 }

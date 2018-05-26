@@ -28,8 +28,12 @@ package state.menustate {
 		[Embed(source="../../../asset/png/mainmenu/logo.png")]
 		private const Logo:Class;
 		
-		[Embed(source="../../../asset/png/mainmenu/art.png")]
-		private const Art:Class;
+		[Embed(source="../../../asset/png/mainmenu/art1.png")]
+		private const Art1:Class;
+		
+		
+		[Embed(source="../../../asset/png/mainmenu/art2.png")]
+		private const Art2:Class;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -68,6 +72,14 @@ package state.menustate {
 		
 		
 		/**
+		 * 
+		 */
+		override protected function _disposeMenu():void {
+			this.m_menuMusic = null;
+		}
+		
+		
+		/**
 		 * m_drawLogo
 		 * 
 		 */
@@ -85,11 +97,17 @@ package state.menustate {
 		 * 
 		 */
 		private function m_drawArt():void {
-			var art:Bitmap = new Art();
-				art.scaleX = 2.5;
-				art.scaleY = 2.5;
-			var pos:Point = new Point(0, 0); //0, 220
-				this._addArt(art, pos);
+			var art1:Bitmap = new Art1;
+				art1.scaleX = 2.5;
+				art1.scaleY = 2.5;
+			var pos1:Point = new Point(0, 0); //0, 220
+				this._addArt(art1, pos1);
+				
+			var art2:Bitmap = new Art2;
+				art2.scaleX = 2.5;
+				art2.scaleY = 2.5;
+			var pos2:Point = new Point(Session.application.size.x - art2.width, 0);
+			this._addArt(art2, pos2);
 		}
 		
 		

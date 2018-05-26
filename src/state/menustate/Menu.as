@@ -40,7 +40,7 @@ package state.menustate {
 		private var m_menuMoveSound:SoundObject;
 		private var m_menuSelectSound:SoundObject;
 		private var m_image:Bitmap;
-		private var m_art:Bitmap;
+		private var m_artWork:Vector.<Bitmap> = new Vector.<Bitmap>();
 		private var m_selected:Boolean;
 		private var m_blinkCounter:int = 0;
 		private var m_copy:TextField;
@@ -90,7 +90,20 @@ package state.menustate {
 		 * dispose
 		 */
 		override public function dispose():void {
-			trace("Dispose Menu! REMOVE ME WHEN ACTUALLY DISPOSING.");
+			this.m_controls_one = null;
+			this.m_controls_two = null;
+			this.m_menuSelect = 0;
+			this.m_menuOptions = null;
+			this.m_menuObject = null;
+			this.m_format = null;
+			this.m_selectedFormat = null;
+			this.m_menuMoveSound = null;
+			this.m_menuSelectSound = null;
+			this.m_image = null;
+			this.m_selected = false;
+			this.m_blinkCounter = 0;
+			this.m_copy = null;
+			this._disposeMenu();
 		}
 		
 		
@@ -99,6 +112,14 @@ package state.menustate {
 		 */
 		protected function initMenu():void {
 			//Child classes override this method.
+		}
+		
+		
+		/**
+		 * disposeMenu
+		 */
+		protected function _disposeMenu():void {
+			this.m_disposeArtwork();
 		}
 		
 		//-----------------------------------------------------------
@@ -169,11 +190,15 @@ package state.menustate {
 			for (var i:int = 0; i < this.m_menuOptions.length; i++) {
 				this.m_menuLayer.addChild(this.m_menuOptions[i]);
 			}
+			
+			for (var j:int = 0; j < this.m_artWork.length; j++) {
+				if (this.m_artWork[j] != null) {
+					this.m_menuLayer.addChild(this.m_artWork[j]);
+				}
+			}
+			
 			if(this.m_image != null) {
 				this.m_menuLayer.addChild(this.m_image);
-			}
-			if (this.m_art != null) {
-				this.m_menuLayer.addChild(this.m_art);
 			}
 		}
 		
@@ -288,8 +313,22 @@ package state.menustate {
 					text.setTextFormat(this.m_selectedFormat);
 					this.m_blinkCounter = 0;
 				}
-				
 			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_disposeArtwork():void {
+			for (var i:int = 0; i < this.m_artWork.length; i++) {
+				if (this.m_menuLayer.contains(this.m_artWork[i])) {
+					this.m_menuLayer.removeChild(this.m_artWork[i]);
+					this.m_artWork[i] = null;
+				}
+			}
+			this.m_artWork.length = 0;
+			this.m_artWork = null;
 		}
 		
 		
@@ -313,9 +352,9 @@ package state.menustate {
 		 * 
 		 */
 		protected function _addArt(art:Bitmap, pos:Point):void {
-			this.m_art = art;
-			this.m_art.x = pos.x;
-			this.m_art.y = pos.y;
+			this.m_artWork.push(art);
+			this.m_artWork[this.m_artWork.indexOf(art)].x = pos.x;
+			this.m_artWork[this.m_artWork.indexOf(art)].y = pos.y;
 		}
 		
 		
