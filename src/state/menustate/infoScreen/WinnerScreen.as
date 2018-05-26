@@ -4,6 +4,8 @@ package state.menustate.infoScreen {
 	//-----------------------------------------------------------
 	
 	import flash.display.MovieClip;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	import asset.AirforcemedalofhonorGFX;
 	import asset.IroncrossGFX;
@@ -34,6 +36,7 @@ package state.menustate.infoScreen {
 		private var m_winner:int;
 		private var m_airForceMedalOfHonor:MovieClip;
 		private var m_ironCross:MovieClip;
+		private var m_medal:String;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -77,25 +80,49 @@ package state.menustate.infoScreen {
 			this.m_airForceMedalOfHonor.scaleX = 2;
 			this.m_airForceMedalOfHonor.scaleY = 2;
 			this.m_airForceMedalOfHonor.x = (Session.application.size.x / 2) - 200;
-			this.m_airForceMedalOfHonor.y = (Session.application.size.x / 2);
+			this.m_airForceMedalOfHonor.y = (Session.application.size.y / 2);
 			this.m_airForceMedalOfHonor.gotoAndStop(0);
 			
 			this.m_ironCross = new IroncrossGFX();
 			this.m_ironCross.scaleX = 2;
 			this.m_ironCross.scaleY = 2; 
 			this.m_ironCross.x = (Session.application.size.x / 2) + 200;
-			this.m_ironCross.y = (Session.application.size.x / 2);
+			this.m_ironCross.y = (Session.application.size.y / 2);
 			this.m_ironCross.gotoAndStop(0);
 			
 			this.m_winnerScreenLayer.addChild(this.m_airForceMedalOfHonor);
 			this.m_winnerScreenLayer.addChild(this.m_ironCross);
 			
+		}
+		
+		private function m_awardMedal():void {
 			if (this.m_winner == 0) {
 				this.m_airForceMedalOfHonor.play();
+				this.m_medal = "AIR FORCE MEDAL OF HONOR";
 			}
 			if (this.m_winner == 1) {
 				this.m_ironCross.play();
+				this.m_medal = "IRON CROSS";
 			}
+		}
+		
+		private function m_winnerMessage():void {
+			var winnerText:TextField = new TextField();
+				winnerText.text = "CONGRATULATIONS PLAYER " + (this.m_winner + 1) + "\nYOU HAVE BEEN REWARDED THE " + " \n" + this.m_medal + " FOR YOUR VICTORY!";
+				winnerText.autoSize = "center";
+				winnerText.x = Session.application.size.x / 2.6;
+				winnerText.y = (Session.application.size.y / 2) - 200;
+			
+			var winnerFormat:TextFormat = new TextFormat();
+				winnerFormat.color = 0xFFF392; //0xFFFFFF
+				winnerFormat.kerning = true;
+				winnerFormat.letterSpacing = 3;
+				winnerFormat.size = 24;
+				winnerFormat.font = "bulletreign";
+				
+				winnerText.setTextFormat(winnerFormat);
+				
+				this.m_winnerScreenLayer.addChild(winnerText);
 		}
 		
 		/**
@@ -104,6 +131,8 @@ package state.menustate.infoScreen {
 		 */
 		override public function update():void {
 			this.m_updateControls();
+			this.m_awardMedal();
+			this.m_winnerMessage();
 		}
 		
 		
