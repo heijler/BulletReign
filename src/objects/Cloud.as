@@ -45,7 +45,22 @@ package objects {
 			
 		}
 		
+		/**
+		 * dispose
+		 * override
+		 */
+		public override function dispose():void {
+			this.m_skin = null;
+			this.m_seed = 0;
+		}
 		
+		/**
+		 * update
+		 * override
+		 */
+		public override function update():void {
+			this.m_updatePosition();
+		}
 		
 		/**
 		 * m_initSkin
@@ -77,16 +92,6 @@ package objects {
 			this.m_seed = Math.random();
 		}
 		
-		
-		/**
-		 * update
-		 * override
-		 */
-		public override function update():void {
-			this.m_updatePosition();
-		}
-		
-		
 		/**
 		 * m_updatePosition
 		 * 
@@ -96,13 +101,5 @@ package objects {
 			this.wrapAroundObjects();
 		}
 		
-		
-		/**
-		 * dispose
-		 * override
-		 */
-		public override function dispose():void {
-			trace("Dispose Cloud! REMOVE ME WHEN ACTUALLY DISPOSING");
-		}
 	}
 }

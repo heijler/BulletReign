@@ -29,7 +29,6 @@ package objects {
 		private var m_skin:MovieClip;
 		private var m_defaultX:int = Session.application.size.x * 0.5;
 		private var m_defaultY:int = -50; // -50
-		private var m_bannerLayer:DisplayStateLayer;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -117,7 +116,10 @@ package objects {
 		 * 
 		 */
 		override public function dispose():void {
-			trace("Dispose Zeppelin! REMOVE ME WHEN ACTUALLY DISPOSING.");
+			this.atDefaultPos = false;
+			this.m_skin = null;
+			this.m_defaultX = 0;
+			this.m_defaultY = 0;
 		}
 	}
 }

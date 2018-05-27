@@ -9,9 +9,10 @@ package objects {
 	import asset.CratePowerGFX;
 	import asset.CrateSpeedGFX;
 	
+	import entity.MotionEntity;
+	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.system.Session;
-	import entity.MotionEntity;
 	
 	//-----------------------------------------------------------
 	// Crate
@@ -87,7 +88,9 @@ package objects {
 		 * 
 		 */
 		override public function dispose():void {
-			trace("Dispose Crate! REMOVE ME WHEN ACTUALLY DISPOSING.");
+			this.hitGround = false;
+			this.m_crateClips = null;
+			this.m_type = 0;
 		}
 		
 //		private function m_collisionControl():void {

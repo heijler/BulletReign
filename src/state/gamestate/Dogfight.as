@@ -18,6 +18,7 @@ package state.gamestate {
 		
 		private var m_winFlag:Boolean = false;
 		private var m_callWinner:Boolean = false;
+		private var m_respawnNowTimer:Timer;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -58,13 +59,13 @@ package state.gamestate {
 								this.m_scoreMessage(this.m_planes[j].m_activePlayer);
 								this.m_winFlag = true;
 								this.m_incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);
-								var timer:Timer = Session.timer.create(3000, this.m_respawnNow);
+								this.m_respawnNowTimer = Session.timer.create(3000, this.m_respawnNow);
 							}
 						}
 					}
 				}
 				if(this.m_planes[0].crashed == true && this.m_planes[1].crashed == true && this.m_winFlag == false) {
-					var dimer:Timer = Session.timer.create(3000, this.m_respawnNow);
+					this.m_respawnNowTimer = Session.timer.create(3000, this.m_respawnNow);
 					this.m_winFlag = true;
 				}
 			}
@@ -96,6 +97,13 @@ package state.gamestate {
 		override protected function m_respawnNow():void {
 			super.m_respawnNow();
 			this.m_winFlag = false;
+		}
+		
+		override public function dispose():void {
+			this.m_winFlag = false;
+			this.m_callWinner = false;
+			Session.timer.remove(this.m_respawnNowTimer);
+			this.m_respawnNowTimer = null;
 		}
 		
 	}
