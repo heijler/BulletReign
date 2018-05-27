@@ -109,7 +109,7 @@ package objects {
 		 * m_groundCollision
 		 * 
 		 */
-		public function m_groundCollision(layer:DisplayStateLayer):void {
+		public function m_onGroundCollision(layer:DisplayStateLayer):void {
 			this.removeGravity();
 			this._shake(layer, 5);
 			this._flicker(this, 500);
