@@ -457,7 +457,10 @@ package objects {
 			
 			if (m_noAccelDuration && !this.m_onePU) {
 				this.m_onePU = true;
+				this.m_accelerating = true;
 				this.m_setFrame(4);
+				this.m_accelDuration = this.ACCELERATE_DURATION; //VISS FÖRDRÖJNING FORTFARANDE
+				this.m_accelerate(this.m_accelerating);
 				var timeout3:Timer = Session.timer.create(5000, this.m_clearNoAccelDuration);
 			}
 		}

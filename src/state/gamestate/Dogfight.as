@@ -78,7 +78,7 @@ package state.gamestate {
 		 */
 		private function m_resolveGame():void {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if(this.m_planes[i].wins == this._winLimit) {
+				if(this.m_planes[i].wins == this._dogWinLimit) {
 					this.m_planes[i].m_winner = true;
 					if(this.m_callWinner == false){
 						this.m_scoreMessageRemove();

@@ -6,7 +6,6 @@ package state.gamestate {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
-//	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -105,7 +104,8 @@ package state.gamestate {
 		
 		
 		protected var m_winSound:SoundObject; //@TODO: rename
-		protected var _winLimit:int = 2;
+		protected var _dogWinLimit:int = 2;
+		protected var _banWinLimit:int = 3
 		
 		//-----------------------------------------------------------
 		// Protected properties
@@ -189,7 +189,6 @@ package state.gamestate {
 				Session.sound.musicChannel.sources.add("ingamemusic", BulletReign.INGAME_MUSIC);
 				this.m_ingameMusic = Session.sound.musicChannel.get("ingamemusic");
 			}
-			
 			this.m_ingameMusic.play(int.MAX_VALUE);
 			this.m_ingameMusic.volume = 0.7;
 		}
