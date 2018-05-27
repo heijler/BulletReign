@@ -6,7 +6,6 @@ package state.gamestate {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
-//	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -147,7 +146,6 @@ package state.gamestate {
 			this.m_initMusic();
 			this.m_initSound();
 			this._initGamemode();
-			
 		}
 		
 		
@@ -428,9 +426,9 @@ package state.gamestate {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
 						this.m_planes[i].holdingBanner = false;
-						this.m_planes[i].crash(this.backgroundLayer);
-						this.m_planes[i].m_newDurability = 0;
-						this.m_createExplosion(this.m_planes[i].m_getPos());
+						this.m_planes[i].onCrash(this.backgroundLayer);
+						this.m_planes[i].health = 0;
+						this.m_createExplosion(this.m_planes[i].pos);
 					}
 				}
 			}
@@ -443,7 +441,7 @@ package state.gamestate {
 		 */
 		protected function m_respawnNow():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				this.m_planes[i].m_respawn(false);
+				this.m_planes[i].m_onRespawn(false);
 //				this.m_planes[i].m_newDurability = 2;
 			}
 			this.m_flashScreen = false;
@@ -475,7 +473,7 @@ package state.gamestate {
 					if (this.m_crates[i].hitTestObject(this.groundHitbox)) {
 						if (this.m_crates[i].hitGround == false) {
 							this.m_crates[i].hitGround = true;
-							this.m_crates[i].m_groundCollision(this.worldLayer);
+							this.m_crates[i].m_onGroundCollision(this.worldLayer);
 						}
 					}
 				}
@@ -593,8 +591,8 @@ package state.gamestate {
 		 */
 		private function m_durabilityChange():void {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].m_newDurability <= this.m_planes[i].PLANE_DURABILITY) {
-					this.m_hudManager.incrementDecrementHealth(this.m_planes[i].m_activePlayer, this.m_planes[i].m_newDurability);
+				if (this.m_planes[i].health <= this.m_planes[i].PLANE_DURABILITY) {
+					this.m_hudManager.incrementDecrementHealth(this.m_planes[i].m_activePlayer, this.m_planes[i].health);
 				}
 			}
 		}

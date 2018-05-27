@@ -29,6 +29,9 @@ package {
 		[Embed(source = "../asset/sound/music/bgm_menu.mp3")]
 		public static const MENU_MUSIC:Class;
 		
+		[Embed(source = "../asset/sound/music/bgm_action_5.mp3")]
+		public static const INFOSCREEN_MUSIC:Class;
+		
 		[Embed(source = "../asset/sound/music/bgm_action_3.mp3")]
 		public static const INGAME_MUSIC:Class;
 		
