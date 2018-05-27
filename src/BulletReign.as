@@ -47,9 +47,6 @@ package {
 		[Embed(source = "../asset/sound/plane/planeEngineOverdrive.mp3")]
 		public static const ENGINEOVERDRIVE_SOUND:Class;
 		
-		[Embed(source = "../asset/sound/plane/planeEngineNoJuice.mp3")]
-		public static const ENGINENOJUICE_SOUND:Class;
-		
 		[Embed(source = "../asset/sound/plane/sfx_sounds_falling8.mp3")]
 		public static const CRASH_SOUND:Class;
 		

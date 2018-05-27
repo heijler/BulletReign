@@ -13,8 +13,8 @@ package objects {
 	
 	import entity.MotionEntity;
 	import entity.fx.FXManager;
+	import entity.fx.Fire;
 	import entity.fx.Smoke;
-  import entity.fx.Fire;
 	import entity.fx.Trail;
 	
 	import managers.BulletManager;
@@ -74,13 +74,12 @@ package objects {
 		private var m_scaleFactor:int = 1;
 		private var m_steering:Boolean = true;
 		private var m_accelDuration:int;
-		private var m_accelerating:Boolean = true;
+		private var m_accelerating:Boolean = false;
 		private var m_fireCounter:int;
 		private var m_firing:Boolean = true;
 		private var m_openFire:SoundObject;
 		private var m_crashing:SoundObject;
 		private var m_engineOverdriveSound:SoundObject;
-		private var m_engineNoJuiceSound:SoundObject;
 		private var m_fallingPlane:SoundObject;
 		private var m_screamSound:SoundObject;
 		private var m_takingFire:Vector.<SoundObject>;
@@ -89,7 +88,6 @@ package objects {
 		private var m_onePU:Boolean = false;
 		private var m_smoke:Smoke;
 		private var m_fire:Fire;
-		private var m_recharging:Boolean = false;
 		private var m_gunCoolingdown:Boolean = true;
 		
 
@@ -256,9 +254,9 @@ package objects {
 			this.m_collisionControl();
 			this.m_updatePosition();
 			this.m_powerUps();
-			this.m_accelDurationRecharge();
 			this.m_updateEffects();
 			this.m_gunCooldown();
+			this.m_accelerate(this.m_accelerating);
 		}
 		
 		
@@ -288,12 +286,10 @@ package objects {
 				
 				if (Input.keyboard.justReleased(this.m_controls.PLAYER_BUTTON_2)) {
 					this.m_engineOverdriveSound.stop();
-					this.m_recharging = true;
 				}
 				
-				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_2)) {
-					this.m_accelerate();
-					this.m_recharging = false;
+				if (Input.keyboard.justPressed(this.m_controls.PLAYER_BUTTON_2)) {
+					this.m_accelerating = true;
 				}
 				
 				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {
@@ -371,12 +367,11 @@ package objects {
 		 * m_accelerate
 		 * 
 		 */
-		private function m_accelerate():void {
-			if (this.m_accelDuration == this.ACCELERATE_DURATION && this.m_accelerating) {
-				this.m_engineOverdriveSound.play();
+		private function m_accelerate(accelerating:Boolean):void {
+			if (accelerating && this.m_engineOverdriveSound.isPlaying == false) {
+				this.m_engineOverdriveSound.play(int.MAX_VALUE);
 			}
-			
-			if (this.m_steering && this.m_accelDuration != 0 && this.m_accelerating) {
+			if (this.m_steering && this.m_accelDuration != 0 && accelerating == true) {
 				var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity * 0.25);
 				if(this.m_noAccelDuration == false) {
@@ -387,16 +382,9 @@ package objects {
 				
 				this.m_fxMan.add(new Trail(this.m_getPos(), this._angle));
 				
-			} else if (this.m_accelDuration <= 0 && this.m_accelerating){
-				this.m_accelerating = false;
+			} else if (this.m_accelDuration <= 0 && accelerating == true){
 				this.m_engineOverdriveSound.stop();
 				var timer:Timer = Session.timer.create(2000, this.m_resetAcceleration);
-			}
-		}
-		
-		private function m_accelDurationRecharge():void {
-			if (this.m_recharging == true && this.m_accelDuration != this.ACCELERATE_DURATION) {
-				this.m_accelDuration++;
 			}
 		}
 		
@@ -480,10 +468,8 @@ package objects {
 		 * 
 		 */
 		private function m_resetAcceleration():void {
-			if (!this.m_accelerating) {
-				this.m_accelerating = true;
-				this.m_accelDuration = this.ACCELERATE_DURATION;
-			}
+			this.m_accelDuration = this.ACCELERATE_DURATION;
+			this.m_accelerating = false;
 		}
 		
 		

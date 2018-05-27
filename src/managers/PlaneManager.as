@@ -7,6 +7,8 @@ package managers {
 	
 	import objects.Plane;
 	
+	import se.lnu.stickossdk.media.SoundObject;
+	
 	//-----------------------------------------------------------
 	// PlaneManager
 	//-----------------------------------------------------------
@@ -20,9 +22,8 @@ package managers {
 		private const AMOUNT_LIMIT:int = 2;
 		private var m_parent:DisplayObjectContainer;
 		private var m_planes:Vector.<Plane>;
+		private var m_planeSounds:Vector.<SoundObject>;
 		private var m_val:Boolean = false;
-		
-		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
