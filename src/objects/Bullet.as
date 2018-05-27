@@ -4,6 +4,7 @@ package objects {
 	//-----------------------------------------------------------
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	
 	import entity.MotionEntity;
 	
 	//-----------------------------------------------------------
@@ -19,6 +20,7 @@ package objects {
 		public const BULLET_DAMAGE:Number = 0.5; // 0.5
 		public var color:uint = 0x000000;
 		public var active:Boolean = true;
+		public var requestParam:Boolean = false;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -28,6 +30,8 @@ package objects {
 		private const BULLET_SIZE:Number = 2;
 		private var m_skin:Sprite;
 		private var m_scaleFactor:int;
+		private var m_xVel:Number;
+		private var m_yVel:Number;
 		
 		
 		
@@ -56,6 +60,27 @@ package objects {
 			this.m_setSpawnPosition();
 		}
 		
+		/**	
+		 * update
+		 * Override
+		 */
+		override public function update():void {
+			this.updatePosition();
+			this.wrapAroundObjects();
+		}
+		
+		
+		/**
+		 * 
+		 */
+		override public function dispose():void {
+			this.color = 0;
+			this.active = false;
+			this.m_skin = null;
+			this.m_scaleFactor = 0;
+			this.m_xVel = 0;
+			this.m_yVel = 0;
+		}
 		
 		/**	
 		 * m_initSkin
@@ -81,35 +106,16 @@ package objects {
 			this.y = this.m_pos.y;
 		}
 		
-		
-		/**	
-		 * update
-		 * Override
-		 */
-		override public function update():void {
-			this.updatePosition();
-			this.wrapAroundObjects();
-		}
-		
-		
-		/**
-		 * 
-		 */
-		override public function dispose():void {
-			trace("Dispose bullet! REMOVE ME WHEN ACTUALLY DISPOSING.");
-		}
-		
-		
 		/**
 		 * fire
 		 * Shots bullet 
 		 */
 		private function updatePosition():void {
-			var xVel:Number = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity << this.BULLET_SPEED);
-			var yVel:Number = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity << this.BULLET_SPEED);
+			this.m_xVel = Math.cos(this._angle * (Math.PI / 180)) * (this._velocity << this.BULLET_SPEED);
+			this.m_yVel = Math.sin(this._angle * (Math.PI / 180)) * (this._velocity << this.BULLET_SPEED);
 			this.rotation = this._angle;
-			this.x += xVel * this.m_scaleFactor;
-			this.y += yVel * this.m_scaleFactor;
+			this.x += this.m_xVel * this.m_scaleFactor;
+			this.y += this.m_yVel * this.m_scaleFactor;
 			
 			this.applyGravity();
 		}

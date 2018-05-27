@@ -30,7 +30,8 @@ package entity {
 		//-----------------------------------------------------------
 		
 		private const DEFAULT_SCALE:int = 2;
-		
+		private var m_shake:Shake;
+		private var m_flicker:Flicker;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -62,6 +63,13 @@ package entity {
 			super.init();
 		}
 		
+		override public function dispose():void {
+			this.m_pos = null;
+			this._appWidth = 0;
+			this.m_shake = null;
+			this.m_flicker = null;
+		}
+		
 		/**
 		 * _setScale
 		 * 
@@ -80,8 +88,8 @@ package entity {
 		 * 
 		 */
 		protected function _shake(obj:DisplayObjectContainer, amountY:int):void {
-			var shake:Shake = new Shake(obj, 150, new Point(0,amountY), new Point(0,0));
-			Session.effects.add(shake);
+			this.m_shake = new Shake(obj, 150, new Point(0,amountY), new Point(0,0));
+			Session.effects.add(this.m_shake);
 		}
 		
 		
@@ -90,8 +98,8 @@ package entity {
 		 * 
 		 */
 		protected function _flicker(obj:DisplayObjectContainer, duration:int = 1000, interval:int = 30):void {
-			var flicker:Flicker = new Flicker(obj, duration, interval, true);
-			Session.effects.add(flicker);
+			this.m_flicker = new Flicker(obj, duration, interval, true);
+			Session.effects.add(this.m_flicker);
 		}
 	}
 }

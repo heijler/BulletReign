@@ -243,10 +243,18 @@ package objects {
 		 * 
 		 */
 		override public function dispose():void {
-			trace("Dispose Banner! REMOVE ME WHEN ACTUALLY DISPOSING.");
 			this.m_skin = null;
 			this.hitBox = null;
 			this.m_angleVals = null;
+			this.active = false;
+			this.onGround = false;
+			this.onBase = false;
+			this.outOfBounds = false;
+			this.lastHolder = null;
+			this.m_skin = null;
+			this.m_caught = false;
+			this.m_scaleFactor = 0;
+			this.m_gravity = false;
 		}
 	}
 }

@@ -156,7 +156,9 @@ package managers {
 			this.m_bulletTween = Session.tweener.add(bullet,{
 					transition: Quint.easeInOut,
 					duration: this.BULLET_ACTIVE_TIME + 300,
-					alpha: 0.1
+					alpha: 0.1,
+					onComplete: this.m_removeBulletTween,
+					requestParam: true
 				});
 			
 			// Make inactive after specified amount of time
@@ -165,6 +167,9 @@ package managers {
 			});
 		}
 		
+		private function m_removeBulletTween(tween, target):void {
+			trace(tween, target);
+		}
 		
 		/**
 		 * m_makeTraceRound
