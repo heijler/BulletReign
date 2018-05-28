@@ -26,10 +26,10 @@ package {
 		[Embed(source = "../asset/ttf/BulletReign.ttf", fontFamily = "bulletreign", mimeType = "application/x-font", embedAsCFF="false")]
 		private static const COUNTER_TEXT:Class;
 		
-		[Embed(source = "../asset/sound/music/bgm_menu.mp3")]
+		[Embed(source = "../asset/sound/music/bgm_action_5.mp3")]
 		public static const MENU_MUSIC:Class;
 		
-		[Embed(source = "../asset/sound/music/bgm_action_5.mp3")]
+		[Embed(source = "../asset/sound/music/bgm_menu.mp3")]
 		public static const INFOSCREEN_MUSIC:Class;
 		
 		[Embed(source = "../asset/sound/music/bgm_action_3.mp3")]
