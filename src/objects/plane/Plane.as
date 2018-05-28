@@ -28,6 +28,7 @@ package objects.plane {
 
 	//-----------------------------------------------------------
 	// Plane
+	// Represents a plane
 	//-----------------------------------------------------------
 	
 	public class Plane extends MotionEntity {
@@ -37,20 +38,20 @@ package objects.plane {
 		//-----------------------------------------------------------
 		public const PLANE_DURABILITY:Number = 10;
 		
+		public var winner:Boolean          = false;
 		public var crashed:Boolean         = false;
 		public var shotDown:Boolean        = false;
+		public var holdingBanner:Boolean   = false;
+		public var powerUpActive:Boolean   = false;
 		public var noAccelDuration:Boolean = false;
 		public var noDamage:Boolean        = false;
 		public var noFireCounter:Boolean   = false;
-		public var holdingBanner:Boolean   = false;
-		public var powerUpActive:Boolean   = false;
-		public var winner:Boolean          = false;
 		
+		public var health:Number;
+		public var wins:int;
 		public var activePlayer:int = 0;
 		public var tailHitbox:Shape;
 		public var bodyHitbox:Shape;
-		public var health:Number;
-		public var wins:int;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -58,6 +59,10 @@ package objects.plane {
 
 		private var m_ph:PlaneHandler;
 		private var m_movability:Boolean;
+		
+		//-----------------------------------------------------------
+		// Internal properties
+		//-----------------------------------------------------------
 		
 		internal var _gunCoolingdown:Boolean = true;
 		internal var _accelerating:Boolean   = true;
@@ -87,7 +92,6 @@ package objects.plane {
 			this._fxMan          = fxMan;
 			this._scaleFactor    = scaleFactor;
 			this.m_ph            = new PlaneHandler(this);
-			
 		}
 		
 		//-----------------------------------------------------------
@@ -206,29 +210,18 @@ package objects.plane {
 		 * 
 		 */
 		private function m_setHitboxes():void {
+			// Tail hitbox
 			this.tailHitbox = new Shape();
-			
-			// Debug
 			if (BulletReign.debug) this.tailHitbox.graphics.beginFill(0xFF0000);
-			
 			this.tailHitbox.graphics.drawRect(-8, -1, 7, 3);
-			
-			// Debug
 			if (BulletReign.debug) this.tailHitbox.graphics.endFill();
-			
 			this._skin.addChild(this.tailHitbox);
 			
-			
+			// Body hitbox
 			this.bodyHitbox = new Shape();
-			
-			// Debug
 			if (BulletReign.debug) this.bodyHitbox.graphics.beginFill(0xFFFF00);
-			
 			this.bodyHitbox.graphics.drawRect(-1, -2, 9, 6);
-			
-			// Debug
 			if (BulletReign.debug) this.bodyHitbox.graphics.endFill();
-			
 			this._skin.addChild(this.bodyHitbox);
 		}
 		
@@ -265,7 +258,7 @@ package objects.plane {
 		}
 		
 		
-				//-----------------------------------------------------------
+		//-----------------------------------------------------------
 		// Events
 		//-----------------------------------------------------------
 		
@@ -324,7 +317,7 @@ package objects.plane {
 			this._velocity = 4;
 			this.setGravityFactor(4);
 			if (this._facingUp) {
-				this.m_ph.reflectAngle();
+				this.m_ph._reflectAngle();
 			} else {
 				this.setGravityFactor(6);
 			}
@@ -361,15 +354,17 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Public wrapper
 		 */
 		public function reflectAngle():void {
-			this.m_ph.reflectAngle();
+			this.m_ph._reflectAngle();
 		}
 		
+		/**
+		 * Public wrapper
+		 */
 		public function updateRotation():void {
 			this.m_ph.updateRotation();
 		}
-			
 	}
 }

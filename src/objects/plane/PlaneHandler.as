@@ -8,18 +8,31 @@ package objects.plane {
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
-	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
+	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.media.SoundMixer;
 
 	//-----------------------------------------------------------
 	// PlaneHandler
+	// Handles the planes sounds, movement, controls, cooldowns
+	// and powerups.
 	//-----------------------------------------------------------
 	internal class PlaneHandler {
 		
 		//-----------------------------------------------------------
 		// Private properties
+		//-----------------------------------------------------------
+		
+		private var m_plane:Plane;
+		private var m_controls:EvertronControls;
+		private var m_onePU:Boolean    = false;
+		private var m_fireDelay:Number = FIRE_DELAY;
+		private var m_burstSize:int = 5;
+		
+		//-----------------------------------------------------------
+		// Internal properties
 		//-----------------------------------------------------------
 		
 		internal const ACCELERATE_FACTOR:Number = 0.25;
@@ -28,14 +41,8 @@ package objects.plane {
 		internal const BASE_SPEED:Number = 4;
 		internal const FIRE_DELAY:int = 4;
 		
-		internal var m_firing:Boolean         = true;
-		private var m_onePU:Boolean          = false;
-		
-		private var m_plane:Plane;
-		internal var _steering:Boolean       = true;
-		
-		
-		private var m_controls:EvertronControls;
+		internal var _firing:Boolean  = true;
+		internal var _steering:Boolean = true;
 		
 		internal var _takingFire:Vector.<SoundObject>;
 		internal var _engineOverdriveSound:SoundObject;
@@ -46,20 +53,18 @@ package objects.plane {
 		internal var _openFire:SoundObject;
 		internal var _crashing:SoundObject;
 		
-		private var m_fireDelay:Number = FIRE_DELAY;
-		private var m_burstSize:int = 5;
 		internal var _accelDuration:int;
 		internal var _fireCounter:int;
+		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
+		
 		public function PlaneHandler(plane:Plane) {
 			this.m_plane           = plane;
 			this.m_controls        = new EvertronControls(this.m_plane.activePlayer);
-			
-			this._accelDuration   = this.ACCELERATE_DURATION;
-			this._fireCounter     = this.FIRE_BURST_SIZE;
-			
+			this._accelDuration    = this.ACCELERATE_DURATION;
+			this._fireCounter      = this.FIRE_BURST_SIZE;
 			this.m_plane.health    = this.m_plane.PLANE_DURABILITY;
 			this.m_plane._velocity = this.BASE_SPEED;
 			this.m_plane._angle    = 0;
@@ -76,22 +81,23 @@ package objects.plane {
 		 * 
 		 */
 		internal function _initSound():void {
-			Session.sound.soundChannel.sources.add("engineoverdrivesound", BulletReign.ENGINEOVERDRIVE_SOUND);
-			Session.sound.soundChannel.sources.add("planecrashing", BulletReign.PLANE_CRASH);
-			Session.sound.soundChannel.sources.add("enginesound", BulletReign.ENGINE_SOUND);
-			Session.sound.soundChannel.sources.add("fallingplane", BulletReign.CRASH_SOUND);
-			Session.sound.soundChannel.sources.add("takingFire1", BulletReign.HIT1_SOUND);
-			Session.sound.soundChannel.sources.add("takingFire2", BulletReign.HIT2_SOUND);
-			Session.sound.soundChannel.sources.add("takingFire3", BulletReign.HIT3_SOUND);
-			Session.sound.soundChannel.sources.add("machinegun", BulletReign.GUN_FIRE);
-			Session.sound.soundChannel.sources.add("scream", BulletReign.SCREAM_SOUND);
+			var sc:SoundMixer = Session.sound.soundChannel;
+			sc.sources.add("engineoverdrivesound", BulletReign.ENGINEOVERDRIVE_SOUND);
+			sc.sources.add("planecrashing",        BulletReign.PLANE_CRASH);
+			sc.sources.add("enginesound",          BulletReign.ENGINE_SOUND);
+			sc.sources.add("fallingplane",         BulletReign.CRASH_SOUND);
+			sc.sources.add("takingFire1",          BulletReign.HIT1_SOUND);
+			sc.sources.add("takingFire2",          BulletReign.HIT2_SOUND);
+			sc.sources.add("takingFire3",          BulletReign.HIT3_SOUND);
+			sc.sources.add("machinegun",           BulletReign.GUN_FIRE);
+			sc.sources.add("scream",               BulletReign.SCREAM_SOUND);
 
-			this._engineOverdriveSound = Session.sound.soundChannel.get("engineoverdrivesound");
-			this._crashing = Session.sound.soundChannel.get("planecrashing");
-			this._engineSound = Session.sound.soundChannel.get("enginesound");
-			this._fallingPlane = Session.sound.soundChannel.get("fallingplane");
-			this._openFire = Session.sound.soundChannel.get("machinegun");
-			this._screamSound = Session.sound.soundChannel.get("scream");
+			this._engineOverdriveSound = sc.get("engineoverdrivesound");
+			this._crashing             = sc.get("planecrashing");
+			this._engineSound          = sc.get("enginesound");
+			this._fallingPlane         = sc.get("fallingplane");
+			this._openFire             = sc.get("machinegun");
+			this._screamSound          = sc.get("scream");
 
 			this._takingFire = new Vector.<SoundObject>;
 			this._takingFire.push(Session.sound.soundChannel.get("takingFire1"), Session.sound.soundChannel.get("takingFire2"), Session.sound.soundChannel.get("takingFire3"));
@@ -106,29 +112,16 @@ package objects.plane {
 		 */
 		internal function _updateControls():void {
 			if (this.m_controls != null) {
-				
-				// UP
-				if (Input.keyboard.pressed(this.m_controls.PLAYER_UP)) this.m_anglePlane(1);
-				
-				// DOWN
-				if (Input.keyboard.pressed(this.m_controls.PLAYER_DOWN)) this.m_anglePlane(0);
-				
-				// FIRE
-				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) { this.m_fireBullets(); this.m_plane._gunCoolingdown = false; }
-				
-				// FIRE RELEASE
-				if (Input.keyboard.justReleased(this.m_controls.PLAYER_BUTTON_1)) this.m_plane._gunCoolingdown = true;
-				
-				// ACCELERATE
-				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_2)) { this.m_accelerate(); this.m_plane._recharging = false; }
-				
-				// ACCELERATE RELEASE
+				if (Input.keyboard.pressed(this.m_controls.PLAYER_UP))              this.m_anglePlane(1);
+				if (Input.keyboard.pressed(this.m_controls.PLAYER_DOWN))            this.m_anglePlane(0);
+				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_1)) {      this.m_fireBullets(); this.m_plane._gunCoolingdown = false; }
+				if (Input.keyboard.justReleased(this.m_controls.PLAYER_BUTTON_1))   this.m_plane._gunCoolingdown = true;
+				if (Input.keyboard.pressed(this.m_controls.PLAYER_BUTTON_2)) {      this.m_accelerate(); this.m_plane._recharging = false; }
 				if (Input.keyboard.justReleased(this.m_controls.PLAYER_BUTTON_2)) { this._engineOverdriveSound.stop(); this.m_plane._recharging = true; }
-				
-				// DROP BANNER
-				if (Input.keyboard.justPressed(this.m_controls.PLAYER_BUTTON_4)) this._dropBanner();
+				if (Input.keyboard.justPressed(this.m_controls.PLAYER_BUTTON_4))    this._dropBanner();
 			}
 		}
+		
 		
 		/**
 		 * owner: 0 or 1
@@ -145,10 +138,11 @@ package objects.plane {
 			this.updateRotation();
 		}
 		
+		
 		/**
 		 * 
 		 */
-		public function reflectAngle():void {
+		internal function _reflectAngle():void {
 			this.m_plane._angle = 360 - this.m_plane._angle;
 		}
 		
@@ -170,7 +164,7 @@ package objects.plane {
 		 */
 		private function m_accelerate():void {
 			if (this._accelDuration == this.ACCELERATE_DURATION && this.m_plane._accelerating) this._engineOverdriveSound.play();
-			if (this._steering && this._accelDuration != 0 && this.m_plane._accelerating)     this.m_planeAcceleration();
+			if (this._steering && this._accelDuration != 0 && this.m_plane._accelerating)      this.m_planeAcceleration();
 			if (this._accelDuration <= 0 && this.m_plane._accelerating)                        this.m_stopPlaneAcceleration();
 		}
 		
@@ -191,6 +185,7 @@ package objects.plane {
 			
 			this.m_plane._fxMan.add(new Trail(this.m_plane.pos, this.m_plane._angle));
 		}
+		
 		
 		/**
 		 * 
@@ -227,7 +222,6 @@ package objects.plane {
 				xVel = Math.cos(this.m_plane._angle * (Math.PI / 180)) * (this.m_plane._velocity - 0.7);
 				yVel = Math.sin(this.m_plane._angle * (Math.PI / 180)) * (this.m_plane._velocity - 0.7);
 			}
-			
 			this.m_plane.x += xVel * this.m_plane._scaleFactor;
 			this.m_plane.y += yVel * this.m_plane._scaleFactor;
 		}
@@ -289,7 +283,7 @@ package objects.plane {
 		private function m_fireBullets():void {
 			if (this._steering) {
 				this.m_fireDelay--;
-				if (this.m_fireDelay <= 0 && this._fireCounter > 0 && this.m_firing) {
+				if (this.m_fireDelay <= 0 && this._fireCounter > 0 && this._firing) {
 					this._openFire.play();
 					this._openFire.volume = 0.9;
 					if(this.m_plane.noFireCounter == false) {
@@ -297,8 +291,8 @@ package objects.plane {
 					}
 					this.m_plane._bulletManager.add(this.m_plane._angle, this.m_plane._velocity, this.m_plane.pos, this.m_plane._scaleFactor);
 					this.m_fireDelay = FIRE_DELAY;
-				} else if (this._fireCounter <= 0 && this.m_firing){
-					this.m_firing = false;
+				} else if (this._fireCounter <= 0 && this._firing){
+					this._firing = false;
 					var timer:Timer = Session.timer.create(1000, this.m_resetFireRate);
 				}
 			}
@@ -309,11 +303,10 @@ package objects.plane {
 		 * 
 		 */
 		private function m_resetFireRate():void {
-			if (!this.m_firing) {
-				this.m_firing = true;
+			if (!this._firing) {
+				this._firing = true;
 				this._fireCounter = this.FIRE_BURST_SIZE;
 			}
-			
 		}
 		
 		//-----------------------------------------------------------
@@ -330,7 +323,7 @@ package objects.plane {
 		}
 		
 		
-			//-----------------------------------------------------------
+		//-----------------------------------------------------------
 		// Collisions
 		//-----------------------------------------------------------
 

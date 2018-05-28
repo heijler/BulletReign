@@ -55,11 +55,16 @@ package entity {
 			super.init();
 		}
 		
+		
+		/**
+		 * 
+		 */
 		override public function dispose():void {
 			this._velocity = 0;
 			this._angle = 0;
 			this.m_gravityFactor = 0;
 		}
+		
 		
 		/**
 		 * applyGravity
