@@ -91,7 +91,7 @@ package objects {
 			this.m_skin.graphics.beginFill(this.color);
 			this.m_skin.graphics.drawRect(-this.BULLET_SIZE * 0.5 + (5 * this.m_scaleFactor), -this.BULLET_SIZE * 0.5, this.BULLET_SIZE, this.BULLET_SIZE);
 			this.m_skin.graphics.endFill();
-			this._setScale(this.m_skin);
+			this.setScale(this.m_skin);
 			this.addChild(this.m_skin);
 			this.updatePosition();
 		}

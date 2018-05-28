@@ -59,7 +59,7 @@ package objects {
 		 */
 		private function m_initSkin():void {
 			this.m_skin = new ZeppelinGFX;
-			this._setScale(this.m_skin, 2, 2);
+			this.setScale(this.m_skin, 2, 2);
 			this.addChild(this.m_skin);
 			this.m_moveToDefault();
 		}

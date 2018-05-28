@@ -68,7 +68,7 @@ package objects {
 		 */
 		private function m_initSkin():void {
 			this.m_skin = new SmallCloudsGFX();
-			this._setScale(this.m_skin, 4 * this.m_seed, 4 * this.m_seed);
+			this.setScale(this.m_skin, 4 * this.m_seed, 4 * this.m_seed);
 			this.m_skin.gotoAndStop(Math.round(Math.random()) + 1);
 			this.addChild(this.m_skin);
 		}

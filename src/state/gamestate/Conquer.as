@@ -7,7 +7,7 @@ package state.gamestate {
 	import flash.geom.Point;
 	
 	import objects.Banner;
-	import objects.Plane;
+	import objects.plane.Plane;
 	import objects.Zeppelin;
 	
 	import se.lnu.stickossdk.media.SoundObject;
@@ -76,8 +76,8 @@ package state.gamestate {
 			this.m_initBanner();
 			this.m_initHitboxes();
 			this.m_initSounds();
-			this.m_planes[0].m_newDurability = 3;
-			this.m_planes[1].m_newDurability = 3;
+			this.m_planes[0].health = 3;
+			this.m_planes[1].health = 3;
 		}
 		
 		
@@ -163,7 +163,7 @@ package state.gamestate {
 		 * 
 		 */
 		private function m_indicateHitbox():void {
-			this.m_GHB.x = (this.m_bannerHolder.m_activePlayer) ? Session.application.size.x - this.m_GHB.width : 0;
+			this.m_GHB.x = (this.m_bannerHolder.activePlayer) ? Session.application.size.x - this.m_GHB.width : 0;
 		}
 		
 		
@@ -266,7 +266,7 @@ package state.gamestate {
 					this.m_bannerHolder.holdingBanner = true;
 					this.m_banner.lastHolder = this.m_planes[i];
 					this.m_indicateHitbox();
-					this.m_indicateBase(this.m_planes[i].m_activePlayer);
+					this.m_indicateBase(this.m_planes[i].activePlayer);
 					this.m_bannerPickupSound.play();
 					this.m_bannerPickupSound.volume = 0.5;
 				}
@@ -278,7 +278,7 @@ package state.gamestate {
 				if(this.m_planes[1].bodyHitbox.hitTestObject(this.m_planes[0].tailHitbox) && this.m_recentlyStolen == false && this.m_planes[1].holdingBanner == false) {
 					this.m_bannerHolder = this.m_planes[1];
 					this.m_banner.lastHolder = this.m_planes[1];
-					this.m_indicateBase(this.m_planes[1].m_activePlayer);
+					this.m_indicateBase(this.m_planes[1].activePlayer);
 					this.m_indicateHitbox();
 					this.m_recentlyStolen = true;
 					this.m_planes[1].holdingBanner = true;
@@ -291,7 +291,7 @@ package state.gamestate {
 				if(this.m_planes[0].bodyHitbox.hitTestObject(this.m_planes[1].tailHitbox) && this.m_recentlyStolen == false && this.m_planes[0].holdingBanner == false) {
 					this.m_bannerHolder = this.m_planes[0];
 					this.m_banner.lastHolder = this.m_planes[0];
-					this.m_indicateBase(this.m_planes[0].m_activePlayer);
+					this.m_indicateBase(this.m_planes[0].activePlayer);
 					this.m_indicateHitbox();
 					this.m_recentlyStolen = true;
 					this.m_planes[0].holdingBanner = true;
@@ -314,11 +314,11 @@ package state.gamestate {
 		private function m_bannerBaseCollision():void {
 			if (this.m_banner.hitBox.hitTestObject(this.m_GHB) && this.m_banner.onBase == false && this.m_bannerHolder == null && !this.m_banner.lastHolder.crashed) {
 				this.m_banner.onBase = true;
-				this.m_indicateBase(this.m_banner.lastHolder.m_activePlayer);
+				this.m_indicateBase(this.m_banner.lastHolder.activePlayer);
 				this.m_winSound.play();
 				this.m_banner.lastHolder.wins++;
-				this.m_scoreMessage(this.m_banner.lastHolder.m_activePlayer);
-				this.m_incrementWins(this.m_banner.lastHolder.m_activePlayer, this.m_banner.lastHolder.wins);
+				this.m_scoreMessage(this.m_banner.lastHolder.activePlayer);
+				this.m_incrementWins(this.m_banner.lastHolder.activePlayer, this.m_banner.lastHolder.wins);
 				this.m_resolveGame();
 				this.m_respawnDelay = Session.timer.create(3000, this.m_respawn);
 			}
@@ -370,8 +370,8 @@ package state.gamestate {
 		private function m_respawn():void {
 			if (this.m_matchFin == false) {
 				this.m_respawnNow();
-				this.m_planes[0].m_newDurability = 3;
-				this.m_planes[1].m_newDurability = 3;
+				this.m_planes[0].health = 3;
+				this.m_planes[1].health = 3;
 				this.m_respawnBanner();
 				this.m_winFlag = false;
 			}
@@ -385,7 +385,7 @@ package state.gamestate {
 		private function m_respawnPlane():void {
 			if (this.m_matchFin == false) {
 				this._respawnPlane(this.m_crashedPlane);
-				this.m_planes[this.m_crashedPlane].m_newDurability = 3;
+				this.m_planes[this.m_crashedPlane].health = 3;
 				this.m_winFlag = false;
 			}
 		}
@@ -446,10 +446,10 @@ package state.gamestate {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_planes[i].wins == this._winLimit) {
 					this.m_matchFin = true;
-					this.m_planes[i].m_winner = true;
+					this.m_planes[i].winner = true;
 					if(this.m_callWinner == false) {
 						this.m_scoreMessageRemove();
-						this.m_matchOver(this.m_planes[i].m_activePlayer);
+						this.m_matchOver(this.m_planes[i].activePlayer);
 					}
 					this.m_callWinner = true;
 				}
@@ -467,7 +467,7 @@ package state.gamestate {
 					for(var j:int = 0; j < this.m_planes.length; j++) {
 						if(this.m_planes[j].crashed == false) {
 							if(this.m_winFlag == false) {
-								this.m_crashedPlane = this.m_planes[i].m_activePlayer;
+								this.m_crashedPlane = this.m_planes[i].activePlayer;
 								this.m_winFlag = true;
 								this.m_respawnPlaneTimer = Session.timer.create(1000, this.m_respawnPlane);
 							}

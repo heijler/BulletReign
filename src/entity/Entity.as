@@ -74,7 +74,7 @@ package entity {
 		 * _setScale
 		 * 
 		 */
-		protected function _setScale(obj:DisplayObjectContainer, scaleX:int = this.DEFAULT_SCALE, scaleY:int = this.DEFAULT_SCALE):void {
+		public function setScale(obj:DisplayObjectContainer, scaleX:int = this.DEFAULT_SCALE, scaleY:int = this.DEFAULT_SCALE):void {
 			if (obj != null) {
 				obj.scaleX = scaleX;
 				obj.scaleY = scaleY;
@@ -87,7 +87,7 @@ package entity {
 		 * _shake
 		 * 
 		 */
-		protected function _shake(obj:DisplayObjectContainer, amountY:int):void {
+		public function shake(obj:DisplayObjectContainer, amountY:int):void {
 			this.m_shake = new Shake(obj, 150, new Point(0,amountY), new Point(0,0));
 			Session.effects.add(this.m_shake);
 		}
@@ -97,7 +97,7 @@ package entity {
 		 * _flicker
 		 * 
 		 */
-		protected function _flicker(obj:DisplayObjectContainer, duration:int = 1000, interval:int = 30):void {
+		public function flicker(obj:DisplayObjectContainer, duration:int = 1000, interval:int = 30):void {
 			this.m_flicker = new Flicker(obj, duration, interval, true);
 			Session.effects.add(this.m_flicker);
 		}
