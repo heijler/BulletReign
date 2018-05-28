@@ -46,6 +46,7 @@ package objects.plane {
 		public var noAccelDuration:Boolean = false;
 		public var noDamage:Boolean        = false;
 		public var noFireCounter:Boolean   = false;
+		public var movability:Boolean      = true;
 		
 		public var health:Number;
 		public var wins:int;
@@ -58,7 +59,6 @@ package objects.plane {
 		//-----------------------------------------------------------
 
 		private var m_ph:PlaneHandler;
-		private var m_movability:Boolean;
 		private var m_healthMeter:MovieClip;
 		
 		//-----------------------------------------------------------
@@ -83,9 +83,8 @@ package objects.plane {
 		// Constructor
 		//-----------------------------------------------------------
 
-		public function Plane(player:int, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor:int, fxMan:FXManager, movability:Boolean) {
+		public function Plane(player:int, bulletMngr:BulletManager, ebulletMngr:BulletManager, pos:Point, scaleFactor:int, fxMan:FXManager) {
 			super();
-			this.m_movability    = movability;
 			this.activePlayer    = player;
 			this._bulletManager  = bulletMngr;
 			this._ebulletManager = ebulletMngr;
@@ -390,6 +389,10 @@ package objects.plane {
 		 */
 		public function updateRotation():void {
 			this.m_ph.updateRotation();
+		}
+		
+		public function movePlane(bool:Boolean):void {
+			this.m_ph.planeMovement(bool);
 		}
 	}
 }

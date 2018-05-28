@@ -213,17 +213,19 @@ package objects.plane {
 		 * Called in gameloop.
 		 */
 		internal function _defaultAcceleration():void {
-			var xVel:Number;
-			var yVel:Number;
-			if (!this.m_plane.holdingBanner) {
-				xVel = Math.cos(this.m_plane._angle * (Math.PI / 180)) * this.m_plane._velocity;
-				yVel = Math.sin(this.m_plane._angle * (Math.PI / 180)) * this.m_plane._velocity;
-			} else {
-				xVel = Math.cos(this.m_plane._angle * (Math.PI / 180)) * (this.m_plane._velocity - 0.7);
-				yVel = Math.sin(this.m_plane._angle * (Math.PI / 180)) * (this.m_plane._velocity - 0.7);
+			if (this.m_plane.movability) {
+				var xVel:Number;
+				var yVel:Number;
+				if (!this.m_plane.holdingBanner) {
+					xVel = Math.cos(this.m_plane._angle * (Math.PI / 180)) * this.m_plane._velocity;
+					yVel = Math.sin(this.m_plane._angle * (Math.PI / 180)) * this.m_plane._velocity;
+				} else {
+					xVel = Math.cos(this.m_plane._angle * (Math.PI / 180)) * (this.m_plane._velocity - 0.7);
+					yVel = Math.sin(this.m_plane._angle * (Math.PI / 180)) * (this.m_plane._velocity - 0.7);
+				}
+				this.m_plane.x += xVel * this.m_plane._scaleFactor;
+				this.m_plane.y += yVel * this.m_plane._scaleFactor;
 			}
-			this.m_plane.x += xVel * this.m_plane._scaleFactor;
-			this.m_plane.y += yVel * this.m_plane._scaleFactor;
 		}
 		
 		
@@ -234,10 +236,12 @@ package objects.plane {
 			if(move == false) {
 				this.m_plane._velocity = 0;
 				this.m_plane.removeGravity();
+				this._steering = false;
 			} else {
 				this.m_plane._velocity = this.BASE_SPEED;
 				this.m_plane.applyGravity();
 				this.m_plane.setGravityFactor(1);
+				this._steering = true;
 			}
 		}
 		

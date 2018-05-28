@@ -7,12 +7,14 @@ package state.gamestate {
 	import flash.geom.Point;
 	
 	import objects.Banner;
-	import objects.plane.Plane;
 	import objects.Zeppelin;
+	import objects.plane.Plane;
 	
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
+	
+	import ui.Countdown;
 	
 	//-----------------------------------------------------------
 	// Conquer
@@ -62,6 +64,7 @@ package state.gamestate {
 			super();
 			this._winLimit = 3;
 			this._gamemode = 1;
+			this._bestOf = 5;
 		}
 		
 		//-----------------------------------------------------------
