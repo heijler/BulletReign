@@ -52,8 +52,10 @@ package state.menustate.infoScreen {
 		private var m_medal:String;
 		private var m_medalRewarded:Boolean = false;
 		private var m_updateControlFlag:Boolean = false;
-		private var m_winnerText:TextField;
-		private var m_winnerFormat:TextFormat;
+		private var m_winnerTextTitle:TextField;
+		private var m_winnerTextMain:TextField;
+		private var m_winnerFormatTitle:TextFormat;
+		private var m_winnerFormatMain:TextFormat;
 		private var m_controlsTimer:Timer;
 		private var m_infoscreenMusic:SoundObject;
 		private var m_winnerArt:Bitmap;
@@ -186,24 +188,39 @@ package state.menustate.infoScreen {
 		 * 
 		 */
 		private function m_winnerMessage():void {
-			this.m_winnerText = new TextField();
-			this.m_winnerText.text = "CONGRATULATIONS PLAYER " + (this.m_winner + 1) + "\nYOU HAVE BEEN REWARDED THE " + " \n" + this.m_medal + " FOR YOUR VICTORY!";
-			this.m_winnerText.autoSize = "center";
-			this.m_winnerText.x = (Session.application.size.x / 2) - (this.m_winnerText.width / 2);
-			this.m_winnerText.y = (Session.application.size.y / 2) - 200;
+			this.m_winnerTextTitle = new TextField();
+			this.m_winnerTextMain = new TextField();
+			this.m_winnerTextTitle.text = "CONGRATULATIONS PLAYER" + (this.m_winner + 1); 
+			this.m_winnerTextMain.text = "YOU HAVE BEEN REWARDED " + this.m_medal;
+			this.m_winnerTextTitle.autoSize = "center";
+			this.m_winnerTextMain.autoSize = "center";
+			this.m_winnerTextTitle.x = (Session.application.size.x / 2) - (this.m_winnerTextTitle.width / 2);
+			this.m_winnerTextMain.x = (Session.application.size.x / 2) - (this.m_winnerTextTitle.width / 2);
+			this.m_winnerTextTitle.y = (Session.application.size.y / 2) - 200;
+			this.m_winnerTextMain.y = (Session.application.size.y / 2) - 160;
 			
-			this.m_winnerFormat = new TextFormat();
-			this.m_winnerFormat.color = 0xFFF392; //0xFFFFFF
-			this.m_winnerFormat.kerning = true;
-			this.m_winnerFormat.letterSpacing = 3;
-			this.m_winnerFormat.size = 12;
-			this.m_winnerFormat.leading = 8;
-			this.m_winnerFormat.font = "bulletreign";
+			this.m_winnerFormatTitle = new TextFormat();
+			this.m_winnerFormatTitle.color = 0xFFF392; //0xFFFFFF
+			this.m_winnerFormatTitle.kerning = true;
+			this.m_winnerFormatTitle.letterSpacing = 3;
+			this.m_winnerFormatTitle.size = 16;
+			this.m_winnerFormatTitle.font = "bulletreign";
+			
+			this.m_winnerFormatMain = new TextFormat();
+			this.m_winnerFormatMain.color = 0xFFF392; //0xFFFFFF
+			this.m_winnerFormatMain.kerning = true;
+			this.m_winnerFormatMain.letterSpacing = 3;
+			this.m_winnerFormatMain.size = 10;
+			this.m_winnerFormatMain.leading = 8;
+			this.m_winnerFormatMain.font = "bulletreign";
 				
-			this.m_winnerText.embedFonts = true;
-			this.m_winnerText.setTextFormat(this.m_winnerFormat);
+			this.m_winnerTextTitle.embedFonts = true;
+			this.m_winnerTextMain.embedFonts = true;
+			this.m_winnerTextTitle.setTextFormat(this.m_winnerFormatTitle);
+			this.m_winnerTextMain.setTextFormat(this.m_winnerFormatMain);
 				
-			this.m_winnerScreenLayer.addChild(this.m_winnerText);
+			this.m_winnerScreenLayer.addChild(this.m_winnerTextTitle);
+			this.m_winnerScreenLayer.addChild(this.m_winnerTextMain);
 		}
 		
 		
@@ -290,8 +307,10 @@ package state.menustate.infoScreen {
 			this.m_medalSkin = null;
 			this.m_medal = null;
 			this.m_medalRewarded = false;
-			this.m_winnerText = null;
-			this.m_winnerFormat = null;
+			this.m_winnerTextTitle = null;
+			this.m_winnerTextMain = null;
+			this.m_winnerFormatTitle = null;
+			this.m_winnerFormatMain = null;
 			Session.timer.remove(this.m_controlsTimer);
 			this.m_controlsTimer = null;
 		}
