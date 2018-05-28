@@ -409,6 +409,7 @@ package state.gamestate {
 				this.m_planes[this.m_crashedPlane].health = 3;
 				this.m_planes[this.m_crashedPlane].updateHealthMeter();
 				this.m_winFlag = false;
+				this._flashScreen = false;
 			}
 		}
 		
