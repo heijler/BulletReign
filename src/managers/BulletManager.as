@@ -6,7 +6,7 @@ package managers {
 	import flash.geom.Point;
 	
 	import objects.Bullet;
-	import objects.Plane;
+	import objects.plane.Plane;
 	
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;

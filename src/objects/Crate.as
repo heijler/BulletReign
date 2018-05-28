@@ -59,7 +59,7 @@ package objects {
 			this.m_type = Math.floor(Math.random() * this.m_crateClips.length);
 			for(var i:int = 0; i < this.m_crateClips.length; i++) {
 				this.m_crateClips[i].gotoAndStop(0);
-				this._setScale(this.m_crateClips[i], 2, 2);
+				this.setScale(this.m_crateClips[i], 2, 2);
 				this.m_crateClips[i].cacheAsBitmap = true;
 			}
 			this.addChild(this.m_crateClips[this.m_type]);
@@ -114,8 +114,8 @@ package objects {
 		 */
 		public function m_onGroundCollision(layer:DisplayStateLayer):void {
 			this.removeGravity();
-			this._shake(layer, 5);
-			this._flicker(this, 500);
+			this.shake(layer, 5);
+			this.flicker(this, 500);
 			for(var i:int = 0; i < this.m_crateClips.length; i++) {
 				this.m_crateClips[i].play();
 			}

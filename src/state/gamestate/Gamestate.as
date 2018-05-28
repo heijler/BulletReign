@@ -24,7 +24,7 @@ package state.gamestate {
 	
 	import objects.Cloud;
 	import objects.Crate;
-	import objects.Plane;
+	import objects.plane.Plane;
 	
 	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
@@ -208,8 +208,8 @@ package state.gamestate {
 				
 			this.m_planes = this.m_planeManager.getPlanes();
 			for(var i:int = 0; i < this.m_planes.length; i++) {
-				this.m_planes[i].m_engineSound.play();
-				this.m_planes[i].m_engineSound.volume = 0.9;
+				this.m_planes[i].engineSound.play();
+				this.m_planes[i].engineSound.volume = 0.9;
 			}
 			
 			this.m_indicators();
@@ -221,7 +221,7 @@ package state.gamestate {
 		 */
 		private function m_indicators():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				var indicator:MovieClip = this.m_createIndicator(this.m_planes[i].m_activePlayer);
+				var indicator:MovieClip = this.m_createIndicator(this.m_planes[i].activePlayer);
 					indicator.scaleX = 2;
 					indicator.scaleY = 2;
 					indicator.y = -20;
@@ -441,7 +441,7 @@ package state.gamestate {
 		 */
 		protected function m_respawnNow():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				this.m_planes[i].m_onRespawn(false);
+				this.m_planes[i].onRespawn(false);
 //				this.m_planes[i].m_newDurability = 2;
 			}
 			this.m_flashScreen = false;
@@ -456,8 +456,8 @@ package state.gamestate {
 		 */
 		protected function _respawnPlane(player:int):void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].m_activePlayer == player) {
-					this.m_planes[i].m_respawn(false);
+				if (this.m_planes[i].activePlayer == player) {
+					this.m_planes[i].onRespawn(false);
 				}
 			}
 		}
@@ -495,16 +495,16 @@ package state.gamestate {
 							this.m_powerupSound.volume = 0.7;
 							this.m_planes[i].powerUpActive = true;
 							if(this.m_crates[j].m_type == 0) {
-								this.m_planes[i].m_noDamage = true;
-								this.m_generateIcons(this.m_planes[i].m_activePlayer);
+								this.m_planes[i].noDamage = true;
+								this.m_generateIcons(this.m_planes[i].activePlayer);
 							}
 							if(this.m_crates[j].m_type == 1) {
-								this.m_planes[i].m_noFireCounter = true;
-								this.m_generateIcons(this.m_planes[i].m_activePlayer);
+								this.m_planes[i].noFireCounter = true;
+								this.m_generateIcons(this.m_planes[i].activePlayer);
 							}
 							if(this.m_crates[j].m_type == 2) {
-								this.m_planes[i].m_noAccelDuration = true;
-								this.m_generateIcons(this.m_planes[i].m_activePlayer);
+								this.m_planes[i].noAccelDuration = true;
+								this.m_generateIcons(this.m_planes[i].activePlayer);
 							}
 							this.m_crateManager.removeCrate(this.m_crates[j]);
 							var spawnTime:int = MathUtils.randomRange(5000, 30000);
@@ -578,8 +578,8 @@ package state.gamestate {
 		
 		private function m_wrapItUp():void {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if(this.m_planes[i].m_winner == true) {
-					Session.application.displayState = new WinnerScreen(this._gamemode, this.m_planes[i].m_activePlayer);
+				if(this.m_planes[i].winner == true) {
+					Session.application.displayState = new WinnerScreen(this._gamemode, this.m_planes[i].activePlayer);
 				}
 			}
 			
@@ -592,7 +592,7 @@ package state.gamestate {
 		private function m_durabilityChange():void {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				if (this.m_planes[i].health <= this.m_planes[i].PLANE_DURABILITY) {
-					this.m_hudManager.incrementDecrementHealth(this.m_planes[i].m_activePlayer, this.m_planes[i].health);
+					this.m_hudManager.incrementDecrementHealth(this.m_planes[i].activePlayer, this.m_planes[i].health);
 				}
 			}
 		}

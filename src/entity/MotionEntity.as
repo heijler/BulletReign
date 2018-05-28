@@ -16,8 +16,8 @@ package entity {
 		//-----------------------------------------------------------
 		
 		protected const GRAVITY:Number = 0.55;
-		protected var _velocity:Number;
-		protected var _angle:Number;
+		public var _velocity:Number;
+		public var _angle:Number;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -65,7 +65,7 @@ package entity {
 		 * applyGravity
 		 * 
 		 */
-		protected function applyGravity(down:Boolean = true):void {
+		public function applyGravity(down:Boolean = true):void {
 			if (down) {
 				this.y = this.y + this.GRAVITY * this.m_gravityFactor;
 			} else {
@@ -79,7 +79,7 @@ package entity {
 		 * removeGravity
 		 * 
 		 */
-		protected function removeGravity():void {
+		public function removeGravity():void {
 			this.y = this.y;
 			this.m_gravityFactor = 0;
 		}
@@ -88,7 +88,7 @@ package entity {
 		/**
 		 * setGravityFactor
 		 */
-		protected function setGravityFactor(factor:int):void {
+		public function setGravityFactor(factor:int):void {
 			this.m_gravityFactor = factor;
 		}
 		
@@ -97,7 +97,7 @@ package entity {
 		 * wrapAroundObjects
 		 * Wrap objects from one side of screen to the other.
 		 */
-		protected function wrapAroundObjects():void {
+		public function wrapAroundObjects():void {
 			if(this.x < -this.width) {
 				this.x = _appWidth + (this.width * 0.5);
 			} else if (this.x - (this.width * 0.5) > _appWidth) {

@@ -12,6 +12,7 @@ package objects {
 	import entity.MotionEntity;
 	
 	import se.lnu.stickossdk.system.Session;
+	import objects.plane.Plane;
 	
 	//-----------------------------------------------------------
 	// Banner
@@ -97,7 +98,7 @@ package objects {
 		 * 
 		 */
 		public function blink():void {
-			this._flicker(this, 2000, 100);
+			this.flicker(this, 2000, 100);
 		}
 		
 		
@@ -128,7 +129,7 @@ package objects {
 		 */
 		private function m_initSkin():void {
 			this.m_skin = new BannerGFX;
-			this._setScale(this.m_skin, 2, 2);
+			this.setScale(this.m_skin, 2, 2);
 			this.m_skin.x = -24;
 			this.m_initHitBox();
 			this.addChild(this.m_skin);
@@ -234,7 +235,7 @@ package objects {
 		 * 
 		 */
 		private function m_updateDirection():void{
-			this._setScale(this, 1 * this.m_scaleFactor, 1 * this.m_scaleFactor);
+			this.setScale(this, 1 * this.m_scaleFactor, 1 * this.m_scaleFactor);
 		}
 		
 		

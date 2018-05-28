@@ -56,9 +56,9 @@ package state.gamestate {
 								this.m_winSound.play();
 								this.m_winSound.volume = 0.2;
 								this.m_planes[j].wins++;
-								this.m_scoreMessage(this.m_planes[j].m_activePlayer);
+								this.m_scoreMessage(this.m_planes[j].activePlayer);
 								this.m_winFlag = true;
-								this.m_incrementWins(this.m_planes[j].m_activePlayer, this.m_planes[j].wins);
+								this.m_incrementWins(this.m_planes[j].activePlayer, this.m_planes[j].wins);
 								this.m_respawnNowTimer = Session.timer.create(3000, this.m_respawnNow);
 							}
 						}
@@ -79,10 +79,10 @@ package state.gamestate {
 		private function m_resolveGame():void {
 			for(var i:int = 0; i < this.m_planes.length; i++) {
 				if(this.m_planes[i].wins == this._winLimit) {
-					this.m_planes[i].m_winner = true;
+					this.m_planes[i].winner = true;
 					if(this.m_callWinner == false){
 						this.m_scoreMessageRemove();
-						this.m_matchOver(this.m_planes[i].m_activePlayer);
+						this.m_matchOver(this.m_planes[i].activePlayer);
 					}
 					this.m_callWinner = true;
 				}

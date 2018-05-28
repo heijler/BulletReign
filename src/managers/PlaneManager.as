@@ -5,7 +5,7 @@ package managers {
 	
 	import flash.display.DisplayObjectContainer;
 	
-	import objects.Plane;
+	import objects.plane.Plane;
 	
 	//-----------------------------------------------------------
 	// PlaneManager

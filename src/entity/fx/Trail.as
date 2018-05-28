@@ -55,7 +55,7 @@ package entity.fx {
 			this.m_skin.graphics.beginFill(0xFFF392);
 			this.m_skin.graphics.drawRect(-this.TRAIL_SIZE * 0.5, -this.TRAIL_SIZE * 0.5, this.TRAIL_SIZE, this.TRAIL_SIZE);
 			this.m_skin.graphics.endFill();
-			this._setScale(this.m_skin);
+			this.setScale(this.m_skin);
 			this.addChild(this.m_skin);
 			this.alpha = 0.7; // Starting alpha
 		}
