@@ -422,7 +422,6 @@ package state.gamestate {
 			this.m_crateGroundCollision();
 			this.m_cratePlaneCollision();
 			this.m_durabilityChange();
-			this.m_removeInactiveBullets();
 			this._updateGamemode();
 			this.m_flashWorld();
 		}
@@ -634,15 +633,6 @@ package state.gamestate {
 			this.m_hudManager.incrementWins(activePlayer, wins);
 		}
 		
-		
-		/**
-		 * m_removeInactiveBullets
-		 * 
-		 */
-		private function m_removeInactiveBullets():void {
-			this.m_bm1.removeInactiveBullets();
-			this.m_bm2.removeInactiveBullets();
-		}
 		
 		/**
 		 * m_generateCrates

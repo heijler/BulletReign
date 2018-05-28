@@ -67,11 +67,6 @@ package managers {
 				this.m_bullet = new Bullet(angle, velocity, pos, this.m_scaleFactor);
 				this.m_initTimer(this.m_bullet);
 				this.m_bullets.push(this.m_bullet);
-				
-				if(this.m_bullets.length % 5 == 0) {
-					this.m_makeTraceRound(this.m_bullet);
-				}
-				
 				this.m_parent.addChild(this.m_bullet);
 				
 			} else {
@@ -169,25 +164,20 @@ package managers {
 			});
 		}
 		
+		
+		/**
+		 * 
+		 */
 		private function m_removeBulletTween(tween, target):void {
-			trace(tween, target);
+			Session.tweener.remove(tween);
+			tween = null;
+			this.removeBullet(target);
 		}
 		
 		
 		/**
-		 * m_makeTraceRound
 		 * 
 		 */
-		private function m_makeTraceRound(bullet:Bullet):void { 		
-			if (this.m_scaleFactor == 1) {
-				this.m_tracerColor = 0xFF0000;
-			} else if (this.m_scaleFactor == -1) {
-				this.m_tracerColor = 0x0000FF;
-			}
-			bullet.color = this.m_tracerColor;
-		}
-		
-		
 		public function dispose():void {
 			for(var i:int; i < this.m_bullets.length; i++) {
 				this.m_bullets[i].dispose();
