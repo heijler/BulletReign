@@ -5,37 +5,37 @@ package state.gamestate {
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
-	import flash.text.TextFormat;
-	import flash.text.TextField;
 	import flash.display.Shape;
 	import flash.geom.Point;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
-	import se.lnu.stickossdk.display.DisplayStateLayer;
-	import se.lnu.stickossdk.display.DisplayState;
-	import se.lnu.stickossdk.media.SoundObject;
-	import se.lnu.stickossdk.util.MathUtils;
-	import se.lnu.stickossdk.system.Session;
-	import se.lnu.stickossdk.timer.Timer;
-	
-	import asset.IndicatorP1GFX;
-	import asset.IndicatorP2GFX;
 	import asset.ExplosionGFX;
 	import asset.GroundGFX;
+	import asset.IndicatorP1GFX;
+	import asset.IndicatorP2GFX;
 	
 	import entity.fx.FXManager;
 	
 	import managers.BulletManager;
-	import managers.PlaneManager;
 	import managers.CrateManager;
 	import managers.IconManager;
+	import managers.PlaneManager;
 	
 	import objects.Cloud;
 	import objects.Crate;
 	import objects.plane.Plane;
 	
+	import se.lnu.stickossdk.display.DisplayState;
+	import se.lnu.stickossdk.display.DisplayStateLayer;
+	import se.lnu.stickossdk.media.SoundObject;
+	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.timer.Timer;
+	import se.lnu.stickossdk.util.MathUtils;
 	
 	import state.menustate.infoScreen.WinnerScreen;
 	
+	import ui.Countdown;
 	import ui.HUD;
 	import ui.HUDManager;
 	import ui.Icon;
@@ -102,10 +102,12 @@ package state.gamestate {
 		private var m_flashScreen:Boolean = false;
 		private var m_scoreText:TextField;
 		private var m_planeManager:PlaneManager;
+		private var m_countDown:Countdown = new Countdown();
 		
 		
 		protected var m_winSound:SoundObject; //@TODO: rename
 		protected var _winLimit:int = 2;
+		protected var _bestOf:int = 3;
 		
 		//-----------------------------------------------------------
 		// Protected properties
@@ -142,6 +144,7 @@ package state.gamestate {
 			this.m_initFX();
 			this.m_initPlanes();
 			this.m_initHUD();
+			this.m_initCountDown();
 			this.m_initCrates();
 			this.m_initIconManagers();
 			this.m_initMusic();
@@ -203,9 +206,8 @@ package state.gamestate {
 			this.m_bm2 = new BulletManager(this.planeLayer);
 			
 			this.m_planeManager = new PlaneManager(this.planeLayer);
-			var move:Boolean = true
-			this.m_planeManager.add(new Plane(0, this.m_bm1, this.m_bm2, new Point(0, 150), 1, this.m_fxMan1, move));
-			this.m_planeManager.add(new Plane(1, this.m_bm2, this.m_bm1, new Point(800, 150), -1, this.m_fxMan2, move));
+			this.m_planeManager.add(new Plane(0, this.m_bm1, this.m_bm2, new Point(25, 250), 1, this.m_fxMan1));
+			this.m_planeManager.add(new Plane(1, this.m_bm2, this.m_bm1, new Point(775, 250), -1, this.m_fxMan2));
 				
 			this.m_planes = this.m_planeManager.getPlanes();
 			for(var i:int = 0; i < this.m_planes.length; i++) {
@@ -272,6 +274,31 @@ package state.gamestate {
 //			}
 		}
 		
+		
+		/**
+		 * 
+		 */
+		private function m_initCountDown():void {
+			for (var i:int = 0; i < this.m_planes.length; i++) {
+				this.m_planes[i].movePlane(false);
+			}
+			this.m_countDown.bestOf = this._bestOf;
+			this.m_countDown.start(this.m_onCountdownFinish);
+			this.m_countDown.x = (Session.application.size.x * 0.5) - (this.m_countDown.width * 0.5);
+			this.m_countDown.y = (Session.application.size.y * 0.5) - (this.m_countDown.height * 0.5) - 20;
+			this.HUDLayer.addChild(this.m_countDown);
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_onCountdownFinish():void {
+			this.HUDLayer.removeChild(this.m_countDown);
+			for(var i:int = 0; i < this.m_planes.length; i++) {
+				this.m_planes[i].movePlane(true);
+			}
+		}
 		
 		/**
 		 * m_initFX
@@ -678,17 +705,6 @@ package state.gamestate {
 			this.explosionLayer.addChild(explosion);
 		}
 		
-		
-		/**
-		 * 
-		 */
-		private function m_getReady():void {
-			//["GET READY", "3", "2", "1", "GO!"]
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				this.m_planes[i].health;
-			}
-		}
-
 		//-----------------------------------------------------------
 		// Protected methods
 		//-----------------------------------------------------------
