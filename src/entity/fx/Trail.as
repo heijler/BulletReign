@@ -26,7 +26,6 @@ package entity.fx {
 		//-----------------------------------------------------------
 		
 		public function Trail(pos:Point, angle) {
-//			super(pos, angle);
 			super();
 			this.m_pos = pos;
 			this._angle = angle;
@@ -50,7 +49,6 @@ package entity.fx {
 		 * 
 		 */
 		private function m_initSkin():void {
-//			var rand:Number = this.TRAIL_SIZE + (Math.random() * 2)
 			this.m_skin = new Sprite();
 			this.m_skin.graphics.beginFill(0xFFF392);
 			this.m_skin.graphics.drawRect(-this.TRAIL_SIZE * 0.5, -this.TRAIL_SIZE * 0.5, this.TRAIL_SIZE, this.TRAIL_SIZE);
@@ -65,7 +63,6 @@ package entity.fx {
 		 * 
 		 */
 		override public function update():void {
-//			super.update();
 			this.applyGravity();
 			this.alpha -= this.m_alphaDecay;
 			this.width -= 0.3;
@@ -83,16 +80,7 @@ package entity.fx {
 			this.rotation = this._angle;
 		}
 		
-//		
-//		/**
-//		 * 
-//		 */
-//		private function m_createJitter(num:Number, amount:Number):Number {
-//			return num + (Math.random() * amount);
-//		}
-		
-		
-		
+
 		/**
 		 * 
 		 */

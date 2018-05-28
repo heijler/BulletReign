@@ -1,10 +1,4 @@
 package entity {
-
-	//-----------------------------------------------------------
-	// Import
-	//-----------------------------------------------------------
-	
-	
 	//-----------------------------------------------------------
 	// MotionEntity
 	//-----------------------------------------------------------
@@ -76,7 +70,6 @@ package entity {
 			} else {
 				this.y = this.y - this.GRAVITY * this.m_gravityFactor;
 			}
-			
  		}
 		
 		
@@ -117,6 +110,5 @@ package entity {
 		protected function collision(obj1:Entity, obj2:Entity):void {
 			
 		}
-	
 	}
 }

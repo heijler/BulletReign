@@ -5,6 +5,10 @@ package ui {
 	//-----------------------------------------------------------
 	
 	import flash.display.DisplayObjectContainer;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	
+	import se.lnu.stickossdk.system.Session;
 	
 	//-----------------------------------------------------------
 	// HUDManager
@@ -28,7 +32,7 @@ package ui {
 		public function HUDManager(parent:DisplayObjectContainer) {
 			this.m_parent = parent;
 			this.m_huds = new Vector.<HUD>;
-//			this.m_initHealthCloud();
+			this.m_initHealthLabel();
 		}
 		
 		//-----------------------------------------------------------
@@ -66,16 +70,25 @@ package ui {
 		}
 		
 		
-//		/**
-//		 * 
-//		 */
-//		private function m_initHealthCloud():void {
-//			var skin:MovieClip = new HealthCloudGFX;
-//				skin.scaleX = 2.5;
-//				skin.scaleY = 2.5;
-//				skin.x = Session.application.size.x/2;
-//				skin.y = 16;
-//			this.m_parent.addChild(skin);	
-//		}
+		/**
+		 * 
+		 */
+		private function m_initHealthLabel():void {
+			var tf:TextFormat = new TextFormat();
+				tf.color = 0x000000;
+				tf.kerning = true;
+				tf.letterSpacing = 3;
+				tf.size = 7;
+				tf.font = "bulletreign";
+			
+			var text:TextField = new TextField();
+				text.text = "health";
+				text.autoSize = "center";
+				text.embedFonts = true;
+				text.x = (Session.application.size.x * 0.5) - (text.width * 0.5);
+				text.y = 0;
+				text.setTextFormat(tf);
+			this.m_parent.addChild(text);
+		}
 	}
 }
