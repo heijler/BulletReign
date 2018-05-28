@@ -174,7 +174,39 @@ package objects.plane {
 		override public function dispose():void {
 			trace("Dispose plane! REMOVE ME WHEN ACTUALLY DISPOSING.");
 			this.m_ph.dispose();
-			// anropa planehandlers dispose här.
+			//this.m_ph.dispose();
+			this.winner = false;
+			this.crashed = false;
+			this.shotDown = false;
+			this.holdingBanner = false;
+			this.powerUpActive = false;
+			this.noAccelDuration = false;
+			this.noDamage = false;
+			this.noFireCounter = false;
+			this.m_movability = false;
+			
+			this.health = 0;
+			this.wins = 0;
+			this.activePlayer = 0;
+			this.tailHitbox = null;
+			this.bodyHitbox = null;
+			this.m_ph = null;
+			this.m_healthMeter = null;
+			
+			this._gunCoolingdown = false;
+			this._accelerating = true;
+			this._recharging = false;
+			this._facingUp = false;
+			
+			this._skin = null;
+			this._ebulletManager.dispose();
+			this._ebulletManager = null;
+			this._bulletManager.dispose();
+			this._bulletManager = null;
+			//internal var _fxMan:FXManager;
+			this._scaleFactor = 0;
+			this._smoke = null;
+			this._fire = null;
 		}
 		
 		
