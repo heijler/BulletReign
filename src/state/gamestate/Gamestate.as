@@ -82,7 +82,6 @@ package state.gamestate {
 		private var m_icons:Vector.<Icon>;
 		private var m_icon:Icon;
 		private var m_iconSpawn:Point;
-//		private var m_bulletManagers:Vector.<BulletManager>;
 		private var m_bm1:BulletManager; // @FIX, put into Vector?
 		private var m_bm2:BulletManager; // @FIX, put into Vector?
 		private var m_im1:IconManager;
@@ -150,6 +149,41 @@ package state.gamestate {
 			this.m_initSound();
 			this._initGamemode();
 			this.m_initFlash();
+		}
+		
+		override public function dispose():void {
+			this.m_planes = null; //@TODO: rename
+			this.m_crates = null;
+			this.m_crate = null;
+			this.m_crateSpawn = null;
+			this.m_icons = null;
+			this.m_icon = null;
+			this.m_iconSpawn = null;
+			this.m_bm1.dispose();
+			this.m_bm1 = null; // @FIX, put into Vector?
+			this.m_bm2.dispose();
+			this.m_bm2 = null; // @FIX, put into Vector?
+			this.m_im1.dispose();
+			this.m_im1 = null;
+			this.m_im2.dispose();
+			this.m_im2 = null;
+			this.m_sky = null;
+			this.m_ground = null; // @TODO: rename & move 				CHECK FOR MORE POSSIBLE DISPOSES!!!!
+			this.groundHitbox = null; // @TODO: move
+			this.m_background = null;
+			this.m_hudManager = null;
+			this.m_crateManager.dispose();
+			this.m_crateManager = null;
+			this.m_fxMan1 = null;
+			this.m_fxMan2 = null;
+			this,m_ingameMusic = null;
+			this.m_powerupSound = null;
+			this.m_flashScreen = false;
+			this.m_scoreText = null;
+			this.m_planeManager.dispose();
+			this.m_planeManager = null;
+			this.m_winSound = null; //@TODO: rename
+			this._winLimit = 0;
 		}
 		
 		
@@ -449,7 +483,6 @@ package state.gamestate {
 		 */
 		private function m_groundCollision():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				var timer:Timer;
 				if (this.m_planes[i].tailHitbox.hitTestObject(this.groundHitbox) || this.m_planes[i].bodyHitbox.hitTestObject(this.groundHitbox)) {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
@@ -727,13 +760,5 @@ package state.gamestate {
 			// To be overridden by children
 		}
 		
-		override public function dispose():void {
-			this.m_bm1.dispose();
-			this.m_bm2.dispose();
-			this.m_crateManager.dispose();
-			this.m_im1.dispose();
-			this.m_im2.dispose();
-			this.m_planeManager.dispose();
-		}
 	}
 }
