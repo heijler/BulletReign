@@ -10,20 +10,20 @@ package objects.plane {
 	import asset.Plane1GFX;
 	import asset.Plane2GFX;
 	import asset.Plane3GFX;
+	import asset.PlaneHealthGFX;
 	
 	import entity.MotionEntity;
 	import entity.fx.FXManager;
-	import entity.fx.Smoke;
 	import entity.fx.Fire;
+	import entity.fx.Smoke;
 	import entity.fx.Trail;
 	
 	import managers.BulletManager;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
-	
+	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
-	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.timer.Timer;
 
 	//-----------------------------------------------------------
@@ -59,6 +59,7 @@ package objects.plane {
 
 		private var m_ph:PlaneHandler;
 		private var m_movability:Boolean;
+		private var m_healthMeter:MovieClip;
 		
 		//-----------------------------------------------------------
 		// Internal properties
@@ -145,6 +146,7 @@ package objects.plane {
 		 */
 		override public function init():void {
 			this.m_initSkin();
+			this.m_initPlaneHealthMeter();
 			this.m_setSpawnPosition();
 			this.m_ph._initSound();
 			this.m_initEffects();
@@ -203,6 +205,26 @@ package objects.plane {
 			if (BulletReign.rb && (BulletReign.rbp > -1)) {
 				this._skin = new Plane3GFX;
 			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_initPlaneHealthMeter():void {
+			this.m_healthMeter = new PlaneHealthGFX;
+			this.m_healthMeter.y = -7;
+			this.m_healthMeter.x = -4;
+			this.m_healthMeter.gotoAndStop(11);
+			this._skin.addChild(this.m_healthMeter);
+		}
+		
+		
+		/**
+		 * 
+		 */
+		public function updateHealthMeter():void {
+			this.m_healthMeter.gotoAndStop(Math.floor(this.health + 1));
 		}
 		
 		
@@ -274,6 +296,7 @@ package objects.plane {
 			this._smoke.start(2);
 			this.m_ph._crashing.play();
 			this.m_ph._crashing.volume = 0.9;
+			this.updateHealthMeter();
 		}
 		
 		
@@ -285,6 +308,7 @@ package objects.plane {
 			this.shake(this._skin, 2);
 			this.m_ph._dropBanner();
 			this.holdingBanner = false;
+			this.updateHealthMeter();
 			
 			if (this.health < this.PLANE_DURABILITY - (this.PLANE_DURABILITY / 5)) {
 				this._smoke.start(this.health);
@@ -347,6 +371,7 @@ package objects.plane {
 				this.m_ph._clearNoAccelDuration();
 				this.m_ph._clearNoDamage();
 				this.m_ph._clearNoFireCounter();
+				this.updateHealthMeter();
 				this._smoke.stop();
 				this._fire.stop();
 			}

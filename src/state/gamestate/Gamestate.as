@@ -427,8 +427,8 @@ package state.gamestate {
 					if (this.m_planes[i].crashed == false) {
 						this.m_planes[i].crashed = true;
 						this.m_planes[i].holdingBanner = false;
-						this.m_planes[i].onCrash(this.backgroundLayer);
 						this.m_planes[i].health = 0;
+						this.m_planes[i].onCrash(this.backgroundLayer);
 						this.m_createExplosion(this.m_planes[i].pos);
 					}
 				}
@@ -676,6 +676,17 @@ package state.gamestate {
 				explosion.x = pos.x;
 				explosion.y = pos.y;
 			this.explosionLayer.addChild(explosion);
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_getReady():void {
+			//["GET READY", "3", "2", "1", "GO!"]
+			for (var i:int = 0; i < this.m_planes.length; i++) {
+				this.m_planes[i].health;
+			}
 		}
 
 		//-----------------------------------------------------------
