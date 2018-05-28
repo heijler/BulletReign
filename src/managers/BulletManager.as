@@ -90,6 +90,7 @@ package managers {
 			return this.m_bullets;
 		}
 		
+		
 		/**
 		 * removeAll
 		 * 
@@ -114,6 +115,7 @@ package managers {
 				markedBullet = null;
 			}
 		}
+		
 		
 		/**
 		 * removeInactive
@@ -171,6 +173,7 @@ package managers {
 			trace(tween, target);
 		}
 		
+		
 		/**
 		 * m_makeTraceRound
 		 * 
@@ -183,6 +186,7 @@ package managers {
 			}
 			bullet.color = this.m_tracerColor;
 		}
+		
 		
 		public function dispose():void {
 			for(var i:int; i < this.m_bullets.length; i++) {

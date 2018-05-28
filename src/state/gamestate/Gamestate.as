@@ -5,33 +5,34 @@ package state.gamestate {
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.text.TextFormat;
+	import flash.text.TextField;
 	import flash.display.Shape;
 	import flash.geom.Point;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
 	
-	import asset.ExplosionGFX;
-	import asset.GroundGFX;
+	import se.lnu.stickossdk.display.DisplayStateLayer;
+	import se.lnu.stickossdk.display.DisplayState;
+	import se.lnu.stickossdk.media.SoundObject;
+	import se.lnu.stickossdk.util.MathUtils;
+	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.timer.Timer;
+	
 	import asset.IndicatorP1GFX;
 	import asset.IndicatorP2GFX;
+	import asset.ExplosionGFX;
+	import asset.GroundGFX;
 	
 	import entity.fx.FXManager;
 	
 	import managers.BulletManager;
+	import managers.PlaneManager;
 	import managers.CrateManager;
 	import managers.IconManager;
-	import managers.PlaneManager;
 	
 	import objects.Cloud;
 	import objects.Crate;
 	import objects.plane.Plane;
 	
-	import se.lnu.stickossdk.display.DisplayState;
-	import se.lnu.stickossdk.display.DisplayStateLayer;
-	import se.lnu.stickossdk.media.SoundObject;
-	import se.lnu.stickossdk.system.Session;
-	import se.lnu.stickossdk.timer.Timer;
-	import se.lnu.stickossdk.util.MathUtils;
 	
 	import state.menustate.infoScreen.WinnerScreen;
 	
