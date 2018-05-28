@@ -99,7 +99,7 @@ package state.gamestate {
 		private var m_fxMan2:FXManager;
 		private var m_ingameMusic:SoundObject;
 		private var m_powerupSound:SoundObject;
-		private var m_flashScreen:Boolean = false;
+		protected var _flashScreen:Boolean = false;
 		private var m_scoreText:TextField;
 		private var m_planeManager:PlaneManager;
 		private var m_countDown:Countdown = new Countdown();
@@ -472,7 +472,7 @@ package state.gamestate {
 				this.m_planes[i].onRespawn(false);
 //				this.m_planes[i].m_newDurability = 2;
 			}
-			this.m_flashScreen = false;
+			this._flashScreen = false;
 			this.m_im1.m_remove();
 			this.m_im2.m_remove();
 		}
@@ -681,9 +681,10 @@ package state.gamestate {
 		 */
 		private function m_flashWorld():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].shotDown && !this.m_flashScreen) {
+				if (this.m_planes[i].shotDown && !this._flashScreen) {
+					trace("flash world");
 					this.flash(200, 0xFFFFFF); //0xFFF392
-					this.m_flashScreen = true;
+					this._flashScreen = true;
 				}
 			}
 		}
