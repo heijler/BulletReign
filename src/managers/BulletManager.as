@@ -67,11 +67,6 @@ package managers {
 				this.m_bullet = new Bullet(angle, velocity, pos, this.m_scaleFactor);
 				this.m_initTimer(this.m_bullet);
 				this.m_bullets.push(this.m_bullet);
-				
-				if(this.m_bullets.length % 5 == 0) {
-					this.m_makeTraceRound(this.m_bullet);
-				}
-				
 				this.m_parent.addChild(this.m_bullet);
 				
 			} else {
@@ -117,20 +112,20 @@ package managers {
 		}
 		
 		
-		/**
-		 * removeInactive
-		 * @NOTE: If the bullets should be able to wrap the screen this function should be 
-		 * rewritten to remove bullets after they have travelled a certain distance instead.
-		 * 
-		 * @NOTE: This function should consider the size of the bullet, it might matter for bigger bullets
-		 */
-		public function removeInactiveBullets():void {
-			for (var i:int = 0; i < this.m_bullets.length; i++) {
-				if (this.m_bullets[i].active == false) {
-					this.removeBullet(this.m_bullets[i]);
-				}
-			}
-		}
+//		/**
+//		 * removeInactive
+//		 * @NOTE: If the bullets should be able to wrap the screen this function should be 
+//		 * rewritten to remove bullets after they have travelled a certain distance instead.
+//		 * 
+//		 * @NOTE: This function should consider the size of the bullet, it might matter for bigger bullets
+//		 */
+//		public function removeInactiveBullets():void {
+//			for (var i:int = 0; i < this.m_bullets.length; i++) {
+//				if (this.m_bullets[i].active == false) {
+//					this.removeBullet(this.m_bullets[i]);
+//				}
+//			}
+//		}
 		
 		
 		/**
@@ -169,26 +164,24 @@ package managers {
 			});
 		}
 		
+		
+		/**
+		 * 
+		 */
 		private function m_removeBulletTween(tween, target):void {
-			trace(tween, target);
+			Session.tweener.remove(tween);
+			tween = null;
+			if (this.m_parent.contains(target)) {
+				this.removeBullet(target);				
+			}
 		}
 		
 		
 		/**
-		 * m_makeTraceRound
 		 * 
 		 */
-		private function m_makeTraceRound(bullet:Bullet):void { 		
-			if (this.m_scaleFactor == 1) {
-				this.m_tracerColor = 0xFF0000;
-			} else if (this.m_scaleFactor == -1) {
-				this.m_tracerColor = 0x0000FF;
-			}
-			bullet.color = this.m_tracerColor;
-		}
-		
-		
 		public function dispose():void {
+			trace("BulletManager dispose");
 			for(var i:int; i < this.m_bullets.length; i++) {
 				this.m_bullets[i].dispose();
 				if(this.m_parent.contains(this.m_bullets[i])) {

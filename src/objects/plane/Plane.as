@@ -173,6 +173,7 @@ package objects.plane {
 		 */
 		override public function dispose():void {
 			trace("Dispose plane! REMOVE ME WHEN ACTUALLY DISPOSING.");
+			this.m_ph.dispose();
 			//this.m_ph.dispose();
 			this.winner = false;
 			this.crashed = false;
@@ -206,7 +207,6 @@ package objects.plane {
 			this._scaleFactor = 0;
 			this._smoke = null;
 			this._fire = null;
-			
 		}
 		
 		

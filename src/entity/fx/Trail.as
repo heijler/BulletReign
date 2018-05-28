@@ -74,18 +74,22 @@ package entity.fx {
 		/**
 		 * 
 		 */
+		override public function dispose():void {
+			trace("disposing Trail");
+			this.m_alphaDecay = 0;
+			this.m_skin = null;
+			this.m_pos = null;
+			this._angle = 0;
+		}
+		
+		
+		/**
+		 * 
+		 */
 		private function m_setSpawnPosition():void {
 			this.x = this._createJitter(this.m_pos.x, 2);
 			this.y = this._createJitter(this.m_pos.y, 2);
 			this.rotation = this._angle;
-		}
-		
-
-		/**
-		 * 
-		 */
-		override public function dispose():void {
-			trace("Dispose Trail! REMOVE ME WHEN ACTUALLY DISPOSING.");
 		}
 	}
 }

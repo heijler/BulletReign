@@ -453,6 +453,29 @@ package objects.plane {
 			}
 		}
 		
-	
+		
+		/**
+		 * 
+		 */
+		public function dispose():void {
+			this.m_plane = null;
+			this.m_controls = null;
+			this.m_onePU = false;
+			this.m_fireDelay = 0;
+			this.m_burstSize= 0;
+			this._firing = false;
+			this._steering = false;
+			this._takingFire.length = 0;
+			this._takingFire = null;
+			this._engineOverdriveSound = null;
+			this._engineNoJuiceSound = null;
+			this._fallingPlane = null;
+			this._screamSound = null;
+			this._engineSound = null;
+			this._openFire = null;
+			this._crashing = null;
+			this._accelDuration = 0;
+			this._fireCounter = 0;
+		}
 	}
 }
