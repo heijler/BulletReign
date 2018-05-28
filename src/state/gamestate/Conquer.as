@@ -77,8 +77,7 @@ package state.gamestate {
 			this.m_initBanner();
 			this.m_initHitboxes();
 			this.m_initSounds();
-			this.m_planes[0].health = 3;
-			this.m_planes[1].health = 3;
+			this.m_initPlaneHealth();
 		}
 		
 		
@@ -181,6 +180,17 @@ package state.gamestate {
 			this.m_bannerDropSound = Session.sound.soundChannel.get("bannerdrop");
 			this.m_bannerLandSound = Session.sound.soundChannel.get("bannerland");
 			this.m_bannerRespawnSound = Session.sound.soundChannel.get("bannerrespawn");
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_initPlaneHealth():void {
+			for (var i:int = 0; i < this.m_planes.length; i++) {
+				this.m_planes[i].health = 3;
+				this.m_planes[i].updateHealthMeter();
+			}
 		}
 		
 		
@@ -305,9 +315,15 @@ package state.gamestate {
 			
 		}
 		
+		
+		/**
+		 * @TODO: rename
+		 */
 		private function m_resetSteal():void {
 			this.m_recentlyStolen = false;
 		}
+		
+		
 		/**
 		 * m_bannerBaseCollision
 		 * 
@@ -321,7 +337,8 @@ package state.gamestate {
 				this.m_scoreMessage(this.m_banner.lastHolder.activePlayer);
 				this.m_incrementWins(this.m_banner.lastHolder.activePlayer, this.m_banner.lastHolder.wins);
 				this.m_resolveGame();
-				this.m_respawnDelay = Session.timer.create(3000, this.m_respawn);
+				this.m_respawnDelay = Session.timer.create(3000, this.m_respawnBanner);
+				this.m_winFlag = false;
 			}
 		}
 		
@@ -387,6 +404,7 @@ package state.gamestate {
 			if (this.m_matchFin == false) {
 				this._respawnPlane(this.m_crashedPlane);
 				this.m_planes[this.m_crashedPlane].health = 3;
+				this.m_planes[this.m_crashedPlane].updateHealthMeter();
 				this.m_winFlag = false;
 			}
 		}
