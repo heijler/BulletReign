@@ -142,11 +142,37 @@ package entity.fx {
 		}
 		
 		
-		
 		override public function dispose():void {
-			// Rensa dom som har parent i aktiv & inaktiv lista
-			// nulla.
-			trace("Dispose Smoke! REMOVE ME WHEN ACTUALLY DISPOSING.");
+			trace("smoke dispose");
+			for (var i:int = 0; i < this.m_active.length; i++) {
+				if (this.m_active[i].parent != null) {
+					this.m_target.removeChild(this.m_active[i]);
+					var puff:Vector.<MovieClip> = this.m_active.splice(this.m_active.indexOf(this.m_active[i]), 1);					
+					puff.length = 0;
+					puff = null;
+				}
+			}
+			
+			for (var j:int = 0; j < this.m_inactive.length; j++) {
+				if (this.m_inactive[j].parent != null) {
+					this.m_target.removeChild(this.m_inactive[j]);
+					var inactivePuff:Vector.<MovieClip> = this.m_inactive.splice(this.m_inactive.indexOf(this.m_inactive[j]), 1);					
+					inactivePuff.length = 0;
+					inactivePuff = null;
+				}
+			}
+			
+			this.active = false;
+			this.m_active.length = 0;
+			this.m_active = null;
+			this.m_inactive.length = 0;
+			this.m_inactive = null;
+			Session.timer.remove(this.m_timer);
+			this.m_timer = null;
+			this.m_target = null;
+			this.m_durabilityFactor = 0;
+			this.m_color.length = 0;
+			this.m_color = null;
 		}
 	}
 }

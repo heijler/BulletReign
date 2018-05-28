@@ -173,6 +173,7 @@ package objects.plane {
 		 */
 		override public function dispose():void {
 			trace("Dispose plane! REMOVE ME WHEN ACTUALLY DISPOSING.");
+			this.m_ph.dispose();
 			// anropa planehandlers dispose här.
 		}
 		

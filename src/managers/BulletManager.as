@@ -112,20 +112,20 @@ package managers {
 		}
 		
 		
-		/**
-		 * removeInactive
-		 * @NOTE: If the bullets should be able to wrap the screen this function should be 
-		 * rewritten to remove bullets after they have travelled a certain distance instead.
-		 * 
-		 * @NOTE: This function should consider the size of the bullet, it might matter for bigger bullets
-		 */
-		public function removeInactiveBullets():void {
-			for (var i:int = 0; i < this.m_bullets.length; i++) {
-				if (this.m_bullets[i].active == false) {
-					this.removeBullet(this.m_bullets[i]);
-				}
-			}
-		}
+//		/**
+//		 * removeInactive
+//		 * @NOTE: If the bullets should be able to wrap the screen this function should be 
+//		 * rewritten to remove bullets after they have travelled a certain distance instead.
+//		 * 
+//		 * @NOTE: This function should consider the size of the bullet, it might matter for bigger bullets
+//		 */
+//		public function removeInactiveBullets():void {
+//			for (var i:int = 0; i < this.m_bullets.length; i++) {
+//				if (this.m_bullets[i].active == false) {
+//					this.removeBullet(this.m_bullets[i]);
+//				}
+//			}
+//		}
 		
 		
 		/**
@@ -171,7 +171,9 @@ package managers {
 		private function m_removeBulletTween(tween, target):void {
 			Session.tweener.remove(tween);
 			tween = null;
-			this.removeBullet(target);
+			if (this.m_parent.contains(target)) {
+				this.removeBullet(target);				
+			}
 		}
 		
 		
@@ -179,6 +181,7 @@ package managers {
 		 * 
 		 */
 		public function dispose():void {
+			trace("BulletManager dispose");
 			for(var i:int; i < this.m_bullets.length; i++) {
 				this.m_bullets[i].dispose();
 				if(this.m_parent.contains(this.m_bullets[i])) {

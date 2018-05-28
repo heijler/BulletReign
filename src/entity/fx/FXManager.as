@@ -57,5 +57,19 @@ package entity.fx {
 				effect = null;
 			}
 		}
+		
+		
+		/**
+		 * 
+		 */
+		public function dispose():void {
+			trace("dispose FXmanager");
+			this.m_parent = null;
+			for (var i:int = 0; i < this.m_effects.length; i++) {
+				this.m_effects[i].dispose;
+			}
+			this.m_effects.length = 0;
+			this.m_effects = null;
+		}
 	}
 }
