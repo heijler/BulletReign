@@ -163,9 +163,9 @@ package objects.plane {
 		 * 
 		 */
 		private function m_accelerate():void {
-			if (this._accelDuration == this.ACCELERATE_DURATION && this.m_plane._accelerating) this._engineOverdriveSound.play();
-			if (this._steering && this._accelDuration != 0 && this.m_plane._accelerating)      this.m_planeAcceleration();
-			if (this._accelDuration <= 0 && this.m_plane._accelerating)                        this.m_stopPlaneAcceleration();
+			if (this._engineOverdriveSound.isPlaying == false && this.m_plane._accelerating) this._engineOverdriveSound.play();
+			if (this._steering && this._accelDuration != 0 && this.m_plane._accelerating)    this.m_planeAcceleration();
+			if (this._accelDuration <= 0 && this.m_plane._accelerating)                      this.m_stopPlaneAcceleration();
 		}
 		
 		

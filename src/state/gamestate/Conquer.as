@@ -60,6 +60,7 @@ package state.gamestate {
 		
 		public function Conquer() {
 			super();
+			this._winLimit = 3;
 			this._gamemode = 1;
 		}
 		
