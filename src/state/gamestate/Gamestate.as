@@ -152,6 +152,7 @@ package state.gamestate {
 		}
 		
 		override public function dispose():void {
+			trace("GAMESTATEDISPOSE");
 			this.m_planes = null; //@TODO: rename
 			this.m_crates = null;
 			this.m_crate = null;

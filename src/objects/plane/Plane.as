@@ -183,7 +183,6 @@ package objects.plane {
 			this.noDamage = false;
 			this.noFireCounter = false;
 			this.movability = false;
-			
 			this.health = 0;
 			this.wins = 0;
 			this.activePlayer = 0;
@@ -191,12 +190,13 @@ package objects.plane {
 			this.bodyHitbox = null;
 			this.m_ph = null;
 			this.m_healthMeter = null;
-			
 			this._gunCoolingdown = false;
 			this._accelerating = true;
 			this._recharging = false;
 			this._facingUp = false;
-			
+			if (this._skin.parent != null) {
+				this.removeChild(this._skin);
+			}
 			this._skin = null;
 			this._ebulletManager.dispose();
 			this._ebulletManager = null;
