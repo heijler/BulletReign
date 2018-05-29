@@ -14,8 +14,6 @@ package state.gamestate {
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
 	
-	import ui.Countdown;
-	
 	//-----------------------------------------------------------
 	// Conquer
 	//-----------------------------------------------------------
@@ -536,13 +534,32 @@ package state.gamestate {
 		override public function dispose():void {
 			trace("Conquer dispose");
 			super.dispose();
+			if(this.m_zeppelin.parent.contains(this.m_zeppelin)) {
+				this.m_zeppelin.parent.removeChild(this.m_zeppelin);
+			}
 			this.m_zeppelin = null;
+			if(this.m_banner != null) {
+				trace("tar bort banner");
+				this.m_banner.parent.removeChild(this.m_banner);
+			}
 			this.m_banner = null;
 			this.m_bannerHolder = null;
 			this.m_angleCounter = 0;
 			this.m_matchFin = false;
+			if(this.m_GHB != null) {
+				trace("tar bort GHB");
+				this.m_GHB.parent.removeChild(this.m_GHB);
+			}
 			this.m_GHB = null;
+			if(this.m_b1HB != null) {
+				trace("tar bort b1HB");
+				this.m_b1HB.parent.removeChild(this.m_b1HB);
+			}
 			this.m_b1HB = null;
+			if(this.m_b2HB != null) {
+				trace("tar bort b2HB");
+				this.m_b2HB.parent.removeChild(this.m_b2HB);
+			}
 			this.m_b2HB = null;
 			this.m_winFlag = false;
 			this.m_crashedPlane = 0;

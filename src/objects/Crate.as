@@ -133,6 +133,7 @@ package objects {
 		 * @IMPROVE: if not enough frames, reduce the tween work by removing x property
 		 */
 		private function m_crateTweenLeft():void {
+			trace("LeftKörs");
 			if (this.hitGround == false) {
 				for(var i:int = 0; i < this.m_crateClips.length; i++) {
 					Session.tweener.add(this.m_crateClips[i], {
@@ -150,6 +151,7 @@ package objects {
 		 * @IMPROVE: if not enough frames, reduce the tween work by removing x property
 		 */
 		private function m_crateTweenRight():void {
+			trace("RightKörs");
 			if (this.hitGround == false) {
 				for(var i:int = 0; i < this.m_crateClips.length; i++) {
 					Session.tweener.add(this.m_crateClips[i], {
