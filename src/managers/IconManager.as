@@ -11,6 +11,7 @@ package managers {
 	
 	//-----------------------------------------------------------
 	// IconManager
+	// Handles representation of icons for active powerups
 	//-----------------------------------------------------------
 	
 	public class IconManager {
@@ -19,23 +20,20 @@ package managers {
 		// Public properties
 		//-----------------------------------------------------------
 		
-		public var m_player:int;
 		public var m_icon:Icon;
 		
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private const AMOUNT_LIMIT:int = 3;
-		private var m_parent:DisplayObjectContainer;
-		private var m_expireTimer:Timer;
+		private var m_parent:DisplayObjectContainer;	
+		private var m_expireTimer:Timer; 				
 		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		public function IconManager(player:int, parent:DisplayObjectContainer) {
-			this.m_player = player;
+		public function IconManager(parent:DisplayObjectContainer) {
 			this.m_parent = parent;
 		}
 		
@@ -44,7 +42,8 @@ package managers {
 		//-----------------------------------------------------------
 		
 		/**
-		 * 
+		 * add
+		 * adds or replaces icon depending on set or not
 		 */
 		public function add(icon:Icon):void {
 			if(this.m_icon) {
@@ -62,7 +61,8 @@ package managers {
 		
 		
 		/**
-		 * 
+		 * m_expire
+		 * Icon lifetime, calls icon removal after 5000 milliseconds
 		 */
 		private function m_expire():void {
 			this.m_expireTimer = Session.timer.create(5000, this.m_remove);
@@ -70,7 +70,8 @@ package managers {
 		
 		
 		/**
-		 * 
+		 * m_remove
+		 * checks for icon and removes it if set
 		 */
 		public function m_remove():void {
 			if(this.m_icon != null) {
@@ -84,13 +85,11 @@ package managers {
 		
 		
 		/**
-		 * 
+		 * disposes
 		 */
 		public function dispose():void {
-			trace("Iconmanager dispose");
 			Session.timer.remove(this.m_expireTimer);
 			this.m_expireTimer = null;
-			this.m_player = 0;
 			if (this.m_icon != null) {
 				this.m_parent.removeChild(this.m_icon);
 			}

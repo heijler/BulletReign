@@ -59,7 +59,7 @@ package ui {
 		
 		
 		/**
-		 * 
+		 * Callback for when get ready is going to run
 		 */
 		public function start(callback:Function):void {
 			this.m_cb = callback;
@@ -68,7 +68,7 @@ package ui {
 		
 		
 		/**
-		 * 
+		 * Dispose
 		 */
 		override public function dispose():void {
 			trace("Countdown dispose");
@@ -88,7 +88,7 @@ package ui {
 		}
 		
 		/**
-		 * 
+		 * Calling for textfield
 		 */
 		private function m_getReady():void {
 			m_initTimer = Session.timer.create(500, this.m_countDown);
@@ -96,7 +96,7 @@ package ui {
 		}
 		
 		
-		/**
+		/**Adds a textfield in the start of a match
 		 * 
 		 */
 		private function m_addCountDownText():void {
@@ -118,7 +118,7 @@ package ui {
 		
 		
 		/**
-		 * 
+		 * Metod för timing av när countdownen skall anropas
 		 */
 		private function m_countDown():void {
 			m_countTimer = Session.timer.create(700, this.m_displayCountDown, this.m_countArr.length - 1);
@@ -126,7 +126,7 @@ package ui {
 		
 		
 		/**
-		 * 
+		 * Metod för att visa räknaren för spelarna
 		 */
 		private function m_displayCountDown():void {
 			this.m_countDownCounter++;

@@ -16,6 +16,7 @@ package objects {
 	
 	//-----------------------------------------------------------
 	// Crate
+	// Handles a crate
 	//-----------------------------------------------------------
 	public class Crate extends MotionEntity {
 		
@@ -85,7 +86,7 @@ package objects {
 		
 		
 		/**
-		 * 
+		 * Disposes
 		 */
 		override public function dispose():void {
 			trace("Crate dispose");
@@ -97,20 +98,6 @@ package objects {
 			}
 			this.m_crateClips.length = 0;
 			this.m_type = 0;
-		}
-		
-//		private function m_collisionControl():void {
-//			this.m_planeCollision();
-//			this.m_groundCollision();
-//		}
-		
-		
-		/**
-		 * m_planeCollision
-		 * 
-		 */
-		private function m_planeCollision():void {
-			
 		}
 		
 		
@@ -131,6 +118,7 @@ package objects {
 		/**
 		 * m_crateTweenLeft
 		 * @IMPROVE: if not enough frames, reduce the tween work by removing x property
+		 * Crate swinging from right to left
 		 */
 		private function m_crateTweenLeft():void {
 			if (this.hitGround == false) {
@@ -148,6 +136,7 @@ package objects {
 		/**
 		 * m_crateTweenRight
 		 * @IMPROVE: if not enough frames, reduce the tween work by removing x property
+		 * Crate swinging from left to right
 		 */
 		private function m_crateTweenRight():void {
 			if (this.hitGround == false) {

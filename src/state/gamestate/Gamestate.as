@@ -101,6 +101,7 @@ package state.gamestate {
 		private var m_planeManager:PlaneManager;
 		private var m_countDown:Countdown = new Countdown();
 		private var m_indicatorTimer:Timer;
+
 		
 		//-----------------------------------------------------------
 		// Protected properties
@@ -460,8 +461,8 @@ package state.gamestate {
 		 * Initializes iconManagers
 		 */
 		private function m_initIconManagers():void {
-			this.m_im1 = new IconManager(0, this.IconLayer);
-			this.m_im2 = new IconManager(1, this.IconLayer);
+			this.m_im1 = new IconManager(this.IconLayer);
+			this.m_im2 = new IconManager(this.IconLayer);
 		}
 
 		

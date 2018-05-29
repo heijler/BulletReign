@@ -15,6 +15,7 @@ package managers {
 	
 	//-----------------------------------------------------------
 	// BulletManager
+	// Represents a planes stack of bullets
 	//-----------------------------------------------------------
 	
 	public class BulletManager {
@@ -31,17 +32,17 @@ package managers {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private const BULLET_ACTIVE_TIME:int = 1300;
-		private const AMOUNT_LIMIT:int = 25;
+		private const BULLET_ACTIVE_TIME:int = 1300;	
+		private const AMOUNT_LIMIT:int = 25; 			
 		
-		private var m_parent:DisplayObjectContainer;
-		private var m_bullets:Vector.<Bullet>;
-		private var m_scaleFactor:int;
-		private var m_firstBullet:Bullet;
-		private var m_bullet:Bullet;
-		private var m_bulletTween:Tween;
-		private var m_bulletTweenTimer:Timer;
-		private var m_tracerColor:uint;
+		private var m_parent:DisplayObjectContainer; 	
+		private var m_bullets:Vector.<Bullet>; 			
+		private var m_scaleFactor:int; 					
+		private var m_firstBullet:Bullet; 				
+		private var m_bullet:Bullet;					
+		private var m_bulletTween:Tween;				
+		private var m_bulletTweenTimer:Timer;			
+		private var m_tracerColor:uint;					
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -78,8 +79,7 @@ package managers {
 		
 		/**
 		 * get
-		 * Get bullets vector
-		 * @TODO: Rename, dumt namn
+		 * returns the bullets in the stash / vector
 		 */
 		public function getBullets():Vector.<Bullet> {
 			return this.m_bullets;
@@ -88,7 +88,7 @@ package managers {
 		
 		/**
 		 * removeAll
-		 * 
+		 * removes all bullets from bullet stash / vector
 		 */
 		private function removeAll():void {
 			for (var i:int = 0; i < this.m_bullets.length; i++) {
@@ -100,7 +100,7 @@ package managers {
 		
 		/**
 		 * removeBullet
-		 * @FIX: Make this private
+		 * removes used bullets from the planes stash / vector of bullets
 		 */
 		public function removeBullet(bullet:Bullet):void {
 			var markedBullet:Vector.<Bullet> = this.m_bullets.splice(this.m_bullets.indexOf(bullet), 1);
@@ -112,25 +112,9 @@ package managers {
 		}
 		
 		
-//		/**
-//		 * removeInactive
-//		 * @NOTE: If the bullets should be able to wrap the screen this function should be 
-//		 * rewritten to remove bullets after they have travelled a certain distance instead.
-//		 * 
-//		 * @NOTE: This function should consider the size of the bullet, it might matter for bigger bullets
-//		 */
-//		public function removeInactiveBullets():void {
-//			for (var i:int = 0; i < this.m_bullets.length; i++) {
-//				if (this.m_bullets[i].active == false) {
-//					this.removeBullet(this.m_bullets[i]);
-//				}
-//			}
-//		}
-		
-		
 		/**
 		 * checkCollision
-		 * 
+		 * checks for bullets colliding whit hitboxes on plane and removes bullet after collision
 		 */
 		public function checkCollision(plane:Plane):Boolean {
 			var val:Boolean = false;
@@ -146,7 +130,7 @@ package managers {
 		
 		/**
 		 * m_initTimer
-		 * 
+		 * fades and inactivates bullets
 		 */
 		private function m_initTimer(bullet:Bullet):void {
 			// Fade out
@@ -166,7 +150,8 @@ package managers {
 		
 		
 		/**
-		 * 
+		 * m_removeBulletTween
+		 * removing tween and bullet
 		 */
 		private function m_removeBulletTween(tween, target):void {
 			Session.tweener.remove(tween);
@@ -178,14 +163,12 @@ package managers {
 		
 		
 		/**
-		 * 
+		 * dispose
+		 * bulletManager dispose
 		 */
 		public function dispose():void {
-			trace("Bulletmanager dispose");
 			for(var i:int; i < this.m_bullets.length; i++) {
-				trace("for");
 				if (this.m_bullets[i].parent != null) {
-					trace("if");
 					this.m_parent.removeChild(this.m_bullets[i]);
 				}
 				this.m_bullets[i].dispose();
