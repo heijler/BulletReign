@@ -14,6 +14,7 @@ package entity {
 	
 	//-----------------------------------------------------------
 	// Entity
+	// Represents an entity / game object
 	//-----------------------------------------------------------
 	
 	public class Entity extends DisplayStateLayerSprite {
@@ -63,6 +64,11 @@ package entity {
 			super.init();
 		}
 		
+		
+		/**
+		 * Dispose
+		 * Override 
+		 */
 		override public function dispose():void {
 			trace("Entity dispose")
 			this.m_pos = null;
@@ -72,8 +78,7 @@ package entity {
 		}
 		
 		/**
-		 * _setScale
-		 * 
+		 * Helper method to set DisplayObjectContainer scales
 		 */
 		public function setScale(obj:DisplayObjectContainer, scaleX:int = this.DEFAULT_SCALE, scaleY:int = this.DEFAULT_SCALE):void {
 			if (obj != null) {
@@ -85,8 +90,7 @@ package entity {
 		
 		
 		/**
-		 * _shake
-		 * 
+		 * Helper effect to shake DisplayObjectContainer
 		 */
 		public function shake(obj:DisplayObjectContainer, amountY:int):void {
 			this.m_shake = new Shake(obj, 150, new Point(0,amountY), new Point(0,0));
@@ -95,8 +99,7 @@ package entity {
 		
 		
 		/**
-		 * _flicker
-		 * 
+		 * Helper effect to flicker / blink DisplayObjectContainer
 		 */
 		public function flicker(obj:DisplayObjectContainer, duration:int = 1000, interval:int = 30):void {
 			this.m_flicker = new Flicker(obj, duration, interval, true);

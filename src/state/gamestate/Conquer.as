@@ -6,9 +6,9 @@ package state.gamestate {
 	import flash.display.Shape;
 	import flash.geom.Point;
 	
-	import objects.Banner;
-	import objects.Zeppelin;
 	import objects.plane.Plane;
+	import objects.Zeppelin;
+	import objects.Banner;
 	
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
@@ -18,43 +18,39 @@ package state.gamestate {
 	
 	//-----------------------------------------------------------
 	// Conquer
+	// Represents the Conquer gamemode
 	//-----------------------------------------------------------
 	
 	public class Conquer extends Gamestate {
 		
 		//-----------------------------------------------------------
-		// Public properties
-		//-----------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
+		private var m_bannerHolder:Plane;
 		private var m_zeppelin:Zeppelin;
 		private var m_banner:Banner;
-		private var m_bannerHolder:Plane;
-		private var m_angleCounter:int = 30;
+		private var m_recentlyStolen:Boolean = false;
+		private var m_callWinner:Boolean = false;
 		private var m_matchFin:Boolean = false;
-		private var m_GHB:Shape;
+		private var m_winFlag:Boolean = false;
 		private var m_b1HB:Shape;
 		private var m_b2HB:Shape;
-		private var m_winFlag:Boolean = false;
+		private var m_GHB:Shape;
+		private var m_angleCounter:int = 30;
 		private var m_crashedPlane:int;
-		private var m_blinktimer:Timer;
 		private var m_respawnBlinkTimer:Timer;
-		private var m_callWinner:Boolean = false;
+		private var m_respawnPlaneTimer:Timer;
+		private var m_respawnBannerDelay:Timer;
+		private var m_oOBRespawnTimer:Timer;
+		private var m_respawnTimer:Timer;
+		private var m_respawnDelay:Timer;
+		private var m_blinktimer:Timer;
+		private var m_stealTimer:Timer;
 		private var m_bannerPickupSound:SoundObject;
 		private var m_bannerDropSound:SoundObject;
 		private var m_bannerLandSound:SoundObject;
 		private var m_bannerRespawnSound:SoundObject;
-		private var m_recentlyStolen:Boolean = false;
-		private var m_respawnPlaneTimer:Timer;
-		private var m_respawnTimer:Timer;
-		private var m_stealTimer:Timer;
-		private var m_respawnDelay:Timer;
-		private var m_respawnBannerDelay:Timer;
-		private var m_oOBRespawnTimer:Timer;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -72,8 +68,7 @@ package state.gamestate {
 		//-----------------------------------------------------------
 		
 		/**
-		 * _initGamemode
-		 * Initializes the gamemode, this method overrides the method in the parentclass
+		 * Initializes the gamemode, this method overrides/ gets called from the parent class.
 		 */
 		override protected function _initGamemode():void {
 			this.m_initZeppelin();
@@ -85,19 +80,19 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_indicateBase
+		 * Indicates the base that should blink, defaults to not blinking/signaling
 		 */
 		private function m_indicateBase(player:int = -1):void {
 			if (player !== -1) {
-				this.m_ground.gotoAndStop(player + 2);
-			}else {
-				this.m_ground.gotoAndStop(1);
+				this.ground.gotoAndStop(player + 2);
+			} else {
+				this.ground.gotoAndStop(1);
 			}
 		}
 		
 		
 		/**
-		 * 
+		 * Initialize hitboxes
 		 */
 		private function m_initHitboxes():void {
 			this.m_drawGHB();
@@ -106,20 +101,20 @@ package state.gamestate {
 		
 		
 		/**
-		 * 
+		 * Creates the basse hitboxes
 		 */
 		private function m_drawBaseHB():void {
 			this.m_b1HB = new Shape();
 			this.m_b2HB = new Shape();
-
 			
 			if (BulletReign.debug) {
 				this.m_b1HB.graphics.beginFill(0x00FF00, 0.5);
 				this.m_b2HB.graphics.beginFill(0x0000FF, 0.5);
 			}
-			this.m_b1HB.graphics.drawRect(0, Session.application.size.y - 30, 160, 30);
-			this.m_b2HB.graphics.drawRect(Session.application.size.x - this.m_GHB.width, Session.application.size.y - 30, 160, 30);
 			
+			this.m_b1HB.graphics.drawRect(0, Session.application.size.y - 30, 160, 30); // magic numbers..
+			this.m_b2HB.graphics.drawRect(Session.application.size.x - this.m_GHB.width, Session.application.size.y - 30, 160, 30);
+
 			if (BulletReign.debug) {
 				this.m_b1HB.graphics.endFill();
 				this.m_b2HB.graphics.endFill();
@@ -129,9 +124,10 @@ package state.gamestate {
 			this.hqLayer.addChild(this.m_b2HB);
 		}
 		
+		
 		/**
-		 * m_drawGHB
-		 * 
+		 * Draws a dynamic hitbox (GHB, GroundHitBox) that represents the area the banner 
+		 * needs to collide with to count as score.
 		 */
 		private function m_drawGHB():void {
 			this.m_GHB = new Shape();
@@ -149,8 +145,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_disposeGHB
-		 * 
+		 * Disposes the GHB
 		 */
 		private function m_disposeGHB():void {
 			if (this.hqLayer.contains(this.m_GHB)) {
@@ -162,8 +157,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_indicateHitBox
-		 * 
+		 * Based on which plane is currently holding the banner, the GHB will move.
 		 */
 		private function m_indicateHitbox():void {
 			this.m_GHB.x = (this.m_bannerHolder.activePlayer) ? Session.application.size.x - this.m_GHB.width : 0;
@@ -171,8 +165,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_initSounds
-		 * 
+		 * Initializes sounds
 		 */
 		private function m_initSounds():void {
 			Session.sound.soundChannel.sources.add("bannerpickup", BulletReign.BANNER_PICKUP);
@@ -187,19 +180,19 @@ package state.gamestate {
 		
 		
 		/**
-		 * 
+		 * Initializes the planes health in this gamemode
+		 * Updates the plane health indicator
 		 */
 		private function m_initPlaneHealth():void {
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				this.m_planes[i].health = 3;
-				this.m_planes[i].updateHealthMeter();
+			for (var i:int = 0; i < this._planes.length; i++) {
+				this._planes[i].health = 3;
+				this._planes[i].updateHealthMeter();
 			}
 		}
 		
 		
 		/**
-		 * m_initZeppelin
-		 * 
+		 * Initializes and adds the Zeppelin
 		 */
 		private function m_initZeppelin():void {
 			this.m_zeppelin = new Zeppelin(new Point(-200, 200));
@@ -209,8 +202,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_initBanner
-		 * 
+		 * Initializes the Banner
 		 */
 		private function m_initBanner():void {
 			this.m_addBanner();
@@ -218,7 +210,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_removeBanner
+		 * Removes the Banner
 		 */
 		private function m_removeBanner():void {
 			if (this.bannerLayer.contains(this.m_banner)) {
@@ -229,8 +221,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_addBanner
-		 * 
+		 * Adds the Banner
 		 */
 		private function m_addBanner():void {
 			this.m_banner = new Banner(new Point(Session.application.size.x * 0.5, -50));
@@ -240,7 +231,6 @@ package state.gamestate {
 		
 		
 		/**
-		 * _updateGamemode
 		 * Method that is run on gameloop, overrides the method in the parentclass
 		 */
 		override protected function _updateGamemode():void {
@@ -264,63 +254,63 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_bannerPlaneCollision
-		 * 
+		 * Check if any plane (and its hitboxes) collides with the banner.
+		 * If the conditions matches the banner is caught.
 		 */
 		private function m_bannerPlaneCollision():void {
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if((this.m_banner.hitBox.hitTestObject(this.m_planes[i].tailHitbox) || this.m_banner.hitBox.hitTestObject(this.m_planes[i].bodyHitbox) ) && !this.m_banner.caught && !this.m_planes[i].crashed && this.m_banner.active) {
+			for (var i:int = 0; i < this._planes.length; i++) {
+				if((this.m_banner.hitBox.hitTestObject(this._planes[i].tailHitbox) || this.m_banner.hitBox.hitTestObject(this._planes[i].bodyHitbox) ) && !this.m_banner.caught && !this._planes[i].crashed && this.m_banner.active) {
 					Session.timer.remove(this.m_blinktimer);
 					Session.timer.remove(this.m_respawnBlinkTimer);
 					this.m_banner.caught = true;
 					this.m_banner.gravity = true;
 					this.m_banner.onGround = false;
 					this.m_banner.onBase = false;
-					this.m_bannerHolder = this.m_planes[i];
+					this.m_bannerHolder = this._planes[i];
 					this.m_bannerHolder.holdingBanner = true;
-					this.m_banner.lastHolder = this.m_planes[i];
+					this.m_banner.lastHolder = this._planes[i];
 					this.m_indicateHitbox();
-					this.m_indicateBase(this.m_planes[i].activePlayer);
+					this.m_indicateBase(this._planes[i].activePlayer);
 					this.m_bannerPickupSound.play();
 					this.m_bannerPickupSound.volume = 0.5;
 				}
-				
 			}
-		}
-		
-		private function m_planesBannerSwitch():void {
-				if(this.m_planes[1].bodyHitbox.hitTestObject(this.m_planes[0].tailHitbox) && this.m_recentlyStolen == false && this.m_planes[1].holdingBanner == false) {
-					this.m_bannerHolder = this.m_planes[1];
-					this.m_banner.lastHolder = this.m_planes[1];
-					this.m_indicateBase(this.m_planes[1].activePlayer);
-					this.m_indicateHitbox();
-					this.m_recentlyStolen = true;
-					this.m_planes[1].holdingBanner = true;
-					this.m_planes[0].holdingBanner = false;
-					this.m_bannerDropSound.play();
-					this.m_bannerDropSound.volume = 0.5;
-					this.m_stealTimer = Session.timer.create(1000, this.m_resetSteal);
-					this.m_stealTimer = null;
-				}
-				if(this.m_planes[0].bodyHitbox.hitTestObject(this.m_planes[1].tailHitbox) && this.m_recentlyStolen == false && this.m_planes[0].holdingBanner == false) {
-					this.m_bannerHolder = this.m_planes[0];
-					this.m_banner.lastHolder = this.m_planes[0];
-					this.m_indicateBase(this.m_planes[0].activePlayer);
-					this.m_indicateHitbox();
-					this.m_recentlyStolen = true;
-					this.m_planes[0].holdingBanner = true;
-					this.m_planes[1].holdingBanner = false;
-					this.m_bannerDropSound.play();
-					this.m_bannerDropSound.volume = 0.5;
-					this.m_stealTimer = Session.timer.create(1000, this.m_resetSteal);
-					this.m_stealTimer = null;
-				}
-			
 		}
 		
 		
 		/**
-		 * @TODO: rename
+		 * If a plane collides with other planes tailHitBox the banner will switch owner (if the tailHitbox plane carries the banner)
+		 */
+		private function m_planesBannerSwitch():void {
+			if(this._planes[1].bodyHitbox.hitTestObject(this._planes[0].tailHitbox) && this.m_recentlyStolen == false && this._planes[1].holdingBanner == false) {
+				m_bannerSwitchOwner(1,0);
+			}
+			if(this._planes[0].bodyHitbox.hitTestObject(this._planes[1].tailHitbox) && this.m_recentlyStolen == false && this._planes[0].holdingBanner == false) {
+				m_bannerSwitchOwner(0,1);
+			}
+		}
+		
+		
+		/**
+		 * Switches ownership of the Banner
+		 */
+		private function m_bannerSwitchOwner(newOwner:int, oldOwner:int):void {
+				this.m_bannerHolder = this._planes[newOwner];
+				this.m_banner.lastHolder = this._planes[newOwner];
+				this.m_indicateBase(this._planes[newOwner].activePlayer);
+				this.m_indicateHitbox();
+				this.m_recentlyStolen = true;
+				this._planes[newOwner].holdingBanner = true;
+				this._planes[oldOwner].holdingBanner = false;
+				this.m_bannerDropSound.play();
+				this.m_bannerDropSound.volume = 0.5;
+				this.m_stealTimer = Session.timer.create(1000, this.m_resetSteal);
+				this.m_stealTimer = null;
+		}
+		
+		
+		/**
+		 * Called from stealTimer
 		 */
 		private function m_resetSteal():void {
 			this.m_recentlyStolen = false;
@@ -328,17 +318,16 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_bannerBaseCollision
-		 * 
+		 * Banner collide with active GHB gives score
 		 */
 		private function m_bannerBaseCollision():void {
 			if (this.m_banner.hitBox.hitTestObject(this.m_GHB) && this.m_banner.onBase == false && this.m_bannerHolder == null && !this.m_banner.lastHolder.crashed) {
 				this.m_banner.onBase = true;
 				this.m_indicateBase(this.m_banner.lastHolder.activePlayer);
-				this.m_winSound.play();
+				this._winSound.play();
 				this.m_banner.lastHolder.wins++;
 				this.m_scoreMessage(this.m_banner.lastHolder.activePlayer);
-				this.m_incrementWins(this.m_banner.lastHolder.activePlayer, this.m_banner.lastHolder.wins);
+				this._incrementWins(this.m_banner.lastHolder.activePlayer, this.m_banner.lastHolder.wins);
 				this.m_resolveGame();
 				this.m_respawnDelay = Session.timer.create(3000, this.m_respawnBanner);
 				this.m_winFlag = false;
@@ -347,8 +336,8 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_bannerGroundCollision
-		 * @TODO: 
+		 * Banner on ground starts timer to reset banner to Zeppelin 
+		 * after some time to prevent chase to the ground / unneeded plane ground crashes.
 		 */
 		private function m_bannerGroundCollision():void {
 			if (this.m_banner.hitBox.hitTestObject(this.groundHitbox) && this.m_banner.onGround == false && this.m_bannerHolder == null) {
@@ -363,7 +352,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * 
+		 * If Banner is dropped into wrong base, respawn
 		 */
 		private function m_bannerInactiveBaseCollision():void {
 			if ((this.m_banner.hitBox.hitTestObject(this.m_b1HB) || this.m_banner.hitBox.hitTestObject(this.m_b2HB)) && !this.m_banner.onBase) {
@@ -373,26 +362,24 @@ package state.gamestate {
 		
 		
 		/**
-		 * 
+		 * Called from blinkTimer
 		 */
 		private function m_onGroundCount():void {
 			if (!this.m_banner.onBase) {
 				this.m_banner.blink();
 				this.m_respawnBlinkTimer = Session.timer.create(2000, this.m_respawnBanner);
 			}
-			
 		}
 		
 		
 		/**
-		 * m_respawn
-		 * 
+		 * Respawns planes and resets
 		 */
 		private function m_respawn():void {
 			if (this.m_matchFin == false) {
 				this.m_respawnNow();
-				this.m_planes[0].health = 3;
-				this.m_planes[1].health = 3;
+				this._planes[0].health = 3;
+				this._planes[1].health = 3;
 				this.m_respawnBanner();
 				this.m_winFlag = false;
 			}
@@ -400,14 +387,13 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_respawnPlane
-		 * 
+		 * Respawn one plane and reset
 		 */
 		private function m_respawnPlane():void {
 			if (this.m_matchFin == false) {
 				this._respawnPlane(this.m_crashedPlane);
-				this.m_planes[this.m_crashedPlane].health = 3;
-				this.m_planes[this.m_crashedPlane].updateHealthMeter();
+				this._planes[this.m_crashedPlane].health = 3;
+				this._planes[this.m_crashedPlane].updateHealthMeter();
 				this.m_winFlag = false;
 				this._flashScreen = false;
 			}
@@ -415,8 +401,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_respawnBanner
-		 * 
+		 * Resets / respawns the Banner
 		 */
 		private function m_respawnBanner():void {
 			this.m_bannerRespawnSound.play();
@@ -428,8 +413,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_bannerFollow
-		 * 
+		 * Make the Banner follow the Plane
 		 */
 		private function m_bannerFollow():void {
 			if (this.m_banner.caught && this.m_bannerHolder && !this.m_banner.onBase) {
@@ -439,8 +423,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_bannerDrop
-		 * 
+		 * When Banner is dropped
 		 */
 		private function m_onBannerDrop():void {
 			if (this.m_bannerHolder && this.m_bannerHolder.holdingBanner == false && this.m_banner.active) {
@@ -452,7 +435,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * 
+		 * Check if Banner is Out Of Bounds
 		 */
 		private function m_bannerOutOfBounds():void {
 			if (this.m_banner.outOfBounds) {
@@ -462,17 +445,16 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_resolveGame
-		 * 
+		 * Resolve the game / make the game end
 		 */
 		private function m_resolveGame():void {
-			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if(this.m_planes[i].wins == this._winLimit) {
+			for(var i:int = 0; i < this._planes.length; i++) {
+				if(this._planes[i].wins == this._winLimit) {
 					this.m_matchFin = true;
-					this.m_planes[i].winner = true;
+					this._planes[i].winner = true;
 					if(this.m_callWinner == false) {
-						this.m_scoreMessageRemove();
-						this.m_matchOver(this.m_planes[i].activePlayer);
+						this._scoreMessageRemove();
+						this._matchOver(this._planes[i].activePlayer);
 					}
 					this.m_callWinner = true;
 				}
@@ -481,23 +463,22 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_resolveRound
-		 * 
+		 * Resolve round / who should have the score
 		 */
 		private function m_resolveRound():void {
-			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if(this.m_planes[i].crashed) {
-					for(var j:int = 0; j < this.m_planes.length; j++) {
-						if(this.m_planes[j].crashed == false) {
+			for(var i:int = 0; i < this._planes.length; i++) {
+				if(this._planes[i].crashed) {
+					for(var j:int = 0; j < this._planes.length; j++) {
+						if(this._planes[j].crashed == false) {
 							if(this.m_winFlag == false) {
-								this.m_crashedPlane = this.m_planes[i].activePlayer;
+								this.m_crashedPlane = this._planes[i].activePlayer;
 								this.m_winFlag = true;
 								this.m_respawnPlaneTimer = Session.timer.create(1000, this.m_respawnPlane);
 							}
 						}
 					}
 				}
-				if(this.m_planes[0].crashed == true && this.m_planes[1].crashed == true && this.m_winFlag == false && !this.m_banner.onBase) {
+				if(this._planes[0].crashed == true && this._planes[1].crashed == true && this.m_winFlag == false && !this.m_banner.onBase) {
 					this.m_respawnTimer = Session.timer.create(1000, this.m_respawn);
 					this.m_winFlag = true;
 				}
@@ -506,8 +487,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_dropBanner
-		 * 
+		 * Make the Banner fall on drop
 		 */
 		private function m_dropBanner():void {
 			Session.timer.create(100, this.m_toggleBanner);
@@ -527,12 +507,16 @@ package state.gamestate {
 		
 		
 		/**
-		 * 
+		 * toggle banner caught state
 		 */
 		private function m_toggleBanner():void {
 			this.m_banner.caught = !this.m_banner.caught;
 		}
 		
+		
+		/**
+		 * Conquer Dispose
+		 */
 		override public function dispose():void {
 			trace("Conquer dispose");
 			super.dispose();

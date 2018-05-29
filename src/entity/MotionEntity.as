@@ -1,6 +1,7 @@
 package entity {
 	//-----------------------------------------------------------
 	// MotionEntity
+	// Represents an entity that can move or be moved
 	//-----------------------------------------------------------
 	
 	public class MotionEntity extends Entity {
@@ -10,8 +11,8 @@ package entity {
 		//-----------------------------------------------------------
 		
 		protected const GRAVITY:Number = 0.55;
-		public var _velocity:Number;
-		public var _angle:Number;
+		public var _velocity:Number; //@TODO rename
+		public var _angle:Number;    //@TODO rename
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -33,7 +34,7 @@ package entity {
 		
 		
 		/**
-		 * update
+		 * Update
 		 * Override
 		 */
 		override public function update():void {
@@ -42,7 +43,7 @@ package entity {
 		
 		
 		/**
-		 * init
+		 * Init
 		 * Override
 		 */
 		override public function init():void {
@@ -51,7 +52,8 @@ package entity {
 		
 		
 		/**
-		 * 
+		 * Dispose
+		 * Override
 		 */
 		override public function dispose():void {
 			trace("MotionEntity dispose");
@@ -62,8 +64,7 @@ package entity {
 		
 		
 		/**
-		 * applyGravity
-		 * 
+		 * Makes object fall down or up
 		 */
 		public function applyGravity(down:Boolean = true):void {
 			if (down) {
@@ -75,8 +76,7 @@ package entity {
 		
 		
 		/**
-		 * removeGravity
-		 * 
+		 * Makes objekt stop falling
 		 */
 		public function removeGravity():void {
 			this.y = this.y;
@@ -85,7 +85,7 @@ package entity {
 		
 		
 		/**
-		 * setGravityFactor
+		 * Interface to set the gravityFactor / the speed of falling
 		 */
 		public function setGravityFactor(factor:int):void {
 			this.m_gravityFactor = factor;

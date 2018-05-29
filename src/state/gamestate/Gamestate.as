@@ -4,6 +4,7 @@ package state.gamestate {
 	//-----------------------------------------------------------
 	
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.geom.Point;
@@ -31,6 +32,7 @@ package state.gamestate {
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
+	import se.lnu.stickossdk.tween.Tween;
 	import se.lnu.stickossdk.util.MathUtils;
 	
 	import state.menustate.infoScreen.WinnerScreen;
@@ -39,11 +41,10 @@ package state.gamestate {
 	import ui.HUD;
 	import ui.HUDManager;
 	import ui.Icon;
-	
-	
-	
+
 	//-----------------------------------------------------------
 	// Gamestate
+	// Represents the basic game mechanics
 	//-----------------------------------------------------------
 	
 	public class Gamestate extends DisplayState {
@@ -71,51 +72,47 @@ package state.gamestate {
 		public var IconLayer:DisplayStateLayer;
 		public var winLayer:DisplayStateLayer;
 		
+		public var ground:MovieClip;
+		public var groundHitbox:Shape;
+		
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
-		protected var m_planes:Vector.<Plane>; //@TODO: rename
 		private var m_crates:Vector.<Crate>;
 		private var m_crate:Crate;
 		private var m_crateSpawn:Point;
 		private var m_icons:Vector.<Icon>;
 		private var m_icon:Icon;
 		private var m_iconSpawn:Point;
-		private var m_bm1:BulletManager; // @FIX, put into Vector?
-		private var m_bm2:BulletManager; // @FIX, put into Vector?
+		private var m_bm1:BulletManager;
+		private var m_bm2:BulletManager;
 		private var m_im1:IconManager;
 		private var m_im2:IconManager;
-		
 		private var m_sky:Shape;
-		public var m_ground:MovieClip; // @TODO: rename & move
-		public var groundHitbox:Shape; // @TODO: move
 		private var m_background:DisplayObject;
-		
 		private var m_hudManager:HUDManager;
 		private var m_crateManager:CrateManager;
 		private var m_fxMan1:FXManager;
 		private var m_fxMan2:FXManager;
 		private var m_ingameMusic:SoundObject;
 		private var m_powerupSound:SoundObject;
-		protected var _flashScreen:Boolean = false;
 		private var m_scoreText:TextField;
 		private var m_planeManager:PlaneManager;
 		private var m_countDown:Countdown = new Countdown();
-		
-		
-		protected var m_winSound:SoundObject; //@TODO: rename
-		protected var _winLimit:int = 2;
-		protected var _bestOf:int = 3;
+		private var m_indicatorTimer:Timer;
 		
 		//-----------------------------------------------------------
 		// Protected properties
 		//-----------------------------------------------------------
 		
-		//0 = Dogfight
-		//1 = Conquer
-		protected var _gamemode:int = 0;
+		protected var _gamemode:int = 0; // 0 = Dogfight, 1 = Conquer
 
+		protected var _planes:Vector.<Plane>;
+		protected var _flashScreen:Boolean = false;
+		protected var _winSound:SoundObject;
+		protected var _winLimit:int = 2;
+		protected var _bestOf:int = 3;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -126,7 +123,7 @@ package state.gamestate {
 		}
 		
 		//-----------------------------------------------------------
-		// Methods
+		// Overrides
 		//-----------------------------------------------------------
 		
 		/**	 
@@ -151,9 +148,28 @@ package state.gamestate {
 			this.m_initFlash();
 		}
 		
+		
+		/**
+		 * update
+		 * Override
+		 */
+		override public function update():void {
+			this.m_skyCollision();
+			this.m_groundCollision();
+			this.m_crateGroundCollision();
+			this.m_cratePlaneCollision();
+			this.m_durabilityChange();
+			this._updateGamemode();
+			this.m_flashWorld();
+		}
+		
+		
+		/**
+		 * Gamestate dispose
+		 */
 		override public function dispose():void {
 			trace("Gamestate dispose");
-			this.m_planes = null;
+			this._planes = null;
 			this.m_crates = null;
 			this.m_crate = null;
 			this.m_crateSpawn = null;
@@ -169,7 +185,7 @@ package state.gamestate {
 			this.m_im2.dispose();
 			this.m_im2 = null;
 			this.m_sky = null;
-			this.m_ground = null;
+			this.ground = null;
 			this.groundHitbox = null;
 			this.m_background = null;
 			this.m_hudManager = null;
@@ -183,15 +199,22 @@ package state.gamestate {
 			this.m_scoreText = null;
 			this.m_planeManager.dispose();
 			this.m_planeManager = null;
-			this.m_winSound = null;
+			this._winSound = null;
 			this._winLimit = 0;
 			this.m_countDown.dispose();
 			this.m_countDown = null;
+			Session.timer.remove(this.m_indicatorTimer);
+			this.m_indicatorTimer = null;
 		}
 		
 		
+		//-----------------------------------------------------------
+		// Private methods
+		//-----------------------------------------------------------
+		
+		
 		/**
-		 * 
+		 * Initialize "flash in"
 		 */
 		private function m_initFlash():void {
 			this.flash(500, 0xFFFFFF);
@@ -199,7 +222,7 @@ package state.gamestate {
 		
 		
 		/**	
-		 * m_initLayers
+		 * Initialize the layers
 		 */
 		private function m_initLayers():void {
 			this.backgroundLayer = this.layers.add("background");
@@ -217,8 +240,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_initMusic
-		 * 
+		 * Initialize the music
 		 */
 		private function m_initMusic():void {
 			if (BulletReign.rb) {
@@ -235,8 +257,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_initPlanes
-		 * 
+		 * Initialize the planes
 		 */
 		private function m_initPlanes():void {
 			this.m_bm1 = new BulletManager(this.planeLayer);
@@ -246,35 +267,34 @@ package state.gamestate {
 			this.m_planeManager.add(new Plane(0, this.m_bm1, this.m_bm2, new Point(25, 250), 1, this.m_fxMan1));
 			this.m_planeManager.add(new Plane(1, this.m_bm2, this.m_bm1, new Point(775, 250), -1, this.m_fxMan2));
 				
-			this.m_planes = this.m_planeManager.getPlanes();
-			for(var i:int = 0; i < this.m_planes.length; i++) {
-				this.m_planes[i].engineSound.play();
-				this.m_planes[i].engineSound.volume = 0.9;
+			this._planes = this.m_planeManager.getPlanes();
+			for(var i:int = 0; i < this._planes.length; i++) {
+				this._planes[i].engineSound.play();
+				this._planes[i].engineSound.volume = 0.9;
 			}
-			
-			this.m_indicators();
+			this.m_planeIndicators();
 		}
 		
 		
 		/**
-		 * 
+		 * Crates indicator showing which player is which plane
+		 * @TODO: Move Indicator to own class in ui.
 		 */
-		private function m_indicators():void {
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				var indicator:MovieClip = this.m_createIndicator(this.m_planes[i].activePlayer);
+		private function m_planeIndicators():void {
+			for (var i:int = 0; i < this._planes.length; i++) {
+				var indicator:MovieClip = this.m_createIndicator(this._planes[i].activePlayer);
 					indicator.scaleX = 2;
 					indicator.scaleY = 2;
 					indicator.y = -20;
 					indicator.name = "indicator";
-				this.m_planes[i].addChild(indicator);
+				this._planes[i].addChild(indicator);
 			}
-			
-			var timer:Timer = Session.timer.create(2000, this.m_removeIndicators);
+			this.m_indicatorTimer = Session.timer.create(2000, this.m_fadeOutIndicators);
 		}
 		
 		
 		/**
-		 * 
+		 * Creates the right indicator for the right plane
 		 */
 		private function m_createIndicator(plane:int):MovieClip {
 			return new (plane ? IndicatorP2GFX : IndicatorP1GFX); 
@@ -282,17 +302,18 @@ package state.gamestate {
 		
 		
 		/**
-		 * 
+		 * Initializes tween to fade out indicators
 		 */
-		private function m_removeIndicators():void {
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				var indicator:DisplayObject = this.m_planes[i].getChildByName("indicator");
+		private function m_fadeOutIndicators():void {
+			for (var i:int = 0; i < this._planes.length; i++) {
+				var indicator:DisplayObject = this._planes[i].getChildByName("indicator");
 				
-				if (this.m_planes[i].contains(indicator)) {
+				if (this._planes[i].contains(indicator)) {
 					Session.tweener.add(indicator, {
 						duration: 700,
 						alpha: 0,
-						onComplete: this.m_removeIndicatorGraphic
+						onComplete: this.m_removeIndicator,
+						requestParam: true
 					});
 				}
 			}
@@ -300,24 +321,24 @@ package state.gamestate {
 		
 		
 		/**
-		 * @TODO: REMOVE GRAPHIC FROM STAGE
+		 * Removes tween and disposes 
 		 */
-		private function m_removeIndicatorGraphic():void {
-//			for (var i:int = 0; i < this.m_planes.length; i++) {
-//				var indicator:DisplayObject = this.m_planes[i].getChildByName("indicator");
-//				if (this.m_planes[i].contains(indicator)) {
-//					this.m_planes[i].removeChild(indicator);
-//				}
-//			}
+		private function m_removeIndicator(tween:Tween, target:DisplayObjectContainer):void {
+			Session.tweener.remove(tween);
+			tween = null;
+			if (target.parent != null) {
+				target.parent.removeChild(target);			
+			}
+			target = null;
 		}
 		
 		
 		/**
-		 * 
+		 * Initializes the countdown and freezes the planes
 		 */
 		private function m_initCountDown():void {
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				this.m_planes[i].movePlane(false);
+			for (var i:int = 0; i < this._planes.length; i++) {
+				this._planes[i].movePlane(false);
 			}
 			this.m_countDown.bestOf = this._bestOf;
 			this.m_countDown.start(this.m_onCountdownFinish);
@@ -328,18 +349,18 @@ package state.gamestate {
 		
 		
 		/**
-		 * 
+		 * When countdown is finished the planes are unfrozen
 		 */
 		private function m_onCountdownFinish():void {
 			this.HUDLayer.removeChild(this.m_countDown);
-			for(var i:int = 0; i < this.m_planes.length; i++) {
-				this.m_planes[i].movePlane(true);
+			for(var i:int = 0; i < this._planes.length; i++) {
+				this._planes[i].movePlane(true);
 			}
 		}
 		
+		
 		/**
-		 * m_initFX
-		 * 
+		 * Initializes FXManagers
 		 */
 		private function m_initFX():void {
 			this.m_fxMan1 = new FXManager(this.planeLayer);
@@ -348,8 +369,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_initSky
-		 * 
+		 * Initializes the skyline / world upper bound
 		 */
 		private function m_initSky():void {
 			this.m_sky = new Shape();
@@ -361,15 +381,14 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_initGround
-		 * 
+		 * Initializes the ground / world lower bound and hitbox
 		 */
 		private function m_initGround():void {
-			this.m_ground = new GroundGFX();
-			this.m_ground.scaleX = 2.5;
-			this.m_ground.scaleY = 2.5;
-			this.m_ground.y = Session.application.size.y - this.m_ground.height;
-			this.m_ground.gotoAndStop(1);
+			this.ground = new GroundGFX();
+			this.ground.scaleX = 2.5;
+			this.ground.scaleY = 2.5;
+			this.ground.y = Session.application.size.y - this.ground.height;
+			this.ground.gotoAndStop(1);
 			
 			this.groundHitbox = new Shape();
 			
@@ -379,26 +398,24 @@ package state.gamestate {
 			
 			if (BulletReign.debug) this.groundHitbox.graphics.endFill();
 			
-			this.worldLayer.addChild(this.m_ground);
+			this.worldLayer.addChild(this.ground);
 			this.worldLayer.addChild(this.groundHitbox);
 		}
 
 		
 		/**
-		 * m_initSound
-		 * 
+		 * Initializes sounds
 		 */
 		private function m_initSound():void {
 			Session.sound.soundChannel.sources.add("winsound", BulletReign.WIN_SOUND);
 			Session.sound.soundChannel.sources.add("powerup", BulletReign.POWERUP_SOUND);
-			this.m_winSound = Session.sound.soundChannel.get("winsound");
+			this._winSound = Session.sound.soundChannel.get("winsound");
 			this.m_powerupSound = Session.sound.soundChannel.get("powerup");
 		}
 		
 		
 		/**
-		 * m_initBackground
-		 * 
+		 * Initializes background
 		 */
 		private function m_initBackground():void {
 			this.m_background = new BG();
@@ -409,8 +426,8 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_initClouds
-		 * 
+		 * Initializes clouds
+		 * @TODO: Push into vector to keep disposable reference
 		 */
 		private function m_initClouds():void {
 			for (var i:int = 0; i < 6; i++) {
@@ -421,8 +438,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_initHUDLayer
-		 * 
+		 * Initialize HUD
 		 */
 		private function m_initHUD():void {
 			this.m_hudManager = new HUDManager(this.HUDLayer);
@@ -432,17 +448,17 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_initCrates
-		 * 
+		 * Initializes CrateManager
 		 */
 		private function m_initCrates():void {
 			this.m_crateManager = new CrateManager(this.crateLayer);
-			//this.m_initCrateTimer();
 			this.m_generateCrate();
-			//new Point(100,0
-			
 		}
 		
+		
+		/**
+		 * Initializes iconManagers
+		 */
 		private function m_initIconManagers():void {
 			this.m_im1 = new IconManager(0, this.IconLayer);
 			this.m_im2 = new IconManager(1, this.IconLayer);
@@ -450,30 +466,14 @@ package state.gamestate {
 
 		
 		/**
-		 * update
-		 * Override
-		 */
-		override public function update():void {
-			this.m_skyCollision();
-			this.m_groundCollision();
-			this.m_crateGroundCollision();
-			this.m_cratePlaneCollision();
-			this.m_durabilityChange();
-			this._updateGamemode();
-			this.m_flashWorld();
-		}
-		
-		
-		
-		/**
 		 * m_skyCollision
-		 * Bounces plane back in reflected angle from where it came in
+		 * When plane collides with skyline, bounce back in reflected angle from where it came in
 		 */
 		private function m_skyCollision():void {
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].tailHitbox.hitTestObject(this.m_sky) || this.m_planes[i].bodyHitbox.hitTestObject(this.m_sky)) {
-					this.m_planes[i].reflectAngle();
-					this.m_planes[i].updateRotation();
+			for (var i:int = 0; i < this._planes.length; i++) {
+				if (this._planes[i].tailHitbox.hitTestObject(this.m_sky) || this._planes[i].bodyHitbox.hitTestObject(this.m_sky)) {
+					this._planes[i].reflectAngle();
+					this._planes[i].updateRotation();
 				}
 			}
 		}
@@ -481,17 +481,17 @@ package state.gamestate {
 		
 		/**
 		 * m_groundCollision
-		 * Causes crash 
+		 * When plane collides with ground, cause crash
 		 */
 		private function m_groundCollision():void {
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].tailHitbox.hitTestObject(this.groundHitbox) || this.m_planes[i].bodyHitbox.hitTestObject(this.groundHitbox)) {
-					if (this.m_planes[i].crashed == false) {
-						this.m_planes[i].crashed = true;
-						this.m_planes[i].holdingBanner = false;
-						this.m_planes[i].health = 0;
-						this.m_planes[i].onCrash(this.backgroundLayer);
-						this.m_createExplosion(this.m_planes[i].pos);
+			for (var i:int = 0; i < this._planes.length; i++) {
+				if (this._planes[i].tailHitbox.hitTestObject(this.groundHitbox) || this._planes[i].bodyHitbox.hitTestObject(this.groundHitbox)) {
+					if (this._planes[i].crashed == false) {
+						this._planes[i].crashed = true;
+						this._planes[i].holdingBanner = false;
+						this._planes[i].health = 0;
+						this._planes[i].onCrash(this.backgroundLayer);
+						this.m_createExplosion(this._planes[i].pos);
 					}
 				}
 			}
@@ -499,36 +499,7 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_respawnNow
-		 * @TODO: rename && move
-		 */
-		protected function m_respawnNow():void {
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				this.m_planes[i].onRespawn(false);
-//				this.m_planes[i].m_newDurability = 2;
-			}
-			this._flashScreen = false;
-			this.m_im1.m_remove();
-			this.m_im2.m_remove();
-		}
-		
-		
-		/**
-		 * _respawnPlane
-		 * @TODO: move
-		 */
-		protected function _respawnPlane(player:int):void {
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].activePlayer == player) {
-					this.m_planes[i].onRespawn(false);
-				}
-			}
-		}
-		
-		
-		/**
-		 * m_crateGroundCollision
-		 * 
+		 * When crate collide with ground
 		 */
 		private function m_crateGroundCollision():void {
 			if (this.m_crates != null) {
@@ -545,29 +516,29 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_cratePlaneCllision
-		 * 
+		 * When plane collide with Crates
+		 * @TODO: Make timers disposable
 		 */
 		private function m_cratePlaneCollision():void {
 			if (this.m_crates != null) {
-				for (var i:int = 0; i < this.m_planes.length; i++) {
+				for (var i:int = 0; i < this._planes.length; i++) {
 					for (var j:int = 0; j < this.m_crates.length; j++) {
 						
-						if ((this.m_planes[i].tailHitbox.hitTestObject(this.m_crates[j]) || this.m_planes[i].bodyHitbox.hitTestObject(this.m_crates[j])) && this.m_planes[i].powerUpActive == false) {
+						if ((this._planes[i].tailHitbox.hitTestObject(this.m_crates[j]) || this._planes[i].bodyHitbox.hitTestObject(this.m_crates[j])) && this._planes[i].powerUpActive == false) {
 							this.m_powerupSound.play();
 							this.m_powerupSound.volume = 0.7;
-							this.m_planes[i].powerUpActive = true;
+							this._planes[i].powerUpActive = true;
 							if(this.m_crates[j].m_type == 0) {
-								this.m_planes[i].noDamage = true;
-								this.m_generateIcons(this.m_planes[i].activePlayer);
+								this._planes[i].noDamage = true;
+								this.m_generateIcons(this._planes[i].activePlayer);
 							}
 							if(this.m_crates[j].m_type == 1) {
-								this.m_planes[i].noFireCounter = true;
-								this.m_generateIcons(this.m_planes[i].activePlayer);
+								this._planes[i].noFireCounter = true;
+								this.m_generateIcons(this._planes[i].activePlayer);
 							}
 							if(this.m_crates[j].m_type == 2) {
-								this.m_planes[i].noAccelDuration = true;
-								this.m_generateIcons(this.m_planes[i].activePlayer);
+								this._planes[i].noAccelDuration = true;
+								this.m_generateIcons(this._planes[i].activePlayer);
 							}
 							this.m_crateManager.removeCrate(this.m_crates[j]);
 							var spawnTime:int = MathUtils.randomRange(5000, 30000);
@@ -580,19 +551,15 @@ package state.gamestate {
 		
 		
 		/**
-		 * m_roundOver
-		 * 
+		 * Display win message
+		 * @TODO: Put this into own class in ui.
+		 * @TODO: Make TextField and format disposable
 		 */
-		protected function m_matchOver(player):void {
-			var timer:Timer = Session.timer.create(2000, this.m_wrapItUp);
-			this.m_winScreen(player);
-		}
-		
 		private function m_winScreen(player):void {
 			var winMessage:TextField = new TextField();
 			var textFormat:TextFormat = new TextFormat();
 			
-			for(var i:int = 0; i < this.m_planes.length; i++) {
+			for(var i:int = 0; i < this._planes.length; i++) {
 					winMessage.text = "PLAYER " + (player + 1) + " IS VICTORIOUS!";
 					textFormat.color = 0x000000;
 			}
@@ -611,6 +578,142 @@ package state.gamestate {
 			this.winLayer.addChild(winMessage);
 		}
 		
+		
+		/**
+		 * If game is won, change displayState to WinnerScreen
+		 * @TODO: Rename this method to more clearly state its purpose
+		 */
+		private function m_wrapItUp():void {
+			for(var i:int = 0; i < this._planes.length; i++) {
+				if(this._planes[i].winner == true) {
+					Session.application.displayState = new WinnerScreen(this._gamemode, this._planes[i].activePlayer);
+				}
+			}
+		}
+		
+		
+		/**
+		 * When the planes durability / health changes
+		 */
+		private function m_durabilityChange():void {
+			for(var i:int = 0; i < this._planes.length; i++) {
+				if (this._planes[i].health <= this._planes[i].PLANE_DURABILITY) {
+					this.m_hudManager.incrementDecrementHealth(this._planes[i].activePlayer, this._planes[i].health);
+				}
+			}
+		}
+
+		
+		/**
+		 * Generate Crates
+		 */
+		private function m_generateCrate():void {
+			this.m_crateSpawn = new Point(Math.floor(Math.random()* Session.application.size.x), -40);
+			this.m_crate = new Crate(this.m_crateSpawn);
+			this.m_crateManager.add(this.m_crate, this.m_crate.m_type);
+			this.m_crates = m_crateManager.getCrates();
+		}
+		
+		
+		/**
+		 * Generate power up icon HUD indicators
+		 * @TODO: Make this more DRY
+		 */
+		private function m_generateIcons(player):void {
+			var catcher:int = player;
+			if(catcher == 0) {
+				this.m_iconSpawn = new Point(Session.application.size.x / 35, Session.application.size.y / 10);
+				this.m_icon = new Icon(this.m_iconSpawn, this.m_crates[0].m_type);
+				this.m_im1.add(this.m_icon);	
+			}
+			if(catcher == 1) {
+				this.m_iconSpawn = new Point(Session.application.size.x - 30, Session.application.size.y / 10);
+				this.m_icon = new Icon(this.m_iconSpawn, this.m_crates[0].m_type);
+				this.m_im2.add(this.m_icon);		
+			}
+		}
+		
+		
+		/**
+		 * Flash the world / screen on plane shotdown
+		 * Uses flag since this is called in update
+		 */
+		private function m_flashWorld():void {
+			for (var i:int = 0; i < this._planes.length; i++) {
+				if (this._planes[i].shotDown && !this._flashScreen) {
+					this.flash(200, 0xFFFFFF); //0xFFF392
+					this._flashScreen = true;
+				}
+			}
+		}
+		
+		
+		/**
+		 * Creates an explosion graphic at a position
+		 * Uses the undocumentet addFrameScript to only play the movieClip once. 
+		 * This is used instead of adding the code to the last frame of the movieClip
+		 * to keep all code in one place. Placing it in the MovieClip might be cleaner, 
+		 * but this is more clear and not hidden.
+		 * @TODO: Make explosion disposable
+		 */
+		private function m_createExplosion(pos:Point):void {
+			var explosion:ExplosionGFX = new ExplosionGFX;
+				explosion.gotoAndPlay(1);
+				explosion.addFrameScript(explosion.totalFrames - 1, function():void {
+					explosion.stop();
+				});
+				explosion.scaleX = explosion.scaleY = 2.5;
+				explosion.x = pos.x;
+				explosion.y = pos.y;
+			this.explosionLayer.addChild(explosion);
+		}
+		
+		
+		//-----------------------------------------------------------
+		// Protected methods
+		//-----------------------------------------------------------
+		
+		
+		/**
+		 * Overridden by child classes
+		 */
+		protected function _initGamemode():void {
+			// To be overridden by children
+		}
+		
+		
+		/**
+		 * Overridden by child classes
+		 */
+		protected function _updateGamemode():void {
+			// To be overridden by children
+		}
+		
+		
+		/**
+		 * Increment score for a plane/player
+		 */
+		protected function _incrementWins(activePlayer:int, wins:int):void {
+			this.m_hudManager.incrementWins(activePlayer, wins);
+		}
+		
+		
+		/**
+		 * Remove score message
+		 */
+		protected function _scoreMessageRemove():void {
+			if(this.winLayer.contains(this.m_scoreText)) {
+				this.winLayer.removeChild(this.m_scoreText);
+			}
+		}
+		
+		
+		/**
+		 * Display Score message
+		 * @TODO: Put this into own class in ui.
+		 * @TODO: Make timer disposable
+		 * @TODO: Make textFormat disposable
+		 */
 		protected function m_scoreMessage(player:int):void {
 			this.m_scoreText = new TextField();
 			var textFormat:TextFormat = new TextFormat();
@@ -630,127 +733,42 @@ package state.gamestate {
 			
 			this.winLayer.addChild(this.m_scoreText);
 			
-			var timer:Timer = Session.timer.create(2000, this.m_scoreMessageRemove);
-		}
-		
-		protected function m_scoreMessageRemove():void {
-			if(this.winLayer.contains(this.m_scoreText)) {
-				this.winLayer.removeChild(this.m_scoreText);
-			}
-		}
-		
-		private function m_wrapItUp():void {
-			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if(this.m_planes[i].winner == true) {
-					Session.application.displayState = new WinnerScreen(this._gamemode, this.m_planes[i].activePlayer);
-				}
-			}
-			
-		}
-		
-		/**
-		 * m_durabilityChange
-		 * 
-		 */
-		private function m_durabilityChange():void {
-			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].health <= this.m_planes[i].PLANE_DURABILITY) {
-					this.m_hudManager.incrementDecrementHealth(this.m_planes[i].activePlayer, this.m_planes[i].health);
-				}
-			}
+			var timer:Timer = Session.timer.create(2000, this._scoreMessageRemove);
 		}
 		
 		
 		/**
-		 * m_incrementWins
-		 * @TODO: move
+		 * When match is over
+		 * @TODO: Make timer disposable
 		 */
-		protected function m_incrementWins(activePlayer:int, wins:int):void {
-			this.m_hudManager.incrementWins(activePlayer, wins);
+		protected function _matchOver(player):void {
+			var timer:Timer = Session.timer.create(2000, this.m_wrapItUp);
+			this.m_winScreen(player);
 		}
 		
 		
 		/**
-		 * m_generateCrates
-		 * 
+		 * Respawn planes
 		 */
-		private function m_generateCrate():void {
-			this.m_crateSpawn = new Point(Math.floor(Math.random()* Session.application.size.x), -40); // -40 magic number, get height of crate somehow?
-			this.m_crate = new Crate(this.m_crateSpawn);
-			this.m_crateManager.add(this.m_crate, this.m_crate.m_type);
-			this.m_crates = m_crateManager.getCrates();
-		}
-		
-		
-		/**
-		 * 
-		 */
-		private function m_generateIcons(player):void {
-			var catcher:int = player;
-			if(catcher == 0) {
-				this.m_iconSpawn = new Point(Session.application.size.x / 35, Session.application.size.y / 10);
-				this.m_icon = new Icon(this.m_iconSpawn, this.m_crates[0].m_type);
-				this.m_im1.add(this.m_icon);	
-				//this.m_im1.m_expire();
+		protected function m_respawnNow():void {
+			for (var i:int = 0; i < this._planes.length; i++) {
+				this._planes[i].onRespawn(false);
 			}
-			if(catcher == 1) {
-				this.m_iconSpawn = new Point(Session.application.size.x - 30, Session.application.size.y / 10);
-				this.m_icon = new Icon(this.m_iconSpawn, this.m_crates[0].m_type);
-				this.m_im2.add(this.m_icon);		
-				//this.m_im2.m_expire();
-			}
+			this._flashScreen = false;
+			this.m_im1.m_remove();
+			this.m_im2.m_remove();
 		}
 		
 		
 		/**
-		 * 
+		 * Respawns one plane (used if one plane crashes and gamemode rules dictate crash is allowed)
 		 */
-		private function m_flashWorld():void {
-			for (var i:int = 0; i < this.m_planes.length; i++) {
-				if (this.m_planes[i].shotDown && !this._flashScreen) {
-					this.flash(200, 0xFFFFFF); //0xFFF392
-					this._flashScreen = true;
+		protected function _respawnPlane(player:int):void {
+			for (var i:int = 0; i < this._planes.length; i++) {
+				if (this._planes[i].activePlayer == player) {
+					this._planes[i].onRespawn(false);
 				}
 			}
 		}
-		
-		
-		/**
-		 * 
-		 */
-		private function m_createExplosion(pos:Point):void {
-			var explosion:ExplosionGFX = new ExplosionGFX;
-				explosion.gotoAndPlay(1);
-				explosion.addFrameScript(explosion.totalFrames - 1, function():void 
-				{
-					explosion.stop();
-				});
-				explosion.scaleX = explosion.scaleY = 2.5;
-				explosion.x = pos.x;
-				explosion.y = pos.y;
-			this.explosionLayer.addChild(explosion);
-		}
-		
-		//-----------------------------------------------------------
-		// Protected methods
-		//-----------------------------------------------------------
-		
-		/**
-		 * _initGameMode
-		 * 
-		 */
-		protected function _initGamemode():void {
-			// To be overridden by children
-		}
-		
-		
-		/**
-		 * _updateGamemode
-		 * 
-		 */
-		protected function _updateGamemode():void {
-			// To be overridden by children
-		}
-		
 	}
 }

@@ -11,6 +11,7 @@ package entity.fx {
 	
 	//-----------------------------------------------------------
 	// Effect
+	// Represents the basics of one effect
 	//-----------------------------------------------------------
 	
 	public class Effect extends MotionEntity {
@@ -22,8 +23,8 @@ package entity.fx {
 		protected var type:String;
 		protected var _pos:Point;
 		protected var _hasGravity:Boolean = false;
-		protected var _canGrow:Boolean = false;
-		protected var _canFade:Boolean = false;
+		protected var _canGrow:Boolean    = false;
+		protected var _canFade:Boolean    = false;
 		protected var _skin:Sprite;
 		
 		//-----------------------------------------------------------
@@ -40,7 +41,8 @@ package entity.fx {
 		
 		
 		/**
-		 * 
+		 * Init
+		 * Override
 		 */
 		override public function init():void {
 			super.init();
@@ -48,7 +50,8 @@ package entity.fx {
 		
 		
 		/**
-		 * 
+		 * Update
+		 * Override
 		 */
 		override public function update():void {
 			super.update();
@@ -58,7 +61,8 @@ package entity.fx {
 		
 		
 		/**
-		 * 
+		 * Dispose
+		 * Override
 		 */
 		override public function dispose():void {
 			trace("Effect dispose");
@@ -71,19 +75,12 @@ package entity.fx {
 		}
 		
 		
-		/**
-		 * setSpawn
-		 */
-		public function setSpawn(pos:Point):void {
-			
-		}
-		
 		//-----------------------------------------------------------
 		// Protected methods
 		//-----------------------------------------------------------
 		
 		/**
-		 * _createJitter
+		 * Takes a number and returns it with some amount of Jitter
 		 * @num : Number - The number to jitter
 		 * @amount : Number - The max amount of jitter possible.
 		 */
@@ -93,7 +90,7 @@ package entity.fx {
 		
 		
 		/**
-		 * _effectGrowth
+		 * Grows or shrinks displayObject
 		 * @param amount : Number - amount to shrink (if negative value) or grow (positive value)
 		 */
 		protected function _effectGrowth(amount:Number = -0.03):void {
@@ -105,7 +102,7 @@ package entity.fx {
 		
 		
 		/**
-		 * _effectGravity
+		 * Applies gravity in either direction
 		 * direction false = up
 		 * direction true = down
 		 * direction default down
@@ -120,7 +117,7 @@ package entity.fx {
 		
 		
 		/**
-		 * _effectFade
+		 * Fades in or out
 		 * amount positive = fade in
 		 * amount negative = fade out
 		 * amount default  = fade out

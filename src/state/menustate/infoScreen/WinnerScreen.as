@@ -3,26 +3,27 @@ package state.menustate.infoScreen {
 	// Import
 	//-----------------------------------------------------------
 	
-	import flash.display.Bitmap;
 	import flash.display.MovieClip;
-	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import flash.display.Bitmap;
+	import flash.text.TextField;
 	
 	import asset.AirforcemedalofhonorGFX;
 	import asset.PourlemeriteGFX;
 	
-	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
-	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.timer.Timer;
 	
 	import state.menustate.RematchMenu;
 	
 	//-----------------------------------------------------------
 	// WinnerScreen
+	// Represents a WinnerScreen
 	//-----------------------------------------------------------
 	
 	public class WinnerScreen extends DisplayState {
@@ -54,13 +55,13 @@ package state.menustate.infoScreen {
 		private var m_updateControlFlag:Boolean = false;
 		private var m_winnerTextTitle:TextField;
 		private var m_winnerTextMain:TextField;
+		private var m_pressBtn:TextField;
 		private var m_winnerFormatTitle:TextFormat;
 		private var m_winnerFormatMain:TextFormat;
+		private var m_pressBtnFormat:TextFormat;
 		private var m_controlsTimer:Timer;
 		private var m_infoscreenMusic:SoundObject;
 		private var m_winnerArt:Bitmap;
-		private var m_pressBtn:TextField;
-		private var m_pressBtnFormat:TextFormat;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -85,13 +86,11 @@ package state.menustate.infoScreen {
 			this.m_initWinnerArt();
 			this.m_initMedals();
 			this.m_initTimer();
-//			this.update();
 		}
 		
 		
 		/**
-		 * m_initLayers
-		 * 
+		 * Initialize layers
 		 */
 		private function m_initLayers():void {
 			this.m_winnerScreenLayer = this.layers.add("winnerscreen");
@@ -99,7 +98,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * Initialize music
 		 */
 		private function m_initMusic():void {
 			Session.sound.musicChannel.sources.add("infoscreenmusic", BulletReign.INFOSCREEN_MUSIC);
@@ -110,8 +109,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * m_initBackground
-		 * 
+		 * Initialize medal graphic
 		 */
 		private function m_initMedals():void {
 			if(this.m_winner == 0) {
@@ -136,7 +134,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * Initialize art of the winning plane
 		 */
 		private function m_initWinnerArt():void {
 			if (this.m_winner == 0) {
@@ -157,7 +155,8 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * Initialize the timer until the controls are enabled.
+		 * The controls are on a timer to prevent missclicks.
 		 */
 		private function m_initTimer():void {
 			this.m_controlsTimer = Session.timer.create(1000, this.m_enableControls);
@@ -165,7 +164,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * Enables controls
 		 */
 		private function m_enableControls():void {
 			this.m_updateControlFlag = true;
@@ -174,7 +173,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * Depending on winner, sets a string to a certain type of medal.
 		 */
 		private function m_awardMedal():void {
 			if (this.m_winner == 0) {
@@ -187,7 +186,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * Creates the TextField to display the message saying "Congratulations..."
 		 */
 		private function m_winnerMessage():void {
 			this.m_winnerTextTitle = new TextField();
@@ -227,7 +226,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * Creates and displays the "Press any button"-text.
 		 */
 		private function m_pressAnyButton():void {
 			this.m_pressBtn = new TextField();
@@ -252,7 +251,7 @@ package state.menustate.infoScreen {
 		
 		/**
 		 * update
-		 * 
+		 * override
 		 */
 		override public function update():void {
 			this.m_updateControls();
@@ -267,8 +266,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * m_updateControls
-		 * 
+		 * Accept both control inputs
 		 */
 		private function m_updateControls():void {
 			this.m_controlMove(this.m_controls_one);
@@ -277,8 +275,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * m_controlMove
-		 * 
+		 * On any button press, display rematch menu
 		 */
 		private function m_controlMove(control:EvertronControls):void {
 			if (Input.keyboard.anyPressed() && this.m_updateControlFlag == true) {
@@ -289,8 +286,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * m_newState
-		 * 
+		 * Set new state.
 		 */
 		private function m_newState():void {
 			Session.application.displayState = new RematchMenu(this.m_gamemode);
@@ -298,7 +294,8 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * dispose
+		 * override
 		 */
 		override public function dispose():void {
 			trace("WinnerScreen dispose");

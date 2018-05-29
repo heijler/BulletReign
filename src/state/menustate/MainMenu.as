@@ -4,19 +4,20 @@ package state.menustate {
 	//-----------------------------------------------------------
 	
 	import flash.display.Bitmap;
-	import flash.geom.Point;
 	import flash.text.TextField;
+	import flash.geom.Point;
 	
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	
-	import state.menustate.infoScreen.ConquerInfo;
-	import state.menustate.infoScreen.Credits;
 	import state.menustate.infoScreen.DogfightInfo;
+	import state.menustate.infoScreen.ConquerInfo;
 	import state.menustate.infoScreen.HowToPlay;
+	import state.menustate.infoScreen.Credits;
 	
 	//-----------------------------------------------------------
 	// MainMenu
+	// Represents the MainMenu
 	//-----------------------------------------------------------
 	
 	public class MainMenu extends Menu {
@@ -53,10 +54,14 @@ package state.menustate {
 		// Methods
 		//-----------------------------------------------------------
 		
-		override protected function initMenu():void {
+		/**
+		 * Gets called on Parent class init.
+		 * Initializes components to make the main menu.
+		 */
+		override protected function _initMenu():void {
 			this.m_drawLogo();
 			this.m_drawArt();
-			this.m_menuMusic.play(); //Låten sätts till play(), låtvalet kan diskuteras
+			this.m_menuMusic.play();
 			this.m_menuMusic.volume = 0.9;
 			this._addMenuItems(
 				new <Object>[
@@ -71,7 +76,7 @@ package state.menustate {
 		
 		
 		/**
-		 * 
+		 * Gets called from parent class dispose
 		 */
 		override protected function _disposeMenu():void {
 			trace("MainMenu dispose");
@@ -80,8 +85,7 @@ package state.menustate {
 		
 		
 		/**
-		 * m_drawLogo
-		 * 
+		 * Creates and adds logotyp/image
 		 */
 		private function m_drawLogo():void {
 			var logo:Bitmap = new Logo();
@@ -93,8 +97,7 @@ package state.menustate {
 		
 		
 		/**
-		 * m_drawArt
-		 * 
+		 * Creates and adds art
 		 */
 		private function m_drawArt():void {
 			var art1:Bitmap = new Art1;
@@ -112,14 +115,12 @@ package state.menustate {
 		
 		
 		/**
-		 * m_initMusic
-		 * 
+		 * Initializes the Main Menu music
 		 */
 		private function m_initMusic():void {
 			Session.sound.musicChannel.sources.add("menu", BulletReign.MENU_MUSIC);
 			this.m_menuMusic = Session.sound.musicChannel.get("menu");
 //			this.m_menuMusic.volume = 0.3;
-			
 		}
 	}
 }

@@ -2,22 +2,23 @@ package state.menustate {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
-	import flash.display.Bitmap;
-	import flash.geom.Point;
-	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
+	import flash.display.Bitmap;
+	import flash.text.TextField;
+	import flash.geom.Point;
 	
-	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
-	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.timer.Timer;
 
 	//-----------------------------------------------------------
 	// Menu
+	// Represents a Menu
 	//-----------------------------------------------------------
 	
 	public class Menu extends DisplayState {
@@ -45,8 +46,6 @@ package state.menustate {
 		private var m_copy:TextField;
 		private var m_newStateTimer:Timer;
 
-		
-		
 		//-----------------------------------------------------------
 		// Protected properties
 		//-----------------------------------------------------------
@@ -72,7 +71,7 @@ package state.menustate {
 		override public function init():void {
 			this.m_initLayers();
 			this.m_initFormat();
-			this.initMenu();
+			this._initMenu();
 			this.m_initSound();
 		}
 		
@@ -117,8 +116,9 @@ package state.menustate {
 		
 		/**
 		 * initMenu
+		 * Run on init, overridden by child classes.
 		 */
-		protected function initMenu():void {
+		protected function _initMenu():void {
 			//Child classes override this method.
 		}
 		
@@ -135,8 +135,7 @@ package state.menustate {
 		//-----------------------------------------------------------
 		
 		/**
-		 * m_initLayers
-		 * 
+		 * Initialize layer
 		 */
 		private function m_initLayers():void {
 			this.m_menuLayer = this.layers.add("mainMenu");
@@ -144,8 +143,7 @@ package state.menustate {
 		
 		
 		/**
-		 * m_initSound
-		 *  
+		 *  Initialize sound
 		 */
 		private function m_initSound():void {
 			Session.sound.soundChannel.sources.add("menumove", BulletReign.MENUMOVE_SOUND);
@@ -156,8 +154,7 @@ package state.menustate {
 		
 		
 		/**
-		 * m_initFormat
-		 * 
+		 * Initialize text formats
 		 */
 		private function m_initFormat():void {
 			this.m_format = new TextFormat();
@@ -177,8 +174,8 @@ package state.menustate {
 		
 		
 		/**
-		 * m_initText
-		 * 
+		 * _items contains the menu options (created in child classes)
+		 * this creates TextFields based of the _items and pushes into a private vector
 		 */
 		private function m_initText():void {
 			for(var i:int = 0; i < _items.length; i++) {
@@ -191,8 +188,7 @@ package state.menustate {
 		
 		
 		/**
-		 * m_addChildren
-		 * 
+		 * Adds the menu option textfields to layer, and any optional artwork or image.
 		 */
 		private function m_addChildren():void {
 			for (var i:int = 0; i < this.m_menuOptions.length; i++) {
@@ -212,8 +208,8 @@ package state.menustate {
 		
 		
 		/**
-		 * m_createMenuItem
-		 * 
+		 * Creates and returns a TextField basse on a string.
+		 * Automatically makes any string uppercase.
 		 */
 		private function m_createMenuItem(text:String):TextField {
 			var menuItem:TextField = new TextField();
@@ -229,8 +225,7 @@ package state.menustate {
 		
 		
 		/**
-		 * m_updateControls
-		 * 
+		 * Accept both control inputs
 		 */
 		private function m_updateControls():void {
 			this.m_controlMove(this.m_controls_one);
@@ -239,8 +234,9 @@ package state.menustate {
 		
 		
 		/**
-		 * m_controlMove
-		 * 
+		 * When user navigates menu, a counter is decremented or incremented.
+		 * The counter keeps track of the currently selected menu item.
+		 * Once a menu option is selected a timer is created in order to allow for the menu option to "blink".
 		 */
 		private function m_controlMove(control:EvertronControls):void {
 			if (Input.keyboard.justPressed(control.PLAYER_UP) && !this.m_selected) {
@@ -260,8 +256,8 @@ package state.menustate {
 		
 		
 		/**
-		 * m_menuMove
-		 * 
+		 * Wraps the counter to allow the user to navigate past the 
+		 * first or last item in the menu to wrap around the menu.
 		 */
 		private function m_menuMove():void {
 			if (this.m_menuSelect < 0) {
@@ -276,8 +272,7 @@ package state.menustate {
 		
 		
 		/**
-		 * m_newState
-		 * 
+		 * Creates new state
 		 */
 		private function m_newState():void {
 			Session.application.displayState = new this.m_menuObject[this.m_menuSelect].state;
@@ -285,7 +280,8 @@ package state.menustate {
 		
 		
 		/**
-		 * m_resetMenu
+		 * Searches TextFields for the selected char (Character in front of selected menu item)
+		 * And if found removes, this clears/resets the menu to having no selected menu options/item.
 		 */
 		private function m_resetMenu():void {
 			for (var i:int = 0; i < this.m_menuOptions.length; i++) {
@@ -297,8 +293,7 @@ package state.menustate {
 		
 		
 		/**
-		 * m_menuShow
-		 * 
+		 * Adds the selected character to the textField that matches the counter/internal representation index
 		 */
 		private function m_menuShow():void {
 			this.m_menuOptions[this.m_menuSelect].text = this.SELECT_CHAR + this.m_menuOptions[this.m_menuSelect].text;
@@ -307,11 +302,16 @@ package state.menustate {
 		
 		
 		/**
-		 * m_blinkSelection
-		 * 
+		 * Due the the Flicker effect not working on TextFields a blink effect is achieved by 
+		 * switching the TextFields textFormat rapidly, not very good for performance, but the 
+		 * menu is not a performance sensitive place. This method is called in an update loop
+		 * and should only run if there is a menu option selected (if user selected and pressed 
+		 * button to enter the menu option). Every tick the blinkCounter will increment, and 
+		 * every four frames it will switch textformat, and reset to 0 after the counter has 
+		 * reached 8.
 		 */
 		private function m_blinkSelection():void {
-			//@TODO: Gör detta på något smidigare sätt
+			//@TODO: Figure out a better way to do this
 			if (this.m_selected) {
 				this.m_blinkCounter++;
 				var text:TextField = this.m_menuOptions[this.m_menuSelect];
@@ -326,7 +326,7 @@ package state.menustate {
 		
 		
 		/**
-		 * 
+		 * Removes any artwork
 		 */
 		private function m_disposeArtwork():void {
 			for (var i:int = 0; i < this.m_artWork.length; i++) {
@@ -345,8 +345,8 @@ package state.menustate {
 		//-----------------------------------------------------------
 		
 		/**
-		 * _addImage
-		 * 
+		 * Retrieves image
+		 * An image represents a logotype for the menu, and only one can exist
 		 */
 		protected function _addImage(image:Bitmap, pos:Point):void {
 			this.m_image = image;
@@ -356,8 +356,7 @@ package state.menustate {
 		
 		
 		/**
-		 * _addArt
-		 * 
+		 * Retrieves art and adds to artWork array
 		 */
 		protected function _addArt(art:Bitmap, pos:Point):void {
 			this.m_artWork.push(art);
@@ -367,8 +366,8 @@ package state.menustate {
 		
 		
 		/**
-		 * _addMenuItems
-		 * 
+		 * Adds menu item object to the _items vector and initializes the displaying of menu.
+		 * This method should be called from any child class.
 		 */
 		protected function _addMenuItems(menuObjects:Vector.<Object>):void {
 			this.m_menuObject = menuObjects;
@@ -380,7 +379,9 @@ package state.menustate {
 		
 		
 		/**
-		 * 
+		 * Adds copyright text.
+		 * The font BulletReign has certain character mappings used for small height numbers.
+		 * \>[} = 2018
 		 */
 		protected function _addCopy():void {
 			this.m_copy = new TextField();

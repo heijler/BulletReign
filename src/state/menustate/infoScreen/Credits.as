@@ -4,13 +4,14 @@ package state.menustate.infoScreen {
 	//-----------------------------------------------------------
 	
 	import se.lnu.stickossdk.input.EvertronControls;
-	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.input.Input;
 	
 	import state.menustate.MainMenu;
 	
 	//-----------------------------------------------------------
 	// Credits
+	// Represents the credits InfoScreen
 	//-----------------------------------------------------------
 	
 	public class Credits extends InfoScreen {
