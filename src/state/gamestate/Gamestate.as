@@ -178,7 +178,7 @@ package state.gamestate {
 			this.m_fxMan2 = null;
 			this,m_ingameMusic = null;
 			this.m_powerupSound = null;
-			this.m_flashScreen = false;
+			this._flashScreen = false;
 			this.m_scoreText = null;
 			this.m_planeManager.dispose();
 			this.m_planeManager = null;

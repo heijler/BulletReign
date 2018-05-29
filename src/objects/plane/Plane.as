@@ -174,7 +174,6 @@ package objects.plane {
 		override public function dispose():void {
 			trace("Dispose plane! REMOVE ME WHEN ACTUALLY DISPOSING.");
 			this.m_ph.dispose();
-			//this.m_ph.dispose();
 			this.winner = false;
 			this.crashed = false;
 			this.shotDown = false;
@@ -183,7 +182,7 @@ package objects.plane {
 			this.noAccelDuration = false;
 			this.noDamage = false;
 			this.noFireCounter = false;
-			this.m_movability = false;
+			this.movability = false;
 			
 			this.health = 0;
 			this.wins = 0;
@@ -203,9 +202,12 @@ package objects.plane {
 			this._ebulletManager = null;
 			this._bulletManager.dispose();
 			this._bulletManager = null;
-			//internal var _fxMan:FXManager;
+			this._fxMan.dispose();
+			this._fxMan = null;
 			this._scaleFactor = 0;
+			this._smoke.dispose();
 			this._smoke = null;
+			this._fire.dispose();
 			this._fire = null;
 		}
 		
