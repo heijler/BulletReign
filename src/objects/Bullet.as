@@ -82,6 +82,7 @@ package objects {
 			this.m_yVel = 0;
 		}
 		
+		
 		/**	
 		 * m_initSkin
 		 * Create the the skin for the bullet.

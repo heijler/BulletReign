@@ -152,7 +152,8 @@ package state.gamestate {
 		}
 		
 		override public function dispose():void {
-			this.m_planes = null; //@TODO: rename
+			trace("gamestate dispose");
+			this.m_planes = null;
 			this.m_crates = null;
 			this.m_crate = null;
 			this.m_crateSpawn = null;
@@ -160,16 +161,16 @@ package state.gamestate {
 			this.m_icon = null;
 			this.m_iconSpawn = null;
 			this.m_bm1.dispose();
-			this.m_bm1 = null; // @FIX, put into Vector?
+			this.m_bm1 = null;
 			this.m_bm2.dispose();
-			this.m_bm2 = null; // @FIX, put into Vector?
+			this.m_bm2 = null;
 			this.m_im1.dispose();
 			this.m_im1 = null;
 			this.m_im2.dispose();
 			this.m_im2 = null;
 			this.m_sky = null;
-			this.m_ground = null; // @TODO: rename & move 				CHECK FOR MORE POSSIBLE DISPOSES!!!!
-			this.groundHitbox = null; // @TODO: move
+			this.m_ground = null;
+			this.groundHitbox = null;
 			this.m_background = null;
 			this.m_hudManager = null;
 			this.m_crateManager.dispose();
@@ -182,8 +183,10 @@ package state.gamestate {
 			this.m_scoreText = null;
 			this.m_planeManager.dispose();
 			this.m_planeManager = null;
-			this.m_winSound = null; //@TODO: rename
+			this.m_winSound = null;
 			this._winLimit = 0;
+			this.m_countDown.dispose();
+			this.m_countDown = null;
 		}
 		
 		
@@ -705,7 +708,6 @@ package state.gamestate {
 		private function m_flashWorld():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
 				if (this.m_planes[i].shotDown && !this._flashScreen) {
-					trace("flash world");
 					this.flash(200, 0xFFFFFF); //0xFFF392
 					this._flashScreen = true;
 				}

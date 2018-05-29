@@ -2,7 +2,6 @@ package managers {
 	//-----------------------------------------------------------
 	// Imports
 	//-----------------------------------------------------------
-	
 	import flash.display.DisplayObjectContainer;
 	
 	import objects.plane.Plane;
@@ -55,6 +54,10 @@ package managers {
 			return this.m_planes;
 		}
 		
+		
+		/**
+		 * 
+		 */
 		public function checkCollision(plane:Plane):Boolean {
 			this.m_val = false;
 			for(var i:int = 0; i < this.m_planes.length; i++) {
@@ -65,7 +68,12 @@ package managers {
 			return this.m_val;
 		}
 		
+		
+		/**
+		 * 
+		 */
 		public function dispose():void {
+			trace("disposing planemanager");
 			for(var i:int; i < this.m_planes.length; i++) {
 				this.m_planes[i].dispose();
 				if(this.m_parent.contains(this.m_planes[i])) {
@@ -73,6 +81,8 @@ package managers {
 				}
 				this.m_planes[i] = null;
 			}
+			this.m_planes.length = 0;
+			this.m_planes = null;
 			this.m_parent = null;
 			this.m_val = false;
 		}

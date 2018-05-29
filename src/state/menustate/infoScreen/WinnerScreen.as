@@ -59,6 +59,8 @@ package state.menustate.infoScreen {
 		private var m_controlsTimer:Timer;
 		private var m_infoscreenMusic:SoundObject;
 		private var m_winnerArt:Bitmap;
+		private var m_pressBtn:TextField;
+		private var m_pressBtnFormat:TextFormat;
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -228,24 +230,23 @@ package state.menustate.infoScreen {
 		 * 
 		 */
 		private function m_pressAnyButton():void {
-			var btn:TextField = new TextField();
-				btn.text = "- press any button -".toUpperCase();
-				btn.autoSize = "center";
-				btn.x = (Session.application.size.x * 0.5) - (btn.width * 0.5);
-				btn.y = Session.application.size.y - 50;
-				btn.embedFonts = true;
-				
-				
-				var format:TextFormat = new TextFormat();
-					format.color = 0xebd320; //0xFFFFFF
-					format.kerning = true;
-					format.letterSpacing = 3;
-					format.size = 12;
-					format.leading = 8;
-					format.font = "bulletreign";
-				
-				btn.setTextFormat(format);
-			this.m_winnerScreenLayer.addChild(btn);
+			this.m_pressBtn = new TextField();
+			this.m_pressBtn.text = "- press any button -".toUpperCase();
+			this.m_pressBtn.autoSize = "center";
+			this.m_pressBtn.x = (Session.application.size.x * 0.5) - (this.m_pressBtn.width * 0.5);
+			this.m_pressBtn.y = Session.application.size.y - 50;
+			this.m_pressBtn.embedFonts = true;
+			
+			this.m_pressBtnFormat = new TextFormat();
+			this.m_pressBtnFormat.color = 0xebd320; //0xFFFFFF
+			this.m_pressBtnFormat.kerning = true;
+			this.m_pressBtnFormat.letterSpacing = 3;
+			this.m_pressBtnFormat.size = 12;
+			this.m_pressBtnFormat.leading = 8;
+			this.m_pressBtnFormat.font = "bulletreign";
+			
+			this.m_pressBtn.setTextFormat(this.m_pressBtnFormat);
+			this.m_winnerScreenLayer.addChild(this.m_pressBtn);
 		}
 		
 		
@@ -324,6 +325,10 @@ package state.menustate.infoScreen {
 				this.m_winnerScreenLayer.removeChild(this.m_winnerArt);
 			}
 			this.m_winnerArt = null;
+			this.m_pressBtnFormat = null;
+			if (this.m_pressBtn.parent != null) {
+				this.m_winnerScreenLayer.removeChild(this.m_pressBtn);
+			}
 		}
 	}
 }

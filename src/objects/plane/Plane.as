@@ -16,15 +16,11 @@ package objects.plane {
 	import entity.fx.FXManager;
 	import entity.fx.Fire;
 	import entity.fx.Smoke;
-	import entity.fx.Trail;
 	
 	import managers.BulletManager;
 	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
-	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.media.SoundObject;
-	import se.lnu.stickossdk.system.Session;
-	import se.lnu.stickossdk.timer.Timer;
 
 	//-----------------------------------------------------------
 	// Plane
@@ -172,7 +168,7 @@ package objects.plane {
 		 * 
 		 */
 		override public function dispose():void {
-			trace("Dispose plane! REMOVE ME WHEN ACTUALLY DISPOSING.");
+			trace("Disposing plane");
 			this.m_ph.dispose();
 			this.winner = false;
 			this.crashed = false;
@@ -187,20 +183,30 @@ package objects.plane {
 			this.health = 0;
 			this.wins = 0;
 			this.activePlayer = 0;
+			if (this.tailHitbox.parent != null) {
+				this.tailHitbox.parent.removeChild(this.tailHitbox);
+			}
 			this.tailHitbox = null;
+			if (this.bodyHitbox.parent != null) {
+				this.bodyHitbox.parent.removeChild(this.bodyHitbox);
+			}
 			this.bodyHitbox = null;
 			this.m_ph = null;
+			if (this.m_healthMeter.parent != null) {
+				this.m_healthMeter.parent.removeChild(this.m_healthMeter);
+			}
 			this.m_healthMeter = null;
-			
 			this._gunCoolingdown = false;
 			this._accelerating = true;
 			this._recharging = false;
 			this._facingUp = false;
-			
+			if (this._skin.parent != null) {
+				this._skin.parent.removeChild(this._skin);
+			}
 			this._skin = null;
-			this._ebulletManager.dispose();
+//			this._ebulletManager.dispose();
 			this._ebulletManager = null;
-			this._bulletManager.dispose();
+//			this._bulletManager.dispose();
 			this._bulletManager = null;
 			this._fxMan.dispose();
 			this._fxMan = null;

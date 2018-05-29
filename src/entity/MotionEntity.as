@@ -102,13 +102,5 @@ package entity {
 				this.x = -this.width;
 			}
 		}
-		
-		
-		/**
-		 * 
-		 */
-		protected function collision(obj1:Entity, obj2:Entity):void {
-			
-		}
 	}
 }

@@ -534,6 +534,7 @@ package state.gamestate {
 		}
 		
 		override public function dispose():void {
+			super.dispose();
 			this.m_zeppelin = null;
 			this.m_banner = null;
 			this.m_bannerHolder = null;

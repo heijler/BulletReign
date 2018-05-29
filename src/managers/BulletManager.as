@@ -181,14 +181,18 @@ package managers {
 		 * 
 		 */
 		public function dispose():void {
-			trace("BulletManager dispose");
+			trace("Bulletmanager dispose");
 			for(var i:int; i < this.m_bullets.length; i++) {
-				this.m_bullets[i].dispose();
-				if(this.m_parent.contains(this.m_bullets[i])) {
+				trace("for");
+				if (this.m_bullets[i].parent != null) {
+					trace("if");
 					this.m_parent.removeChild(this.m_bullets[i]);
 				}
+				this.m_bullets[i].dispose();
 				this.m_bullets[i] = null;
 			}
+			this.m_bullets.length = 0;
+			this.m_bullets = null;
 			this.m_parent = null;
 			this.m_firstBullet = null;
 			this.m_scaleFactor = 0;
