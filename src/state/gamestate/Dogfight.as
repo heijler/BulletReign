@@ -100,6 +100,7 @@ package state.gamestate {
 		}
 		
 		override public function dispose():void {
+			super.dispose();
 			this.m_winFlag = false;
 			this.m_callWinner = false;
 			Session.timer.remove(this.m_respawnNowTimer);

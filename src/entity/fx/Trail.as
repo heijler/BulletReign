@@ -77,6 +77,9 @@ package entity.fx {
 		override public function dispose():void {
 			trace("disposing Trail");
 			this.m_alphaDecay = 0;
+			if(this.m_skin.parent != null) {
+				this.removeChild(this.m_skin);
+			}
 			this.m_skin = null;
 			this.m_pos = null;
 			this._angle = 0;

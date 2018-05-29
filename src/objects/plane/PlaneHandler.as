@@ -2,17 +2,14 @@ package objects.plane {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
-	import flash.geom.Point;
-	
 	import entity.fx.Trail;
 	
-	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
+	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.media.SoundMixer;
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
 	import se.lnu.stickossdk.timer.Timer;
-	import se.lnu.stickossdk.input.Input;
-	import se.lnu.stickossdk.media.SoundMixer;
 
 	//-----------------------------------------------------------
 	// PlaneHandler

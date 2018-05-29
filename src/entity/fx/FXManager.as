@@ -43,6 +43,7 @@ package entity.fx {
 			} else {
 				var firstEffect:Effect = this.m_effects.shift()
 				this.m_removeEffect(firstEffect);
+				firstEffect = null;
 			}
 		}
 		
@@ -64,10 +65,13 @@ package entity.fx {
 		 */
 		public function dispose():void {
 			trace("dispose FXmanager");
-			this.m_parent = null;
 			for (var i:int = 0; i < this.m_effects.length; i++) {
 				this.m_effects[i].dispose;
+				if (this.m_effects[i].parent != null) {
+					this.m_parent.removeChild(this.m_effects[i]);
+				}
 			}
+			this.m_parent = null;
 			this.m_effects.length = 0;
 			this.m_effects = null;
 		}
