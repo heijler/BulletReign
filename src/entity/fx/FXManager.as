@@ -7,6 +7,7 @@ package entity.fx {
 	
 	//-----------------------------------------------------------
 	// FXManager
+	// Represents a simple effects manager
 	//-----------------------------------------------------------
 	
 	public class FXManager {
@@ -14,27 +15,22 @@ package entity.fx {
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
+		private const AMOUNT_LIMIT:int = 300;
 		
 		private var m_parent:DisplayObjectContainer;
 		private  var m_effects:Vector.<Effect> = new Vector.<Effect>;
-		private const AMOUNT_LIMIT:int = 300;
+		
 		//-----------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------
 		
-		
-		/**
-		 * FXManager
-		 * 
-		 */
 		public function FXManager(parent:DisplayObjectContainer) {
 			this.m_parent = parent;
 		}
 		
 		
 		/**
-		 * add
-		 * 
+		 * Add effect to effects vector, if vector is full, remove the oldest effect
 		 */
 		public function add(effect:Effect):void {
 			if (this.m_effects.length < AMOUNT_LIMIT) {
@@ -49,8 +45,7 @@ package entity.fx {
 		
 		
 		/**
-		 * m_removeEffect
-		 * 
+		 * Remove and null effect
 		 */
 		private function m_removeEffect(effect:Effect):void {
 			if (this.m_parent.contains(effect)) {
@@ -61,7 +56,7 @@ package entity.fx {
 		
 		
 		/**
-		 * 
+		 * Dispose FXManager
 		 */
 		public function dispose():void {
 			trace("FXmanager dispose");

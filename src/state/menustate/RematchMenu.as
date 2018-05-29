@@ -3,13 +3,14 @@ package state.menustate {
 	// Import
 	//-----------------------------------------------------------
 	
-	import state.gamestate.Dogfight;
-	import state.gamestate.Conquer;
-	import state.menustate.MainMenu;
 	import state.menustate.infoScreen.HowToPlay;
+	import state.gamestate.Dogfight;
+	import state.menustate.MainMenu;
+	import state.gamestate.Conquer;
 	
 	//-----------------------------------------------------------
 	// RematchMenu
+	// Represents the menu that shows the Rematch options
 	//-----------------------------------------------------------
 	
 	public class RematchMenu extends Menu {
@@ -33,9 +34,9 @@ package state.menustate {
 		//-----------------------------------------------------------
 		
 		/**
-		 * 
+		 * Gets called on Parent class init
 		 */
-		override protected function initMenu():void {
+		override protected function _initMenu():void {
 			this._addMenuItems(
 				new <Object>[
 					{name:"Rematch", state: (this.m_gamemode ? Conquer : Dogfight)},
@@ -47,7 +48,7 @@ package state.menustate {
 		
 		
 		/**
-		 * 
+		 * Gets called on parent class dispose
 		 */
 		override protected function _disposeMenu():void {
 			trace("RematchMenu");

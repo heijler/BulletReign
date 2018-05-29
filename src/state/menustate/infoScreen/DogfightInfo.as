@@ -8,6 +8,7 @@ package state.menustate.infoScreen {
 	
 	//-----------------------------------------------------------
 	// DogfightInfo
+	// Represents the Dogfight information screen
 	//-----------------------------------------------------------
 	
 	public class DogfightInfo extends InfoScreen {

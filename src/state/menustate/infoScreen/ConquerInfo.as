@@ -8,6 +8,7 @@ package state.menustate.infoScreen {
 	
 	//-----------------------------------------------------------
 	// ConquerInfo
+	// Represents the InfoScreen that is shown before the user plays the Conquer gamemode
 	//-----------------------------------------------------------
 	
 	public class ConquerInfo extends InfoScreen {

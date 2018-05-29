@@ -3,19 +3,21 @@ package state.menustate.infoScreen {
 	// Import
 	//-----------------------------------------------------------
 	
-	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
+	import flash.display.Bitmap;
 	
-	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
-	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.input.Input;
 	
 	import state.menustate.MainMenu;
 	
 	//-----------------------------------------------------------
 	// InfoScreen
+	// Represents an InfoScreen / Simple screen that displays 
+	// an image and changes state on control input
 	//-----------------------------------------------------------
 	
 	public class InfoScreen extends DisplayState {
@@ -47,7 +49,7 @@ package state.menustate.infoScreen {
 		//-----------------------------------------------------------
 		
 		/**
-		 * 
+		 * init override
 		 */
 		override public function init():void {
 			this._initInfoScreen();
@@ -57,7 +59,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * update override
 		 */
 		override public function update():void {
 			this.m_updateControls();
@@ -65,7 +67,7 @@ package state.menustate.infoScreen {
 			
 		
 		/**
-		 * 
+		 * dispose override
 		 */
 		override public function dispose():void {
 			trace("InfoScreen dispose");
@@ -79,8 +81,9 @@ package state.menustate.infoScreen {
 			this._background = null;
 		}
 		
+		
 		/**
-		 * 
+		 * Accept both control inputs
 		 */
 		private function m_updateControls():void {
 			this._controlMove(this.m_controls_one);
@@ -89,18 +92,19 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * Initialize layer
 		 */
 		private function m_initLayer():void {
 			this.m_infoScreenLayer = this.layers.add("infoScreen");
 		}
 		
 		
-		
 		/**
-		 * 
+		 * By default an infoscreen will change state to MainMenu on any button press. 
+		 * This can be overridden by the child classes.
 		 */
 		protected function _controlMove(control:EvertronControls):void {
+			//Overridden by children
 			if (Input.keyboard.anyPressed()) {
 				this._newState();
 			}
@@ -108,7 +112,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * Sets the state to MainMenu, can be overridden by child classes.
 		 */
 		protected function _newState():void {
 			//Overridden by children
@@ -117,7 +121,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * This method is run on InfoScreen init.
 		 */
 		protected function _initInfoScreen():void {
 			// Overridden by children
@@ -126,7 +130,7 @@ package state.menustate.infoScreen {
 		
 		
 		/**
-		 * 
+		 * Initialize background
 		 */
 		protected function _initBackground():void {
 			this._background = this._infoScreen;

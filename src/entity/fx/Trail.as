@@ -8,6 +8,8 @@ package entity.fx {
 	
 	//-----------------------------------------------------------
 	// Trail
+	// Represents one Trail Effect / smoke trail puff resulting
+	// from the plane accelerating
 	//-----------------------------------------------------------
 	
 	public class Trail extends Effect {
@@ -36,7 +38,8 @@ package entity.fx {
 		//-----------------------------------------------------------
 		
 		/**
-		 * 
+		 * init
+		 * override
 		 */
 		override public function init():void {
 			super.init();
@@ -46,21 +49,8 @@ package entity.fx {
 		
 		
 		/**
-		 * 
-		 */
-		private function m_initSkin():void {
-			this.m_skin = new Sprite();
-			this.m_skin.graphics.beginFill(0xFFF392);
-			this.m_skin.graphics.drawRect(-this.TRAIL_SIZE * 0.5, -this.TRAIL_SIZE * 0.5, this.TRAIL_SIZE, this.TRAIL_SIZE);
-			this.m_skin.graphics.endFill();
-			this.setScale(this.m_skin);
-			this.addChild(this.m_skin);
-			this.alpha = 0.7; // Starting alpha
-		}
-		
-		
-		/**
-		 * 
+		 * Update
+		 * override
 		 */
 		override public function update():void {
 			this.applyGravity();
@@ -72,7 +62,8 @@ package entity.fx {
 		
 		
 		/**
-		 * 
+		 * Dispose
+		 * override
 		 */
 		override public function dispose():void {
 			trace("Trail dispose");
@@ -87,7 +78,22 @@ package entity.fx {
 		
 		
 		/**
-		 * 
+		 * Initialize skin
+		 */
+		private function m_initSkin():void {
+			this.m_skin = new Sprite();
+			this.m_skin.graphics.beginFill(0xFFF392);
+			this.m_skin.graphics.drawRect(-this.TRAIL_SIZE * 0.5, -this.TRAIL_SIZE * 0.5, this.TRAIL_SIZE, this.TRAIL_SIZE);
+			this.m_skin.graphics.endFill();
+			this.setScale(this.m_skin);
+			this.addChild(this.m_skin);
+			this.alpha = 0.7; // Starting alpha
+		}
+		
+		
+		/**
+		 * Sets the Trail position with some jitter to give 
+		 * life to the resulting animation of the effect.
 		 */
 		private function m_setSpawnPosition():void {
 			this.x = this._createJitter(this.m_pos.x, 2);
