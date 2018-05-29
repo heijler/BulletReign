@@ -195,7 +195,7 @@ package state.menustate.infoScreen {
 			this.m_winnerTextTitle.autoSize = "center";
 			this.m_winnerTextMain.autoSize = "center";
 			this.m_winnerTextTitle.x = (Session.application.size.x / 2) - (this.m_winnerTextTitle.width / 2);
-			this.m_winnerTextMain.x = (Session.application.size.x / 2) - (this.m_winnerTextTitle.width / 2);
+			this.m_winnerTextMain.x = (Session.application.size.x / 2) - (this.m_winnerTextMain.width / 2);
 			this.m_winnerTextTitle.y = (Session.application.size.y / 2) - 200;
 			this.m_winnerTextMain.y = (Session.application.size.y / 2) - 160;
 			
