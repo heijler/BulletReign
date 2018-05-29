@@ -68,6 +68,9 @@ package state.menustate.infoScreen {
 		 * 
 		 */
 		override public function dispose():void {
+			if (this.m_infoScreenLayer.contains(this._background)) {
+				this.m_infoScreenLayer.removeChild(this._background);
+			}
 			this.m_infoScreenLayer = null;
 			this.m_controls_one = null;
 			this.m_controls_two = null;

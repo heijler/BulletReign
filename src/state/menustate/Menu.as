@@ -2,18 +2,18 @@ package state.menustate {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
+	import flash.display.Bitmap;
+	import flash.geom.Point;
+	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
-	import flash.display.Bitmap;
-	import flash.text.TextField;
-	import flash.geom.Point;
 	
+	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
-	import se.lnu.stickossdk.display.DisplayState;
+	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
-	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.timer.Timer;
 
 	//-----------------------------------------------------------
@@ -43,6 +43,7 @@ package state.menustate {
 		private var m_image:Bitmap;
 		private var m_artWork:Vector.<Bitmap> = new Vector.<Bitmap>();
 		private var m_copy:TextField;
+		private var m_newStateTimer:Timer;
 
 		
 		
@@ -92,7 +93,13 @@ package state.menustate {
 			this.m_controls_one = null;
 			this.m_controls_two = null;
 			this.m_menuSelect = 0;
+			if (this.m_copy != null) {
+				this.m_copy.parent.removeChild(this.m_copy);
+			}
+			this.m_copy = null;
+			this.m_menuOptions.length = 0;
 			this.m_menuOptions = null;
+			this.m_menuObject.length = 0;
 			this.m_menuObject = null;
 			this.m_format = null;
 			this.m_selectedFormat = null;
@@ -101,8 +108,9 @@ package state.menustate {
 			this.m_image = null;
 			this.m_selected = false;
 			this.m_blinkCounter = 0;
-			this.m_copy = null;
 			this._disposeMenu();
+			Session.timer.remove(this.m_newStateTimer);
+			this.m_newStateTimer = null;
 		}
 		
 		
@@ -245,7 +253,7 @@ package state.menustate {
 			} else if (Input.keyboard.justPressed(control.PLAYER_BUTTON_1) && !this.m_selected) {
 				this.m_menuSelectSound.play();
 				this.m_selected = true;
-				var timer:Timer = Session.timer.create(700, this.m_newState);
+				this.m_newStateTimer = Session.timer.create(700, this.m_newState);
 			}
 		}
 		

@@ -76,6 +76,9 @@ package objects {
 		override public function dispose():void {
 			this.color = 0;
 			this.active = false;
+			if(this.m_skin.parent != null) {
+				this.removeChild(this.m_skin);
+			}
 			this.m_skin = null;
 			this.m_scaleFactor = 0;
 			this.m_xVel = 0;

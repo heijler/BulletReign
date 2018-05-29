@@ -244,15 +244,20 @@ package objects {
 		 * 
 		 */
 		override public function dispose():void {
-			this.m_skin = null;
+			if (this.m_skin.contains(this.hitBox)) {
+				this.m_skin.removeChild(this.hitBox);
+			}
 			this.hitBox = null;
-			this.m_angleVals = null;
+			if (this.m_skin.parent != null) {
+				this.removeChild(this.m_skin);
+			}
+			this.m_skin = null;
+			this.m_angleVals.length = 0;
 			this.active = false;
 			this.onGround = false;
 			this.onBase = false;
 			this.outOfBounds = false;
 			this.lastHolder = null;
-			this.m_skin = null;
 			this.m_caught = false;
 			this.m_scaleFactor = 0;
 			this.m_gravity = false;

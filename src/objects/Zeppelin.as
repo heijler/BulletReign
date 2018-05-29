@@ -3,15 +3,18 @@ package objects {
 	// Import
 	//-----------------------------------------------------------
 	
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
 	import asset.ZeppelinGFX;
 	
+	import entity.MotionEntity;
+	
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.tween.Tween;
 	import se.lnu.stickossdk.tween.easing.Quint;
-	import entity.MotionEntity;
 	
 	//-----------------------------------------------------------
 	// Banner
@@ -21,6 +24,7 @@ package objects {
 		
 		
 		public var atDefaultPos:Boolean = false;
+		public var requestParam:Boolean = false;
 		
 		//-----------------------------------------------------------
 		// Private properties
@@ -29,6 +33,7 @@ package objects {
 		private var m_skin:MovieClip;
 		private var m_defaultX:int = Session.application.size.x * 0.5;
 		private var m_defaultY:int = -50; // -50
+		
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -95,7 +100,8 @@ package objects {
 				duration: 5000,
 				x: this.m_defaultX - this.width * 0.5,
 				y: this.m_defaultY,
-				onComplete: this.m_zeppelinAtDefault
+				onComplete: this.m_zeppelinAtDefault,
+				requestParam: true
 			});
 		}
 		
@@ -104,9 +110,10 @@ package objects {
 		 * m_zeppelinAtDefault
 		 * 
 		 */
-		private function m_zeppelinAtDefault():void {
+		private function m_zeppelinAtDefault(tween:Tween, target:DisplayObjectContainer):void {
 //			trace("Zeppelin at default");
 			this.atDefaultPos = true;
+			Session.tweener.remove(tween);
 			
 		}
 		
@@ -117,9 +124,13 @@ package objects {
 		 */
 		override public function dispose():void {
 			this.atDefaultPos = false;
+			if (this.m_skin.parent != null) {
+				this.removeChild(this.m_skin);
+			}
 			this.m_skin = null;
 			this.m_defaultX = 0;
 			this.m_defaultY = 0;
+			this.requestParam = false;
 		}
 	}
 }

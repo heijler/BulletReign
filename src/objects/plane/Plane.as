@@ -179,7 +179,6 @@ package objects.plane {
 			this.noDamage = false;
 			this.noFireCounter = false;
 			this.movability = false;
-			
 			this.health = 0;
 			this.wins = 0;
 			this.activePlayer = 0;
