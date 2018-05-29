@@ -16,6 +16,7 @@ package objects {
 	
 	//-----------------------------------------------------------
 	// Banner
+	// Handles behaviour of a single banner
 	//-----------------------------------------------------------
 	
 	public class Banner extends MotionEntity {
@@ -206,7 +207,7 @@ package objects {
 		
 		
 		/**
-		 * m_updatePos
+		 * Updats banner x, y
 		 */
 		private function m_updatePos():void {
 			this.x = this.m_pos.x;
@@ -215,7 +216,7 @@ package objects {
 		
 		
 		/**
-		 * m_updateAngle
+		 * Updates banner angle
 		 * 
 		 */
 		private function m_updateAngle():void {
@@ -231,7 +232,7 @@ package objects {
 		
 		
 		/**
-		 * m_updateDirection
+		 * Updates banner direction
 		 * 
 		 */
 		private function m_updateDirection():void{
@@ -244,7 +245,6 @@ package objects {
 		 * 
 		 */
 		override public function dispose():void {
-			trace("Banner dispose");
 			if (this.m_skin.contains(this.hitBox)) {
 				this.m_skin.removeChild(this.hitBox);
 			}

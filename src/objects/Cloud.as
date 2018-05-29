@@ -12,6 +12,7 @@ package objects {
 	
 	//-----------------------------------------------------------
 	// Cloud
+	// Handles an instance of a cloud
 	//-----------------------------------------------------------
 	
 	public class Cloud extends MotionEntity {
@@ -67,7 +68,7 @@ package objects {
 		}
 		
 		/**
-		 * m_initSkin
+		 * Initialize cloud skin
 		 * 
 		 */
 		private function m_initSkin():void {
@@ -79,7 +80,7 @@ package objects {
 		
 		
 		/**
-		 * m_setSpawnPosition
+		 * Set cloud spawnposition
 		 * 
 		 */
 		private function m_setSpawnPosition():void {
@@ -89,7 +90,7 @@ package objects {
 		
 		
 		/**
-		 * m_initSeed
+		 * Initialize seed
 		 * 
 		 */
 		private function m_initSeed():void {
@@ -97,7 +98,7 @@ package objects {
 		}
 		
 		/**
-		 * m_updatePosition
+		 * Updates cloud position
 		 * 
 		 */
 		private function m_updatePosition():void {

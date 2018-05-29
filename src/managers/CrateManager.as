@@ -8,6 +8,7 @@ package managers {
 	
 	//-----------------------------------------------------------
 	// CrateManager
+	// Handles and keeps track of crates added to the layer
 	//-----------------------------------------------------------
 	public class CrateManager {
 		
@@ -15,9 +16,9 @@ package managers {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private var m_parent:DisplayObjectContainer;
-		private var m_crates:Vector.<Crate>;
-		private var m_markedCrate:Vector.<Crate>;
+		private var m_parent:DisplayObjectContainer; 	
+		private var m_crates:Vector.<Crate>;			
+		private var m_markedCrate:Vector.<Crate>;		
 		
 		//-----------------------------------------------------------
 		// Constructor
@@ -33,7 +34,8 @@ package managers {
 		//-----------------------------------------------------------
 		
 		/**
-		 * 
+		 * Add 
+		 * Adds a crate to vector and layer
 		 */
 		public function add(crate:Crate, type:int):void {
 				this.m_crates.push(crate);
@@ -42,7 +44,8 @@ package managers {
 		
 		
 		/**
-		 * 
+		 * getCrates
+		 * returns vector of crates
 		 */
 		public function getCrates():Vector.<Crate> {
 			return this.m_crates;
@@ -50,24 +53,22 @@ package managers {
 		
 		
 		/**
-		 * 
+		 * removeCrate
+		 * removes the markedCrate
 		 */
 		public function removeCrate(crate:Crate):void {
 			this.m_markedCrate = this.m_crates.splice(this.m_crates.indexOf(crate), 1);
 			if (this.m_parent.contains(this.m_markedCrate[0])) {
 				this.m_parent.removeChild(this.m_markedCrate[0]);
 				this.m_markedCrate[0] = null;
-//				this.m_markedCrate.length = 0;
-//				this.m_markedCrate = null;
 			}
 		}
 		
 		
 		/**
-		 * 
+		 * crateManager dispose
 		 */
 		public function dispose():void {
-			trace("Cratemanager dispose");
 			for(var i:int; i < this.m_crates.length; i++) {
 				this.m_crates[i].dispose();
 				if(this.m_parent.contains(this.m_crates[i])) {
