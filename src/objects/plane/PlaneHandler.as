@@ -434,6 +434,7 @@ package objects.plane {
 		 * 
 		 */
 		public function dispose():void {
+			trace("PlaneHandler dispose")
 			this.m_plane = null;
 			this.m_controls = null;
 			this.m_onePU = false;

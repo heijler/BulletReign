@@ -74,6 +74,7 @@ package state.menustate {
 		 * 
 		 */
 		override protected function _disposeMenu():void {
+			trace("MainMenu dispose");
 			this.m_menuMusic = null;
 		}
 		

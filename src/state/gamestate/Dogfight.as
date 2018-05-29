@@ -100,6 +100,7 @@ package state.gamestate {
 		}
 		
 		override public function dispose():void {
+			trace("Dogfight dispose");
 			super.dispose();
 			this.m_winFlag = false;
 			this.m_callWinner = false;

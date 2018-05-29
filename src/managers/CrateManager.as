@@ -67,7 +67,7 @@ package managers {
 		 * 
 		 */
 		public function dispose():void {
-			trace("dispose cratemanager");
+			trace("Cratemanager dispose");
 			for(var i:int; i < this.m_crates.length; i++) {
 				this.m_crates[i].dispose();
 				if(this.m_parent.contains(this.m_crates[i])) {

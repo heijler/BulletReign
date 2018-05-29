@@ -71,7 +71,7 @@ package ui {
 		 * 
 		 */
 		override public function dispose():void {
-			trace("disposing countdown");
+			trace("Countdown dispose");
 			this.m_bestOf = "";
 			this.m_countArr.length = 0;
 			this.m_countArr = null;

@@ -61,7 +61,7 @@ package entity.fx {
 		 * 
 		 */
 		override public function dispose():void {
-			trace("effect dispose");
+			trace("Effect dispose");
 			this.type = "";
 			this._pos = null;
 			this._hasGravity = false;

@@ -168,7 +168,7 @@ package objects.plane {
 		 * 
 		 */
 		override public function dispose():void {
-			trace("Disposing plane");
+			trace("Plane dispose");
 			this.m_ph.dispose();
 			this.winner = false;
 			this.crashed = false;

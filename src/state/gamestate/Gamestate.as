@@ -152,7 +152,7 @@ package state.gamestate {
 		}
 		
 		override public function dispose():void {
-			trace("gamestate dispose");
+			trace("Gamestate dispose");
 			this.m_planes = null;
 			this.m_crates = null;
 			this.m_crate = null;

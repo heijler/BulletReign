@@ -73,7 +73,7 @@ package managers {
 		 * 
 		 */
 		public function dispose():void {
-			trace("disposing planemanager");
+			trace("Planemanager dispose");
 			for(var i:int; i < this.m_planes.length; i++) {
 				this.m_planes[i].dispose();
 				if(this.m_parent.contains(this.m_planes[i])) {

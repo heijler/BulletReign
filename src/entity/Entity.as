@@ -64,6 +64,7 @@ package entity {
 		}
 		
 		override public function dispose():void {
+			trace("Entity dispose")
 			this.m_pos = null;
 			this._appWidth = 0;
 			this.m_shake = null;

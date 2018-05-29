@@ -123,6 +123,7 @@ package objects {
 		 * 
 		 */
 		override public function dispose():void {
+			trace("Zeppelin dispose");
 			this.atDefaultPos = false;
 			if (this.m_skin.parent != null) {
 				this.removeChild(this.m_skin);

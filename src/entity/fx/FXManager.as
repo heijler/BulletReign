@@ -64,7 +64,7 @@ package entity.fx {
 		 * 
 		 */
 		public function dispose():void {
-			trace("dispose FXmanager");
+			trace("FXmanager dispose");
 			for (var i:int = 0; i < this.m_effects.length; i++) {
 				this.m_effects[i].dispose;
 				if (this.m_effects[i].parent != null) {

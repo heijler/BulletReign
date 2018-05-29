@@ -87,7 +87,7 @@ package managers {
 		 * 
 		 */
 		public function dispose():void {
-			trace("iconmanager dispose");
+			trace("Iconmanager dispose");
 			Session.timer.remove(this.m_expireTimer);
 			this.m_expireTimer = null;
 			this.m_player = 0;

@@ -50,6 +50,7 @@ package objects {
 		 * override
 		 */
 		public override function dispose():void {
+			trace("Cloud dispose");
 			if (this.m_skin.parent != null) {
 				this.removeChild(this.m_skin);
 			}

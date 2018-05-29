@@ -534,6 +534,7 @@ package state.gamestate {
 		}
 		
 		override public function dispose():void {
+			trace("Conquer dispose");
 			super.dispose();
 			this.m_zeppelin = null;
 			this.m_banner = null;

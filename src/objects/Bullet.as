@@ -74,6 +74,7 @@ package objects {
 		 * 
 		 */
 		override public function dispose():void {
+			trace("Bullet dispose");
 			this.color = 0;
 			this.active = false;
 			if(this.m_skin.parent != null) {

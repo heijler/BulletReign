@@ -90,6 +90,7 @@ package state.menustate {
 		 * dispose
 		 */
 		override public function dispose():void {
+			trace("Menu dispose");
 			this.m_controls_one = null;
 			this.m_controls_two = null;
 			this.m_menuSelect = 0;

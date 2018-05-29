@@ -142,7 +142,7 @@ package entity.fx {
 		
 		
 		override public function dispose():void {
-			trace("fire dispose");
+			trace("Fire dispose");
 			for (var i:int = 0; i < this.m_active.length; i++) {
 				if (this.m_active[i].parent != null) {
 					this.m_target.removeChild(this.m_active[i]);

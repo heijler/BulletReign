@@ -50,6 +50,7 @@ package state.menustate {
 		 * 
 		 */
 		override protected function _disposeMenu():void {
+			trace("RematchMenu");
 			this.m_gamemode = 0;
 		}
 	}

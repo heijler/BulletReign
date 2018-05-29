@@ -301,6 +301,7 @@ package state.menustate.infoScreen {
 		 * 
 		 */
 		override public function dispose():void {
+			trace("WinnerScreen dispose");
 			this.m_controls_one = null;
 			this.m_controls_two = null;
 			this.m_gamemode = 0;

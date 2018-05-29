@@ -88,6 +88,7 @@ package objects {
 		 * 
 		 */
 		override public function dispose():void {
+			trace("Crate dispose");
 			this.hitGround = false;
 			for (var i:int = 0; i < this.m_crateClips.length; i++) {
 				if (this.m_crateClips[i].parent != null) {

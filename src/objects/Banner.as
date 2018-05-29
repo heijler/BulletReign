@@ -244,6 +244,7 @@ package objects {
 		 * 
 		 */
 		override public function dispose():void {
+			trace("Banner dispose");
 			if (this.m_skin.contains(this.hitBox)) {
 				this.m_skin.removeChild(this.hitBox);
 			}

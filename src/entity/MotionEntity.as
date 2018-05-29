@@ -54,6 +54,7 @@ package entity {
 		 * 
 		 */
 		override public function dispose():void {
+			trace("MotionEntity dispose");
 			this._velocity = 0;
 			this._angle = 0;
 			this.m_gravityFactor = 0;
