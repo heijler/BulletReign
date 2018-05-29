@@ -8,6 +8,7 @@ package managers {
 	
 	//-----------------------------------------------------------
 	// PlaneManager
+	// Handles and provides access to instanciated planes
 	//-----------------------------------------------------------
 	
 	public class PlaneManager {
@@ -16,10 +17,9 @@ package managers {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private const AMOUNT_LIMIT:int = 2;
-		private var m_parent:DisplayObjectContainer;
-		private var m_planes:Vector.<Plane>;
-		private var m_val:Boolean = false;
+		private const AMOUNT_LIMIT:int = 2; 			
+		private var m_parent:DisplayObjectContainer;  	
+		private var m_planes:Vector.<Plane>;			
 		
 		
 		//-----------------------------------------------------------
@@ -37,7 +37,8 @@ package managers {
 		
 		
 		/**
-		 * 
+		 * add
+		 * adds planes to layer if not more than amount limit
 		 */
 		public function add(plane:Plane):void {
 			if (this.m_planes.length < AMOUNT_LIMIT) {
@@ -48,7 +49,8 @@ package managers {
 		
 		
 		/**
-		 * 
+		 * getPlanes
+		 * returns a vector of planes
 		 */
 		public function getPlanes():Vector.<Plane> {
 			return this.m_planes;
@@ -56,24 +58,9 @@ package managers {
 		
 		
 		/**
-		 * 
-		 */
-		public function checkCollision(plane:Plane):Boolean {
-			this.m_val = false;
-			for(var i:int = 0; i < this.m_planes.length; i++) {
-				if(plane.hitTestObject(this.m_planes[i])) {
-					this.m_val = true;
-				}
-			}
-			return this.m_val;
-		}
-		
-		
-		/**
-		 * 
+		 * disposes
 		 */
 		public function dispose():void {
-			trace("Planemanager dispose");
 			for(var i:int; i < this.m_planes.length; i++) {
 				this.m_planes[i].dispose();
 				if(this.m_parent.contains(this.m_planes[i])) {
@@ -84,7 +71,6 @@ package managers {
 			this.m_planes.length = 0;
 			this.m_planes = null;
 			this.m_parent = null;
-			this.m_val = false;
 		}
 	}
 }

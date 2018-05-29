@@ -24,7 +24,6 @@ package ui {
 		
 		private var m_skin:MovieClip;
 		private var m_type:int
-		private var m_player:int;
 		private var m_iconClips:Vector.<MovieClip>;
 		private var m_pos:Point;
 		
@@ -43,10 +42,28 @@ package ui {
 			this.m_setSpawnPosition();
 		}
 		
+		/**	
+		 * dispose
+		 * override
+		 */
 		override public function dispose():void {
-			trace("Dispose ICON! REMOVE ME WHEN ACTUALLY DISPOSING.");
+			if(this.m_skin.parent != null) {
+				this.m_skin.parent.removeChild(this.m_skin);
+			}
+			this.m_skin = null;
+			this.m_type = 0;
+			for (var i:int = 0; i < this.m_iconClips.length; i++) {
+				if(this.m_iconClips[i].parent.contains(this.m_iconClips[i])) {
+					this.removeChild(this.m_iconClips[i]);
+				}
+				this.m_iconClips[i] = null;
+			}
+			this.m_pos = null;
 		}
 		
+		/**	
+		 * Initialize icon skin
+		 */
 		private function m_initSkin():void {
 			this.m_iconClips = new Vector.<MovieClip>;
 			this.m_iconClips.push(new armoriconGFX, new powericonGFX, new speediconGFX);
@@ -59,6 +76,9 @@ package ui {
 			this.addChild(this.m_iconClips[this.m_type]);
 		}
 		
+		/**	
+		 * Set icon spawnposition
+		 */
 		private function m_setSpawnPosition():void {
 			this.x = this.m_pos.x;
 			this.y = this.m_pos.y;

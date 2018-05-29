@@ -17,7 +17,8 @@ package objects {
 	import se.lnu.stickossdk.tween.easing.Quint;
 	
 	//-----------------------------------------------------------
-	// Banner
+	// Zeppelin
+	// Handles the appearance and positioning of the Zeppelin
 	//-----------------------------------------------------------
 	
 	public class Zeppelin extends MotionEntity {
@@ -59,7 +60,7 @@ package objects {
 		
 		
 		/**
-		 * m_initSkin
+		 * Initialize skin
 		 * 
 		 */
 		private function m_initSkin():void {
@@ -71,7 +72,7 @@ package objects {
 		
 		
 		/**
-		 * m_setSpawnPosition
+		 * Set Zeppelin spawnposition
 		 * 
 		 */
 		private function m_setSpawnPosition():void {
@@ -91,7 +92,7 @@ package objects {
 		
 		
 		/**
-		 * m_moveToDefault
+		 * Starts movement to default position
 		 * 
 		 */
 		private function m_moveToDefault():void {
@@ -107,7 +108,7 @@ package objects {
 		
 		
 		/**
-		 * m_zeppelinAtDefault
+		 * Moves to default position
 		 * 
 		 */
 		private function m_zeppelinAtDefault(tween:Tween, target:DisplayObjectContainer):void {

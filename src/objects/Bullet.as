@@ -9,6 +9,7 @@ package objects {
 	
 	//-----------------------------------------------------------
 	// Bullet
+	// Handles properties, graphics and positioning of a bullet
 	//-----------------------------------------------------------
 	
 	public class Bullet extends MotionEntity {
@@ -17,21 +18,21 @@ package objects {
 		// Public properties
 		//-----------------------------------------------------------
 		
-		public const BULLET_DAMAGE:Number = 0.5; // 0.5
-		public var color:uint = 0x000000;
-		public var active:Boolean = true;
-		public var requestParam:Boolean = false;
+		public const BULLET_DAMAGE:Number = 0.5; 	
+		public var color:uint = 0x000000;		
+		public var active:Boolean = true;			
+		public var requestParam:Boolean = false;	
 		
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
 		
-		private const BULLET_SPEED:Number = 1.7;
-		private const BULLET_SIZE:Number = 2;
-		private var m_skin:Sprite;
-		private var m_scaleFactor:int;
-		private var m_xVel:Number;
-		private var m_yVel:Number;
+		private const BULLET_SPEED:Number = 1.7;	
+		private const BULLET_SIZE:Number = 2;		
+		private var m_skin:Sprite;					
+		private var m_scaleFactor:int;				
+		private var m_xVel:Number;					
+		private var m_yVel:Number;					
 		
 		
 		
@@ -71,7 +72,7 @@ package objects {
 		
 		
 		/**
-		 * 
+		 * Dipose method
 		 */
 		override public function dispose():void {
 			trace("Bullet dispose");
@@ -103,7 +104,7 @@ package objects {
 		
 		
 		/**
-		 * m_setSpawnPosition
+		 * Sets bullet spawnposition
 		 * 
 		 */
 		private function m_setSpawnPosition():void {

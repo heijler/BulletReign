@@ -32,47 +32,46 @@ package objects.plane {
 		//-----------------------------------------------------------
 		// Public properties
 		//-----------------------------------------------------------
-		public const PLANE_DURABILITY:Number = 10;
+		public const PLANE_DURABILITY:Number = 10;	
 		
-		public var winner:Boolean          = false;
-		public var crashed:Boolean         = false;
-		public var shotDown:Boolean        = false;
-		public var holdingBanner:Boolean   = false;
-		public var powerUpActive:Boolean   = false;
-		public var noAccelDuration:Boolean = false;
-		public var noDamage:Boolean        = false;
-		public var noFireCounter:Boolean   = false;
-		public var movability:Boolean      = true;
-		
-		public var health:Number;
-		public var wins:int;
-		public var activePlayer:int = 0;
-		public var tailHitbox:Shape;
-		public var bodyHitbox:Shape;
+		public var winner:Boolean          = false;	
+		public var crashed:Boolean         = false;	
+		public var shotDown:Boolean        = false;	
+		public var holdingBanner:Boolean   = false;	
+		public var powerUpActive:Boolean   = false;	
+		public var noAccelDuration:Boolean = false;	
+		public var noDamage:Boolean        = false;	
+		public var noFireCounter:Boolean   = false;	
+		public var movability:Boolean      = true;	
+		public var health:Number;				
+		public var wins:int;						
+		public var activePlayer:int = 0;			
+		public var tailHitbox:Shape;				
+		public var bodyHitbox:Shape;				
 		
 		//-----------------------------------------------------------
 		// Private properties
 		//-----------------------------------------------------------
-
-		private var m_ph:PlaneHandler;
-		private var m_healthMeter:MovieClip;
+		
+		private var m_ph:PlaneHandler;				
+		private var m_healthMeter:MovieClip;		
 		
 		//-----------------------------------------------------------
 		// Internal properties
 		//-----------------------------------------------------------
 		
-		internal var _gunCoolingdown:Boolean = true;
-		internal var _accelerating:Boolean   = true;
+		internal var _gunCoolingdown:Boolean = true; 
+		internal var _accelerating:Boolean   = true; 
 		internal var _recharging:Boolean     = false;
 		internal var _facingUp:Boolean       = false;
 		
-		internal var _skin:MovieClip;		
-		internal var _ebulletManager:BulletManager;
-		internal var _bulletManager:BulletManager;
-		internal var _fxMan:FXManager;
-		internal var _scaleFactor:int = 1;
-		internal var _smoke:Smoke;
-		internal var _fire:Fire;
+		internal var _skin:MovieClip;				
+		internal var _ebulletManager:BulletManager;	
+		internal var _bulletManager:BulletManager;	
+		internal var _fxMan:FXManager;				
+		internal var _scaleFactor:int = 1;			
+		internal var _smoke:Smoke;					
+		internal var _fire:Fire;					
 
 		
 		//-----------------------------------------------------------
@@ -165,7 +164,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * dispose
 		 */
 		override public function dispose():void {
 			trace("Plane dispose");
@@ -203,9 +202,7 @@ package objects.plane {
 				this._skin.parent.removeChild(this._skin);
 			}
 			this._skin = null;
-//			this._ebulletManager.dispose();
 			this._ebulletManager = null;
-//			this._bulletManager.dispose();
 			this._bulletManager = null;
 			this._fxMan.dispose();
 			this._fxMan = null;
@@ -238,7 +235,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Initialize rb-skin
 		 */
 		public function m_initAltSkin():void {
 			if (BulletReign.rb && (BulletReign.rbp > -1)) {
@@ -248,7 +245,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Initialize healthmeter
 		 */
 		private function m_initPlaneHealthMeter():void {
 			this.m_healthMeter = new PlaneHealthGFX;
@@ -260,7 +257,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Update healthmeter to current durability
 		 */
 		public function updateHealthMeter():void {
 			this.m_healthMeter.gotoAndStop(Math.floor(this.health + 1));
@@ -268,7 +265,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Instanciate and set tail and body hitbox
 		 */
 		private function m_setHitboxes():void {
 			// Tail hitbox
@@ -288,7 +285,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Sets the starting position
 		 */
 		private function m_setSpawnPosition():void {
 			this.x = this.m_pos.x;
@@ -300,7 +297,7 @@ package objects.plane {
 		//-----------------------------------------------------------
 
 		/**
-		 * 
+		 * Initialize smoke and fire effects
 		 */
 		private function m_initEffects():void {
 			this._smoke = new Smoke(this.parent);
@@ -309,7 +306,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Updates smoke and fire effects
 		 */
 		private function m_updateEffects():void {
 			this._smoke.x = this.x;
@@ -418,19 +415,23 @@ package objects.plane {
 		
 		
 		/**
-		 * Public wrapper
+		 * Calls reflectAngle when touching the sky
 		 */
 		public function reflectAngle():void {
 			this.m_ph._reflectAngle();
 		}
 		
 		/**
-		 * Public wrapper
+		 * Updates planeRotation
 		 */
 		public function updateRotation():void {
 			this.m_ph.updateRotation();
 		}
 		
+		
+		/**
+		 * Toggles plane movement
+		 */
 		public function movePlane(bool:Boolean):void {
 			this.m_ph.planeMovement(bool);
 		}

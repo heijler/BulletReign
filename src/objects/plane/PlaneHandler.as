@@ -137,7 +137,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Handles angle change when hitting the sky
 		 */
 		internal function _reflectAngle():void {
 			this.m_plane._angle = 360 - this.m_plane._angle;
@@ -157,7 +157,7 @@ package objects.plane {
 		}
 		
 		/**
-		 * 
+		 * Checks acceleration and sound playing
 		 */
 		private function m_accelerate():void {
 			if (this._engineOverdriveSound.isPlaying == false && this.m_plane._accelerating) this._engineOverdriveSound.play();
@@ -167,7 +167,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Accelerates the plane
 		 */
 		private function m_planeAcceleration():void {
 			var xVel:Number = Math.cos(this.m_plane._angle * (Math.PI / 180)) * (this.m_plane._velocity * 0.25);
@@ -185,7 +185,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Stops the plane from accelerating
 		 */
 		private function m_stopPlaneAcceleration():void {
 			this.m_plane._accelerating = false;
@@ -195,7 +195,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Resets the possible time of acceleration
 		 */
 		private function m_resetAcceleration():void {
 			if (!this.m_plane._accelerating) {
@@ -227,7 +227,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Starts and stops plane movement
 		 */
 		public function planeMovement(move:Boolean):void {
 			if(move == false) {
@@ -256,7 +256,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Recharges possible acceleration
 		 */
 		private function m_accelDurationRecharge():void {
 			if (this.m_plane._recharging == true && this._accelDuration != this.ACCELERATE_DURATION) {
@@ -266,7 +266,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Coolsdown machinegun when not firing
 		 */
 		private function m_gunCoolDown():void {
 			if (this.m_plane._gunCoolingdown == true && this._fireCounter != this.FIRE_BURST_SIZE) {
@@ -279,7 +279,7 @@ package objects.plane {
 		//-----------------------------------------------------------
 
 		/**
-		 * 
+		 * Initializes firing prcedure
 		 */
 		private function m_fireBullets():void {
 			if (this._steering) {
@@ -301,7 +301,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Resets bullets ready to fire
 		 */
 		private function m_resetFireRate():void {
 			if (!this._firing) {
@@ -315,7 +315,7 @@ package objects.plane {
 		//-----------------------------------------------------------
 		
 		/**
-		 * 
+		 * Drops banner
 		 */
 		internal function _dropBanner():void {
 			if (!this.m_plane.crashed && this.m_plane.holdingBanner) {
@@ -337,7 +337,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Checks if plane hit calls for damage on plane
 		 */
 		private function m_bulletCollision():void {
 			if (this.m_plane.crashed == false && this.m_plane._ebulletManager.checkCollision(m_plane)) {
@@ -368,7 +368,7 @@ package objects.plane {
 		//-----------------------------------------------------------
 		
 		/**
-		 * 
+		 * Clears Speed Powerup
 		 */
 		internal function _clearNoAccelDuration():void {
 			if (this.m_plane.powerUpActive && this.m_plane.noAccelDuration) {
@@ -381,7 +381,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Clears Machinegun Powerup
 		 */
 		internal function _clearNoFireCounter():void {
 			if (this.m_plane.powerUpActive && this.m_plane.noFireCounter) {
@@ -394,7 +394,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Clears Armor Powerup
 		 */
 		internal function _clearNoDamage():void {
 			if (this.m_plane.powerUpActive && this.m_plane.noDamage) {
@@ -431,7 +431,7 @@ package objects.plane {
 		
 		
 		/**
-		 * 
+		 * Disposes
 		 */
 		public function dispose():void {
 			trace("PlaneHandler dispose")

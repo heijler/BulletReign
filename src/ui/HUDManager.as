@@ -41,7 +41,7 @@ package ui {
 		
 		
 		/**
-		 * 
+		 * Lägger till hud i add
 		 */
 		public function add(hud:HUD):void {
 			if (this.m_huds.length < AMOUNT_LIMIT) {
@@ -50,6 +50,9 @@ package ui {
 				hud.name = "Player ".toUpperCase() + this.m_huds.length;
 			}
 		}
+		/**
+		 * Inkremera vinster
+		 */
 		
 		public function incrementWins(planeIndex:int, wins):void {
 			this.m_huds[planeIndex].win = wins;

@@ -75,21 +75,21 @@ package state.gamestate {
 		// Private properties
 		//-----------------------------------------------------------
 		
-		protected var m_planes:Vector.<Plane>; //@TODO: rename
+		protected var m_planes:Vector.<Plane>;
 		private var m_crates:Vector.<Crate>;
 		private var m_crate:Crate;
 		private var m_crateSpawn:Point;
 		private var m_icons:Vector.<Icon>;
 		private var m_icon:Icon;
 		private var m_iconSpawn:Point;
-		private var m_bm1:BulletManager; // @FIX, put into Vector?
-		private var m_bm2:BulletManager; // @FIX, put into Vector?
+		private var m_bm1:BulletManager;
+		private var m_bm2:BulletManager;
 		private var m_im1:IconManager;
 		private var m_im2:IconManager;
 		
 		private var m_sky:Shape;
-		public var m_ground:MovieClip; // @TODO: rename & move
-		public var groundHitbox:Shape; // @TODO: move
+		public var m_ground:MovieClip;
+		public var groundHitbox:Shape;
 		private var m_background:DisplayObject;
 		
 		private var m_hudManager:HUDManager;
@@ -104,7 +104,7 @@ package state.gamestate {
 		private var m_countDown:Countdown = new Countdown();
 		
 		
-		protected var m_winSound:SoundObject; //@TODO: rename
+		protected var m_winSound:SoundObject;
 		protected var _winLimit:int = 2;
 		protected var _bestOf:int = 3;
 		
@@ -151,6 +151,11 @@ package state.gamestate {
 			this.m_initFlash();
 		}
 		
+		
+		/**	 
+		 * dispose
+		 * override
+		 */
 		override public function dispose():void {
 			trace("Gamestate dispose");
 			this.m_planes = null;
@@ -444,8 +449,8 @@ package state.gamestate {
 		}
 		
 		private function m_initIconManagers():void {
-			this.m_im1 = new IconManager(0, this.IconLayer);
-			this.m_im2 = new IconManager(1, this.IconLayer);
+			this.m_im1 = new IconManager(this.IconLayer);
+			this.m_im2 = new IconManager(this.IconLayer);
 		}
 
 		
