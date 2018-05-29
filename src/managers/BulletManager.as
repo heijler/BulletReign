@@ -79,7 +79,7 @@ package managers {
 		
 		/**
 		 * get
-		 * returns the bullets in the stash / vector
+		 * returns the bullets in the vector
 		 */
 		public function getBullets():Vector.<Bullet> {
 			return this.m_bullets;
@@ -88,7 +88,7 @@ package managers {
 		
 		/**
 		 * removeAll
-		 * removes all bullets from bullet stash / vector
+		 * removes all bullets from bullet vector
 		 */
 		private function removeAll():void {
 			for (var i:int = 0; i < this.m_bullets.length; i++) {
@@ -100,7 +100,7 @@ package managers {
 		
 		/**
 		 * removeBullet
-		 * removes used bullets from the planes stash / vector of bullets
+		 * removes used bullets from the planes vector of bullets
 		 */
 		public function removeBullet(bullet:Bullet):void {
 			var markedBullet:Vector.<Bullet> = this.m_bullets.splice(this.m_bullets.indexOf(bullet), 1);
@@ -129,7 +129,6 @@ package managers {
 		
 		
 		/**
-		 * m_initTimer
 		 * fades and inactivates bullets
 		 */
 		private function m_initTimer(bullet:Bullet):void {
@@ -150,7 +149,6 @@ package managers {
 		
 		
 		/**
-		 * m_removeBulletTween
 		 * removing tween and bullet
 		 */
 		private function m_removeBulletTween(tween, target):void {

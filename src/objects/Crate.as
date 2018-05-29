@@ -68,7 +68,7 @@ package objects {
 		}
 		
 		/**
-		 * m_setSpawnPosition
+		 * Set crate spawnposition
 		 * 
 		 */
 		private function m_setSpawnPosition():void {
@@ -102,7 +102,7 @@ package objects {
 		
 		
 		/**
-		 * m_groundCollision
+		 * When crate collides with ground
 		 * 
 		 */
 		public function m_onGroundCollision(layer:DisplayStateLayer):void {
@@ -116,7 +116,6 @@ package objects {
 		
 		
 		/**
-		 * m_crateTweenLeft
 		 * @IMPROVE: if not enough frames, reduce the tween work by removing x property
 		 * Crate swinging from right to left
 		 */
@@ -134,7 +133,6 @@ package objects {
 		}
 		
 		/**
-		 * m_crateTweenRight
 		 * @IMPROVE: if not enough frames, reduce the tween work by removing x property
 		 * Crate swinging from left to right
 		 */

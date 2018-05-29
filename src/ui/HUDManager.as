@@ -12,6 +12,7 @@ package ui {
 	
 	//-----------------------------------------------------------
 	// HUDManager
+	// Handles the HUDs of both players
 	//-----------------------------------------------------------
 	
 	public class HUDManager {
@@ -50,10 +51,10 @@ package ui {
 				hud.name = "Player ".toUpperCase() + this.m_huds.length;
 			}
 		}
+		
 		/**
 		 * Inkremera vinster
 		 */
-		
 		public function incrementWins(planeIndex:int, wins):void {
 			this.m_huds[planeIndex].win = wins;
 			this.m_huds[planeIndex].updateWins();
@@ -66,7 +67,7 @@ package ui {
 		
 		
 		/**
-		 * 
+		 * Returns hud vector
 		 */
 		public function getHuds():Vector.<HUD> {
 			return this.m_huds;
@@ -74,7 +75,7 @@ package ui {
 		
 		
 		/**
-		 * 
+		 * Initializes upper middle health text
 		 */
 		private function m_initHealthLabel():void {
 			var tf:TextFormat = new TextFormat();

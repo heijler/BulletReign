@@ -61,7 +61,6 @@ package managers {
 		
 		
 		/**
-		 * m_expire
 		 * Icon lifetime, calls icon removal after 5000 milliseconds
 		 */
 		private function m_expire():void {
@@ -70,7 +69,6 @@ package managers {
 		
 		
 		/**
-		 * m_remove
 		 * checks for icon and removes it if set
 		 */
 		public function m_remove():void {
