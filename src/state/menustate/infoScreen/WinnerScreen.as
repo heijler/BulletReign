@@ -307,12 +307,23 @@ package state.menustate.infoScreen {
 			this.m_medalSkin = null;
 			this.m_medal = null;
 			this.m_medalRewarded = false;
+			if (this.m_winnerTextTitle.parent != null) {
+				this.m_winnerScreenLayer.removeChild(this.m_winnerTextTitle);
+			}
+			if (this.m_winnerTextMain.parent != null) {
+				this.m_winnerScreenLayer.removeChild(this.m_winnerTextMain);
+			}
 			this.m_winnerTextTitle = null;
 			this.m_winnerTextMain = null;
 			this.m_winnerFormatTitle = null;
 			this.m_winnerFormatMain = null;
 			Session.timer.remove(this.m_controlsTimer);
 			this.m_controlsTimer = null;
+			this.m_infoscreenMusic = null;
+			if (this.m_winnerArt.parent != null) {
+				this.m_winnerScreenLayer.removeChild(this.m_winnerArt);
+			}
+			this.m_winnerArt = null;
 		}
 	}
 }
