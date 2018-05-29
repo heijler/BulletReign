@@ -50,6 +50,9 @@ package objects {
 		 * override
 		 */
 		public override function dispose():void {
+			if (this.m_skin.parent != null) {
+				this.removeChild(this.m_skin);
+			}
 			this.m_skin = null;
 			this.m_seed = 0;
 		}

@@ -89,7 +89,12 @@ package objects {
 		 */
 		override public function dispose():void {
 			this.hitGround = false;
-			this.m_crateClips = null;
+			for (var i:int = 0; i < this.m_crateClips.length; i++) {
+				if (this.m_crateClips[i].parent != null) {
+					this.removeChild(this.m_crateClips[i]);
+				}
+			}
+			this.m_crateClips.length = 0;
 			this.m_type = 0;
 		}
 		
