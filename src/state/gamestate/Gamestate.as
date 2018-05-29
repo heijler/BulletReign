@@ -102,6 +102,8 @@ package state.gamestate {
 		private var m_scoreText:TextField;
 		private var m_planeManager:PlaneManager;
 		private var m_countDown:Countdown = new Countdown();
+		private var m_indicator:MovieClip;
+		private var m_indicatorTimer:Timer;
 		
 		
 		protected var m_winSound:SoundObject; //@TODO: rename
@@ -168,9 +170,21 @@ package state.gamestate {
 			this.m_im1 = null;
 			this.m_im2.dispose();
 			this.m_im2 = null;
+			if (this.m_sky.parent != null) {
+				this.m_sky.parent.removeChild(this.m_sky);
+			}
 			this.m_sky = null;
+			if (this.m_ground.parent != null) {
+				this.m_ground.parent.removeChild(this.m_ground);
+			}
 			this.m_ground = null;
+			if (this.groundHitbox.parent != null) {
+				this.groundHitbox.parent.removeChild(this.groundHitbox);
+			}
 			this.groundHitbox = null;
+			if (this.m_background.parent != null) {
+				this.m_background.parent.removeChild(this.m_background);
+			}
 			this.m_background = null;
 			this.m_hudManager = null;
 			this.m_crateManager.dispose();
@@ -180,13 +194,23 @@ package state.gamestate {
 			this,m_ingameMusic = null;
 			this.m_powerupSound = null;
 			this._flashScreen = false;
+			if (this.m_scoreText.parent != null) {
+				this.m_scoreText.parent.removeChild(this.m_scoreText);
+			}
 			this.m_scoreText = null;
 			this.m_planeManager.dispose();
 			this.m_planeManager = null;
 			this.m_winSound = null;
 			this._winLimit = 0;
+			if (this.m_countDown.parent != null) {
+				this.m_countDown.parent.removeChild(this.m_countDown);
+			}
 			this.m_countDown.dispose();
 			this.m_countDown = null;
+			Session.timer.remove(this.m_indicatorTimer);
+			this.m_indicatorTimer = null;
+			this.m_indicator = null;
+			this.m_clearClouds();
 		}
 		
 		
@@ -261,15 +285,14 @@ package state.gamestate {
 		 */
 		private function m_indicators():void {
 			for (var i:int = 0; i < this.m_planes.length; i++) {
-				var indicator:MovieClip = this.m_createIndicator(this.m_planes[i].activePlayer);
-					indicator.scaleX = 2;
-					indicator.scaleY = 2;
-					indicator.y = -20;
-					indicator.name = "indicator";
-				this.m_planes[i].addChild(indicator);
+				this.m_indicator = this.m_createIndicator(this.m_planes[i].activePlayer);
+				this.m_indicator.scaleX = 2;
+				this.m_indicator.scaleY = 2;
+				this.m_indicator.y = -20;
+				this.m_indicator.name = "indicator";
+				this.m_planes[i].addChild(this.m_indicator);
 			}
-			
-			var timer:Timer = Session.timer.create(2000, this.m_removeIndicators);
+			this.m_indicatorTimer = Session.timer.create(2000, this.m_removeIndicators);
 		}
 		
 		
@@ -292,7 +315,8 @@ package state.gamestate {
 					Session.tweener.add(indicator, {
 						duration: 700,
 						alpha: 0,
-						onComplete: this.m_removeIndicatorGraphic
+						onComplete: this.m_removeIndicatorTween,
+						requestParam: true
 					});
 				}
 			}
@@ -302,13 +326,12 @@ package state.gamestate {
 		/**
 		 * @TODO: REMOVE GRAPHIC FROM STAGE
 		 */
-		private function m_removeIndicatorGraphic():void {
-//			for (var i:int = 0; i < this.m_planes.length; i++) {
-//				var indicator:DisplayObject = this.m_planes[i].getChildByName("indicator");
-//				if (this.m_planes[i].contains(indicator)) {
-//					this.m_planes[i].removeChild(indicator);
-//				}
-//			}
+		private function m_removeIndicatorTween(tween, target):void {
+			Session.tweener.remove(tween);
+			tween = null;
+			if (target.parent != null) {
+				target.parent.removeChild(target);				
+			}
 		}
 		
 		
@@ -416,6 +439,16 @@ package state.gamestate {
 			for (var i:int = 0; i < 6; i++) {
 				var cloud:Cloud = new Cloud();
 				this.backgroundLayer.addChild(cloud);
+			}
+		}
+		
+		
+		/**
+		 * 
+		 */
+		private function m_clearClouds():void {
+			for (var i:int = 0; i < this.backgroundLayer.numChildren; i++) {
+				this.backgroundLayer.removeChildAt(0);
 			}
 		}
 		

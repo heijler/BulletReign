@@ -87,6 +87,7 @@ package ui {
 			this.m_cbTimer = null;
 		}
 		
+		
 		/**
 		 * 
 		 */

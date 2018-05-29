@@ -2,18 +2,18 @@ package state.menustate {
 	//-----------------------------------------------------------
 	// Import
 	//-----------------------------------------------------------
-	import flash.display.Bitmap;
-	import flash.geom.Point;
-	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
+	import flash.display.Bitmap;
+	import flash.text.TextField;
+	import flash.geom.Point;
 	
-	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.display.DisplayStateLayer;
 	import se.lnu.stickossdk.input.EvertronControls;
-	import se.lnu.stickossdk.input.Input;
+	import se.lnu.stickossdk.display.DisplayState;
 	import se.lnu.stickossdk.media.SoundObject;
 	import se.lnu.stickossdk.system.Session;
+	import se.lnu.stickossdk.input.Input;
 	import se.lnu.stickossdk.timer.Timer;
 
 	//-----------------------------------------------------------
@@ -35,7 +35,7 @@ package state.menustate {
 		private var m_menuObject:Vector.<Object>;
 		private var m_menuSelect:int = 0;
 		private var m_blinkCounter:int = 0;
-		private var m_selected:Boolean;
+		private var m_selected:Boolean = false;
 		private var m_format:TextFormat;
 		private var m_selectedFormat:TextFormat;
 		private var m_menuMoveSound:SoundObject;
