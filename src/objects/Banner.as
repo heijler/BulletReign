@@ -125,8 +125,7 @@ package objects {
 		
 		
 		/**
-		 * m_initSkin
-		 * 
+		 * Initialize banner skin
 		 */
 		private function m_initSkin():void {
 			this.m_skin = new BannerGFX;
@@ -138,7 +137,7 @@ package objects {
 		
 		
 		/**
-		 * m_initHitBox
+		 *Initialize banner hitbox
 		 * 
 		 */
 		private function m_initHitBox():void {
@@ -157,7 +156,7 @@ package objects {
 		
 		
 		/**
-		 * m_setSpawnPosition
+		 * Set banner spawnposition
 		 * 
 		 */
 		private function m_setSpawnPosition():void {

@@ -121,7 +121,6 @@ package ui {
 		}
 		
 		/**	 
-		 * m_initHUD
 		 * Initialize the HUD
 		 */
 		private function m_setSpawn():void {
@@ -131,10 +130,16 @@ package ui {
 			this.m_playerWins.y = this.m_pos.y +20;
 		}
 		
+		/**	 
+		 * Updates wins in HUD
+		 */
 		public function updateWins():void {
 			this.m_playerWins.text = "wins".toUpperCase() + " " + this.m_wins;
 		}
 		
+		/**	 
+		 * Updates health in HUD
+		 */
 		public function updateHealth():void {
 			this.m_durabilityMeter.gotoAndStop(this.m_playerVisualDurability);
 		}

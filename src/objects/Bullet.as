@@ -89,7 +89,6 @@ package objects {
 		
 		
 		/**	
-		 * m_initSkin
 		 * Create the the skin for the bullet.
 		 */
 		private function m_initSkin():void {
